@@ -1,0 +1,261 @@
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/app/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model autre {
+  id_autre        Int               @id @default(autoincrement())
+  titre           String            @db.VarChar(100)
+  description     String            @db.VarChar(3500)
+  miniature       String            @db.VarChar(500)
+  lien_github     String            @db.VarChar(500)
+  lien_figma      String            @db.VarChar(500)
+  lien_site       String            @db.VarChar(500)
+  categorie       String            @db.VarChar(50)
+  tags            String            @db.VarChar(50)
+  date            DateTime          @db.Date
+  afficher        Boolean
+  autre_tags_link autre_tags_link[]
+}
+
+model autre_tags {
+  id_tags         Int               @id @default(autoincrement())
+  titre           String            @db.VarChar(50)
+  important       Boolean
+  autre_tags_link autre_tags_link[]
+}
+
+model autre_tags_link {
+  id_autre   Int
+  id_tags    Int
+  autre      autre      @relation(fields: [id_autre], references: [id_autre], onDelete: Cascade, map: "fk_autre")
+  autre_tags autre_tags @relation(fields: [id_tags], references: [id_tags], onDelete: Cascade, map: "fk_autre_tags")
+
+  @@id([id_autre, id_tags])
+  @@index([id_tags], map: "fk_autre_tags")
+}
+
+model experiences {
+  id_exp         Int     @id @default(autoincrement())
+  date_debut     String  @db.VarChar(50)
+  date_fin       String  @db.VarChar(10)
+  titre          String  @db.VarChar(150)
+  description    String  @db.VarChar(10000)
+  url_img        String  @db.VarChar(250)
+  position_img   String  @db.VarChar(50)
+  position       String  @db.VarChar(10)
+  categorie      String  @db.VarChar(25)
+  img_logo       String  @db.VarChar(250)
+  nom_entreprise String  @db.VarChar(50)
+  url_entreprise String  @db.VarChar(1000)
+  type_emploi    String  @db.VarChar(50)
+  poste_actuel   Int
+  afficher       Boolean
+}
+
+model faq {
+  id_faq   Int     @id @default(autoincrement())
+  titre    String  @db.VarChar(250)
+  contenu  String  @db.VarChar(1000)
+  afficher Boolean
+}
+
+model photos {
+  id_pho                     Int                          @id @default(autoincrement())
+  lien_high                  String                       @db.VarChar(500)
+  lien_low                   String                       @db.VarChar(500)
+  largeur                    Int
+  hauteur                    Int
+  alt                        String                       @db.VarChar(500)
+  date_ajout                 DateTime                     @db.DateTime(0)
+  afficher                   Boolean
+  photos_albums_link         photos_albums_link[]
+  photos_tags_link           photos_tags_link[]
+  photos_tags_recherche_link photos_tags_recherche_link[]
+}
+
+model photos_albums {
+  id_alb                  Int                       @id @default(autoincrement())
+  titre                   String                    @db.VarChar(100)
+  description             String                    @db.VarChar(1000)
+  date                    DateTime                  @db.Date
+  afficher                Boolean
+  photos_albums_link      photos_albums_link[]
+  photos_albums_tags_link photos_albums_tags_link[]
+}
+
+model photos_albums_link {
+  id_pho        Int
+  id_alb        Int
+  photos        photos        @relation(fields: [id_pho], references: [id_pho], onDelete: Cascade, map: "fk_photos2")
+  photos_albums photos_albums @relation(fields: [id_alb], references: [id_alb], onDelete: Cascade, map: "fk_photos_albums")
+
+  @@id([id_pho, id_alb])
+  @@index([id_alb], map: "fk_photos_albums")
+}
+
+model photos_albums_tags_link {
+  id_alb        Int
+  id_tags       Int
+  photos_albums photos_albums @relation(fields: [id_alb], references: [id_alb], onDelete: Cascade, map: "fk_album")
+  photos_tags   photos_tags   @relation(fields: [id_tags], references: [id_tags], onDelete: Cascade, map: "fk_photos_albums_tags")
+
+  @@id([id_alb, id_tags])
+  @@index([id_tags], map: "fk_photos_albums_tags")
+}
+
+model photos_experiences {
+  id_photo Int    @id @default(autoincrement())
+  titre    String @db.VarChar(100)
+  url      String @db.VarChar(1000)
+  date     String @db.VarChar(50)
+}
+
+model photos_tags {
+  id_tags                 Int                       @id @default(autoincrement())
+  titre                   String                    @db.VarChar(50)
+  photos_albums_tags_link photos_albums_tags_link[]
+  photos_tags_link        photos_tags_link[]
+}
+
+model photos_tags_link {
+  id_pho      Int
+  id_tags     Int
+  photos      photos      @relation(fields: [id_pho], references: [id_pho], onDelete: Cascade, map: "fk_photos")
+  photos_tags photos_tags @relation(fields: [id_tags], references: [id_tags], onDelete: Cascade, map: "fk_photos_tags")
+
+  @@id([id_pho, id_tags])
+  @@index([id_tags], map: "fk_photos_tags")
+}
+
+model photos_tags_recherche {
+  id_tags                    Int                          @id @default(autoincrement())
+  titre                      String                       @db.VarChar(50)
+  photos_tags_recherche_link photos_tags_recherche_link[]
+}
+
+model photos_tags_recherche_link {
+  id_pho                Int
+  id_tags               Int
+  photos                photos                @relation(fields: [id_pho], references: [id_pho], onDelete: Cascade, map: "fk_photos3")
+  photos_tags_recherche photos_tags_recherche @relation(fields: [id_tags], references: [id_tags], onDelete: Cascade, map: "fk_photos_tags_recherche")
+
+  @@id([id_pho, id_tags])
+  @@index([id_tags], map: "fk_photos_tags_recherche")
+}
+
+model temoignages {
+  id_tem     Int     @id @default(autoincrement())
+  contenu    String  @db.VarChar(500)
+  client     String  @db.VarChar(50)
+  plateforme String  @db.VarChar(50)
+  date       String? @db.VarChar(50)
+  afficher   Boolean
+}
+
+model utilisateurs {
+  id_user  Int     @id @default(autoincrement())
+  img      String  @db.VarChar(250)
+  email    String? @db.VarChar(50)
+  username String  @db.VarChar(50)
+  password String  @db.VarChar(50)
+  role     String  @db.VarChar(10)
+}
+
+model videos {
+  id_vid                Int                @id @default(autoincrement())
+  titre                 String             @db.VarChar(100)
+  description           String             @db.VarChar(3500)
+  tags                  String             @db.VarChar(50)
+  lien                  String             @db.VarChar(500)
+  date                  String             @db.VarChar(50)
+  media_webm            String             @db.VarChar(100)
+  media_mp4             String             @db.VarChar(100)
+  duree                 String             @db.VarChar(25)
+  afficher_competences  String             @db.VarChar(50)
+  afficher              Boolean
+  derniere_modification DateTime           @db.DateTime(0)
+  videos_tags_link      videos_tags_link[]
+}
+
+model videos_tags {
+  id_tags          Int                @id @default(autoincrement())
+  titre            String             @db.VarChar(50)
+  videos_tags_link videos_tags_link[]
+}
+
+model videos_tags_link {
+  id_vid      Int
+  id_tags     Int
+  videos      videos      @relation(fields: [id_vid], references: [id_vid], onDelete: Cascade, map: "fk_videos")
+  videos_tags videos_tags @relation(fields: [id_tags], references: [id_tags], onDelete: Cascade, map: "fk_videos_tags")
+
+  @@id([id_vid, id_tags])
+  @@index([id_tags], map: "fk_videos_tags")
+}
+
+model User {
+  id            String    @id
+  name          String    @db.Text
+  email         String
+  emailVerified Boolean
+  image         String?   @db.Text
+  createdAt     DateTime
+  updatedAt     DateTime
+  sessions      Session[]
+  accounts      Account[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?  @db.Text
+  userAgent String?  @db.Text
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String    @db.Text
+  providerId            String    @db.Text
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?   @db.Text
+  refreshToken          String?   @db.Text
+  idToken               String?   @db.Text
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?   @db.Text
+  password              String?   @db.Text
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String    @db.Text
+  value      String    @db.Text
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
