@@ -79,8 +79,8 @@ const data = {
           url: "/creations/photos",
         },
         {
-          title: "Autre",
-          url: "/creations/autre",
+          title: "Autres",
+          url: "/creations/autres",
         },
       ],
     },
