@@ -3,7 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { ServerSidebarWrapper } from "@/components/sidebar/server-sidebar-wrapper";
+import { RouteDetector } from "@/components/layout/route-detector";
+import { getUser } from "@/lib/auth-session";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,11 +22,12 @@ export const metadata: Metadata = {
     "Espace privé pour gérer les données du portfolio de Arnaud Graciet",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const user = await getUser();
   return (
     <html lang="fr">
       <body
@@ -33,7 +35,7 @@ export default function RootLayout({
       >
         <Toaster />
         <SidebarProvider>
-          <ServerSidebarWrapper>{children}</ServerSidebarWrapper>
+          <RouteDetector user={user}>{children}</RouteDetector>
         </SidebarProvider>
       </body>
     </html>
