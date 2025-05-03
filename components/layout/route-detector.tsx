@@ -32,13 +32,8 @@ export function RouteDetector({ user, children }: RouteDetectorProps) {
 
   return (
     <SidebarProvider>
-      {user ? (
-        <AppSidebar user={user} />
-      ) : (
-        // Fallback quand l'utilisateur n'est pas disponible ou pas connecté
-        <div className="hidden">Sidebar cachée (non connecté)</div>
-      )}
-      <main>
+      {user ? <AppSidebar user={user} /> : null}
+      <main className="w-full h-full">
         {!isAuthPage && <SidebarTrigger />}
         {children}
       </main>

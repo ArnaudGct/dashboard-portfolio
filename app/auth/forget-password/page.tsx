@@ -91,7 +91,11 @@ export default function ForgetPassword() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div> */}
-              <Button type="submit" className="w-full" disabled={loading}>
+              <Button
+                type="submit"
+                className="w-full cursor-pointer"
+                disabled={loading}
+              >
                 {loading ? (
                   <Loader2 size={16} className="animate-spin" />
                 ) : (
@@ -156,7 +160,11 @@ export default function ForgetPassword() {
                 required
               />
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button
+              type="submit"
+              className="w-full cursor-pointer"
+              disabled={loading}
+            >
               {loading ? (
                 <Loader2 size={16} className="animate-spin" />
               ) : (

@@ -94,7 +94,7 @@ export function NavUser({ user }: { user: UserType }) {
             <DropdownMenuItem>
               <button
                 type="submit"
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 cursor-pointer"
                 disabled={loading}
                 onClick={handleSignOut}
               >
