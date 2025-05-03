@@ -3,14 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Plus, Eye, Loader2 } from "lucide-react";
 import Link from "next/link";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Tag } from "@/components/tag";
 import { LiteYoutubeEmbed } from "react-lite-yt-embed";
 import { useState, useEffect } from "react";
