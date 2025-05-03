@@ -14,6 +14,7 @@
   "dependencies": {
     "@mdxeditor/editor": "^3.32.1",
     "@prisma/extension-accelerate": "^1.3.0",
+    "@radix-ui/react-alert-dialog": "^1.1.11",
     "@radix-ui/react-avatar": "^1.1.7",
     "@radix-ui/react-checkbox": "^1.2.3",
     "@radix-ui/react-collapsible": "^1.1.8",
@@ -38,6 +39,7 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "^19.0.0",
     "react-lite-yt-embed": "^1.2.7",
+    "react-markdown": "^10.1.0",
     "resend": "^4.5.0",
     "sonner": "^2.0.3",
     "tailwind-merge": "^3.2.0"
