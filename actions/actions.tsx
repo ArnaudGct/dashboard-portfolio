@@ -175,3 +175,78 @@ export async function deleteVideoAction(videoId: number) {
     throw error;
   }
 }
+
+// Action pour mettre à jour un tag
+export async function updateTagAction(id: number, title: string) {
+  try {
+    await prisma.videos_tags.update({
+      where: { id_tags: id },
+      data: { titre: title },
+    });
+
+    revalidatePath("/creations/videos/tags");
+    revalidatePath("/creations/videos");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour du tag:", error);
+    throw error;
+  }
+}
+
+// Action pour supprimer un tag
+export async function deleteTagAction(id: number) {
+  try {
+    // 1. Supprimer tous les liens entre ce tag et des vidéos
+    await prisma.videos_tags_link.deleteMany({
+      where: { id_tags: id },
+    });
+
+    // 2. Supprimer le tag lui-même
+    await prisma.videos_tags.delete({
+      where: { id_tags: id },
+    });
+
+    revalidatePath("/creations/videos/tags");
+    revalidatePath("/creations/videos");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Erreur lors de la suppression du tag:", error);
+    throw error;
+  }
+}
+
+// Action pour créer un nouveau tag
+export async function createTagAction(title: string) {
+  try {
+    // Vérifier si le tag existe déjà (pour éviter les doublons)
+    const existingTag = await prisma.videos_tags.findFirst({
+      where: { titre: title },
+    });
+
+    if (existingTag) {
+      return {
+        success: false,
+        error: "Ce tag existe déjà",
+        tag: existingTag,
+      };
+    }
+
+    // Créer le nouveau tag
+    const newTag = await prisma.videos_tags.create({
+      data: { titre: title },
+    });
+
+    revalidatePath("/creations/videos/tags");
+    revalidatePath("/creations/videos");
+
+    return {
+      success: true,
+      tag: newTag,
+    };
+  } catch (error) {
+    console.error("Erreur lors de la création du tag:", error);
+    throw error;
+  }
+}
