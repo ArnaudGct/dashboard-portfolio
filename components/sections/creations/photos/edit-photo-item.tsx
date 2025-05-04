@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 import { TagSheet } from "@/components/sections/creations/photos/tag-sheet";
 import {
   updatePhotoAction,
@@ -37,8 +39,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Trash2 } from "lucide-react";
-import { TagCheckbox, type TagOption } from "@/components/tag-checkbox";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Trash2, CalendarIcon } from "lucide-react";
 import { RemovableTag } from "@/components/removable-tag";
 
 const PORTFOLIO_BASE_URL = process.env.NEXT_PUBLIC_PORTFOLIO_URL || "";
@@ -51,12 +58,12 @@ type EditPhotoFormProps = {
     largeur: number;
     hauteur: number;
     alt: string;
-    date_ajout: Date;
+    date: Date;
     afficher: boolean;
   };
-  availableTags: TagOption[];
-  availableSearchTags: TagOption[];
-  availableAlbums: TagOption[];
+  availableTags: string[];
+  availableSearchTags: string[];
+  availableAlbums: string[];
   selectedTagIds: string[];
   selectedSearchTagIds: string[];
   selectedAlbumIds: string[];
@@ -89,6 +96,9 @@ export function EditPhotoItem({
     width: initialData.largeur,
     height: initialData.hauteur,
   });
+  const [date, setDate] = useState<Date | undefined>(
+    initialData.date ? new Date(initialData.date) : undefined
+  );
 
   function getImageUrl(path: string) {
     if (!path) return null;
@@ -178,7 +188,17 @@ export function EditPhotoItem({
 
       // Récupérer l'ID de la photo
       const photoId = initialData.id_pho.toString();
-      formData.set("photoId", photoId); // Pour identifier la photo à mettre à jour
+      formData.set("photoId", photoId);
+
+      // Ajouter la date si elle existe
+      if (date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        const formattedDate = `${year}-${month}-${day}`;
+
+        formData.set("date", formattedDate);
+      }
 
       // Vérifier si de nouvelles images ont été sélectionnées
       const imageHighRes = formData.get("imageHigh") as File;
@@ -490,6 +510,37 @@ export function EditPhotoItem({
             />
           </div>
 
+          <div className="grid w-full gap-1.5">
+            <Label htmlFor="date">Date de la photo</Label>
+            <div className="grid gap-2">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    id="date"
+                    variant={"outline"}
+                    className={`w-full justify-start text-left font-normal cursor-pointer ${
+                      !date ? "text-muted-foreground" : ""
+                    }`}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {date
+                      ? format(date, "d MMMM yyyy", { locale: fr })
+                      : "Sélectionner une date"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={setDate}
+                    initialFocus
+                    locale={fr}
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+          </div>
+
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
             <div className="grid w-full gap-1.5">
               <div className="grid w-full gap-1.5">
@@ -527,7 +578,8 @@ export function EditPhotoItem({
                 </div>
               )}
             </div>
-            <div>
+
+            <div className="grid w-full gap-1.5">
               <div className="grid w-full gap-1.5">
                 <Label htmlFor="searchTags">Tags de recherche</Label>
                 <TagSheet

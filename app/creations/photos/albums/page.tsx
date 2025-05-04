@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import prisma from "@/lib/prisma";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import ReactMarkdown from "react-markdown";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,6 +15,7 @@ import {
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
 import { Tag } from "@/components/tag";
+import React from "react";
 
 export default async function PhotoAlbums() {
   // Récupérer tous les albums avec leurs photos et tags associés
@@ -50,7 +52,7 @@ export default async function PhotoAlbums() {
             </BreadcrumbList>
           </Breadcrumb>
           <div className="flex gap-2">
-            <Link href="/creations/photos/tags">
+            <Link href="/creations/photos/tags?from=albums">
               <Button variant="outline" className="cursor-pointer">
                 Tags
               </Button>
@@ -83,9 +85,9 @@ export default async function PhotoAlbums() {
                     <div className="flex flex-col gap-1.5">
                       <p className="text-lg font-semibold">{album.titre}</p>
 
-                      <p className="text-sm text-muted-foreground line-clamp-2">
+                      <ReactMarkdown>
                         {album.description || "Aucune description"}
-                      </p>
+                      </ReactMarkdown>
                     </div>
 
                     {album.photos_albums_tags_link.length > 0 && (

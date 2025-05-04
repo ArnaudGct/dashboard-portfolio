@@ -177,7 +177,7 @@ exports.Prisma.PhotosScalarFieldEnum = {
   largeur: 'largeur',
   hauteur: 'hauteur',
   alt: 'alt',
-  date_ajout: 'date_ajout',
+  date: 'date',
   afficher: 'afficher'
 };
 

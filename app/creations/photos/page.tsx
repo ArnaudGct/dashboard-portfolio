@@ -22,7 +22,7 @@ export default async function PhotosPage() {
       },
     },
     orderBy: {
-      date_ajout: "desc",
+      date: "desc",
     },
   });
 

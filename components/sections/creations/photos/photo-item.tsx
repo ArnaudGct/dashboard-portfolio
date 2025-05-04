@@ -35,7 +35,7 @@ type Photo = {
   largeur: number;
   hauteur: number;
   alt: string;
-  date_ajout: Date;
+  date: Date;
   afficher: boolean;
   photos_tags_link: {
     id_pho: number;
@@ -131,7 +131,7 @@ export function PhotoItem({ photos, albums }: PhotosGalleryProps) {
                 Albums
               </Button>
             </Link>
-            <Link href="/creations/photos/tags">
+            <Link href="/creations/photos/tags?from=photos">
               <Button variant="outline" className="cursor-pointer">
                 Tags
               </Button>
@@ -152,7 +152,7 @@ export function PhotoItem({ photos, albums }: PhotosGalleryProps) {
                 variant="outline"
                 role="combobox"
                 aria-expanded={isPopoverOpen}
-                className="w-[280px] justify-between"
+                className="w-[280px] justify-between cursor-pointer"
               >
                 {selectedAlbumId === "unassigned"
                   ? "Photos sans album"

@@ -8,6 +8,9 @@ import dynamic from "next/dynamic";
 import { MDXEditorMethods } from "@mdxeditor/editor";
 import { addVideoAction } from "@/actions/videos-actions";
 import { useRouter } from "next/navigation";
+import { TagSheet } from "@/components/sections/creations/photos/tag-sheet";
+import { RemovableTag } from "@/components/removable-tag";
+import { createVideoTagAction } from "@/actions/videos-actions";
 
 // Importer l'éditeur de manière dynamique (côté client uniquement)
 const EditorComp = dynamic(() => import("@/components/editor-textarea"), {
@@ -33,8 +36,13 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { TagCheckbox, type TagOption } from "@/components/tag-checkbox";
 import { toast } from "sonner";
+
+type TagOption = {
+  id: string;
+  label: string;
+  important?: boolean; // Ajout de la propriété important
+};
 
 type AddVideoFormProps = {
   availableTags: TagOption[];
@@ -90,6 +98,23 @@ export function AddVideoItem({ availableTags }: AddVideoFormProps) {
     } catch (error) {
       console.error("Erreur lors de l'ajout:", error);
       toast.error("Erreur lors de l'ajout de la vidéo.");
+    }
+  };
+
+  const handleAddTag = async (
+    tagName: string,
+    important: boolean = false
+  ): Promise<TagOption | null> => {
+    try {
+      const result = await createVideoTagAction(tagName, important);
+      if (result.success && result.id) {
+        return { id: result.id, label: tagName, important: important };
+      }
+      return null;
+    } catch (error) {
+      console.error("Erreur lors de l'ajout du tag:", error);
+      toast.error("Erreur lors de la création du tag");
+      return null;
     }
   };
 
@@ -157,15 +182,38 @@ export function AddVideoItem({ availableTags }: AddVideoFormProps) {
 
           <div className="grid w-full items-center gap-1.5">
             <Label htmlFor="tags">Tags</Label>
-            <TagCheckbox
+            <TagSheet
+              title="Sélection des tags"
+              description="Choisissez les tags à appliquer à cette vidéo"
               options={availableTags}
               selectedTags={selectedTags}
               onChange={handleTagsChange}
+              onAddNew={handleAddTag} // Vous devrez ajouter cette fonction
+              triggerLabel="Sélectionner des tags"
+              searchPlaceholder="Rechercher un tag..."
+              addNewLabel="Ajouter un nouveau tag"
+              type="tag"
             />
-            {/* Champs cachés pour les tags */}
-            {selectedTags.map((tag) => (
-              <input key={tag} type="hidden" name="tags" value={tag} />
-            ))}
+            {selectedTags.length > 0 && (
+              <div className="flex flex-wrap gap-1 mt-2">
+                {selectedTags.map((tagId) => {
+                  const tag = availableTags.find((t) => t.id === tagId);
+                  return (
+                    <RemovableTag
+                      key={tagId}
+                      id={tagId}
+                      label={tag?.label || tagId}
+                      important={tag?.important}
+                      onRemove={(id) => {
+                        setSelectedTags(selectedTags.filter((t) => t !== id));
+                      }}
+                      tagType="tag"
+                    />
+                  );
+                })}
+              </div>
+            )}
+            {/* Champs cachés pour les tags (pas nécessaire avec l'action handleAddVideo) */}
           </div>
 
           <div className="grid w-full items-center gap-1.5">

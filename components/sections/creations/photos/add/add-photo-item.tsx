@@ -55,11 +55,11 @@ export function PhotoAddItem({
           className="flex flex-col gap-8"
         >
           <TabsList className="grid grid-cols-2">
-            <TabsTrigger value="simple" className="flex gap-2">
+            <TabsTrigger value="simple" className="flex gap-2 cursor-pointer">
               <ImageIcon className="w-4 h-4" />
               <span>Photo unique</span>
             </TabsTrigger>
-            <TabsTrigger value="multiple" className="flex gap-2">
+            <TabsTrigger value="multiple" className="flex gap-2 cursor-pointer">
               <UploadCloud className="w-4 h-4" />
               <span>Photos multiples</span>
             </TabsTrigger>

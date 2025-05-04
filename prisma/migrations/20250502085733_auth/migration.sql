@@ -72,7 +72,7 @@ CREATE TABLE `photos` (
     `largeur` INTEGER NOT NULL,
     `hauteur` INTEGER NOT NULL,
     `alt` VARCHAR(500) NOT NULL,
-    `date_ajout` DATETIME(0) NOT NULL,
+    `date` DATETIME(0) NOT NULL,
     `afficher` BOOLEAN NOT NULL,
 
     PRIMARY KEY (`id_pho`)

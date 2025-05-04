@@ -6,7 +6,13 @@ import { fr } from "date-fns/locale";
 import { CalendarIcon, Trash2 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { MDXEditorMethods } from "@mdxeditor/editor";
-import { updateAutreAction, deleteAutreAction } from "@/actions/autres-actions";
+import {
+  updateAutreAction,
+  deleteAutreAction,
+  createAutreTagAction,
+} from "@/actions/autres-actions";
+import { TagSheet } from "@/components/sections/creations/photos/tag-sheet";
+import { RemovableTag } from "@/components/removable-tag";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -45,10 +51,15 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { TagCheckbox, type TagOption } from "@/components/tag-checkbox";
 import { toast } from "sonner";
 
 const PORTFOLIO_BASE_URL = process.env.NEXT_PUBLIC_PORTFOLIO_URL || "";
+
+type TagOption = {
+  id: string;
+  label: string;
+  important?: boolean;
+};
 
 type EditAutreFormProps = {
   initialData: {
@@ -162,6 +173,39 @@ export function EditAutreItem({
       toast.error("Erreur lors de la mise à jour du projet.");
     } finally {
       setIsUpdating(false);
+    }
+  };
+
+  const handleAddTag = async (
+    tagName: string,
+    important: boolean = false
+  ): Promise<TagOption | null> => {
+    try {
+      const result = await createAutreTagAction(tagName, important);
+      if (result.success && result.tag) {
+        toast.success(`Tag "${tagName}" créé avec succès`);
+        return {
+          id: result.tag.id_tags.toString(),
+          label: tagName,
+          important: important,
+        };
+      }
+
+      // Si le tag existe déjà, on peut quand même l'utiliser
+      if (!result.success && result.tag) {
+        return {
+          id: result.tag.id_tags.toString(),
+          label: tagName,
+          important: result.tag.important,
+        };
+      }
+
+      toast.error("Impossible de créer le tag");
+      return null;
+    } catch (error) {
+      console.error("Erreur lors de l'ajout du tag:", error);
+      toast.error("Erreur lors de la création du tag");
+      return null;
     }
   };
 
@@ -325,11 +369,40 @@ export function EditAutreItem({
 
           <div className="grid w-full gap-1.5">
             <Label htmlFor="tags">Tags</Label>
-            <TagCheckbox
+            <TagSheet
+              title="Sélection des tags"
+              description="Choisissez les tags à appliquer à ce projet"
               options={availableTags}
               selectedTags={selectedTags}
               onChange={handleTagsChange}
+              onAddNew={handleAddTag}
+              triggerLabel="Sélectionner des tags"
+              searchPlaceholder="Rechercher un tag..."
+              addNewLabel="Ajouter un nouveau tag"
+              type="tag"
             />
+
+            {selectedTags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-2">
+                {selectedTags.map((tagId) => {
+                  const tag = availableTags.find((t) => t.id === tagId);
+                  return (
+                    <RemovableTag
+                      key={tagId}
+                      id={tagId}
+                      label={tag?.label || tagId}
+                      important={tag?.important}
+                      onRemove={(id) => {
+                        setSelectedTags(selectedTags.filter((t) => t !== id));
+                      }}
+                      tagType="tag"
+                    />
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Les champs cachés sont toujours nécessaires pour le formulaire */}
             {selectedTags.map((tag) => (
               <input key={tag} type="hidden" name="tags" value={tag} />
             ))}

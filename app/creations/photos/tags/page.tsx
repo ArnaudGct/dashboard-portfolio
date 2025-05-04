@@ -1,7 +1,14 @@
 import { TagItem } from "@/components/sections/creations/photos/tag-item";
 import prisma from "@/lib/prisma";
 
-export default async function PhotosTagsPage() {
+export default async function PhotosTagsPage({
+  searchParams,
+}: {
+  searchParams: { from?: string };
+}) {
+  // Récupérer les tags normaux
+  const { from } = await searchParams;
+
   // Récupérer les tags normaux
   const normalTags = await prisma.photos_tags.findMany({
     select: {
@@ -52,12 +59,13 @@ export default async function PhotosTagsPage() {
   }));
 
   return (
-    <div>
+    <div className="w-[90%] mx-auto mb-8">
       <TagItem
         initialTags={{
           normal: formattedNormalTags,
           search: formattedSearchTags,
         }}
+        fromPage={from || "photos"}
       />
     </div>
   );

@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 import Image from "next/image";
 import { TagSheet } from "@/components/sections/creations/photos/tag-sheet";
 import {
@@ -12,6 +14,13 @@ import {
   batchUploadPhotosWithMetadataAction,
 } from "@/actions/photos-actions";
 
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -39,6 +48,7 @@ export function AddPhotoItemSimple({
   const [previewHighRes, setPreviewHighRes] = useState<string | null>(null);
   const [previewLowRes, setPreviewLowRes] = useState<string | null>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const [date, setDate] = useState<Date | undefined>(new Date());
 
   const handleTagsChange = (newSelectedTags: string[]) => {
     setSelectedTags(newSelectedTags);
@@ -117,6 +127,15 @@ export function AddPhotoItemSimple({
       if (!imageHighRes || imageHighRes.size === 0) {
         toast.error("Veuillez sélectionner une image haute résolution");
         return;
+      }
+
+      if (date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        const formattedDate = `${year}-${month}-${day}`;
+
+        formData.set("date", formattedDate);
       }
 
       // Ajouter au FormData de la même manière que batchUploadPhotosWithMetadataAction
@@ -231,17 +250,6 @@ export function AddPhotoItemSimple({
                       priority
                     />
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1 font-medium">
-                    Dimensions: {dimensions.width} x {dimensions.height} pixels
-                    {dimensions.width === 0 || dimensions.height === 0 ? (
-                      <span className="text-red-500">
-                        {" "}
-                        (dimensions non détectées)
-                      </span>
-                    ) : (
-                      <span className="text-green-500"> ✓</span>
-                    )}
-                  </p>
                 </div>
               )}
             </div>
@@ -291,6 +299,38 @@ export function AddPhotoItemSimple({
               />
             </div>
           </div>
+
+          <div className="grid w-full gap-1.5">
+            <Label htmlFor="date">Date de la photo</Label>
+            <div className="grid gap-2">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    id="date"
+                    variant={"outline"}
+                    className={`w-full justify-start text-left font-normal cursor-pointer ${
+                      !date ? "text-muted-foreground" : ""
+                    }`}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {date
+                      ? format(date, "d MMMM yyyy", { locale: fr })
+                      : "Sélectionner une date"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={setDate}
+                    initialFocus
+                    locale={fr}
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+          </div>
+
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
             <div className="grid w-full gap-1.5">
               <div className="grid w-full gap-1.5">

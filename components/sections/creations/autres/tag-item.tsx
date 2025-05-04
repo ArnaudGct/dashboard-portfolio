@@ -205,7 +205,7 @@ export function TagItem({ initialTags }: TagsManagerProps) {
                   onCheckedChange={setIsImportant}
                   className="cursor-pointer"
                 />
-                <Label htmlFor="new-tag-important">Tag important</Label>
+                <Label htmlFor="new-tag-important">Important</Label>
               </div>
             </div>
             <DialogFooter>
@@ -291,7 +291,7 @@ export function TagItem({ initialTags }: TagsManagerProps) {
                 onCheckedChange={setIsEditImportant}
                 className="cursor-pointer"
               />
-              <Label htmlFor="edit-tag-important">Tag important</Label>
+              <Label htmlFor="edit-tag-important">Important</Label>
             </div>
           </div>
           <DialogFooter className="flex justify-between items-center">
@@ -324,7 +324,9 @@ export function TagItem({ initialTags }: TagsManagerProps) {
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>Annuler</AlertDialogCancel>
+                    <AlertDialogCancel className="cursor-pointer">
+                      Annuler
+                    </AlertDialogCancel>
                     <AlertDialogAction
                       className="bg-red-600 hover:bg-red-700 text-white cursor-pointer"
                       onClick={handleDeleteTag}

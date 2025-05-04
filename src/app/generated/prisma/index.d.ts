@@ -7896,7 +7896,7 @@ export namespace Prisma {
     largeur: number | null
     hauteur: number | null
     alt: string | null
-    date_ajout: Date | null
+    date: Date | null
     afficher: boolean | null
   }
 
@@ -7907,7 +7907,7 @@ export namespace Prisma {
     largeur: number | null
     hauteur: number | null
     alt: string | null
-    date_ajout: Date | null
+    date: Date | null
     afficher: boolean | null
   }
 
@@ -7918,7 +7918,7 @@ export namespace Prisma {
     largeur: number
     hauteur: number
     alt: number
-    date_ajout: number
+    date: number
     afficher: number
     _all: number
   }
@@ -7943,7 +7943,7 @@ export namespace Prisma {
     largeur?: true
     hauteur?: true
     alt?: true
-    date_ajout?: true
+    date?: true
     afficher?: true
   }
 
@@ -7954,7 +7954,7 @@ export namespace Prisma {
     largeur?: true
     hauteur?: true
     alt?: true
-    date_ajout?: true
+    date?: true
     afficher?: true
   }
 
@@ -7965,7 +7965,7 @@ export namespace Prisma {
     largeur?: true
     hauteur?: true
     alt?: true
-    date_ajout?: true
+    date?: true
     afficher?: true
     _all?: true
   }
@@ -8063,7 +8063,7 @@ export namespace Prisma {
     largeur: number
     hauteur: number
     alt: string
-    date_ajout: Date
+    date: Date
     afficher: boolean
     _count: PhotosCountAggregateOutputType | null
     _avg: PhotosAvgAggregateOutputType | null
@@ -8093,7 +8093,7 @@ export namespace Prisma {
     largeur?: boolean
     hauteur?: boolean
     alt?: boolean
-    date_ajout?: boolean
+    date?: boolean
     afficher?: boolean
     photos_albums_link?: boolean | photos$photos_albums_linkArgs<ExtArgs>
     photos_tags_link?: boolean | photos$photos_tags_linkArgs<ExtArgs>
@@ -8110,11 +8110,11 @@ export namespace Prisma {
     largeur?: boolean
     hauteur?: boolean
     alt?: boolean
-    date_ajout?: boolean
+    date?: boolean
     afficher?: boolean
   }
 
-  export type photosOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_pho" | "lien_high" | "lien_low" | "largeur" | "hauteur" | "alt" | "date_ajout" | "afficher", ExtArgs["result"]["photos"]>
+  export type photosOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_pho" | "lien_high" | "lien_low" | "largeur" | "hauteur" | "alt" | "date" | "afficher", ExtArgs["result"]["photos"]>
   export type photosInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     photos_albums_link?: boolean | photos$photos_albums_linkArgs<ExtArgs>
     photos_tags_link?: boolean | photos$photos_tags_linkArgs<ExtArgs>
@@ -8136,7 +8136,7 @@ export namespace Prisma {
       largeur: number
       hauteur: number
       alt: string
-      date_ajout: Date
+      date: Date
       afficher: boolean
     }, ExtArgs["result"]["photos"]>
     composites: {}
@@ -8516,7 +8516,7 @@ export namespace Prisma {
     readonly largeur: FieldRef<"photos", 'Int'>
     readonly hauteur: FieldRef<"photos", 'Int'>
     readonly alt: FieldRef<"photos", 'String'>
-    readonly date_ajout: FieldRef<"photos", 'DateTime'>
+    readonly date: FieldRef<"photos", 'DateTime'>
     readonly afficher: FieldRef<"photos", 'Boolean'>
   }
     
@@ -25180,7 +25180,7 @@ export namespace Prisma {
     largeur: 'largeur',
     hauteur: 'hauteur',
     alt: 'alt',
-    date_ajout: 'date_ajout',
+    date: 'date',
     afficher: 'afficher'
   };
 
@@ -25955,7 +25955,7 @@ export namespace Prisma {
     largeur?: IntFilter<"photos"> | number
     hauteur?: IntFilter<"photos"> | number
     alt?: StringFilter<"photos"> | string
-    date_ajout?: DateTimeFilter<"photos"> | Date | string
+    date?: DateTimeFilter<"photos"> | Date | string
     afficher?: BoolFilter<"photos"> | boolean
     photos_albums_link?: Photos_albums_linkListRelationFilter
     photos_tags_link?: Photos_tags_linkListRelationFilter
@@ -25969,7 +25969,7 @@ export namespace Prisma {
     largeur?: SortOrder
     hauteur?: SortOrder
     alt?: SortOrder
-    date_ajout?: SortOrder
+    date?: SortOrder
     afficher?: SortOrder
     photos_albums_link?: photos_albums_linkOrderByRelationAggregateInput
     photos_tags_link?: photos_tags_linkOrderByRelationAggregateInput
@@ -25987,7 +25987,7 @@ export namespace Prisma {
     largeur?: IntFilter<"photos"> | number
     hauteur?: IntFilter<"photos"> | number
     alt?: StringFilter<"photos"> | string
-    date_ajout?: DateTimeFilter<"photos"> | Date | string
+    date?: DateTimeFilter<"photos"> | Date | string
     afficher?: BoolFilter<"photos"> | boolean
     photos_albums_link?: Photos_albums_linkListRelationFilter
     photos_tags_link?: Photos_tags_linkListRelationFilter
@@ -26001,7 +26001,7 @@ export namespace Prisma {
     largeur?: SortOrder
     hauteur?: SortOrder
     alt?: SortOrder
-    date_ajout?: SortOrder
+    date?: SortOrder
     afficher?: SortOrder
     _count?: photosCountOrderByAggregateInput
     _avg?: photosAvgOrderByAggregateInput
@@ -26020,7 +26020,7 @@ export namespace Prisma {
     largeur?: IntWithAggregatesFilter<"photos"> | number
     hauteur?: IntWithAggregatesFilter<"photos"> | number
     alt?: StringWithAggregatesFilter<"photos"> | string
-    date_ajout?: DateTimeWithAggregatesFilter<"photos"> | Date | string
+    date?: DateTimeWithAggregatesFilter<"photos"> | Date | string
     afficher?: BoolWithAggregatesFilter<"photos"> | boolean
   }
 
@@ -27358,7 +27358,7 @@ export namespace Prisma {
     largeur: number
     hauteur: number
     alt: string
-    date_ajout: Date | string
+    date: Date | string
     afficher: boolean
     photos_albums_link?: photos_albums_linkCreateNestedManyWithoutPhotosInput
     photos_tags_link?: photos_tags_linkCreateNestedManyWithoutPhotosInput
@@ -27372,7 +27372,7 @@ export namespace Prisma {
     largeur: number
     hauteur: number
     alt: string
-    date_ajout: Date | string
+    date: Date | string
     afficher: boolean
     photos_albums_link?: photos_albums_linkUncheckedCreateNestedManyWithoutPhotosInput
     photos_tags_link?: photos_tags_linkUncheckedCreateNestedManyWithoutPhotosInput
@@ -27385,7 +27385,7 @@ export namespace Prisma {
     largeur?: IntFieldUpdateOperationsInput | number
     hauteur?: IntFieldUpdateOperationsInput | number
     alt?: StringFieldUpdateOperationsInput | string
-    date_ajout?: DateTimeFieldUpdateOperationsInput | Date | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     afficher?: BoolFieldUpdateOperationsInput | boolean
     photos_albums_link?: photos_albums_linkUpdateManyWithoutPhotosNestedInput
     photos_tags_link?: photos_tags_linkUpdateManyWithoutPhotosNestedInput
@@ -27399,7 +27399,7 @@ export namespace Prisma {
     largeur?: IntFieldUpdateOperationsInput | number
     hauteur?: IntFieldUpdateOperationsInput | number
     alt?: StringFieldUpdateOperationsInput | string
-    date_ajout?: DateTimeFieldUpdateOperationsInput | Date | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     afficher?: BoolFieldUpdateOperationsInput | boolean
     photos_albums_link?: photos_albums_linkUncheckedUpdateManyWithoutPhotosNestedInput
     photos_tags_link?: photos_tags_linkUncheckedUpdateManyWithoutPhotosNestedInput
@@ -27413,7 +27413,7 @@ export namespace Prisma {
     largeur: number
     hauteur: number
     alt: string
-    date_ajout: Date | string
+    date: Date | string
     afficher: boolean
   }
 
@@ -27423,7 +27423,7 @@ export namespace Prisma {
     largeur?: IntFieldUpdateOperationsInput | number
     hauteur?: IntFieldUpdateOperationsInput | number
     alt?: StringFieldUpdateOperationsInput | string
-    date_ajout?: DateTimeFieldUpdateOperationsInput | Date | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     afficher?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -27434,7 +27434,7 @@ export namespace Prisma {
     largeur?: IntFieldUpdateOperationsInput | number
     hauteur?: IntFieldUpdateOperationsInput | number
     alt?: StringFieldUpdateOperationsInput | string
-    date_ajout?: DateTimeFieldUpdateOperationsInput | Date | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     afficher?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -28780,7 +28780,7 @@ export namespace Prisma {
     largeur?: SortOrder
     hauteur?: SortOrder
     alt?: SortOrder
-    date_ajout?: SortOrder
+    date?: SortOrder
     afficher?: SortOrder
   }
 
@@ -28797,7 +28797,7 @@ export namespace Prisma {
     largeur?: SortOrder
     hauteur?: SortOrder
     alt?: SortOrder
-    date_ajout?: SortOrder
+    date?: SortOrder
     afficher?: SortOrder
   }
 
@@ -28808,7 +28808,7 @@ export namespace Prisma {
     largeur?: SortOrder
     hauteur?: SortOrder
     alt?: SortOrder
-    date_ajout?: SortOrder
+    date?: SortOrder
     afficher?: SortOrder
   }
 
@@ -30823,7 +30823,7 @@ export namespace Prisma {
     largeur: number
     hauteur: number
     alt: string
-    date_ajout: Date | string
+    date: Date | string
     afficher: boolean
     photos_tags_link?: photos_tags_linkCreateNestedManyWithoutPhotosInput
     photos_tags_recherche_link?: photos_tags_recherche_linkCreateNestedManyWithoutPhotosInput
@@ -30836,7 +30836,7 @@ export namespace Prisma {
     largeur: number
     hauteur: number
     alt: string
-    date_ajout: Date | string
+    date: Date | string
     afficher: boolean
     photos_tags_link?: photos_tags_linkUncheckedCreateNestedManyWithoutPhotosInput
     photos_tags_recherche_link?: photos_tags_recherche_linkUncheckedCreateNestedManyWithoutPhotosInput
@@ -30886,7 +30886,7 @@ export namespace Prisma {
     largeur?: IntFieldUpdateOperationsInput | number
     hauteur?: IntFieldUpdateOperationsInput | number
     alt?: StringFieldUpdateOperationsInput | string
-    date_ajout?: DateTimeFieldUpdateOperationsInput | Date | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     afficher?: BoolFieldUpdateOperationsInput | boolean
     photos_tags_link?: photos_tags_linkUpdateManyWithoutPhotosNestedInput
     photos_tags_recherche_link?: photos_tags_recherche_linkUpdateManyWithoutPhotosNestedInput
@@ -30899,7 +30899,7 @@ export namespace Prisma {
     largeur?: IntFieldUpdateOperationsInput | number
     hauteur?: IntFieldUpdateOperationsInput | number
     alt?: StringFieldUpdateOperationsInput | string
-    date_ajout?: DateTimeFieldUpdateOperationsInput | Date | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     afficher?: BoolFieldUpdateOperationsInput | boolean
     photos_tags_link?: photos_tags_linkUncheckedUpdateManyWithoutPhotosNestedInput
     photos_tags_recherche_link?: photos_tags_recherche_linkUncheckedUpdateManyWithoutPhotosNestedInput
@@ -31099,7 +31099,7 @@ export namespace Prisma {
     largeur: number
     hauteur: number
     alt: string
-    date_ajout: Date | string
+    date: Date | string
     afficher: boolean
     photos_albums_link?: photos_albums_linkCreateNestedManyWithoutPhotosInput
     photos_tags_recherche_link?: photos_tags_recherche_linkCreateNestedManyWithoutPhotosInput
@@ -31112,7 +31112,7 @@ export namespace Prisma {
     largeur: number
     hauteur: number
     alt: string
-    date_ajout: Date | string
+    date: Date | string
     afficher: boolean
     photos_albums_link?: photos_albums_linkUncheckedCreateNestedManyWithoutPhotosInput
     photos_tags_recherche_link?: photos_tags_recherche_linkUncheckedCreateNestedManyWithoutPhotosInput
@@ -31158,7 +31158,7 @@ export namespace Prisma {
     largeur?: IntFieldUpdateOperationsInput | number
     hauteur?: IntFieldUpdateOperationsInput | number
     alt?: StringFieldUpdateOperationsInput | string
-    date_ajout?: DateTimeFieldUpdateOperationsInput | Date | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     afficher?: BoolFieldUpdateOperationsInput | boolean
     photos_albums_link?: photos_albums_linkUpdateManyWithoutPhotosNestedInput
     photos_tags_recherche_link?: photos_tags_recherche_linkUpdateManyWithoutPhotosNestedInput
@@ -31171,7 +31171,7 @@ export namespace Prisma {
     largeur?: IntFieldUpdateOperationsInput | number
     hauteur?: IntFieldUpdateOperationsInput | number
     alt?: StringFieldUpdateOperationsInput | string
-    date_ajout?: DateTimeFieldUpdateOperationsInput | Date | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     afficher?: BoolFieldUpdateOperationsInput | boolean
     photos_albums_link?: photos_albums_linkUncheckedUpdateManyWithoutPhotosNestedInput
     photos_tags_recherche_link?: photos_tags_recherche_linkUncheckedUpdateManyWithoutPhotosNestedInput
@@ -31241,7 +31241,7 @@ export namespace Prisma {
     largeur: number
     hauteur: number
     alt: string
-    date_ajout: Date | string
+    date: Date | string
     afficher: boolean
     photos_albums_link?: photos_albums_linkCreateNestedManyWithoutPhotosInput
     photos_tags_link?: photos_tags_linkCreateNestedManyWithoutPhotosInput
@@ -31254,7 +31254,7 @@ export namespace Prisma {
     largeur: number
     hauteur: number
     alt: string
-    date_ajout: Date | string
+    date: Date | string
     afficher: boolean
     photos_albums_link?: photos_albums_linkUncheckedCreateNestedManyWithoutPhotosInput
     photos_tags_link?: photos_tags_linkUncheckedCreateNestedManyWithoutPhotosInput
@@ -31298,7 +31298,7 @@ export namespace Prisma {
     largeur?: IntFieldUpdateOperationsInput | number
     hauteur?: IntFieldUpdateOperationsInput | number
     alt?: StringFieldUpdateOperationsInput | string
-    date_ajout?: DateTimeFieldUpdateOperationsInput | Date | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     afficher?: BoolFieldUpdateOperationsInput | boolean
     photos_albums_link?: photos_albums_linkUpdateManyWithoutPhotosNestedInput
     photos_tags_link?: photos_tags_linkUpdateManyWithoutPhotosNestedInput
@@ -31311,7 +31311,7 @@ export namespace Prisma {
     largeur?: IntFieldUpdateOperationsInput | number
     hauteur?: IntFieldUpdateOperationsInput | number
     alt?: StringFieldUpdateOperationsInput | string
-    date_ajout?: DateTimeFieldUpdateOperationsInput | Date | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     afficher?: BoolFieldUpdateOperationsInput | boolean
     photos_albums_link?: photos_albums_linkUncheckedUpdateManyWithoutPhotosNestedInput
     photos_tags_link?: photos_tags_linkUncheckedUpdateManyWithoutPhotosNestedInput

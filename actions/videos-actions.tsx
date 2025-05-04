@@ -200,7 +200,7 @@ export async function deleteVideoAction(videoId: number) {
 }
 
 // Action pour supprimer un tag
-export async function deleteTagAction(id: number) {
+export async function deleteVideoTagAction(id: number) {
   try {
     // 1. Supprimer tous les liens entre ce tag et des vidéos
     await prisma.videos_tags_link.deleteMany({
@@ -222,7 +222,7 @@ export async function deleteTagAction(id: number) {
   }
 }
 
-export async function updateTagAction(
+export async function updateVideoTagAction(
   id: number,
   title: string,
   important?: boolean
@@ -258,7 +258,7 @@ export async function updateTagAction(
 }
 
 // Action pour créer un nouveau tag
-export async function createTagAction(
+export async function createVideoTagAction(
   title: string,
   important: boolean = false
 ) {

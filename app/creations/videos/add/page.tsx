@@ -13,6 +13,7 @@ async function getAllTags() {
     return tags.map((tag) => ({
       id: tag.titre,
       label: tag.titre,
+      important: tag.important,
     }));
   } catch (error) {
     console.error("Erreur lors de la récupération des tags:", error);

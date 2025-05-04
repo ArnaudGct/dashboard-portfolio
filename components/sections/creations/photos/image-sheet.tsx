@@ -142,12 +142,19 @@ export function ImageSheet({
           {description && <SheetDescription>{description}</SheetDescription>}
         </SheetHeader>
 
-        {/* Contenu avec défilement */}
-        <div className="flex-1 flex flex-col gap-4 py-4 overflow-hidden">
-          {/* Selected images preview */}
-          {localSelectedImages.length > 0 && (
-            <div className="space-y-2">
-              <Label>Images sélectionnées ({localSelectedImages.length})</Label>
+        <div className="flex-1 flex flex-col gap-4 px-4">
+          <div className="flex flex-col gap-2">
+            <div className="relative">
+              <SearchIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder={searchPlaceholder}
+                className="pl-8"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+
+            {localSelectedImages.length > 0 && (
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                 {localSelectedImages.map((imageId) => {
                   const image = options.find((o) => o.id === imageId);
@@ -177,18 +184,7 @@ export function ImageSheet({
                   );
                 })}
               </div>
-            </div>
-          )}
-
-          {/* Search input */}
-          <div className="relative">
-            <SearchIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder={searchPlaceholder}
-              className="pl-8"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+            )}
           </div>
 
           {/* List of images - maintenant avec hauteur adaptative */}
@@ -302,7 +298,9 @@ export function ImageSheet({
               {localSelectedImages.length} image(s) sélectionnée(s)
             </span>
             <SheetClose asChild>
-              <Button onClick={handleSave}>Confirmer la sélection</Button>
+              <Button onClick={handleSave} className="cursor-pointer">
+                Confirmer la sélection
+              </Button>
             </SheetClose>
           </div>
         </SheetFooter>

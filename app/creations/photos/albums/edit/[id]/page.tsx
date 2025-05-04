@@ -9,7 +9,8 @@ export default async function EditAlbumPage({
   params: { id: string };
 }) {
   try {
-    const albumId = parseInt(params.id);
+    const { id } = await params;
+    const albumId = parseInt(id);
 
     // Récupérer l'album avec ses photos
     const album = await prisma.photos_albums.findUnique({
@@ -52,7 +53,7 @@ export default async function EditAlbumPage({
         lien_high: true,
         lien_low: true,
         alt: true,
-        date_ajout: true,
+        date: true,
         // Inclure les tags normaux
         photos_tags_link: {
           include: {
@@ -78,7 +79,7 @@ export default async function EditAlbumPage({
           },
         },
       },
-      orderBy: { date_ajout: "desc" },
+      orderBy: { date: "desc" },
       where: {
         afficher: true,
       },

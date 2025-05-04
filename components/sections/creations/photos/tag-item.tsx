@@ -60,9 +60,13 @@ type TagsManagerProps = {
     normal: TagData[];
     search: TagData[];
   };
+  fromPage?: string;
 };
 
-export function TagItem({ initialTags }: TagsManagerProps) {
+export function TagItem({
+  initialTags,
+  fromPage = "photos",
+}: TagsManagerProps) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<"normal" | "search">("normal");
   const [normalTags, setNormalTags] = useState<TagData[]>(initialTags.normal);
@@ -76,6 +80,21 @@ export function TagItem({ initialTags }: TagsManagerProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
+  const backButtonHref =
+    fromPage === "albums" ? "/creations/photos/albums" : "/creations/photos";
+
+  // Déterminer le lien de retour et le texte à afficher
+  const breadcrumbInfo = {
+    photos: {
+      href: "/creations/photos",
+      text: "Photos",
+    },
+    albums: {
+      href: "/creations/photos/albums",
+      text: "Albums",
+    },
+  }[fromPage] || { href: "/creations/photos", text: "Photos" };
 
   // Obtenir les tags actuellement actifs selon l'onglet sélectionné
   const currentTags = activeTab === "normal" ? normalTags : searchTags;
@@ -228,11 +247,13 @@ export function TagItem({ initialTags }: TagsManagerProps) {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/creations/photos">Photos</BreadcrumbLink>
+              <BreadcrumbLink href={breadcrumbInfo.href}>
+                {breadcrumbInfo.text}
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Gestion des tags</BreadcrumbPage>
+              <BreadcrumbPage>Tags</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -268,7 +289,7 @@ export function TagItem({ initialTags }: TagsManagerProps) {
                   onCheckedChange={setIsImportant}
                   className="cursor-pointer"
                 />
-                <Label htmlFor="new-tag-important">Tag important</Label>
+                <Label htmlFor="new-tag-important">Important</Label>
               </div>
             </div>
             <DialogFooter>
@@ -302,8 +323,12 @@ export function TagItem({ initialTags }: TagsManagerProps) {
         className="w-full"
       >
         <TabsList className="grid grid-cols-2 w-[400px] mb-6">
-          <TabsTrigger value="normal">Tags visibles</TabsTrigger>
-          <TabsTrigger value="search">Tags de recherche</TabsTrigger>
+          <TabsTrigger value="normal" className="cursor-pointer">
+            Tags visibles
+          </TabsTrigger>
+          <TabsTrigger value="search" className="cursor-pointer">
+            Tags de recherche
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="normal" className="mt-0">
@@ -402,7 +427,7 @@ export function TagItem({ initialTags }: TagsManagerProps) {
                 onCheckedChange={setIsEditImportant}
                 className="cursor-pointer"
               />
-              <Label htmlFor="edit-tag-important">Tag important</Label>
+              <Label htmlFor="edit-tag-important">Important</Label>
             </div>
           </div>
           <DialogFooter className="flex justify-between items-center">

@@ -17,7 +17,7 @@ export default async function AddAlbumPage() {
         lien_high: true,
         lien_low: true,
         alt: true,
-        date_ajout: true,
+        date: true,
         // Inclure les tags normaux
         photos_tags_link: {
           include: {
@@ -43,7 +43,7 @@ export default async function AddAlbumPage() {
           },
         },
       },
-      orderBy: { date_ajout: "desc" },
+      orderBy: { date: "desc" },
       where: {
         afficher: true,
       },

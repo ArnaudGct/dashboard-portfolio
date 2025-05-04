@@ -72,7 +72,7 @@ model photos {
   largeur                    Int
   hauteur                    Int
   alt                        String                       @db.VarChar(500)
-  date_ajout                 DateTime                     @db.DateTime(0)
+  date                       DateTime                     @db.Date
   afficher                   Boolean
   photos_albums_link         photos_albums_link[]
   photos_tags_link           photos_tags_link[]

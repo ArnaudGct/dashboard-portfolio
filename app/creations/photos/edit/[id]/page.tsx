@@ -7,7 +7,8 @@ export default async function EditPhoto({
 }: {
   params: { id: string };
 }) {
-  const photoId = parseInt(params.id);
+  const { id } = await params;
+  const photoId = parseInt(id);
 
   if (isNaN(photoId)) {
     return notFound();
@@ -70,16 +71,18 @@ export default async function EditPhoto({
         largeur: photo.largeur,
         hauteur: photo.hauteur,
         alt: photo.alt,
-        date_ajout: photo.date_ajout,
+        date: photo.date,
         afficher: photo.afficher,
       }}
       availableTags={tags.map((tag) => ({
         id: tag.id_tags.toString(),
         label: tag.titre,
+        important: tag.important,
       }))}
       availableSearchTags={searchTags.map((tag) => ({
         id: tag.id_tags.toString(),
         label: tag.titre,
+        important: tag.important,
       }))}
       availableAlbums={albums.map((album) => ({
         id: album.id_alb.toString(),

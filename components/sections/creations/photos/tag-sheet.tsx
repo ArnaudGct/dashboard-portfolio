@@ -21,6 +21,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch"; // Ajout du Switch
 import { toast } from "sonner";
+import { RemovableTag } from "@/components/removable-tag"; // Importer le composant RemovableTag
 
 export type TagOption = {
   id: string;
@@ -185,72 +186,47 @@ export function TagSheet({
           )}
         </Button>
       </SheetTrigger>
-      <SheetContent className="flex flex-col w-full sm:max-w-md">
+      <SheetContent className="flex flex-col w-full sm:max-w-md lg:max-w-xl">
         <SheetHeader>
           <SheetTitle>{title}</SheetTitle>
           {description && <SheetDescription>{description}</SheetDescription>}
         </SheetHeader>
 
         {/* Contenu avec défilement */}
-        <div className="flex-1 flex flex-col gap-4 py-4 overflow-hidden">
-          {/* Selected tags/albums */}
-          {localSelectedTags.length > 0 && (
-            <div className="space-y-2">
-              <Label>
-                {typeTerms.plural.charAt(0).toUpperCase() +
-                  typeTerms.plural.slice(1)}{" "}
-                sélectionnés ({localSelectedTags.length})
-              </Label>
-              <div className="flex flex-wrap gap-2 max-h-[120px] overflow-y-auto p-1">
+        <div className="flex-1 flex flex-col gap-4 px-4">
+          <div className="flex flex-col gap-2">
+            <div className="relative">
+              <SearchIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder={searchPlaceholder}
+                className="pl-8"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+
+            {localSelectedTags.length > 0 && (
+              <div className="flex flex-wrap gap-2 max-h-[120px] overflow-y-auto">
                 {localSelectedTags.map((tagId) => {
                   const tag = options.find((o) => o.id === tagId);
                   return (
-                    <Badge
+                    <RemovableTag
                       key={tagId}
-                      className="flex items-center gap-1 pl-2 pr-1 cursor-pointer hover:bg-destructive/10 transition-colors group"
-                      variant={tag?.important ? "default" : "secondary"}
-                      onClick={() => {
-                        // Supprimer l'élément lorsque le badge entier est cliqué
+                      id={tagId}
+                      label={tag?.label || tagId}
+                      important={tag?.important}
+                      onRemove={(id) => {
                         const newTags = localSelectedTags.filter(
-                          (id) => id !== tagId
+                          (tid) => tid !== id
                         );
                         setLocalSelectedTags(newTags);
-                        toast.success(
-                          `${typeTerms.singular.charAt(0).toUpperCase() + typeTerms.singular.slice(1)} "${tag?.label || tagId}" supprimé`
-                        );
                       }}
-                    >
-                      <span
-                        className="max-w-[150px] truncate"
-                        title={tag?.label || tagId}
-                      >
-                        {tag?.label || tagId}
-                      </span>
-                      <X
-                        className="h-3 w-3 ml-1 opacity-50 group-hover:opacity-100"
-                        onClick={(e) => {
-                          // Empêcher la propagation pour éviter que le clic ne soit capturé deux fois
-                          e.stopPropagation();
-                          // Le comportement de suppression est déjà géré par le badge parent
-                        }}
-                      />
-                    </Badge>
+                      tagType={type}
+                    />
                   );
                 })}
               </div>
-              <Separator className="my-2" />
-            </div>
-          )}
-
-          {/* Search input */}
-          <div className="relative">
-            <SearchIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder={searchPlaceholder}
-              className="pl-8"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+            )}
           </div>
 
           {/* List of options */}
@@ -312,48 +288,46 @@ export function TagSheet({
           {/* Add new tag/album section */}
           {canAddNew && (
             <div className="space-y-3">
-              <Separator className="my-1" />
-              <div className="space-y-2">
-                <div className="flex gap-2 items-center">
-                  <Input
-                    placeholder={
-                      addNewLabel || `Ajouter un nouveau ${typeTerms.singular}`
+              <div className="flex gap-2 items-center">
+                <Input
+                  placeholder={
+                    addNewLabel || `Ajouter un nouveau ${typeTerms.singular}`
+                  }
+                  value={newTagName}
+                  onChange={(e) => setNewTagName(e.target.value)}
+                  className="flex-1"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleAddNewTag();
                     }
-                    value={newTagName}
-                    onChange={(e) => setNewTagName(e.target.value)}
-                    className="flex-1"
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        handleAddNewTag();
-                      }
-                    }}
-                  />
-                  <Button
-                    onClick={handleAddNewTag}
-                    disabled={!newTagName.trim() || isAddingTag}
-                    size="sm"
-                    variant="outline"
-                  >
-                    <PlusIcon className="h-4 w-4" />
-                  </Button>
-                </div>
-
-                {/* Switch pour définir si le tag est important */}
-                {type === "tag" && (
-                  <div className="flex items-center space-x-2">
-                    <Switch
-                      id="important"
-                      checked={isImportant}
-                      onCheckedChange={setIsImportant}
-                      className="cursor-pointer"
-                    />
-                    <Label htmlFor="important" className="text-sm">
-                      Tag important
-                    </Label>
-                  </div>
-                )}
+                  }}
+                />
+                <Button
+                  onClick={handleAddNewTag}
+                  disabled={!newTagName.trim() || isAddingTag}
+                  className="cursor-pointer"
+                  size="sm"
+                  variant="outline"
+                >
+                  <PlusIcon className="h-4 w-4" />
+                </Button>
               </div>
+
+              {/* Switch pour définir si le tag est important */}
+              {type === "tag" && (
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="important"
+                    checked={isImportant}
+                    onCheckedChange={setIsImportant}
+                    className="cursor-pointer"
+                  />
+                  <Label htmlFor="important" className="text-sm">
+                    Important
+                  </Label>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -369,7 +343,9 @@ export function TagSheet({
               sélectionné{localSelectedTags.length > 1 ? "s" : ""}
             </span>
             <SheetClose asChild>
-              <Button onClick={handleSave}>Confirmer la sélection</Button>
+              <Button onClick={handleSave} className="cursor-pointer">
+                Confirmer la sélection
+              </Button>
             </SheetClose>
           </div>
         </SheetFooter>

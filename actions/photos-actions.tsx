@@ -113,7 +113,7 @@ export async function addPhotoAction(formData: FormData) {
         largeur,
         hauteur,
         alt,
-        date_ajout: new Date(),
+        date: new Date(),
         afficher,
       },
     });
@@ -209,6 +209,11 @@ export async function updatePhotoAction(formData: FormData) {
     const alt = formData.get("alt")?.toString() || existingPhoto.alt;
     const afficher = formData.get("isPublished") === "on";
 
+    let photoDate: Date | undefined;
+    if (formData.get("date")) {
+      photoDate = new Date(formData.get("date")!.toString());
+    }
+
     // Mettre à jour la photo
     const photo = await prisma.photos.update({
       where: { id_pho: photoId },
@@ -219,6 +224,7 @@ export async function updatePhotoAction(formData: FormData) {
         hauteur,
         alt,
         afficher,
+        ...(photoDate && { date: photoDate }),
       },
     });
 
@@ -715,6 +721,12 @@ export async function batchUploadPhotosWithMetadataAction(formData: FormData) {
     const albums = formData.getAll("albums");
     const alt = formData.get("alt")?.toString() || "";
 
+    // Récupérer la date si elle est fournie
+    let photoDate: Date | undefined;
+    if (formData.get("date")) {
+      photoDate = new Date(formData.get("date")!.toString());
+    }
+
     // Cas de mise à jour sans nouvelle image
     if (isUpdateMode && imageCount === 0) {
       console.log("Mode mise à jour sans nouvelle image");
@@ -734,6 +746,8 @@ export async function batchUploadPhotosWithMetadataAction(formData: FormData) {
         data: {
           alt: formData.get("alt")?.toString() || existingPhoto.alt,
           afficher: isPublished,
+          // Ajouter la date si elle est définie
+          ...(photoDate && { date: photoDate }),
         },
       });
 
@@ -851,6 +865,8 @@ export async function batchUploadPhotosWithMetadataAction(formData: FormData) {
               largeur: width,
               hauteur: height,
               afficher: isPublished,
+              // Ajouter la date si elle est définie, sinon conserver la date existante
+              ...(photoDate && { date: photoDate }),
             },
           });
 
@@ -879,7 +895,8 @@ export async function batchUploadPhotosWithMetadataAction(formData: FormData) {
               alt: itemAlt,
               largeur: width,
               hauteur: height,
-              date_ajout: new Date(),
+              // Utiliser la date spécifiée ou la date actuelle
+              date: photoDate || new Date(),
               afficher: isPublished,
             },
           });
