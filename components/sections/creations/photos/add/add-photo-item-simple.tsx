@@ -2,30 +2,23 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { TagSheet } from "@/components/sections/creations/photos/tag-sheet";
 import {
   addPhotoAction,
   createPhotoTagAction,
   createPhotoSearchTagAction,
   createAlbumAction,
+  batchUploadPhotosWithMetadataAction,
 } from "@/actions/photos-actions";
 
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { TagCheckbox, type TagOption } from "@/components/tag-checkbox";
 import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
+import { RemovableTag } from "@/components/removable-tag";
 
 type AddPhotoFormProps = {
   availableTags: TagOption[];
@@ -62,7 +55,6 @@ export function AddPhotoItemSimple({
   const handleHighResImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Vérifier le type et la taille
       if (!file.type.startsWith("image/")) {
         toast.error("Le fichier sélectionné n'est pas une image");
         return;
@@ -120,11 +112,24 @@ export function AddPhotoItemSimple({
     try {
       setIsUploading(true);
 
-      // Ajouter les dimensions détectées
-      if (dimensions.width > 0 && dimensions.height > 0) {
-        formData.set("largeur", dimensions.width.toString());
-        formData.set("hauteur", dimensions.height.toString());
+      // Vérifier si une image est sélectionnée
+      const imageHighRes = formData.get("imageHigh") as File;
+      if (!imageHighRes || imageHighRes.size === 0) {
+        toast.error("Veuillez sélectionner une image haute résolution");
+        return;
       }
+
+      // Ajouter au FormData de la même manière que batchUploadPhotosWithMetadataAction
+      formData.set("imageCount", "1");
+      formData.set("photo_0", imageHighRes);
+      formData.set("alt_0", formData.get("alt") as string);
+      formData.set("generateLowRes_0", "true");
+
+      // Supprimer les anciens champs qui ne sont plus nécessaires
+      formData.delete("imageHigh");
+      formData.delete("imageLow");
+      formData.delete("largeur");
+      formData.delete("hauteur");
 
       // Ajouter les tags sélectionnés
       formData.delete("tags");
@@ -145,13 +150,20 @@ export function AddPhotoItemSimple({
       });
 
       // Appeler l'action serveur pour ajouter la photo
-      await addPhotoAction(formData);
+      console.log("Envoi des données pour traitement batch");
 
-      toast.success("Photo ajoutée avec succès !");
+      // Appeler l'action serveur pour ajouter la photo
+      const result = await batchUploadPhotosWithMetadataAction(formData);
 
-      // Rediriger vers la liste des photos
-      router.push("/creations/photos");
-      router.refresh();
+      if (result.success) {
+        toast.success("Photo ajoutée avec succès !");
+
+        // Rediriger vers la liste des photos
+        router.push("/creations/photos");
+        router.refresh();
+      } else {
+        toast.error("Erreur lors de l'ajout de la photo.");
+      }
     } catch (error) {
       console.error("Erreur lors de l'ajout:", error);
       toast.error("Erreur lors de l'ajout de la photo.");
@@ -191,23 +203,11 @@ export function AddPhotoItemSimple({
   };
 
   return (
-    <div className="w-[90%] mx-auto">
+    <div className="w-full">
       <div className="flex flex-col gap-8">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/creations/photos">Photos</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Ajouter une photo</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-
         <form className="flex flex-col gap-5" action={handleAddPhoto}>
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col w-full items-start gap-1.5">
               <div className="grid w-full gap-1.5">
                 <Label htmlFor="imageHigh">Image haute résolution</Label>
                 <Input
@@ -219,22 +219,34 @@ export function AddPhotoItemSimple({
                   required
                 />
               </div>
-
               {previewHighRes && (
                 <div className="mt-2 w-full">
                   <div className="rounded-md overflow-hidden bg-muted w-full relative aspect-video">
-                    <img
+                    <Image
                       src={previewHighRes}
                       alt="Aperçu haute résolution"
-                      className="w-full h-full object-contain"
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      priority
                     />
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Dimensions: {dimensions.width} x {dimensions.height}
+                  <p className="text-xs text-muted-foreground mt-1 font-medium">
+                    Dimensions: {dimensions.width} x {dimensions.height} pixels
+                    {dimensions.width === 0 || dimensions.height === 0 ? (
+                      <span className="text-red-500">
+                        {" "}
+                        (dimensions non détectées)
+                      </span>
+                    ) : (
+                      <span className="text-green-500"> ✓</span>
+                    )}
                   </p>
                 </div>
               )}
+            </div>
 
+            <div className="flex flex-col w-full items-start gap-1.5">
               <div className="grid w-full gap-1.5">
                 <Label htmlFor="imageLow">
                   Image basse résolution (optionnel)
@@ -254,159 +266,157 @@ export function AddPhotoItemSimple({
               {previewLowRes && (
                 <div className="mt-2 w-full">
                   <div className="rounded-md overflow-hidden bg-muted w-full relative aspect-video">
-                    <img
+                    <Image
                       src={previewLowRes}
                       alt="Aperçu basse résolution"
-                      className="w-full h-full object-contain"
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 768px) 100vw, 50vw"
                     />
                   </div>
                 </div>
               )}
             </div>
-
-            <div className="flex flex-col gap-4">
-              <div className="grid w-full gap-1.5">
-                <Label htmlFor="alt">Texte alternatif</Label>
-                <Input
-                  type="text"
-                  id="alt"
-                  name="alt"
-                  placeholder="Description de l'image"
-                  required
-                />
-              </div>
-
-              <div className="grid w-full gap-1.5">
-                <Label htmlFor="largeur">Largeur (pixels)</Label>
-                <Input
-                  type="number"
-                  id="largeur"
-                  name="largeur"
-                  placeholder="Largeur détectée automatiquement"
-                  value={dimensions.width || ""}
-                  onChange={(e) =>
-                    setDimensions({
-                      ...dimensions,
-                      width: parseInt(e.target.value) || 0,
-                    })
-                  }
-                />
-              </div>
-
-              <div className="grid w-full gap-1.5">
-                <Label htmlFor="hauteur">Hauteur (pixels)</Label>
-                <Input
-                  type="number"
-                  id="hauteur"
-                  name="hauteur"
-                  placeholder="Hauteur détectée automatiquement"
-                  value={dimensions.height || ""}
-                  onChange={(e) =>
-                    setDimensions({
-                      ...dimensions,
-                      height: parseInt(e.target.value) || 0,
-                    })
-                  }
-                />
-              </div>
-
-              <div className="flex items-center space-x-2 mt-2">
-                <Label htmlFor="isPublished">Afficher</Label>
-                <Switch id="isPublished" name="isPublished" defaultChecked />
-              </div>
-            </div>
           </div>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="grid w-full gap-1.5">
-              <Label htmlFor="tags">Tags</Label>
-              <TagSheet
-                title="Sélection des tags"
-                description="Choisissez les tags à appliquer à cette image"
-                options={availableTags}
-                selectedTags={selectedTags}
-                onChange={handleTagsChange}
-                onAddNew={handleAddTag}
-                triggerLabel="Sélectionner des tags"
-                searchPlaceholder="Rechercher un tag..."
-                addNewLabel="Ajouter un nouveau tag"
-                type="tag"
-              />
-            </div>
 
+          <div className="flex flex-col gap-4">
             <div className="grid w-full gap-1.5">
-              <Label htmlFor="searchTags">Tags de recherche</Label>
-              <TagSheet
-                title="Sélection des tags de recherche"
-                description="Choisissez les tags de recherche à appliquer à cette image"
-                options={availableSearchTags}
-                selectedTags={selectedSearchTags}
-                onChange={handleSearchTagsChange}
-                onAddNew={handleAddSearchTag}
-                triggerLabel="Sélectionner des tags de recherche"
-                searchPlaceholder="Rechercher un tag de recherche..."
-                addNewLabel="Ajouter un nouveau tag de recherche"
-                type="searchTag"
+              <Label htmlFor="alt">Texte alternatif</Label>
+              <Input
+                type="text"
+                id="alt"
+                name="alt"
+                placeholder="Description de l'image"
+                required
               />
             </div>
           </div>
-          <div className="grid w-full gap-1.5">
-            <Label htmlFor="albums">Albums</Label>
-            <TagSheet
-              title="Sélection des albums"
-              description="Choisissez les albums dans lesquels ajouter cette image"
-              options={availableAlbums}
-              selectedTags={selectedAlbums}
-              onChange={handleAlbumsChange}
-              onAddNew={handleAddAlbum}
-              triggerLabel="Sélectionner des albums"
-              searchPlaceholder="Rechercher un album..."
-              addNewLabel="Ajouter un nouvel album"
-              type="album"
-            />
+          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
+            <div className="grid w-full gap-1.5">
+              <div className="grid w-full gap-1.5">
+                <Label htmlFor="tags">Tags</Label>
+                <TagSheet
+                  title="Sélection des tags"
+                  description="Choisissez les tags à appliquer à cette image"
+                  options={availableTags}
+                  selectedTags={selectedTags}
+                  onChange={handleTagsChange}
+                  onAddNew={handleAddTag}
+                  triggerLabel="Sélectionner des tags"
+                  searchPlaceholder="Rechercher un tag..."
+                  addNewLabel="Ajouter un nouveau tag"
+                  type="tag"
+                />
+              </div>
+              {selectedTags.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-1">
+                  {selectedTags.map((tagId) => {
+                    const tag = availableTags.find((t) => t.id === tagId);
+                    return (
+                      <RemovableTag
+                        key={tagId}
+                        id={tagId}
+                        label={tag?.label || tagId}
+                        important={tag?.important}
+                        onRemove={(id) => {
+                          setSelectedTags(selectedTags.filter((t) => t !== id));
+                        }}
+                        tagType="tag"
+                      />
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            <div className="grid w-full gap-1.5">
+              <div className="grid w-full gap-1.5">
+                <Label htmlFor="searchTags">Tags de recherche</Label>
+                <TagSheet
+                  title="Sélection des tags de recherche"
+                  description="Choisissez les tags de recherche à appliquer à cette image"
+                  options={availableSearchTags}
+                  selectedTags={selectedSearchTags}
+                  onChange={handleSearchTagsChange}
+                  onAddNew={handleAddSearchTag}
+                  triggerLabel="Sélectionner des tags de recherche"
+                  searchPlaceholder="Rechercher un tag de recherche..."
+                  addNewLabel="Ajouter un nouveau tag de recherche"
+                  type="searchTag"
+                />
+              </div>
+              {selectedSearchTags.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-1">
+                  {selectedSearchTags.map((tagId) => {
+                    const tag = availableSearchTags.find((t) => t.id === tagId);
+                    return (
+                      <RemovableTag
+                        key={tagId}
+                        id={tagId}
+                        label={tag?.label || tagId}
+                        important={tag?.important}
+                        onRemove={(id) => {
+                          setSelectedSearchTags(
+                            selectedSearchTags.filter((t) => t !== id)
+                          );
+                        }}
+                        tagType="searchTag"
+                      />
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            <div className="grid w-full gap-1.5">
+              <div className="grid w-full gap-1.5">
+                <Label htmlFor="albums">Albums</Label>
+                <TagSheet
+                  title="Sélection des albums"
+                  description="Choisissez les albums dans lesquels ajouter cette image"
+                  options={availableAlbums}
+                  selectedTags={selectedAlbums}
+                  onChange={handleAlbumsChange}
+                  onAddNew={handleAddAlbum}
+                  triggerLabel="Sélectionner des albums"
+                  searchPlaceholder="Rechercher un album..."
+                  addNewLabel="Ajouter un nouvel album"
+                  type="album"
+                />
+              </div>
+              {selectedAlbums.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-1">
+                  {selectedAlbums.map((albumId) => {
+                    const album = availableAlbums.find((a) => a.id === albumId);
+                    return (
+                      <RemovableTag
+                        key={albumId}
+                        id={albumId}
+                        label={album?.label || albumId}
+                        important={album?.important}
+                        onRemove={(id) => {
+                          setSelectedAlbums(
+                            selectedAlbums.filter((a) => a !== id)
+                          );
+                        }}
+                        tagType="album"
+                      />
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           </div>
 
-          {selectedTags.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-1">
-              {selectedTags.map((tagId) => {
-                const tag = availableTags.find((t) => t.id === tagId);
-                return (
-                  <Badge key={tagId} variant="secondary" className="text-xs">
-                    {tag?.label || tagId}
-                  </Badge>
-                );
-              })}
-            </div>
-          )}
-          {selectedSearchTags.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-1">
-              {selectedSearchTags.map((tagId) => {
-                const tag = availableSearchTags.find((t) => t.id === tagId);
-                return (
-                  <Badge key={tagId} variant="secondary" className="text-xs">
-                    {tag?.label || tagId}
-                  </Badge>
-                );
-              })}
-            </div>
-          )}
-
-          {selectedAlbums.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-1">
-              {selectedAlbums.map((albumId) => {
-                const album = availableAlbums.find((a) => a.id === albumId);
-                return (
-                  <Badge key={albumId} variant="secondary" className="text-xs">
-                    {album?.label || albumId}
-                  </Badge>
-                );
-              })}
-            </div>
-          )}
+          <div className="flex items-center space-x-2 mt-2">
+            <Label htmlFor="isPublished">Afficher</Label>
+            <Switch id="isPublished" name="isPublished" defaultChecked />
+          </div>
           <div className="flex gap-2">
             <Button
               type="submit"
               className="cursor-pointer"
-              disabled={isUploading}
+              disabled={!previewHighRes || isUploading}
             >
               {isUploading ? "Ajout en cours..." : "Ajouter"}
             </Button>

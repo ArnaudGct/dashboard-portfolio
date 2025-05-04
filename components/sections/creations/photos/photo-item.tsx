@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Plus, Eye, EyeOff, Check, ChevronsUpDown } from "lucide-react";
+import { Plus, Eye, EyeOff, Check, ChevronsUpDown, Album } from "lucide-react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Tag } from "@/components/tag";
@@ -136,11 +136,6 @@ export function PhotoItem({ photos, albums }: PhotosGalleryProps) {
                 Tags
               </Button>
             </Link>
-            <Link href="/creations/photos/search-tags">
-              <Button variant="outline" className="cursor-pointer">
-                Tags Recherche
-              </Button>
-            </Link>
             <Link href="/creations/photos/add">
               <Button className="cursor-pointer">
                 <Plus /> Ajouter une photo
@@ -220,14 +215,14 @@ export function PhotoItem({ photos, albums }: PhotosGalleryProps) {
             </p>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
             {filteredPhotos.map((photo) => (
               <Card
                 key={photo.id_pho}
                 className="cursor-pointer hover:shadow-md transition-shadow"
                 onClick={() => handlePhotoClick(photo.id_pho)}
               >
-                <div className="flex flex-col p-4 gap-4">
+                <div className="flex flex-col px-6 gap-4">
                   <div
                     className="relative w-full rounded-lg overflow-hidden"
                     style={{
@@ -251,28 +246,6 @@ export function PhotoItem({ photos, albums }: PhotosGalleryProps) {
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    <div className="flex justify-between items-center">
-                      <div className="flex gap-1 items-center text-muted-foreground">
-                        {photo.afficher ? (
-                          <>
-                            <Eye size={18} />
-                            <p className="text-sm">Visible</p>
-                          </>
-                        ) : (
-                          <>
-                            <EyeOff size={18} />
-                            <p className="text-sm">Non visible</p>
-                          </>
-                        )}
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        {formatDistanceToNow(new Date(photo.date_ajout), {
-                          addSuffix: true,
-                          locale: fr,
-                        })}
-                      </p>
-                    </div>
-
                     {photo.photos_tags_link.length > 0 && (
                       <div className="flex gap-x-2 gap-y-1 items-center flex-wrap mt-2">
                         {photo.photos_tags_link.map((tagLink) => (
@@ -282,7 +255,7 @@ export function PhotoItem({ photos, albums }: PhotosGalleryProps) {
                         ))}
                       </div>
                     )}
-
+                    {/* 
                     {photo.photos_tags_recherche_link.length > 0 && (
                       <div className="flex gap-x-2 gap-y-1 items-center flex-wrap mt-1">
                         {photo.photos_tags_recherche_link.map((tagLink) => (
@@ -294,20 +267,35 @@ export function PhotoItem({ photos, albums }: PhotosGalleryProps) {
                           </Tag>
                         ))}
                       </div>
-                    )}
-
+                    )} */}
                     {photo.photos_albums_link.length > 0 && (
-                      <div className="flex gap-x-2 gap-y-1 items-center flex-wrap mt-1">
+                      <div className="flex flex-col gap-1 mt-1">
                         {photo.photos_albums_link.map((albumLink) => (
-                          <Tag
+                          <div
                             key={`album-${albumLink.id_alb}`}
-                            variant="secondary"
+                            className="flex gap-1 items-center text-muted-foreground"
                           >
-                            {albumLink.photos_albums.titre}
-                          </Tag>
+                            <Album size={18} />
+                            <p className="text-sm">
+                              {albumLink.photos_albums.titre}
+                            </p>
+                          </div>
                         ))}
                       </div>
                     )}
+                    <div className="flex gap-1 items-center text-muted-foreground">
+                      {photo.afficher ? (
+                        <>
+                          <Eye size={18} />
+                          <p className="text-sm">Visible</p>
+                        </>
+                      ) : (
+                        <>
+                          <EyeOff size={18} />
+                          <p className="text-sm">Non visible</p>
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
               </Card>

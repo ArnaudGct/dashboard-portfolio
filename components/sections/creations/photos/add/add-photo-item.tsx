@@ -49,23 +49,23 @@ export function PhotoAddItem({
           </BreadcrumbList>
         </Breadcrumb>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <Card className="mb-6">
-            <CardContent className="pt-6">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="simple" className="flex gap-2">
-                  <ImageIcon className="w-4 h-4" />
-                  <span>Photo unique</span>
-                </TabsTrigger>
-                <TabsTrigger value="multiple" className="flex gap-2">
-                  <UploadCloud className="w-4 h-4" />
-                  <span>Photos multiples</span>
-                </TabsTrigger>
-              </TabsList>
-            </CardContent>
-          </Card>
+        <Tabs
+          value={activeTab}
+          onValueChange={setActiveTab}
+          className="flex flex-col gap-8"
+        >
+          <TabsList className="grid grid-cols-2">
+            <TabsTrigger value="simple" className="flex gap-2">
+              <ImageIcon className="w-4 h-4" />
+              <span>Photo unique</span>
+            </TabsTrigger>
+            <TabsTrigger value="multiple" className="flex gap-2">
+              <UploadCloud className="w-4 h-4" />
+              <span>Photos multiples</span>
+            </TabsTrigger>
+          </TabsList>
 
-          <TabsContent value="simple" className="mt-0">
+          <TabsContent value="simple">
             <AddPhotoItemSimple
               availableTags={availableTags}
               availableSearchTags={availableSearchTags}
@@ -73,7 +73,7 @@ export function PhotoAddItem({
             />
           </TabsContent>
 
-          <TabsContent value="multiple" className="mt-0">
+          <TabsContent value="multiple">
             <AddPhotoItemMultiple
               availableTags={availableTags}
               availableSearchTags={availableSearchTags}

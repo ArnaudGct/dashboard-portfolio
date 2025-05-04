@@ -697,7 +697,14 @@ export async function batchUploadPhotosWithMetadataAction(formData: FormData) {
     // Récupérer le nombre total d'images
     const imageCount = parseInt(formData.get("imageCount")?.toString() || "0");
 
-    if (imageCount === 0) {
+    // Vérifier si c'est une mise à jour ou un nouvel ajout
+    const isUpdateMode = formData.get("updateMode") === "true";
+    const photoId = isUpdateMode
+      ? parseInt(formData.get("photoId")?.toString() || "0")
+      : 0;
+
+    // Si pas d'images et pas en mode mise à jour, c'est une erreur
+    if (imageCount === 0 && !isUpdateMode) {
       throw new Error("Aucune image à traiter");
     }
 
@@ -706,15 +713,94 @@ export async function batchUploadPhotosWithMetadataAction(formData: FormData) {
     const tags = formData.getAll("tags");
     const tagsRecherche = formData.getAll("tagsRecherche");
     const albums = formData.getAll("albums");
+    const alt = formData.get("alt")?.toString() || "";
 
-    // Utiliser l'API du portfolio directement au lieu de stocker des fichiers localement
+    // Cas de mise à jour sans nouvelle image
+    if (isUpdateMode && imageCount === 0) {
+      console.log("Mode mise à jour sans nouvelle image");
+
+      // Récupérer la photo existante
+      const existingPhoto = await prisma.photos.findUnique({
+        where: { id_pho: photoId },
+      });
+
+      if (!existingPhoto) {
+        throw new Error("Photo non trouvée");
+      }
+
+      // Mise à jour de la photo existante
+      await prisma.photos.update({
+        where: { id_pho: photoId },
+        data: {
+          alt: formData.get("alt")?.toString() || existingPhoto.alt,
+          afficher: isPublished,
+        },
+      });
+
+      // Supprimer les anciennes relations
+      await prisma.photos_tags_link.deleteMany({
+        where: { id_pho: photoId },
+      });
+
+      await prisma.photos_tags_recherche_link.deleteMany({
+        where: { id_pho: photoId },
+      });
+
+      await prisma.photos_albums_link.deleteMany({
+        where: { id_pho: photoId },
+      });
+
+      // Recréer les relations avec les tags
+      if (tags && tags.length > 0) {
+        for (const tagId of tags) {
+          await prisma.photos_tags_link.create({
+            data: {
+              id_pho: photoId,
+              id_tags: parseInt(tagId.toString()),
+            },
+          });
+        }
+      }
+
+      // Recréer les relations avec les tags de recherche
+      if (tagsRecherche && tagsRecherche.length > 0) {
+        for (const tagId of tagsRecherche) {
+          await prisma.photos_tags_recherche_link.create({
+            data: {
+              id_pho: photoId,
+              id_tags: parseInt(tagId.toString()),
+            },
+          });
+        }
+      }
+
+      // Recréer les relations avec les albums
+      if (albums && albums.length > 0) {
+        for (const albumId of albums) {
+          await prisma.photos_albums_link.create({
+            data: {
+              id_pho: photoId,
+              id_alb: parseInt(albumId.toString()),
+            },
+          });
+        }
+      }
+
+      // Revalider les chemins
+      revalidatePath("/creations/photos");
+      revalidatePath(`/creations/photos/${photoId}/edit`);
+
+      return { success: true, mode: "update-metadata" };
+    }
+
+    // Traitement normal pour les nouvelles images ou mises à jour avec nouvelle image
     const uploadedPhotos = [];
 
     for (let i = 0; i < imageCount; i++) {
       const photo = formData.get(`photo_${i}`) as File;
       if (!photo || !photo.size) continue;
 
-      const alt = formData.get(`alt_${i}`)?.toString() || "";
+      const itemAlt = formData.get(`alt_${i}`)?.toString() || alt;
       const generateLowRes = formData.get(`generateLowRes_${i}`) === "true";
 
       // Uploader les images via l'API du portfolio
@@ -731,63 +817,116 @@ export async function batchUploadPhotosWithMetadataAction(formData: FormData) {
         width = metadata.width || 0;
         height = metadata.height || 0;
 
-        // Uploader l'image haute résolution - aucun traitement pour les WebP
+        console.log(`Image ${i}: dimensions détectées ${width}x${height}`);
+
+        // Uploader l'image haute résolution
         lienHigh = await saveImage(photo, "high");
 
         // Si generateLowRes est vrai, uploader aussi la version basse résolution
-        // Pour WebP, nous allons appliquer uniquement le redimensionnement
         if (generateLowRes) {
           lienLow = await saveImage(photo, "low");
         }
 
-        // Créer l'entrée dans la base de données
-        const newPhoto = await prisma.photos.create({
-          data: {
-            lien_high: lienHigh,
-            lien_low: generateLowRes ? lienLow : null,
-            alt,
-            largeur: width,
-            hauteur: height,
-            date_ajout: new Date(),
-            afficher: isPublished,
-          },
-        });
+        // En mode mise à jour, nous mettons à jour la photo existante
+        if (isUpdateMode && i === 0) {
+          // Pour la mise à jour, on ne prend que la première image
+          console.log(`Mise à jour de la photo ${photoId} avec nouvelle image`);
 
-        uploadedPhotos.push(newPhoto);
+          // Récupérer la photo existante
+          const existingPhoto = await prisma.photos.findUnique({
+            where: { id_pho: photoId },
+          });
 
-        // Associer les tags
-        if (tags && tags.length > 0) {
-          for (const tagId of tags) {
-            await prisma.photos_tags_link.create({
-              data: {
-                id_pho: newPhoto.id_pho,
-                id_tags: parseInt(tagId.toString()),
-              },
-            });
+          if (!existingPhoto) {
+            throw new Error("Photo non trouvée pour mise à jour");
           }
-        }
 
-        // Associer les tags de recherche
-        if (tagsRecherche && tagsRecherche.length > 0) {
-          for (const tagId of tagsRecherche) {
-            await prisma.photos_tags_recherche_link.create({
-              data: {
-                id_pho: newPhoto.id_pho,
-                id_tags: parseInt(tagId.toString()),
-              },
-            });
-          }
-        }
+          // Mettre à jour la photo
+          const updatedPhoto = await prisma.photos.update({
+            where: { id_pho: photoId },
+            data: {
+              lien_high: lienHigh,
+              lien_low: generateLowRes ? lienLow : existingPhoto.lien_low,
+              alt: itemAlt,
+              largeur: width,
+              hauteur: height,
+              afficher: isPublished,
+            },
+          });
 
-        // Associer aux albums
-        if (albums && albums.length > 0) {
-          for (const albumId of albums) {
-            await prisma.photos_albums_link.create({
-              data: {
-                id_pho: newPhoto.id_pho,
-                id_alb: parseInt(albumId.toString()),
-              },
-            });
+          uploadedPhotos.push(updatedPhoto);
+
+          // Supprimer les anciennes relations
+          await prisma.photos_tags_link.deleteMany({
+            where: { id_pho: photoId },
+          });
+
+          await prisma.photos_tags_recherche_link.deleteMany({
+            where: { id_pho: photoId },
+          });
+
+          await prisma.photos_albums_link.deleteMany({
+            where: { id_pho: photoId },
+          });
+        } else {
+          // Créer une nouvelle photo
+          console.log("Création d'une nouvelle photo");
+
+          const newPhoto = await prisma.photos.create({
+            data: {
+              lien_high: lienHigh,
+              lien_low: generateLowRes ? lienLow : null,
+              alt: itemAlt,
+              largeur: width,
+              hauteur: height,
+              date_ajout: new Date(),
+              afficher: isPublished,
+            },
+          });
+
+          uploadedPhotos.push(newPhoto);
+
+          // Si c'est la première photo en mode mise à jour, utiliser cet ID pour les relations
+          const currentPhotoId =
+            isUpdateMode && i === 0 ? photoId : newPhoto.id_pho;
+
+          // Associer les tags uniquement pour les nouvelles photos ou la première en mode update
+          if (i === 0 || !isUpdateMode) {
+            // Associer les tags
+            if (tags && tags.length > 0) {
+              for (const tagId of tags) {
+                await prisma.photos_tags_link.create({
+                  data: {
+                    id_pho: currentPhotoId,
+                    id_tags: parseInt(tagId.toString()),
+                  },
+                });
+              }
+            }
+
+            // Associer les tags de recherche
+            if (tagsRecherche && tagsRecherche.length > 0) {
+              for (const tagId of tagsRecherche) {
+                await prisma.photos_tags_recherche_link.create({
+                  data: {
+                    id_pho: currentPhotoId,
+                    id_tags: parseInt(tagId.toString()),
+                  },
+                });
+              }
+            }
+
+            // Associer aux albums
+            if (albums && albums.length > 0) {
+              for (const albumId of albums) {
+                await prisma.photos_albums_link.create({
+                  data: {
+                    id_pho: currentPhotoId,
+                    id_alb: parseInt(albumId.toString()),
+                  },
+                });
+              }
+            }
           }
         }
       } catch (error) {
@@ -802,8 +941,15 @@ export async function batchUploadPhotosWithMetadataAction(formData: FormData) {
     // Revalider les chemins pour la mise à jour de l'interface
     revalidatePath("/creations/photos");
     revalidatePath("/creations/photos/albums");
+    if (isUpdateMode) {
+      revalidatePath(`/creations/photos/${photoId}/edit`);
+    }
 
-    return { success: true, count: uploadedPhotos.length };
+    return {
+      success: true,
+      count: uploadedPhotos.length,
+      mode: isUpdateMode ? "update-with-image" : "create",
+    };
   } catch (error) {
     console.error("Erreur lors de l'upload batch des photos:", error);
     throw error;

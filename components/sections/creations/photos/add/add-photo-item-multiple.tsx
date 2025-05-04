@@ -5,8 +5,6 @@ import { useRouter } from "next/navigation";
 import { TagSheet } from "@/components/sections/creations/photos/tag-sheet";
 import {
   batchUploadPhotosWithMetadataAction,
-  createPhotoTagAction,
-  createPhotoSearchTagAction,
   createAlbumAction,
 } from "@/actions/photos-actions";
 
@@ -14,12 +12,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { TagCheckbox, type TagOption } from "@/components/tag-checkbox";
+import { TagOption } from "@/components/tag-checkbox";
 import { toast } from "sonner";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import { X, UploadCloud } from "lucide-react";
+import { X, UploadCloud, Trash2 } from "lucide-react";
 import Image from "next/image";
 
 type AddPhotoItemMultipleProps = {
@@ -32,7 +30,6 @@ type PreviewImage = {
   file: File;
   preview: string;
   alt: string;
-  generateLowRes: boolean;
 };
 
 export function AddPhotoItemMultiple({
@@ -45,21 +42,10 @@ export function AddPhotoItemMultiple({
   const [images, setImages] = useState<PreviewImage[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [generateLowResForAll, setGenerateLowResForAll] = useState(true);
 
-  // États communs à toutes les images
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [selectedSearchTags, setSelectedSearchTags] = useState<string[]>([]);
+  // Album sélectionné
   const [selectedAlbums, setSelectedAlbums] = useState<string[]>([]);
   const [isPublished, setIsPublished] = useState(true);
-
-  const handleTagsChange = (newSelectedTags: string[]) => {
-    setSelectedTags(newSelectedTags);
-  };
-
-  const handleSearchTagsChange = (newSelectedSearchTags: string[]) => {
-    setSelectedSearchTags(newSelectedSearchTags);
-  };
 
   const handleAlbumsChange = (newSelectedAlbums: string[]) => {
     setSelectedAlbums(newSelectedAlbums);
@@ -85,7 +71,7 @@ export function AddPhotoItemMultiple({
         if (file.size > 10 * 1024 * 1024) {
           // 10MB
           toast.warning(
-            `L'image "${file.name}" est trop volumineuse (max 30MB).`
+            `L'image "${file.name}" est trop volumineuse (max 10MB).`
           );
           return false;
         }
@@ -105,7 +91,6 @@ export function AddPhotoItemMultiple({
             file,
             preview: reader.result as string,
             alt: fileName,
-            generateLowRes: generateLowResForAll,
           });
 
           if (newImages.length === validImageFiles.length) {
@@ -121,6 +106,14 @@ export function AddPhotoItemMultiple({
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const clearAllImages = () => {
+    setImages([]);
+    // Réinitialiser l'input file pour permettre la sélection des mêmes fichiers à nouveau
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   const updateAlt = (index: number, alt: string) => {
     setImages((prev) => {
       const updated = [...prev];
@@ -129,25 +122,28 @@ export function AddPhotoItemMultiple({
     });
   };
 
-  const toggleLowRes = (index: number) => {
-    setImages((prev) => {
-      const updated = [...prev];
-      updated[index].generateLowRes = !updated[index].generateLowRes;
-      return updated;
-    });
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
   };
 
-  const toggleAllLowRes = () => {
-    const newValue = !generateLowResForAll;
-    setGenerateLowResForAll(newValue);
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-    // Mettre à jour toutes les images avec la nouvelle valeur
-    setImages((prev) =>
-      prev.map((img) => ({
-        ...img,
-        generateLowRes: newValue,
-      }))
-    );
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      // Simuler un changement d'input pour utiliser le même code de traitement
+      const dataTransfer = new DataTransfer();
+      Array.from(e.dataTransfer.files).forEach((file) => {
+        dataTransfer.items.add(file);
+      });
+
+      const event = {
+        target: { files: dataTransfer.files },
+      } as unknown as React.ChangeEvent<HTMLInputElement>;
+
+      handleFileChange(event);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -158,23 +154,17 @@ export function AddPhotoItemMultiple({
       return;
     }
 
+    if (selectedAlbums.length === 0) {
+      toast.error("Veuillez sélectionner au moins un album.");
+      return;
+    }
+
     setIsUploading(true);
 
     try {
       const formData = new FormData();
 
-      // Ajouter les paramètres communs
-      // Tags
-      selectedTags.forEach((tag) => {
-        formData.append("tags", tag);
-      });
-
-      // Tags de recherche
-      selectedSearchTags.forEach((tag) => {
-        formData.append("tagsRecherche", tag);
-      });
-
-      // Albums
+      // Ajouter uniquement les albums sélectionnés
       selectedAlbums.forEach((album) => {
         formData.append("albums", album);
       });
@@ -186,10 +176,8 @@ export function AddPhotoItemMultiple({
       images.forEach((img, index) => {
         formData.append(`photo_${index}`, img.file);
         formData.append(`alt_${index}`, img.alt);
-        formData.append(
-          `generateLowRes_${index}`,
-          img.generateLowRes ? "true" : "false"
-        );
+        // Toujours générer la version basse résolution
+        formData.append(`generateLowRes_${index}`, "true");
       });
 
       // Ajouter le nombre total d'images
@@ -213,7 +201,19 @@ export function AddPhotoItemMultiple({
       clearInterval(progressInterval);
       setProgress(100);
 
-      toast.success(`${result.count} photos ajoutées avec succès !`);
+      const albumNames = selectedAlbums.map(
+        (albumId) =>
+          availableAlbums.find((a) => a.id === albumId)?.label || albumId
+      );
+
+      toast.success(
+        `${result.count} photos ajoutées avec succès dans ${
+          albumNames.length > 1
+            ? `les albums ${albumNames.slice(0, -1).join(", ")} et ${albumNames.slice(-1)}`
+            : `l'album ${albumNames[0]}`
+        }!`
+      );
+
       router.push("/creations/photos");
       router.refresh();
     } catch (error) {
@@ -224,67 +224,11 @@ export function AddPhotoItemMultiple({
     }
   };
 
-  // Remplacer les fonctions d'ajout de tags existantes par celles-ci :
-
-  const handleAddTag = async (
-    tagName: string,
-    important: boolean = false
-  ): Promise<TagOption | null> => {
-    try {
-      const result = await createPhotoTagAction(tagName, important);
-      if (result.success && result.id) {
-        // Ajouter le nouveau tag à la liste des tags disponibles
-        const newTag: TagOption = {
-          id: result.id,
-          label: tagName,
-          important: important,
-        };
-        return newTag;
-      }
-
-      // Si le tag existe déjà mais qu'on a quand même récupéré son ID
-      if (!result.success && result.id) {
-        return { id: result.id, label: tagName, important: false };
-      }
-
-      return null;
-    } catch (error) {
-      console.error("Erreur lors de l'ajout d'un tag:", error);
-      toast.error("Erreur lors de la création du tag");
-      return null;
-    }
-  };
-
-  const handleAddSearchTag = async (
-    tagName: string,
-    important: boolean = false
-  ): Promise<TagOption | null> => {
-    try {
-      const result = await createPhotoSearchTagAction(tagName, important);
-      if (result.success && result.id) {
-        return { id: result.id, label: tagName, important: important };
-      }
-
-      // Si le tag existe déjà mais qu'on a quand même récupéré son ID
-      if (!result.success && result.id) {
-        return { id: result.id, label: tagName, important: false };
-      }
-
-      return null;
-    } catch (error) {
-      console.error("Erreur lors de l'ajout d'un tag de recherche:", error);
-      toast.error("Erreur lors de la création du tag de recherche");
-      return null;
-    }
-  };
-
   const handleAddAlbum = async (
     tagName: string,
     important: boolean = false
   ): Promise<TagOption | null> => {
     try {
-      // Note: même si les albums n'utilisent pas la propriété "important",
-      // nous devons accepter le paramètre car TagSheet l'envoie maintenant
       const formData = new FormData();
       formData.append("title", tagName);
       formData.append("isPublished", "on");
@@ -293,13 +237,13 @@ export function AddPhotoItemMultiple({
         return {
           id: String(result.id),
           label: tagName,
-          important: false, // Les albums n'ont pas de propriété "important", donc toujours false
+          important: false,
         };
       }
 
       // Si l'album existe déjà mais qu'on a quand même récupéré son ID
       if (!result.success && result.id) {
-        return { id: String(result.id), label: tagName, important: important };
+        return { id: String(result.id), label: tagName, important: false };
       }
 
       return null;
@@ -314,7 +258,11 @@ export function AddPhotoItemMultiple({
     <div className="w-full">
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
         {/* Section d'upload de fichiers */}
-        <div className="bg-muted p-8 rounded-lg border-2 border-dashed border-muted-foreground/25 flex flex-col items-center justify-center gap-4">
+        <div
+          className="bg-muted p-8 rounded-lg border-2 border-dashed border-muted-foreground/25 flex flex-col items-center justify-center gap-4"
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+        >
           <UploadCloud size={48} className="text-muted-foreground" />
           <div className="text-center">
             <h3 className="text-lg font-medium">
@@ -322,6 +270,10 @@ export function AddPhotoItemMultiple({
             </h3>
             <p className="text-sm text-muted-foreground mt-2">
               Images supportées: PNG, JPG, WEBP (max 10MB par image)
+            </p>
+            <p className="text-xs text-muted-foreground mt-1">
+              Une version basse résolution sera automatiquement générée pour
+              chaque image
             </p>
           </div>
           <Input
@@ -344,150 +296,82 @@ export function AddPhotoItemMultiple({
           </Button>
         </div>
 
-        {/* Options générales pour toutes les photos */}
-        <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Options communes</h3>
-
-            <div className="flex items-center space-x-2 mb-4">
-              <Label htmlFor="generateLowResAll">
-                Générer des versions basse résolution
-              </Label>
-              <Switch
-                id="generateLowResAll"
-                checked={generateLowResForAll}
-                onCheckedChange={toggleAllLowRes}
-                disabled={isUploading}
-              />
-            </div>
-
-            <div className="flex items-center space-x-2 mb-4">
-              <Label htmlFor="isPublishedAll">Publier toutes les photos</Label>
-              <Switch
-                id="isPublishedAll"
-                checked={isPublished}
-                onCheckedChange={setIsPublished}
-                disabled={isUploading}
-              />
-            </div>
+        <div className="grid w-full gap-4">
+          <div className="grid w-full gap-1.5">
+            <Label htmlFor="albums" className="mb-1 block">
+              Sélectionnez un ou plusieurs albums
+            </Label>
+            <TagSheet
+              title="Sélection des albums"
+              description="Choisissez les albums dans lesquels ajouter toutes les images"
+              options={availableAlbums}
+              selectedTags={selectedAlbums}
+              onChange={handleAlbumsChange}
+              onAddNew={handleAddAlbum}
+              triggerLabel="Sélectionner des albums"
+              searchPlaceholder="Rechercher un album..."
+              addNewLabel="Ajouter un nouvel album"
+              type="album"
+            />
           </div>
 
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Tags et albums</h3>
-
-            <div className="grid w-full gap-4">
-              <div>
-                <Label htmlFor="tags" className="mb-1 block">
-                  Tags communs
-                </Label>
-                <TagSheet
-                  title="Sélection des tags"
-                  description="Choisissez les tags à appliquer à toutes les images"
-                  options={availableTags}
-                  selectedTags={selectedTags}
-                  onChange={handleTagsChange}
-                  onAddNew={handleAddTag}
-                  triggerLabel="Sélectionner des tags"
-                  searchPlaceholder="Rechercher un tag..."
-                  addNewLabel="Ajouter un nouveau tag"
-                  type="tag"
-                />
-              </div>
-              <div>
-                <Label htmlFor="searchTags" className="mb-1 block">
-                  Tags de recherche communs
-                </Label>
-                <TagSheet
-                  title="Sélection des tags de recherche"
-                  description="Choisissez les tags de recherche à appliquer à toutes les images"
-                  options={availableSearchTags}
-                  selectedTags={selectedSearchTags}
-                  onChange={handleSearchTagsChange}
-                  onAddNew={handleAddSearchTag}
-                  triggerLabel="Sélectionner des tags de recherche"
-                  searchPlaceholder="Rechercher un tag de recherche..."
-                  addNewLabel="Ajouter un nouveau tag de recherche"
-                  type="searchTag"
-                />
-              </div>
-              <div>
-                <Label htmlFor="albums" className="mb-1 block">
-                  Albums
-                </Label>
-                <TagSheet
-                  title="Sélection des albums"
-                  description="Choisissez les albums dans lesquels ajouter toutes les images"
-                  options={availableAlbums}
-                  selectedTags={selectedAlbums}
-                  onChange={handleAlbumsChange}
-                  onAddNew={handleAddAlbum}
-                  triggerLabel="Sélectionner des albums"
-                  searchPlaceholder="Rechercher un album..."
-                  addNewLabel="Ajouter un nouvel album"
-                  type="album"
-                />
-              </div>
-
-              {selectedTags.length > 0 && (
-                <div className="mt-2 flex flex-wrap gap-1">
-                  {selectedTags.map((tagId) => {
-                    const tag = availableTags.find((t) => t.id === tagId);
-                    return (
-                      <Badge
-                        key={tagId}
-                        variant="secondary"
-                        className="text-xs"
-                      >
-                        {tag?.label || tagId}
-                      </Badge>
-                    );
-                  })}
-                </div>
-              )}
-
-              {selectedSearchTags.length > 0 && (
-                <div className="mt-2 flex flex-wrap gap-1">
-                  {selectedSearchTags.map((tagId) => {
-                    const tag = availableSearchTags.find((t) => t.id === tagId);
-                    return (
-                      <Badge
-                        key={tagId}
-                        variant="secondary"
-                        className="text-xs"
-                      >
-                        {tag?.label || tagId}
-                      </Badge>
-                    );
-                  })}
-                </div>
-              )}
-
-              {selectedAlbums.length > 0 && (
-                <div className="mt-2 flex flex-wrap gap-1">
-                  {selectedAlbums.map((albumId) => {
-                    const album = availableAlbums.find((a) => a.id === albumId);
-                    return (
-                      <Badge
-                        key={albumId}
-                        variant="secondary"
-                        className="text-xs"
-                      >
-                        {album?.label || albumId}
-                      </Badge>
-                    );
-                  })}
-                </div>
-              )}
+          {selectedAlbums.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1">
+              {selectedAlbums.map((albumId) => {
+                const album = availableAlbums.find((a) => a.id === albumId);
+                return (
+                  <Badge
+                    key={albumId}
+                    className="flex items-center gap-1 pl-2 pr-1 cursor-pointer hover:bg-destructive/10 transition-colors group"
+                    variant="secondary"
+                    onClick={() => {
+                      setSelectedAlbums(
+                        selectedAlbums.filter((id) => id !== albumId)
+                      );
+                      toast.success(
+                        `Album "${album?.label || albumId}" retiré`
+                      );
+                    }}
+                  >
+                    <span
+                      className="max-w-[150px] truncate"
+                      title={album?.label || albumId}
+                    >
+                      {album?.label || albumId}
+                    </span>
+                    <X
+                      className="h-3 w-3 ml-1 opacity-50 group-hover:opacity-100"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                    />
+                  </Badge>
+                );
+              })}
             </div>
-          </div>
+          )}
         </div>
 
         {/* Liste des images sélectionnées */}
         {images.length > 0 && (
           <div className="mt-4">
-            <h3 className="text-lg font-medium mb-2">
-              Images sélectionnées ({images.length})
-            </h3>
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="text-lg font-medium">
+                Images sélectionnées ({images.length})
+              </h3>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-1"
+                onClick={clearAllImages}
+                disabled={isUploading}
+              >
+                <Trash2 size={14} />
+                <span>Tout effacer</span>
+              </Button>
+            </div>
+
             <ScrollArea className="h-[400px] rounded-md border">
               <div className="p-4 grid grid-cols-1 gap-6">
                 {images.map((img, index) => (
@@ -512,17 +396,6 @@ export function AddPhotoItemMultiple({
                           value={img.alt}
                           onChange={(e) => updateAlt(index, e.target.value)}
                           placeholder="Description de l'image"
-                          disabled={isUploading}
-                        />
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Label htmlFor={`lowRes-${index}`}>
-                          Basse résolution
-                        </Label>
-                        <Switch
-                          id={`lowRes-${index}`}
-                          checked={img.generateLowRes}
-                          onCheckedChange={() => toggleLowRes(index)}
                           disabled={isUploading}
                         />
                       </div>
@@ -565,7 +438,9 @@ export function AddPhotoItemMultiple({
           <Button
             type="submit"
             className="cursor-pointer"
-            disabled={images.length === 0 || isUploading}
+            disabled={
+              images.length === 0 || selectedAlbums.length === 0 || isUploading
+            }
           >
             {isUploading ? "Upload en cours..." : "Ajouter toutes les photos"}
           </Button>
@@ -577,16 +452,6 @@ export function AddPhotoItemMultiple({
           >
             Annuler
           </Button>
-          {images.length > 0 && (
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setImages([])}
-              disabled={isUploading}
-            >
-              Vider la sélection
-            </Button>
-          )}
         </div>
       </form>
     </div>
