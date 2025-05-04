@@ -173,7 +173,7 @@ model videos {
   description           String             @db.VarChar(3500)
   tags                  String             @db.VarChar(50)
   lien                  String             @db.VarChar(500)
-  date                  String             @db.VarChar(50)
+  date                  DateTime           @db.Date
   media_webm            String             @db.VarChar(100)
   media_mp4             String             @db.VarChar(100)
   duree                 String             @db.VarChar(25)
@@ -200,32 +200,32 @@ model videos_tags_link {
 }
 
 model User {
-  id            String    @id
-  name          String    @db.Text
-  email         String
+  id            String   @id
+  name          String   @db.Text
+  email         String   @unique
   emailVerified Boolean
-  image         String?   @db.Text
+  image         String?  @db.Text
   createdAt     DateTime
   updatedAt     DateTime
-  sessions      Session[]
-  accounts      Account[]
 
-  @@unique([email])
+  sessions Session[]
+  accounts Account[]
+
   @@map("user")
 }
 
 model Session {
   id        String   @id
   expiresAt DateTime
-  token     String
+  token     String   @unique
   createdAt DateTime
   updatedAt DateTime
   ipAddress String?  @db.Text
   userAgent String?  @db.Text
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  User      User     @relation(fields: [userId], references: [id])
 
-  @@unique([token])
+  @@index([userId], map: "session_userId_fkey")
   @@map("session")
 }
 
@@ -234,7 +234,6 @@ model Account {
   accountId             String    @db.Text
   providerId            String    @db.Text
   userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessToken           String?   @db.Text
   refreshToken          String?   @db.Text
   idToken               String?   @db.Text
@@ -244,7 +243,9 @@ model Account {
   password              String?   @db.Text
   createdAt             DateTime
   updatedAt             DateTime
+  User                  User      @relation(fields: [userId], references: [id])
 
+  @@index([userId], map: "account_userId_fkey")
   @@map("account")
 }
 

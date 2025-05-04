@@ -7,6 +7,7 @@ import { Tag } from "@/components/tag";
 export interface TagOption {
   id: string;
   label: string;
+  important: boolean;
 }
 
 export interface TagCheckboxProps {

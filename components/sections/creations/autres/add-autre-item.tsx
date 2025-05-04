@@ -6,7 +6,7 @@ import { fr } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import { MDXEditorMethods } from "@mdxeditor/editor";
-import { addVideoAction } from "@/actions/videos-actions";
+import { addAutreAction } from "@/actions/autres-actions";
 import { useRouter } from "next/navigation";
 
 // Importer l'éditeur de manière dynamique (côté client uniquement)
@@ -35,17 +35,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { TagCheckbox, type TagOption } from "@/components/tag-checkbox";
 import { toast } from "sonner";
+import Image from "next/image";
 
-type AddVideoFormProps = {
+type AddAutreFormProps = {
   availableTags: TagOption[];
 };
 
-export function AddVideoItem({ availableTags }: AddVideoFormProps) {
+export function AddAutreItem({ availableTags }: AddAutreFormProps) {
   const router = useRouter();
-  const [date, setDate] = useState<Date | undefined>(undefined);
+  const [date, setDate] = useState<Date | undefined>(new Date());
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [markdown, setMarkdown] = useState<string>("Description de la vidéo");
+  const [markdown, setMarkdown] = useState<string>("Description du projet");
   const editorRef = useRef<MDXEditorMethods | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const handleTagsChange = (newSelectedTags: string[]) => {
     setSelectedTags(newSelectedTags);
@@ -55,8 +58,21 @@ export function AddVideoItem({ availableTags }: AddVideoFormProps) {
     setMarkdown(newMarkdown);
   };
 
-  const handleAddVideo = async (formData: FormData) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleAddAutre = async (formData: FormData) => {
     try {
+      setIsUploading(true);
+
       // Ajouter le markdown à formData
       formData.set("description", markdown);
 
@@ -79,17 +95,19 @@ export function AddVideoItem({ availableTags }: AddVideoFormProps) {
         formData.delete("date");
       }
 
-      // Appeler l'action serveur pour ajouter la vidéo
-      await addVideoAction(formData);
+      // Appeler l'action serveur pour ajouter le projet
+      await addAutreAction(formData);
 
-      toast.success("Vidéo ajoutée avec succès !");
+      toast.success("Projet ajouté avec succès !");
 
-      // Rediriger vers la liste des vidéos
-      router.push("/creations/videos");
+      // Rediriger vers la liste des projets
+      router.push("/creations/autres");
       router.refresh();
     } catch (error) {
       console.error("Erreur lors de l'ajout:", error);
-      toast.error("Erreur lors de l'ajout de la vidéo.");
+      toast.error("Erreur lors de l'ajout du projet.");
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -99,23 +117,25 @@ export function AddVideoItem({ availableTags }: AddVideoFormProps) {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/creations/videos">Vidéos</BreadcrumbLink>
+              <BreadcrumbLink href="/creations/autres">
+                Autres projets
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Ajouter une vidéo</BreadcrumbPage>
+              <BreadcrumbPage>Ajouter un projet</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
 
-        <form className="flex flex-col gap-5" action={handleAddVideo}>
+        <form className="flex flex-col gap-5" action={handleAddAutre}>
           <div className="grid w-full items-center gap-1.5">
             <Label htmlFor="title">Titre</Label>
             <Input
               type="text"
               id="title"
               name="title"
-              placeholder="Titre"
+              placeholder="Titre du projet"
               required
             />
           </div>
@@ -128,44 +148,35 @@ export function AddVideoItem({ availableTags }: AddVideoFormProps) {
                 onChange={handleEditorChange}
                 editorRef={editorRef}
               />
-              {/* Champ caché pour stocker la valeur markdown */}
               <input type="hidden" name="description" value={markdown} />
             </div>
           </div>
 
-          <div className="grid w-full items-center gap-1.5">
-            <Label htmlFor="url">Lien de la vidéo</Label>
-            <Input
-              type="url"
-              id="url"
-              name="url"
-              placeholder="Ex : https://www.youtube.com/watch?v=I_hdJUyyet0"
-              required
-            />
-          </div>
-
-          <div className="grid w-full items-center gap-1.5">
-            <Label htmlFor="duree">Durée</Label>
-            <Input
-              type="text"
-              id="duree"
-              name="duree"
-              placeholder="Ex : 00:02:18"
-              required
-            />
-          </div>
-
-          <div className="grid w-full items-center gap-1.5">
-            <Label htmlFor="tags">Tags</Label>
-            <TagCheckbox
-              options={availableTags}
-              selectedTags={selectedTags}
-              onChange={handleTagsChange}
-            />
-            {/* Champs cachés pour les tags */}
-            {selectedTags.map((tag) => (
-              <input key={tag} type="hidden" name="tags" value={tag} />
-            ))}
+          <div className="flex w-full gap-6">
+            <div className="flex flex-col w-full items-start gap-1.5">
+              <Label htmlFor="miniature">Image miniature</Label>
+              <Input
+                type="file"
+                id="miniature"
+                name="miniature"
+                accept="image/*"
+                onChange={handleImageChange}
+                required
+              />
+            </div>
+            {previewImage && (
+              <div className="w-80 shrink-0">
+                <div className="rounded-md overflow-hidden bg-muted w-full relative aspect-video">
+                  <Image
+                    src={previewImage}
+                    alt="Aperçu"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 320px"
+                    className="w-full h-full object-cover rounded-md"
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="grid w-full items-center gap-1.5">
@@ -207,20 +218,69 @@ export function AddVideoItem({ availableTags }: AddVideoFormProps) {
             )}
           </div>
 
+          <div className="grid w-full gap-1.5">
+            <Label htmlFor="tags">Tags</Label>
+            <TagCheckbox
+              options={availableTags}
+              selectedTags={selectedTags}
+              onChange={handleTagsChange}
+            />
+            {selectedTags.map((tag) => (
+              <input key={tag} type="hidden" name="tags" value={tag} />
+            ))}
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="lien_github">Lien GitHub</Label>
+              <Input
+                type="url"
+                id="lien_github"
+                name="lien_github"
+                placeholder="https://github.com/username/repo"
+              />
+            </div>
+
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="lien_figma">Lien Figma</Label>
+              <Input
+                type="url"
+                id="lien_figma"
+                name="lien_figma"
+                placeholder="https://www.figma.com/file/..."
+              />
+            </div>
+
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="lien_site">Lien du site</Label>
+              <Input
+                type="url"
+                id="lien_site"
+                name="lien_site"
+                placeholder="https://www.example.com"
+              />
+            </div>
+          </div>
+
           <div className="flex items-center space-x-2">
             <Label htmlFor="isPublished">Afficher</Label>
-            <Switch id="isPublished" name="isPublished" />
+            <Switch id="isPublished" name="isPublished" defaultChecked />
           </div>
 
           <div className="flex gap-2">
-            <Button type="submit" className="cursor-pointer">
-              Ajouter
+            <Button
+              type="submit"
+              className="cursor-pointer"
+              disabled={isUploading}
+            >
+              {isUploading ? "Ajout en cours..." : "Ajouter"}
             </Button>
             <Button
               type="button"
               variant="outline"
-              onClick={() => router.push("/creations/videos")}
               className="cursor-pointer"
+              onClick={() => router.push("/creations/autres")}
+              disabled={isUploading}
             >
               Annuler
             </Button>

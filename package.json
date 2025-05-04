@@ -12,6 +12,7 @@
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@icons-pack/react-simple-icons": "^12.7.0",
     "@mdxeditor/editor": "^3.32.1",
     "@prisma/extension-accelerate": "^1.3.0",
     "@radix-ui/react-alert-dialog": "^1.1.11",
@@ -41,8 +42,10 @@
     "react-lite-yt-embed": "^1.2.7",
     "react-markdown": "^10.1.0",
     "resend": "^4.5.0",
+    "simple-icons": "^14.12.3",
     "sonner": "^2.0.3",
-    "tailwind-merge": "^3.2.0"
+    "tailwind-merge": "^3.2.0",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

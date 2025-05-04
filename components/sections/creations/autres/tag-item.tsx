@@ -26,7 +26,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -36,10 +36,10 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import {
-  updateTagAction,
-  deleteTagAction,
-  createTagAction,
-} from "@/actions/videos-actions";
+  updateAutreTagAction,
+  deleteAutreTagAction,
+  createAutreTagAction,
+} from "@/actions/autres-actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -76,7 +76,8 @@ export function TagItem({ initialTags }: TagsManagerProps) {
     if (!selectedTag || !editTagTitle.trim()) return;
 
     try {
-      await updateTagAction(selectedTag.id, editTagTitle);
+      // Ajout du paramètre 'important' manquant ou passer une valeur par défaut
+      await updateAutreTagAction(selectedTag.id, editTagTitle, false);
 
       // Mettre à jour l'état local
       setTags(
@@ -100,7 +101,7 @@ export function TagItem({ initialTags }: TagsManagerProps) {
 
     try {
       setIsDeleting(true);
-      await deleteTagAction(selectedTag.id);
+      await deleteAutreTagAction(selectedTag.id);
 
       // Mettre à jour l'état local
       setTags(tags.filter((tag) => tag.id !== selectedTag.id));
@@ -122,7 +123,8 @@ export function TagItem({ initialTags }: TagsManagerProps) {
     if (!newTagTitle.trim()) return;
 
     try {
-      const result = await createTagAction(newTagTitle);
+      // Ajout du paramètre 'important' manquant
+      const result = await createAutreTagAction(newTagTitle, false);
 
       if (result.success) {
         // Ajouter le nouveau tag à l'état local
@@ -152,7 +154,7 @@ export function TagItem({ initialTags }: TagsManagerProps) {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/creations/videos">Vidéos</BreadcrumbLink>
+              <BreadcrumbLink href="/creations/autres">Autres</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>

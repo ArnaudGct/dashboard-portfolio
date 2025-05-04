@@ -405,7 +405,6 @@ exports.Prisma.videosOrderByRelevanceFieldEnum = {
   description: 'description',
   tags: 'tags',
   lien: 'lien',
-  date: 'date',
   media_webm: 'media_webm',
   media_mp4: 'media_mp4',
   duree: 'duree',

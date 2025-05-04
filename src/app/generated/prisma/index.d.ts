@@ -18485,7 +18485,7 @@ export namespace Prisma {
     description: string | null
     tags: string | null
     lien: string | null
-    date: string | null
+    date: Date | null
     media_webm: string | null
     media_mp4: string | null
     duree: string | null
@@ -18500,7 +18500,7 @@ export namespace Prisma {
     description: string | null
     tags: string | null
     lien: string | null
-    date: string | null
+    date: Date | null
     media_webm: string | null
     media_mp4: string | null
     duree: string | null
@@ -18672,7 +18672,7 @@ export namespace Prisma {
     description: string
     tags: string
     lien: string
-    date: string
+    date: Date
     media_webm: string
     media_mp4: string
     duree: string
@@ -18751,7 +18751,7 @@ export namespace Prisma {
       description: string
       tags: string
       lien: string
-      date: string
+      date: Date
       media_webm: string
       media_mp4: string
       duree: string
@@ -19133,7 +19133,7 @@ export namespace Prisma {
     readonly description: FieldRef<"videos", 'String'>
     readonly tags: FieldRef<"videos", 'String'>
     readonly lien: FieldRef<"videos", 'String'>
-    readonly date: FieldRef<"videos", 'String'>
+    readonly date: FieldRef<"videos", 'DateTime'>
     readonly media_webm: FieldRef<"videos", 'String'>
     readonly media_mp4: FieldRef<"videos", 'String'>
     readonly duree: FieldRef<"videos", 'String'>
@@ -22612,7 +22612,7 @@ export namespace Prisma {
     ipAddress?: boolean
     userAgent?: boolean
     userId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    User?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["session"]>
 
 
@@ -22630,13 +22630,13 @@ export namespace Prisma {
 
   export type SessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "expiresAt" | "token" | "createdAt" | "updatedAt" | "ipAddress" | "userAgent" | "userId", ExtArgs["result"]["session"]>
   export type SessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    User?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $SessionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Session"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
+      User: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -22987,7 +22987,7 @@ export namespace Prisma {
    */
   export interface Prisma__SessionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    User<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -23614,7 +23614,7 @@ export namespace Prisma {
     password?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    User?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["account"]>
 
 
@@ -23637,13 +23637,13 @@ export namespace Prisma {
 
   export type AccountOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "accountId" | "providerId" | "userId" | "accessToken" | "refreshToken" | "idToken" | "accessTokenExpiresAt" | "refreshTokenExpiresAt" | "scope" | "password" | "createdAt" | "updatedAt", ExtArgs["result"]["account"]>
   export type AccountInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    User?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $AccountPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Account"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
+      User: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -23999,7 +23999,7 @@ export namespace Prisma {
    */
   export interface Prisma__AccountClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    User<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -25703,7 +25703,6 @@ export namespace Prisma {
     description: 'description',
     tags: 'tags',
     lien: 'lien',
-    date: 'date',
     media_webm: 'media_webm',
     media_mp4: 'media_mp4',
     duree: 'duree',
@@ -26737,7 +26736,7 @@ export namespace Prisma {
     description?: StringFilter<"videos"> | string
     tags?: StringFilter<"videos"> | string
     lien?: StringFilter<"videos"> | string
-    date?: StringFilter<"videos"> | string
+    date?: DateTimeFilter<"videos"> | Date | string
     media_webm?: StringFilter<"videos"> | string
     media_mp4?: StringFilter<"videos"> | string
     duree?: StringFilter<"videos"> | string
@@ -26773,7 +26772,7 @@ export namespace Prisma {
     description?: StringFilter<"videos"> | string
     tags?: StringFilter<"videos"> | string
     lien?: StringFilter<"videos"> | string
-    date?: StringFilter<"videos"> | string
+    date?: DateTimeFilter<"videos"> | Date | string
     media_webm?: StringFilter<"videos"> | string
     media_mp4?: StringFilter<"videos"> | string
     duree?: StringFilter<"videos"> | string
@@ -26812,7 +26811,7 @@ export namespace Prisma {
     description?: StringWithAggregatesFilter<"videos"> | string
     tags?: StringWithAggregatesFilter<"videos"> | string
     lien?: StringWithAggregatesFilter<"videos"> | string
-    date?: StringWithAggregatesFilter<"videos"> | string
+    date?: DateTimeWithAggregatesFilter<"videos"> | Date | string
     media_webm?: StringWithAggregatesFilter<"videos"> | string
     media_mp4?: StringWithAggregatesFilter<"videos"> | string
     duree?: StringWithAggregatesFilter<"videos"> | string
@@ -26991,7 +26990,7 @@ export namespace Prisma {
     ipAddress?: StringNullableFilter<"Session"> | string | null
     userAgent?: StringNullableFilter<"Session"> | string | null
     userId?: StringFilter<"Session"> | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    User?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type SessionOrderByWithRelationInput = {
@@ -27003,7 +27002,7 @@ export namespace Prisma {
     ipAddress?: SortOrderInput | SortOrder
     userAgent?: SortOrderInput | SortOrder
     userId?: SortOrder
-    user?: UserOrderByWithRelationInput
+    User?: UserOrderByWithRelationInput
     _relevance?: SessionOrderByRelevanceInput
   }
 
@@ -27019,7 +27018,7 @@ export namespace Prisma {
     ipAddress?: StringNullableFilter<"Session"> | string | null
     userAgent?: StringNullableFilter<"Session"> | string | null
     userId?: StringFilter<"Session"> | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    User?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "token">
 
   export type SessionOrderByWithAggregationInput = {
@@ -27067,7 +27066,7 @@ export namespace Prisma {
     password?: StringNullableFilter<"Account"> | string | null
     createdAt?: DateTimeFilter<"Account"> | Date | string
     updatedAt?: DateTimeFilter<"Account"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    User?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type AccountOrderByWithRelationInput = {
@@ -27084,7 +27083,7 @@ export namespace Prisma {
     password?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
+    User?: UserOrderByWithRelationInput
     _relevance?: AccountOrderByRelevanceInput
   }
 
@@ -27105,7 +27104,7 @@ export namespace Prisma {
     password?: StringNullableFilter<"Account"> | string | null
     createdAt?: DateTimeFilter<"Account"> | Date | string
     updatedAt?: DateTimeFilter<"Account"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    User?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type AccountOrderByWithAggregationInput = {
@@ -28079,7 +28078,7 @@ export namespace Prisma {
     description: string
     tags: string
     lien: string
-    date: string
+    date: Date | string
     media_webm: string
     media_mp4: string
     duree: string
@@ -28095,7 +28094,7 @@ export namespace Prisma {
     description: string
     tags: string
     lien: string
-    date: string
+    date: Date | string
     media_webm: string
     media_mp4: string
     duree: string
@@ -28110,7 +28109,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     tags?: StringFieldUpdateOperationsInput | string
     lien?: StringFieldUpdateOperationsInput | string
-    date?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     media_webm?: StringFieldUpdateOperationsInput | string
     media_mp4?: StringFieldUpdateOperationsInput | string
     duree?: StringFieldUpdateOperationsInput | string
@@ -28126,7 +28125,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     tags?: StringFieldUpdateOperationsInput | string
     lien?: StringFieldUpdateOperationsInput | string
-    date?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     media_webm?: StringFieldUpdateOperationsInput | string
     media_mp4?: StringFieldUpdateOperationsInput | string
     duree?: StringFieldUpdateOperationsInput | string
@@ -28142,7 +28141,7 @@ export namespace Prisma {
     description: string
     tags: string
     lien: string
-    date: string
+    date: Date | string
     media_webm: string
     media_mp4: string
     duree: string
@@ -28156,7 +28155,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     tags?: StringFieldUpdateOperationsInput | string
     lien?: StringFieldUpdateOperationsInput | string
-    date?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     media_webm?: StringFieldUpdateOperationsInput | string
     media_mp4?: StringFieldUpdateOperationsInput | string
     duree?: StringFieldUpdateOperationsInput | string
@@ -28171,7 +28170,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     tags?: StringFieldUpdateOperationsInput | string
     lien?: StringFieldUpdateOperationsInput | string
-    date?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     media_webm?: StringFieldUpdateOperationsInput | string
     media_mp4?: StringFieldUpdateOperationsInput | string
     duree?: StringFieldUpdateOperationsInput | string
@@ -28336,7 +28335,7 @@ export namespace Prisma {
     updatedAt: Date | string
     ipAddress?: string | null
     userAgent?: string | null
-    user: UserCreateNestedOneWithoutSessionsInput
+    User: UserCreateNestedOneWithoutSessionsInput
   }
 
   export type SessionUncheckedCreateInput = {
@@ -28358,7 +28357,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    user?: UserUpdateOneRequiredWithoutSessionsNestedInput
+    User?: UserUpdateOneRequiredWithoutSessionsNestedInput
   }
 
   export type SessionUncheckedUpdateInput = {
@@ -28417,7 +28416,7 @@ export namespace Prisma {
     password?: string | null
     createdAt: Date | string
     updatedAt: Date | string
-    user: UserCreateNestedOneWithoutAccountsInput
+    User: UserCreateNestedOneWithoutAccountsInput
   }
 
   export type AccountUncheckedCreateInput = {
@@ -28449,7 +28448,7 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutAccountsNestedInput
+    User?: UserUpdateOneRequiredWithoutAccountsNestedInput
   }
 
   export type AccountUncheckedUpdateInput = {
@@ -31718,7 +31717,7 @@ export namespace Prisma {
     description: string
     tags: string
     lien: string
-    date: string
+    date: Date | string
     media_webm: string
     media_mp4: string
     duree: string
@@ -31733,7 +31732,7 @@ export namespace Prisma {
     description: string
     tags: string
     lien: string
-    date: string
+    date: Date | string
     media_webm: string
     media_mp4: string
     duree: string
@@ -31777,7 +31776,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     tags?: StringFieldUpdateOperationsInput | string
     lien?: StringFieldUpdateOperationsInput | string
-    date?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     media_webm?: StringFieldUpdateOperationsInput | string
     media_mp4?: StringFieldUpdateOperationsInput | string
     duree?: StringFieldUpdateOperationsInput | string
@@ -31792,7 +31791,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     tags?: StringFieldUpdateOperationsInput | string
     lien?: StringFieldUpdateOperationsInput | string
-    date?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     media_webm?: StringFieldUpdateOperationsInput | string
     media_mp4?: StringFieldUpdateOperationsInput | string
     duree?: StringFieldUpdateOperationsInput | string

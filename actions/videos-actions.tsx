@@ -6,14 +6,26 @@ import prisma from "@/lib/prisma";
 
 export async function addVideoAction(formData: FormData) {
   try {
-    // 1. Créer la vidéo d'abord avec les noms de colonnes corrects
+    // Gérer correctement la date
+    const dateStr = formData.get("date")?.toString();
+    let dateValue: Date | undefined;
+
+    if (dateStr) {
+      // Convertir YYYY-MM-DD en objet Date complet
+      dateValue = new Date(dateStr);
+      // S'assurer qu'il s'agit d'une date valide
+      if (isNaN(dateValue.getTime())) {
+        dateValue = undefined;
+      }
+    }
+
     const video = await prisma.videos.create({
       data: {
         titre: formData.get("title")?.toString() || "",
         description: formData.get("description")?.toString() || "",
         lien: formData.get("url")?.toString() || "",
         duree: formData.get("duree")?.toString() || "",
-        date: formData.get("date")?.toString() || "",
+        date: dateValue || new Date(), // Utiliser la date actuelle si aucune date n'est fournie
         media_webm: "", // Valeur par défaut ou à récupérer du formulaire
         media_mp4: "", // Valeur par défaut ou à récupérer du formulaire
         afficher_competences: "", // Valeur par défaut ou à récupérer du formulaire
@@ -79,9 +91,18 @@ export async function updateVideoAction(formData: FormData) {
       throw new Error("ID de vidéo invalide");
     }
 
-    // Récupérer et logger la date pour débogage
-    const dateValue = formData.get("date")?.toString();
-    console.log("Date reçue dans action:", dateValue);
+    // Gérer correctement la date
+    const dateStr = formData.get("date")?.toString();
+    let dateValue: Date | undefined;
+
+    if (dateStr) {
+      // Convertir YYYY-MM-DD en objet Date complet
+      dateValue = new Date(dateStr);
+      // S'assurer qu'il s'agit d'une date valide
+      if (isNaN(dateValue.getTime())) {
+        dateValue = undefined;
+      }
+    }
 
     // 1. Mettre à jour la vidéo
     const video = await prisma.videos.update({
@@ -93,7 +114,7 @@ export async function updateVideoAction(formData: FormData) {
         description: formData.get("description")?.toString() || "",
         lien: formData.get("url")?.toString() || "",
         duree: formData.get("duree")?.toString() || "",
-        date: dateValue,
+        date: dateValue || new Date(), // Utiliser la date actuelle si aucune date n'est fournie
         afficher: formData.get("isPublished") === "on",
         derniere_modification: new Date(),
       },

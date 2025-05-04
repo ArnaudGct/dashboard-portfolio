@@ -3,11 +3,12 @@
 import { useState, useRef } from "react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { CalendarIcon, Trash2 } from "lucide-react"; // Ajout de l'icône Trash2
+import { CalendarIcon, Trash2 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { MDXEditorMethods } from "@mdxeditor/editor";
-import { updateVideoAction, deleteVideoAction } from "@/actions/videos-actions"; // Ajout de l'action de suppression
+import { updateAutreAction, deleteAutreAction } from "@/actions/autres-actions";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 // Importer l'éditeur de manière dynamique (côté client uniquement)
 const EditorComp = dynamic(() => import("@/components/editor-textarea"), {
@@ -32,7 +33,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"; // Import de la boîte de dialogue d'alerte
+} from "@/components/ui/alert-dialog";
 import { Switch } from "@/components/ui/switch";
 import {
   Breadcrumb,
@@ -47,24 +48,28 @@ import { Label } from "@/components/ui/label";
 import { TagCheckbox, type TagOption } from "@/components/tag-checkbox";
 import { toast } from "sonner";
 
-type EditVideoFormProps = {
+const PORTFOLIO_BASE_URL = process.env.NEXT_PUBLIC_PORTFOLIO_URL || "";
+
+type EditAutreFormProps = {
   initialData: {
-    id_vid: number;
+    id_autre: number;
     titre: string;
     description: string;
-    lien: string;
-    duree: string;
+    miniature: string;
+    lien_github: string;
+    lien_figma: string;
+    lien_site: string;
     date?: Date;
     afficher: boolean;
     tags: string[];
   };
-  availableTags: TagOption[]; // Nouveau prop pour les tags disponibles
+  availableTags: TagOption[]; // Nouvelles props pour les tags disponibles
 };
 
-export function EditVideoItem({
+export function EditAutreItem({
   initialData,
   availableTags,
-}: EditVideoFormProps) {
+}: EditAutreFormProps) {
   const router = useRouter();
   const [date, setDate] = useState<Date | undefined>(
     initialData.date
@@ -78,7 +83,15 @@ export function EditVideoItem({
   const [selectedTags, setSelectedTags] = useState<string[]>(initialData.tags);
   const [markdown, setMarkdown] = useState<string>(initialData.description);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const editorRef = useRef<MDXEditorMethods | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(() => {
+    // Si l'image est une URL relative et commence par /uploads, ajouter le domaine
+    if (initialData.miniature && initialData.miniature.startsWith("/uploads")) {
+      return `${PORTFOLIO_BASE_URL}${initialData.miniature}`;
+    }
+    return initialData.miniature || null;
+  });
 
   const handleTagsChange = (newSelectedTags: string[]) => {
     setSelectedTags(newSelectedTags);
@@ -88,60 +101,67 @@ export function EditVideoItem({
     setMarkdown(newMarkdown);
   };
 
-  const handleDeleteVideo = async () => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleDeleteAutre = async () => {
     try {
       setIsDeleting(true);
-      await deleteVideoAction(initialData.id_vid);
-      toast.success("La vidéo a été supprimée avec succès");
-      router.push("/creations/videos");
+      await deleteAutreAction(initialData.id_autre);
+      toast.success("Projet supprimé avec succès");
+      // Rediriger vers la liste des projets après la suppression
+      router.push("/creations/autres");
       router.refresh();
     } catch (error) {
       console.error("Erreur lors de la suppression:", error);
-      toast.error("Erreur lors de la suppression de la vidéo");
-    } finally {
+      toast.error("Erreur lors de la suppression du projet.");
       setIsDeleting(false);
     }
   };
 
-  const handleUpdateVideo = async (formData: FormData) => {
+  const handleUpdateAutre = async (formData: FormData) => {
     try {
-      // Ajouter l'ID de la vidéo
-      formData.set("id", initialData.id_vid.toString());
+      setIsUpdating(true);
+      // Ajouter l'ID à formData
+      formData.append("id", initialData.id_autre.toString());
 
       // Ajouter le markdown à formData
       formData.set("description", markdown);
 
       // Ajouter les tags sélectionnés
-      formData.delete("tags");
+      formData.delete("tags"); // Supprimer les valeurs précédentes s'il y en a
       selectedTags.forEach((tag) => {
         formData.append("tags", tag);
       });
 
-      // Ajouter la date au format ISO si elle existe
+      // Ajouter la date au format YYYY-MM-DD si elle existe
       if (date) {
-        // Formatez la date au format YYYY-MM-DD
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-        const day = String(date.getDate()).padStart(2, "0");
-        const formattedDate = `${year}-${month}-${day}`;
-
+        const formattedDate = format(date, "yyyy-MM-dd");
         formData.set("date", formattedDate);
-        console.log("Date formatée envoyée:", formattedDate);
       } else {
         formData.delete("date");
       }
 
-      // Appeler l'action serveur pour mettre à jour la vidéo
-      await updateVideoAction(formData);
+      await updateAutreAction(formData);
 
-      toast.success("La vidéo a été mise à jour avec succès");
+      toast.success("Projet mis à jour avec succès");
 
-      // Rediriger vers la liste des vidéos après la mise à jour
-      router.push("/creations/videos");
+      // Rediriger vers la liste des projets après la mise à jour
+      router.push("/creations/autres");
       router.refresh();
     } catch (error) {
       console.error("Erreur lors de la mise à jour:", error);
-      toast.error("Erreur lors de la mise à jour de la vidéo.");
+      toast.error("Erreur lors de la mise à jour du projet.");
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -152,11 +172,13 @@ export function EditVideoItem({
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href="/creations/videos">Vidéos</BreadcrumbLink>
+                <BreadcrumbLink href="/creations/autres">
+                  Autres projets
+                </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>Modifier la vidéo</BreadcrumbPage>
+                <BreadcrumbPage>Modifier le projet</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
@@ -173,11 +195,11 @@ export function EditVideoItem({
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>
-                  Êtes-vous sûr de vouloir supprimer cette vidéo ?
+                  Êtes-vous sûr de vouloir supprimer ce projet ?
                 </AlertDialogTitle>
                 <AlertDialogDescription>
-                  Cette action est irréversible. La vidéo "{initialData.titre}"
-                  sera définitivement supprimée de la base de données.
+                  Cette action est irréversible. Le projet "{initialData.titre}"
+                  sera définitivement supprimé de la base de données.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -185,26 +207,28 @@ export function EditVideoItem({
                   Annuler
                 </AlertDialogCancel>
                 <AlertDialogAction
-                  onClick={handleDeleteVideo}
+                  onClick={handleDeleteAutre}
                   className="bg-red-600 hover:bg-red-700 focus:ring-red-600 cursor-pointer"
                   disabled={isDeleting}
                 >
-                  {isDeleting ? "Suppression..." : "Supprimer définitivement"}
+                  {isDeleting ? "Suppression..." : "Supprimer"}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
         </div>
 
-        <form className="flex flex-col gap-5" action={handleUpdateVideo}>
+        <form className="flex flex-col gap-5" action={handleUpdateAutre}>
+          <input type="hidden" name="id" value={initialData.id_autre} />
+
           <div className="grid w-full items-center gap-1.5">
             <Label htmlFor="title">Titre</Label>
             <Input
               type="text"
               id="title"
               name="title"
-              placeholder="Titre"
               defaultValue={initialData.titre}
+              placeholder="Titre du projet"
               required
             />
           </div>
@@ -217,46 +241,47 @@ export function EditVideoItem({
                 onChange={handleEditorChange}
                 editorRef={editorRef}
               />
-              {/* Champ caché pour stocker la valeur markdown */}
               <input type="hidden" name="description" value={markdown} />
             </div>
           </div>
 
-          <div className="grid w-full items-center gap-1.5">
-            <Label htmlFor="url">Lien de la vidéo</Label>
-            <Input
-              type="url"
-              id="url"
-              name="url"
-              placeholder="Ex : https://www.youtube.com/watch?v=I_hdJUyyet0"
-              defaultValue={initialData.lien}
-              required
-            />
-          </div>
+          <div className="flex w-full gap-6">
+            <div className="flex flex-col w-full items-start gap-1.5">
+              <Label htmlFor="miniature">Image</Label>
+              <Input
+                type="file"
+                id="miniature"
+                name="miniature"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+            </div>
 
-          <div className="grid w-full items-center gap-1.5">
-            <Label htmlFor="duree">Durée</Label>
-            <Input
-              type="text"
-              id="duree"
-              name="duree"
-              placeholder="Ex : 00:02:18"
-              defaultValue={initialData.duree}
-              required
-            />
-          </div>
-
-          <div className="grid w-full items-center gap-1.5">
-            <Label htmlFor="tags">Tags</Label>
-            <TagCheckbox
-              options={availableTags}
-              selectedTags={selectedTags}
-              onChange={handleTagsChange}
-            />
-            {/* Champs cachés pour les tags */}
-            {selectedTags.map((tag) => (
-              <input key={tag} type="hidden" name="tags" value={tag} />
-            ))}
+            {previewImage && (
+              <div className="w-80 shrink-0">
+                <div className="rounded-md overflow-hidden bg-muted w-full relative aspect-video">
+                  <Image
+                    src={previewImage}
+                    alt="Aperçu"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 320px"
+                    className="rounded-md object-cover"
+                    onError={(e) => {
+                      // En cas d'erreur, essayer avec l'URL du portfolio
+                      const target = e.target as HTMLImageElement;
+                      if (
+                        previewImage.startsWith("/uploads") &&
+                        !previewImage.includes(PORTFOLIO_BASE_URL)
+                      ) {
+                        target.src = `${PORTFOLIO_BASE_URL}${previewImage}`;
+                      } else {
+                        target.src = "/placeholder-project.jpg";
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="grid w-full items-center gap-1.5">
@@ -293,9 +318,56 @@ export function EditVideoItem({
               <input
                 type="hidden"
                 name="date"
-                value={`${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`}
+                value={format(date, "yyyy-MM-dd")}
               />
             )}
+          </div>
+
+          <div className="grid w-full gap-1.5">
+            <Label htmlFor="tags">Tags</Label>
+            <TagCheckbox
+              options={availableTags}
+              selectedTags={selectedTags}
+              onChange={handleTagsChange}
+            />
+            {selectedTags.map((tag) => (
+              <input key={tag} type="hidden" name="tags" value={tag} />
+            ))}
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="lien_github">Lien GitHub</Label>
+              <Input
+                type="url"
+                id="lien_github"
+                name="lien_github"
+                defaultValue={initialData.lien_github}
+                placeholder="https://github.com/username/repo"
+              />
+            </div>
+
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="lien_figma">Lien Figma</Label>
+              <Input
+                type="url"
+                id="lien_figma"
+                name="lien_figma"
+                defaultValue={initialData.lien_figma}
+                placeholder="https://www.figma.com/file/..."
+              />
+            </div>
+
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="lien_site">Lien du site</Label>
+              <Input
+                type="url"
+                id="lien_site"
+                name="lien_site"
+                defaultValue={initialData.lien_site}
+                placeholder="https://www.example.com"
+              />
+            </div>
           </div>
 
           <div className="flex items-center space-x-2">
@@ -308,14 +380,19 @@ export function EditVideoItem({
           </div>
 
           <div className="flex gap-2">
-            <Button type="submit" className="cursor-pointer">
-              Mettre à jour
+            <Button
+              type="submit"
+              className="cursor-pointer"
+              disabled={isUpdating}
+            >
+              {isUpdating ? "Mise à jour..." : "Mettre à jour"}
             </Button>
             <Button
               type="button"
               variant="outline"
               className="cursor-pointer"
-              onClick={() => router.push("/creations/videos")}
+              onClick={() => router.push("/creations/autres")}
+              disabled={isUpdating}
             >
               Annuler
             </Button>
