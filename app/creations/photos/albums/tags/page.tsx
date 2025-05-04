@@ -1,17 +1,17 @@
 import prisma from "@/lib/prisma";
-import { TagItem } from "@/components/sections/creations/videos/tag-item";
+import { TagItem } from "@/components/sections/creations/autres/tag-item";
 
 // Récupérer tous les tags disponibles
 async function getAllTags() {
   try {
-    const tags = await prisma.videos_tags.findMany({
+    const tags = await prisma.autre_tags.findMany({
       orderBy: {
         titre: "asc",
       },
       include: {
         _count: {
           select: {
-            videos_tags_link: true,
+            autre_tags_link: true,
           },
         },
       },
@@ -21,7 +21,7 @@ async function getAllTags() {
       id: tag.id_tags,
       titre: tag.titre,
       important: tag.important,
-      videoCount: tag._count.videos_tags_link,
+      videoCount: tag._count.autre_tags_link,
     }));
   } catch (error) {
     console.error("Erreur lors de la récupération des tags:", error);
@@ -29,7 +29,9 @@ async function getAllTags() {
   }
 }
 
-export default async function Tags() {
+// Composant serveur principal
+export default async function TagsAutrePage() {
+  // Récupérer tous les tags disponibles
   const tags = await getAllTags();
 
   return (

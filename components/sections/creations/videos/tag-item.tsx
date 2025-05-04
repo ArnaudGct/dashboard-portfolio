@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { PlusIcon, TrashIcon } from "lucide-react";
+import { PlusIcon, TrashIcon, Bookmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch"; // Ajout du Switch
 import {
   AlertDialog,
   AlertDialogAction,
@@ -43,9 +44,11 @@ import {
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
+// Mettre à jour le type Tag pour inclure la propriété important
 type Tag = {
   id: number;
   titre: string;
+  important?: boolean; // Ajout de la propriété important
   videoCount: number;
 };
 
@@ -59,6 +62,8 @@ export function TagItem({ initialTags }: TagsManagerProps) {
   const [selectedTag, setSelectedTag] = useState<Tag | null>(null);
   const [newTagTitle, setNewTagTitle] = useState("");
   const [editTagTitle, setEditTagTitle] = useState("");
+  const [isImportant, setIsImportant] = useState(false); // Pour la création
+  const [isEditImportant, setIsEditImportant] = useState(false); // Pour l'édition
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
@@ -68,6 +73,7 @@ export function TagItem({ initialTags }: TagsManagerProps) {
   const handleOpenTagDialog = (tag: Tag) => {
     setSelectedTag(tag);
     setEditTagTitle(tag.titre);
+    setIsEditImportant(tag.important === true); // Initialisation correcte
     setIsDialogOpen(true);
   };
 
@@ -76,12 +82,15 @@ export function TagItem({ initialTags }: TagsManagerProps) {
     if (!selectedTag || !editTagTitle.trim()) return;
 
     try {
-      await updateTagAction(selectedTag.id, editTagTitle);
+      // Mise à jour de l'appel avec le paramètre important
+      await updateTagAction(selectedTag.id, editTagTitle, isEditImportant);
 
       // Mettre à jour l'état local
       setTags(
         tags.map((tag) =>
-          tag.id === selectedTag.id ? { ...tag, titre: editTagTitle } : tag
+          tag.id === selectedTag.id
+            ? { ...tag, titre: editTagTitle, important: isEditImportant }
+            : tag
         )
       );
 
@@ -122,7 +131,8 @@ export function TagItem({ initialTags }: TagsManagerProps) {
     if (!newTagTitle.trim()) return;
 
     try {
-      const result = await createTagAction(newTagTitle);
+      // Mise à jour de l'appel pour inclure le paramètre important
+      const result = await createTagAction(newTagTitle, isImportant);
 
       if (result.success) {
         // Ajouter le nouveau tag à l'état local
@@ -131,11 +141,13 @@ export function TagItem({ initialTags }: TagsManagerProps) {
           {
             id: result.tag.id_tags,
             titre: result.tag.titre,
+            important: isImportant, // Ajout de la propriété important
             videoCount: 0,
           },
         ]);
 
         setNewTagTitle("");
+        setIsImportant(false); // Réinitialiser
         setIsCreating(false);
         toast.success("Tag créé avec succès");
         router.refresh();
@@ -171,7 +183,8 @@ export function TagItem({ initialTags }: TagsManagerProps) {
             <DialogHeader>
               <DialogTitle>Créer un nouveau tag</DialogTitle>
               <DialogDescription>
-                Entrez le nom du nouveau tag à créer.
+                Entrez le nom du nouveau tag à créer et définissez s'il est
+                important.
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
@@ -184,16 +197,33 @@ export function TagItem({ initialTags }: TagsManagerProps) {
                   placeholder="Titre du tag"
                 />
               </div>
+              {/* Ajout du Switch pour important */}
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="new-tag-important"
+                  checked={isImportant}
+                  onCheckedChange={setIsImportant}
+                />
+                <Label htmlFor="new-tag-important">Tag important</Label>
+              </div>
             </div>
             <DialogFooter>
               <Button
                 variant="outline"
-                onClick={() => setIsCreating(false)}
+                onClick={() => {
+                  setIsCreating(false);
+                  setNewTagTitle("");
+                  setIsImportant(false);
+                }}
                 className="cursor-pointer"
               >
                 Annuler
               </Button>
-              <Button onClick={handleCreateTag} className="cursor-pointer">
+              <Button
+                onClick={handleCreateTag}
+                className="cursor-pointer"
+                disabled={!newTagTitle.trim()}
+              >
                 Créer
               </Button>
             </DialogFooter>
@@ -201,22 +231,35 @@ export function TagItem({ initialTags }: TagsManagerProps) {
         </Dialog>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {tags.map((tag) => (
-          <Card
-            key={tag.id}
-            className="shadow-sm cursor-pointer hover:shadow-md transition-shadow"
-            onClick={() => handleOpenTagDialog(tag)}
-          >
-            <CardHeader className="px-6 flex flex-row items-center justify-between">
-              <CardTitle className="text-lg">{tag.titre}</CardTitle>
-              <div className="flex items-center gap-2">
-                <Badge variant="secondary" className="ml-2">
-                  {tag.videoCount} vidéo{tag.videoCount > 1 ? "s" : ""}
-                </Badge>
-              </div>
-            </CardHeader>
-          </Card>
-        ))}
+        {tags.length === 0 ? (
+          <p className="col-span-full text-center py-8 text-muted-foreground">
+            Aucun tag trouvé
+          </p>
+        ) : (
+          tags.map((tag) => (
+            <Card
+              key={tag.id}
+              className={`shadow-sm cursor-pointer hover:shadow-md transition-shadow ${
+                tag.important ? "border-primary/50" : ""
+              }`}
+              onClick={() => handleOpenTagDialog(tag)}
+            >
+              <CardHeader className="px-6 flex flex-row items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <CardTitle className="text-lg">{tag.titre}</CardTitle>
+                  {tag.important && (
+                    <Bookmark className="h-4 w-4 text-primary" />
+                  )}
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant="secondary" className="ml-2">
+                    {tag.videoCount} vidéo{tag.videoCount > 1 ? "s" : ""}
+                  </Badge>
+                </div>
+              </CardHeader>
+            </Card>
+          ))
+        )}
       </div>
 
       {/* Dialog pour modifier un tag */}
@@ -225,7 +268,8 @@ export function TagItem({ initialTags }: TagsManagerProps) {
           <DialogHeader>
             <DialogTitle>Modifier le tag</DialogTitle>
             <DialogDescription>
-              Modifiez le titre du tag "{selectedTag?.titre}".
+              Modifiez le titre du tag "{selectedTag?.titre}" et son statut
+              d'importance.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -238,6 +282,15 @@ export function TagItem({ initialTags }: TagsManagerProps) {
                 placeholder="Titre du tag"
               />
             </div>
+            {/* Ajout du Switch pour important */}
+            <div className="flex items-center space-x-2">
+              <Switch
+                id="edit-tag-important"
+                checked={isEditImportant}
+                onCheckedChange={setIsEditImportant}
+              />
+              <Label htmlFor="edit-tag-important">Tag important</Label>
+            </div>
           </div>
           <DialogFooter className="flex justify-between items-center">
             <div className="flex gap-2 justify-between items-center w-full">
@@ -249,6 +302,12 @@ export function TagItem({ initialTags }: TagsManagerProps) {
                   <Button
                     variant="destructive"
                     className="flex items-center gap-2 cursor-pointer"
+                    disabled={(selectedTag?.videoCount ?? 0) > 0}
+                    title={
+                      (selectedTag?.videoCount ?? 0) > 0
+                        ? "Ce tag est utilisé par des vidéos"
+                        : ""
+                    }
                   >
                     <TrashIcon className="h-4 w-4" />
                   </Button>
@@ -273,7 +332,9 @@ export function TagItem({ initialTags }: TagsManagerProps) {
                     <AlertDialogAction
                       className="bg-red-600 hover:bg-red-700 text-white cursor-pointer"
                       onClick={handleDeleteTag}
-                      disabled={isDeleting}
+                      disabled={
+                        isDeleting || (selectedTag?.videoCount ?? 0) > 0
+                      }
                     >
                       {isDeleting ? "Suppression..." : "Supprimer"}
                     </AlertDialogAction>
@@ -289,7 +350,15 @@ export function TagItem({ initialTags }: TagsManagerProps) {
                 >
                   Annuler
                 </Button>
-                <Button onClick={handleUpdateTag} className="cursor-pointer">
+                <Button
+                  onClick={handleUpdateTag}
+                  className="cursor-pointer"
+                  disabled={
+                    !editTagTitle.trim() ||
+                    (editTagTitle === selectedTag?.titre &&
+                      isEditImportant === selectedTag?.important)
+                  }
+                >
                   Enregistrer
                 </Button>
               </div>

@@ -2967,46 +2967,6 @@ export namespace Prisma {
 
 
   /**
-   * Count Type UserCountOutputType
-   */
-
-  export type UserCountOutputType = {
-    sessions: number
-    accounts: number
-  }
-
-  export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sessions?: boolean | UserCountOutputTypeCountSessionsArgs
-    accounts?: boolean | UserCountOutputTypeCountAccountsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserCountOutputType
-     */
-    select?: UserCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SessionWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AccountWhereInput
-  }
-
-
-  /**
    * Models
    */
 
@@ -12812,16 +12772,19 @@ export namespace Prisma {
   export type Photos_tagsMinAggregateOutputType = {
     id_tags: number | null
     titre: string | null
+    important: boolean | null
   }
 
   export type Photos_tagsMaxAggregateOutputType = {
     id_tags: number | null
     titre: string | null
+    important: boolean | null
   }
 
   export type Photos_tagsCountAggregateOutputType = {
     id_tags: number
     titre: number
+    important: number
     _all: number
   }
 
@@ -12837,16 +12800,19 @@ export namespace Prisma {
   export type Photos_tagsMinAggregateInputType = {
     id_tags?: true
     titre?: true
+    important?: true
   }
 
   export type Photos_tagsMaxAggregateInputType = {
     id_tags?: true
     titre?: true
+    important?: true
   }
 
   export type Photos_tagsCountAggregateInputType = {
     id_tags?: true
     titre?: true
+    important?: true
     _all?: true
   }
 
@@ -12939,6 +12905,7 @@ export namespace Prisma {
   export type Photos_tagsGroupByOutputType = {
     id_tags: number
     titre: string
+    important: boolean
     _count: Photos_tagsCountAggregateOutputType | null
     _avg: Photos_tagsAvgAggregateOutputType | null
     _sum: Photos_tagsSumAggregateOutputType | null
@@ -12963,6 +12930,7 @@ export namespace Prisma {
   export type photos_tagsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id_tags?: boolean
     titre?: boolean
+    important?: boolean
     photos_albums_tags_link?: boolean | photos_tags$photos_albums_tags_linkArgs<ExtArgs>
     photos_tags_link?: boolean | photos_tags$photos_tags_linkArgs<ExtArgs>
     _count?: boolean | Photos_tagsCountOutputTypeDefaultArgs<ExtArgs>
@@ -12973,9 +12941,10 @@ export namespace Prisma {
   export type photos_tagsSelectScalar = {
     id_tags?: boolean
     titre?: boolean
+    important?: boolean
   }
 
-  export type photos_tagsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_tags" | "titre", ExtArgs["result"]["photos_tags"]>
+  export type photos_tagsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_tags" | "titre" | "important", ExtArgs["result"]["photos_tags"]>
   export type photos_tagsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     photos_albums_tags_link?: boolean | photos_tags$photos_albums_tags_linkArgs<ExtArgs>
     photos_tags_link?: boolean | photos_tags$photos_tags_linkArgs<ExtArgs>
@@ -12991,6 +12960,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id_tags: number
       titre: string
+      important: boolean
     }, ExtArgs["result"]["photos_tags"]>
     composites: {}
   }
@@ -13364,6 +13334,7 @@ export namespace Prisma {
   interface photos_tagsFieldRefs {
     readonly id_tags: FieldRef<"photos_tags", 'Int'>
     readonly titre: FieldRef<"photos_tags", 'String'>
+    readonly important: FieldRef<"photos_tags", 'Boolean'>
   }
     
 
@@ -14734,16 +14705,19 @@ export namespace Prisma {
   export type Photos_tags_rechercheMinAggregateOutputType = {
     id_tags: number | null
     titre: string | null
+    important: boolean | null
   }
 
   export type Photos_tags_rechercheMaxAggregateOutputType = {
     id_tags: number | null
     titre: string | null
+    important: boolean | null
   }
 
   export type Photos_tags_rechercheCountAggregateOutputType = {
     id_tags: number
     titre: number
+    important: number
     _all: number
   }
 
@@ -14759,16 +14733,19 @@ export namespace Prisma {
   export type Photos_tags_rechercheMinAggregateInputType = {
     id_tags?: true
     titre?: true
+    important?: true
   }
 
   export type Photos_tags_rechercheMaxAggregateInputType = {
     id_tags?: true
     titre?: true
+    important?: true
   }
 
   export type Photos_tags_rechercheCountAggregateInputType = {
     id_tags?: true
     titre?: true
+    important?: true
     _all?: true
   }
 
@@ -14861,6 +14838,7 @@ export namespace Prisma {
   export type Photos_tags_rechercheGroupByOutputType = {
     id_tags: number
     titre: string
+    important: boolean
     _count: Photos_tags_rechercheCountAggregateOutputType | null
     _avg: Photos_tags_rechercheAvgAggregateOutputType | null
     _sum: Photos_tags_rechercheSumAggregateOutputType | null
@@ -14885,6 +14863,7 @@ export namespace Prisma {
   export type photos_tags_rechercheSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id_tags?: boolean
     titre?: boolean
+    important?: boolean
     photos_tags_recherche_link?: boolean | photos_tags_recherche$photos_tags_recherche_linkArgs<ExtArgs>
     _count?: boolean | Photos_tags_rechercheCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["photos_tags_recherche"]>
@@ -14894,9 +14873,10 @@ export namespace Prisma {
   export type photos_tags_rechercheSelectScalar = {
     id_tags?: boolean
     titre?: boolean
+    important?: boolean
   }
 
-  export type photos_tags_rechercheOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_tags" | "titre", ExtArgs["result"]["photos_tags_recherche"]>
+  export type photos_tags_rechercheOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_tags" | "titre" | "important", ExtArgs["result"]["photos_tags_recherche"]>
   export type photos_tags_rechercheInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     photos_tags_recherche_link?: boolean | photos_tags_recherche$photos_tags_recherche_linkArgs<ExtArgs>
     _count?: boolean | Photos_tags_rechercheCountOutputTypeDefaultArgs<ExtArgs>
@@ -14910,6 +14890,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id_tags: number
       titre: string
+      important: boolean
     }, ExtArgs["result"]["photos_tags_recherche"]>
     composites: {}
   }
@@ -15282,6 +15263,7 @@ export namespace Prisma {
   interface photos_tags_rechercheFieldRefs {
     readonly id_tags: FieldRef<"photos_tags_recherche", 'Int'>
     readonly titre: FieldRef<"photos_tags_recherche", 'String'>
+    readonly important: FieldRef<"photos_tags_recherche", 'Boolean'>
   }
     
 
@@ -19548,16 +19530,19 @@ export namespace Prisma {
   export type Videos_tagsMinAggregateOutputType = {
     id_tags: number | null
     titre: string | null
+    important: boolean | null
   }
 
   export type Videos_tagsMaxAggregateOutputType = {
     id_tags: number | null
     titre: string | null
+    important: boolean | null
   }
 
   export type Videos_tagsCountAggregateOutputType = {
     id_tags: number
     titre: number
+    important: number
     _all: number
   }
 
@@ -19573,16 +19558,19 @@ export namespace Prisma {
   export type Videos_tagsMinAggregateInputType = {
     id_tags?: true
     titre?: true
+    important?: true
   }
 
   export type Videos_tagsMaxAggregateInputType = {
     id_tags?: true
     titre?: true
+    important?: true
   }
 
   export type Videos_tagsCountAggregateInputType = {
     id_tags?: true
     titre?: true
+    important?: true
     _all?: true
   }
 
@@ -19675,6 +19663,7 @@ export namespace Prisma {
   export type Videos_tagsGroupByOutputType = {
     id_tags: number
     titre: string
+    important: boolean
     _count: Videos_tagsCountAggregateOutputType | null
     _avg: Videos_tagsAvgAggregateOutputType | null
     _sum: Videos_tagsSumAggregateOutputType | null
@@ -19699,6 +19688,7 @@ export namespace Prisma {
   export type videos_tagsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id_tags?: boolean
     titre?: boolean
+    important?: boolean
     videos_tags_link?: boolean | videos_tags$videos_tags_linkArgs<ExtArgs>
     _count?: boolean | Videos_tagsCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["videos_tags"]>
@@ -19708,9 +19698,10 @@ export namespace Prisma {
   export type videos_tagsSelectScalar = {
     id_tags?: boolean
     titre?: boolean
+    important?: boolean
   }
 
-  export type videos_tagsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_tags" | "titre", ExtArgs["result"]["videos_tags"]>
+  export type videos_tagsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_tags" | "titre" | "important", ExtArgs["result"]["videos_tags"]>
   export type videos_tagsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     videos_tags_link?: boolean | videos_tags$videos_tags_linkArgs<ExtArgs>
     _count?: boolean | Videos_tagsCountOutputTypeDefaultArgs<ExtArgs>
@@ -19724,6 +19715,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id_tags: number
       titre: string
+      important: boolean
     }, ExtArgs["result"]["videos_tags"]>
     composites: {}
   }
@@ -20096,6 +20088,7 @@ export namespace Prisma {
   interface videos_tagsFieldRefs {
     readonly id_tags: FieldRef<"videos_tags", 'Int'>
     readonly titre: FieldRef<"videos_tags", 'String'>
+    readonly important: FieldRef<"videos_tags", 'Boolean'>
   }
     
 
@@ -21599,9 +21592,6 @@ export namespace Prisma {
     image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    sessions?: boolean | User$sessionsArgs<ExtArgs>
-    accounts?: boolean | User$accountsArgs<ExtArgs>
-    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
 
@@ -21617,18 +21607,10 @@ export namespace Prisma {
   }
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
-  export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sessions?: boolean | User$sessionsArgs<ExtArgs>
-    accounts?: boolean | User$accountsArgs<ExtArgs>
-    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
-  }
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
-    objects: {
-      sessions: Prisma.$SessionPayload<ExtArgs>[]
-      accounts: Prisma.$AccountPayload<ExtArgs>[]
-    }
+    objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
@@ -21977,8 +21959,6 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -22032,10 +22012,6 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    /**
      * Filter, which User to fetch.
      */
     where: UserWhereUniqueInput
@@ -22054,10 +22030,6 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    /**
      * Filter, which User to fetch.
      */
     where: UserWhereUniqueInput
@@ -22075,10 +22047,6 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
     /**
      * Filter, which User to fetch.
      */
@@ -22128,10 +22096,6 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    /**
      * Filter, which User to fetch.
      */
     where?: UserWhereInput
@@ -22180,10 +22144,6 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    /**
      * Filter, which Users to fetch.
      */
     where?: UserWhereInput
@@ -22227,10 +22187,6 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    /**
      * The data needed to create a User.
      */
     data: XOR<UserCreateInput, UserUncheckedCreateInput>
@@ -22259,10 +22215,6 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
     /**
      * The data needed to update a User.
      */
@@ -22304,10 +22256,6 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    /**
      * The filter to search for the User to update in case it exists.
      */
     where: UserWhereUniqueInput
@@ -22334,10 +22282,6 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    /**
      * Filter which User to delete.
      */
     where: UserWhereUniqueInput
@@ -22358,54 +22302,6 @@ export namespace Prisma {
   }
 
   /**
-   * User.sessions
-   */
-  export type User$sessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Session
-     */
-    select?: SessionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Session
-     */
-    omit?: SessionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
-    where?: SessionWhereInput
-    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
-    cursor?: SessionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
-  }
-
-  /**
-   * User.accounts
-   */
-  export type User$accountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Account
-     */
-    select?: AccountSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Account
-     */
-    omit?: AccountOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AccountInclude<ExtArgs> | null
-    where?: AccountWhereInput
-    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
-    cursor?: AccountWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
-  }
-
-  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -22417,10 +22313,6 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
   }
 
 
@@ -22612,7 +22504,6 @@ export namespace Prisma {
     ipAddress?: boolean
     userAgent?: boolean
     userId?: boolean
-    User?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["session"]>
 
 
@@ -22629,15 +22520,10 @@ export namespace Prisma {
   }
 
   export type SessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "expiresAt" | "token" | "createdAt" | "updatedAt" | "ipAddress" | "userAgent" | "userId", ExtArgs["result"]["session"]>
-  export type SessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    User?: boolean | UserDefaultArgs<ExtArgs>
-  }
 
   export type $SessionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Session"
-    objects: {
-      User: Prisma.$UserPayload<ExtArgs>
-    }
+    objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: string
       expiresAt: Date
@@ -22987,7 +22873,6 @@ export namespace Prisma {
    */
   export interface Prisma__SessionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    User<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -23042,10 +22927,6 @@ export namespace Prisma {
      */
     omit?: SessionOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
-    /**
      * Filter, which Session to fetch.
      */
     where: SessionWhereUniqueInput
@@ -23064,10 +22945,6 @@ export namespace Prisma {
      */
     omit?: SessionOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
-    /**
      * Filter, which Session to fetch.
      */
     where: SessionWhereUniqueInput
@@ -23085,10 +22962,6 @@ export namespace Prisma {
      * Omit specific fields from the Session
      */
     omit?: SessionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
     /**
      * Filter, which Session to fetch.
      */
@@ -23138,10 +23011,6 @@ export namespace Prisma {
      */
     omit?: SessionOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
-    /**
      * Filter, which Session to fetch.
      */
     where?: SessionWhereInput
@@ -23190,10 +23059,6 @@ export namespace Prisma {
      */
     omit?: SessionOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
-    /**
      * Filter, which Sessions to fetch.
      */
     where?: SessionWhereInput
@@ -23237,10 +23102,6 @@ export namespace Prisma {
      */
     omit?: SessionOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
-    /**
      * The data needed to create a Session.
      */
     data: XOR<SessionCreateInput, SessionUncheckedCreateInput>
@@ -23269,10 +23130,6 @@ export namespace Prisma {
      * Omit specific fields from the Session
      */
     omit?: SessionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
     /**
      * The data needed to update a Session.
      */
@@ -23314,10 +23171,6 @@ export namespace Prisma {
      */
     omit?: SessionOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
-    /**
      * The filter to search for the Session to update in case it exists.
      */
     where: SessionWhereUniqueInput
@@ -23343,10 +23196,6 @@ export namespace Prisma {
      * Omit specific fields from the Session
      */
     omit?: SessionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
     /**
      * Filter which Session to delete.
      */
@@ -23379,10 +23228,6 @@ export namespace Prisma {
      * Omit specific fields from the Session
      */
     omit?: SessionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
   }
 
 
@@ -23614,7 +23459,6 @@ export namespace Prisma {
     password?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    User?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["account"]>
 
 
@@ -23636,15 +23480,10 @@ export namespace Prisma {
   }
 
   export type AccountOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "accountId" | "providerId" | "userId" | "accessToken" | "refreshToken" | "idToken" | "accessTokenExpiresAt" | "refreshTokenExpiresAt" | "scope" | "password" | "createdAt" | "updatedAt", ExtArgs["result"]["account"]>
-  export type AccountInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    User?: boolean | UserDefaultArgs<ExtArgs>
-  }
 
   export type $AccountPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Account"
-    objects: {
-      User: Prisma.$UserPayload<ExtArgs>
-    }
+    objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: string
       accountId: string
@@ -23999,7 +23838,6 @@ export namespace Prisma {
    */
   export interface Prisma__AccountClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    User<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -24059,10 +23897,6 @@ export namespace Prisma {
      */
     omit?: AccountOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AccountInclude<ExtArgs> | null
-    /**
      * Filter, which Account to fetch.
      */
     where: AccountWhereUniqueInput
@@ -24081,10 +23915,6 @@ export namespace Prisma {
      */
     omit?: AccountOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AccountInclude<ExtArgs> | null
-    /**
      * Filter, which Account to fetch.
      */
     where: AccountWhereUniqueInput
@@ -24102,10 +23932,6 @@ export namespace Prisma {
      * Omit specific fields from the Account
      */
     omit?: AccountOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AccountInclude<ExtArgs> | null
     /**
      * Filter, which Account to fetch.
      */
@@ -24155,10 +23981,6 @@ export namespace Prisma {
      */
     omit?: AccountOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AccountInclude<ExtArgs> | null
-    /**
      * Filter, which Account to fetch.
      */
     where?: AccountWhereInput
@@ -24207,10 +24029,6 @@ export namespace Prisma {
      */
     omit?: AccountOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AccountInclude<ExtArgs> | null
-    /**
      * Filter, which Accounts to fetch.
      */
     where?: AccountWhereInput
@@ -24254,10 +24072,6 @@ export namespace Prisma {
      */
     omit?: AccountOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AccountInclude<ExtArgs> | null
-    /**
      * The data needed to create a Account.
      */
     data: XOR<AccountCreateInput, AccountUncheckedCreateInput>
@@ -24286,10 +24100,6 @@ export namespace Prisma {
      * Omit specific fields from the Account
      */
     omit?: AccountOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AccountInclude<ExtArgs> | null
     /**
      * The data needed to update a Account.
      */
@@ -24331,10 +24141,6 @@ export namespace Prisma {
      */
     omit?: AccountOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AccountInclude<ExtArgs> | null
-    /**
      * The filter to search for the Account to update in case it exists.
      */
     where: AccountWhereUniqueInput
@@ -24360,10 +24166,6 @@ export namespace Prisma {
      * Omit specific fields from the Account
      */
     omit?: AccountOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AccountInclude<ExtArgs> | null
     /**
      * Filter which Account to delete.
      */
@@ -24396,10 +24198,6 @@ export namespace Prisma {
      * Omit specific fields from the Account
      */
     omit?: AccountOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AccountInclude<ExtArgs> | null
   }
 
 
@@ -25428,7 +25226,8 @@ export namespace Prisma {
 
   export const Photos_tagsScalarFieldEnum: {
     id_tags: 'id_tags',
-    titre: 'titre'
+    titre: 'titre',
+    important: 'important'
   };
 
   export type Photos_tagsScalarFieldEnum = (typeof Photos_tagsScalarFieldEnum)[keyof typeof Photos_tagsScalarFieldEnum]
@@ -25444,7 +25243,8 @@ export namespace Prisma {
 
   export const Photos_tags_rechercheScalarFieldEnum: {
     id_tags: 'id_tags',
-    titre: 'titre'
+    titre: 'titre',
+    important: 'important'
   };
 
   export type Photos_tags_rechercheScalarFieldEnum = (typeof Photos_tags_rechercheScalarFieldEnum)[keyof typeof Photos_tags_rechercheScalarFieldEnum]
@@ -25502,7 +25302,8 @@ export namespace Prisma {
 
   export const Videos_tagsScalarFieldEnum: {
     id_tags: 'id_tags',
-    titre: 'titre'
+    titre: 'titre',
+    important: 'important'
   };
 
   export type Videos_tagsScalarFieldEnum = (typeof Videos_tagsScalarFieldEnum)[keyof typeof Videos_tagsScalarFieldEnum]
@@ -26432,6 +26233,7 @@ export namespace Prisma {
     NOT?: photos_tagsWhereInput | photos_tagsWhereInput[]
     id_tags?: IntFilter<"photos_tags"> | number
     titre?: StringFilter<"photos_tags"> | string
+    important?: BoolFilter<"photos_tags"> | boolean
     photos_albums_tags_link?: Photos_albums_tags_linkListRelationFilter
     photos_tags_link?: Photos_tags_linkListRelationFilter
   }
@@ -26439,6 +26241,7 @@ export namespace Prisma {
   export type photos_tagsOrderByWithRelationInput = {
     id_tags?: SortOrder
     titre?: SortOrder
+    important?: SortOrder
     photos_albums_tags_link?: photos_albums_tags_linkOrderByRelationAggregateInput
     photos_tags_link?: photos_tags_linkOrderByRelationAggregateInput
     _relevance?: photos_tagsOrderByRelevanceInput
@@ -26450,6 +26253,7 @@ export namespace Prisma {
     OR?: photos_tagsWhereInput[]
     NOT?: photos_tagsWhereInput | photos_tagsWhereInput[]
     titre?: StringFilter<"photos_tags"> | string
+    important?: BoolFilter<"photos_tags"> | boolean
     photos_albums_tags_link?: Photos_albums_tags_linkListRelationFilter
     photos_tags_link?: Photos_tags_linkListRelationFilter
   }, "id_tags">
@@ -26457,6 +26261,7 @@ export namespace Prisma {
   export type photos_tagsOrderByWithAggregationInput = {
     id_tags?: SortOrder
     titre?: SortOrder
+    important?: SortOrder
     _count?: photos_tagsCountOrderByAggregateInput
     _avg?: photos_tagsAvgOrderByAggregateInput
     _max?: photos_tagsMaxOrderByAggregateInput
@@ -26470,6 +26275,7 @@ export namespace Prisma {
     NOT?: photos_tagsScalarWhereWithAggregatesInput | photos_tagsScalarWhereWithAggregatesInput[]
     id_tags?: IntWithAggregatesFilter<"photos_tags"> | number
     titre?: StringWithAggregatesFilter<"photos_tags"> | string
+    important?: BoolWithAggregatesFilter<"photos_tags"> | boolean
   }
 
   export type photos_tags_linkWhereInput = {
@@ -26524,12 +26330,14 @@ export namespace Prisma {
     NOT?: photos_tags_rechercheWhereInput | photos_tags_rechercheWhereInput[]
     id_tags?: IntFilter<"photos_tags_recherche"> | number
     titre?: StringFilter<"photos_tags_recherche"> | string
+    important?: BoolFilter<"photos_tags_recherche"> | boolean
     photos_tags_recherche_link?: Photos_tags_recherche_linkListRelationFilter
   }
 
   export type photos_tags_rechercheOrderByWithRelationInput = {
     id_tags?: SortOrder
     titre?: SortOrder
+    important?: SortOrder
     photos_tags_recherche_link?: photos_tags_recherche_linkOrderByRelationAggregateInput
     _relevance?: photos_tags_rechercheOrderByRelevanceInput
   }
@@ -26540,12 +26348,14 @@ export namespace Prisma {
     OR?: photos_tags_rechercheWhereInput[]
     NOT?: photos_tags_rechercheWhereInput | photos_tags_rechercheWhereInput[]
     titre?: StringFilter<"photos_tags_recherche"> | string
+    important?: BoolFilter<"photos_tags_recherche"> | boolean
     photos_tags_recherche_link?: Photos_tags_recherche_linkListRelationFilter
   }, "id_tags">
 
   export type photos_tags_rechercheOrderByWithAggregationInput = {
     id_tags?: SortOrder
     titre?: SortOrder
+    important?: SortOrder
     _count?: photos_tags_rechercheCountOrderByAggregateInput
     _avg?: photos_tags_rechercheAvgOrderByAggregateInput
     _max?: photos_tags_rechercheMaxOrderByAggregateInput
@@ -26559,6 +26369,7 @@ export namespace Prisma {
     NOT?: photos_tags_rechercheScalarWhereWithAggregatesInput | photos_tags_rechercheScalarWhereWithAggregatesInput[]
     id_tags?: IntWithAggregatesFilter<"photos_tags_recherche"> | number
     titre?: StringWithAggregatesFilter<"photos_tags_recherche"> | string
+    important?: BoolWithAggregatesFilter<"photos_tags_recherche"> | boolean
   }
 
   export type photos_tags_recherche_linkWhereInput = {
@@ -26826,12 +26637,14 @@ export namespace Prisma {
     NOT?: videos_tagsWhereInput | videos_tagsWhereInput[]
     id_tags?: IntFilter<"videos_tags"> | number
     titre?: StringFilter<"videos_tags"> | string
+    important?: BoolFilter<"videos_tags"> | boolean
     videos_tags_link?: Videos_tags_linkListRelationFilter
   }
 
   export type videos_tagsOrderByWithRelationInput = {
     id_tags?: SortOrder
     titre?: SortOrder
+    important?: SortOrder
     videos_tags_link?: videos_tags_linkOrderByRelationAggregateInput
     _relevance?: videos_tagsOrderByRelevanceInput
   }
@@ -26842,12 +26655,14 @@ export namespace Prisma {
     OR?: videos_tagsWhereInput[]
     NOT?: videos_tagsWhereInput | videos_tagsWhereInput[]
     titre?: StringFilter<"videos_tags"> | string
+    important?: BoolFilter<"videos_tags"> | boolean
     videos_tags_link?: Videos_tags_linkListRelationFilter
   }, "id_tags">
 
   export type videos_tagsOrderByWithAggregationInput = {
     id_tags?: SortOrder
     titre?: SortOrder
+    important?: SortOrder
     _count?: videos_tagsCountOrderByAggregateInput
     _avg?: videos_tagsAvgOrderByAggregateInput
     _max?: videos_tagsMaxOrderByAggregateInput
@@ -26861,6 +26676,7 @@ export namespace Prisma {
     NOT?: videos_tagsScalarWhereWithAggregatesInput | videos_tagsScalarWhereWithAggregatesInput[]
     id_tags?: IntWithAggregatesFilter<"videos_tags"> | number
     titre?: StringWithAggregatesFilter<"videos_tags"> | string
+    important?: BoolWithAggregatesFilter<"videos_tags"> | boolean
   }
 
   export type videos_tags_linkWhereInput = {
@@ -26920,8 +26736,6 @@ export namespace Prisma {
     image?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    sessions?: SessionListRelationFilter
-    accounts?: AccountListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -26932,8 +26746,6 @@ export namespace Prisma {
     image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    sessions?: SessionOrderByRelationAggregateInput
-    accounts?: AccountOrderByRelationAggregateInput
     _relevance?: UserOrderByRelevanceInput
   }
 
@@ -26948,8 +26760,6 @@ export namespace Prisma {
     image?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    sessions?: SessionListRelationFilter
-    accounts?: AccountListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -26990,7 +26800,6 @@ export namespace Prisma {
     ipAddress?: StringNullableFilter<"Session"> | string | null
     userAgent?: StringNullableFilter<"Session"> | string | null
     userId?: StringFilter<"Session"> | string
-    User?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type SessionOrderByWithRelationInput = {
@@ -27002,7 +26811,6 @@ export namespace Prisma {
     ipAddress?: SortOrderInput | SortOrder
     userAgent?: SortOrderInput | SortOrder
     userId?: SortOrder
-    User?: UserOrderByWithRelationInput
     _relevance?: SessionOrderByRelevanceInput
   }
 
@@ -27018,7 +26826,6 @@ export namespace Prisma {
     ipAddress?: StringNullableFilter<"Session"> | string | null
     userAgent?: StringNullableFilter<"Session"> | string | null
     userId?: StringFilter<"Session"> | string
-    User?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "token">
 
   export type SessionOrderByWithAggregationInput = {
@@ -27066,7 +26873,6 @@ export namespace Prisma {
     password?: StringNullableFilter<"Account"> | string | null
     createdAt?: DateTimeFilter<"Account"> | Date | string
     updatedAt?: DateTimeFilter<"Account"> | Date | string
-    User?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type AccountOrderByWithRelationInput = {
@@ -27083,7 +26889,6 @@ export namespace Prisma {
     password?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    User?: UserOrderByWithRelationInput
     _relevance?: AccountOrderByRelevanceInput
   }
 
@@ -27104,7 +26909,6 @@ export namespace Prisma {
     password?: StringNullableFilter<"Account"> | string | null
     createdAt?: DateTimeFilter<"Account"> | Date | string
     updatedAt?: DateTimeFilter<"Account"> | Date | string
-    User?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type AccountOrderByWithAggregationInput = {
@@ -27811,6 +27615,7 @@ export namespace Prisma {
 
   export type photos_tagsCreateInput = {
     titre: string
+    important: boolean
     photos_albums_tags_link?: photos_albums_tags_linkCreateNestedManyWithoutPhotos_tagsInput
     photos_tags_link?: photos_tags_linkCreateNestedManyWithoutPhotos_tagsInput
   }
@@ -27818,12 +27623,14 @@ export namespace Prisma {
   export type photos_tagsUncheckedCreateInput = {
     id_tags?: number
     titre: string
+    important: boolean
     photos_albums_tags_link?: photos_albums_tags_linkUncheckedCreateNestedManyWithoutPhotos_tagsInput
     photos_tags_link?: photos_tags_linkUncheckedCreateNestedManyWithoutPhotos_tagsInput
   }
 
   export type photos_tagsUpdateInput = {
     titre?: StringFieldUpdateOperationsInput | string
+    important?: BoolFieldUpdateOperationsInput | boolean
     photos_albums_tags_link?: photos_albums_tags_linkUpdateManyWithoutPhotos_tagsNestedInput
     photos_tags_link?: photos_tags_linkUpdateManyWithoutPhotos_tagsNestedInput
   }
@@ -27831,6 +27638,7 @@ export namespace Prisma {
   export type photos_tagsUncheckedUpdateInput = {
     id_tags?: IntFieldUpdateOperationsInput | number
     titre?: StringFieldUpdateOperationsInput | string
+    important?: BoolFieldUpdateOperationsInput | boolean
     photos_albums_tags_link?: photos_albums_tags_linkUncheckedUpdateManyWithoutPhotos_tagsNestedInput
     photos_tags_link?: photos_tags_linkUncheckedUpdateManyWithoutPhotos_tagsNestedInput
   }
@@ -27838,15 +27646,18 @@ export namespace Prisma {
   export type photos_tagsCreateManyInput = {
     id_tags?: number
     titre: string
+    important: boolean
   }
 
   export type photos_tagsUpdateManyMutationInput = {
     titre?: StringFieldUpdateOperationsInput | string
+    important?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type photos_tagsUncheckedUpdateManyInput = {
     id_tags?: IntFieldUpdateOperationsInput | number
     titre?: StringFieldUpdateOperationsInput | string
+    important?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type photos_tags_linkCreateInput = {
@@ -27885,38 +27696,45 @@ export namespace Prisma {
 
   export type photos_tags_rechercheCreateInput = {
     titre: string
+    important: boolean
     photos_tags_recherche_link?: photos_tags_recherche_linkCreateNestedManyWithoutPhotos_tags_rechercheInput
   }
 
   export type photos_tags_rechercheUncheckedCreateInput = {
     id_tags?: number
     titre: string
+    important: boolean
     photos_tags_recherche_link?: photos_tags_recherche_linkUncheckedCreateNestedManyWithoutPhotos_tags_rechercheInput
   }
 
   export type photos_tags_rechercheUpdateInput = {
     titre?: StringFieldUpdateOperationsInput | string
+    important?: BoolFieldUpdateOperationsInput | boolean
     photos_tags_recherche_link?: photos_tags_recherche_linkUpdateManyWithoutPhotos_tags_rechercheNestedInput
   }
 
   export type photos_tags_rechercheUncheckedUpdateInput = {
     id_tags?: IntFieldUpdateOperationsInput | number
     titre?: StringFieldUpdateOperationsInput | string
+    important?: BoolFieldUpdateOperationsInput | boolean
     photos_tags_recherche_link?: photos_tags_recherche_linkUncheckedUpdateManyWithoutPhotos_tags_rechercheNestedInput
   }
 
   export type photos_tags_rechercheCreateManyInput = {
     id_tags?: number
     titre: string
+    important: boolean
   }
 
   export type photos_tags_rechercheUpdateManyMutationInput = {
     titre?: StringFieldUpdateOperationsInput | string
+    important?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type photos_tags_rechercheUncheckedUpdateManyInput = {
     id_tags?: IntFieldUpdateOperationsInput | number
     titre?: StringFieldUpdateOperationsInput | string
+    important?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type photos_tags_recherche_linkCreateInput = {
@@ -28181,38 +27999,45 @@ export namespace Prisma {
 
   export type videos_tagsCreateInput = {
     titre: string
+    important: boolean
     videos_tags_link?: videos_tags_linkCreateNestedManyWithoutVideos_tagsInput
   }
 
   export type videos_tagsUncheckedCreateInput = {
     id_tags?: number
     titre: string
+    important: boolean
     videos_tags_link?: videos_tags_linkUncheckedCreateNestedManyWithoutVideos_tagsInput
   }
 
   export type videos_tagsUpdateInput = {
     titre?: StringFieldUpdateOperationsInput | string
+    important?: BoolFieldUpdateOperationsInput | boolean
     videos_tags_link?: videos_tags_linkUpdateManyWithoutVideos_tagsNestedInput
   }
 
   export type videos_tagsUncheckedUpdateInput = {
     id_tags?: IntFieldUpdateOperationsInput | number
     titre?: StringFieldUpdateOperationsInput | string
+    important?: BoolFieldUpdateOperationsInput | boolean
     videos_tags_link?: videos_tags_linkUncheckedUpdateManyWithoutVideos_tagsNestedInput
   }
 
   export type videos_tagsCreateManyInput = {
     id_tags?: number
     titre: string
+    important: boolean
   }
 
   export type videos_tagsUpdateManyMutationInput = {
     titre?: StringFieldUpdateOperationsInput | string
+    important?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type videos_tagsUncheckedUpdateManyInput = {
     id_tags?: IntFieldUpdateOperationsInput | number
     titre?: StringFieldUpdateOperationsInput | string
+    important?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type videos_tags_linkCreateInput = {
@@ -28257,8 +28082,6 @@ export namespace Prisma {
     image?: string | null
     createdAt: Date | string
     updatedAt: Date | string
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -28269,8 +28092,6 @@ export namespace Prisma {
     image?: string | null
     createdAt: Date | string
     updatedAt: Date | string
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -28281,8 +28102,6 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -28293,8 +28112,6 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -28335,7 +28152,7 @@ export namespace Prisma {
     updatedAt: Date | string
     ipAddress?: string | null
     userAgent?: string | null
-    User: UserCreateNestedOneWithoutSessionsInput
+    userId: string
   }
 
   export type SessionUncheckedCreateInput = {
@@ -28357,7 +28174,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    User?: UserUpdateOneRequiredWithoutSessionsNestedInput
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
   export type SessionUncheckedUpdateInput = {
@@ -28390,6 +28207,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
   export type SessionUncheckedUpdateManyInput = {
@@ -28407,6 +28225,7 @@ export namespace Prisma {
     id: string
     accountId: string
     providerId: string
+    userId: string
     accessToken?: string | null
     refreshToken?: string | null
     idToken?: string | null
@@ -28416,7 +28235,6 @@ export namespace Prisma {
     password?: string | null
     createdAt: Date | string
     updatedAt: Date | string
-    User: UserCreateNestedOneWithoutAccountsInput
   }
 
   export type AccountUncheckedCreateInput = {
@@ -28439,6 +28257,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     accountId?: StringFieldUpdateOperationsInput | string
     providerId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     idToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28448,7 +28267,6 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    User?: UserUpdateOneRequiredWithoutAccountsNestedInput
   }
 
   export type AccountUncheckedUpdateInput = {
@@ -28487,6 +28305,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     accountId?: StringFieldUpdateOperationsInput | string
     providerId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
     idToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29166,6 +28985,7 @@ export namespace Prisma {
   export type photos_tagsCountOrderByAggregateInput = {
     id_tags?: SortOrder
     titre?: SortOrder
+    important?: SortOrder
   }
 
   export type photos_tagsAvgOrderByAggregateInput = {
@@ -29175,11 +28995,13 @@ export namespace Prisma {
   export type photos_tagsMaxOrderByAggregateInput = {
     id_tags?: SortOrder
     titre?: SortOrder
+    important?: SortOrder
   }
 
   export type photos_tagsMinOrderByAggregateInput = {
     id_tags?: SortOrder
     titre?: SortOrder
+    important?: SortOrder
   }
 
   export type photos_tagsSumOrderByAggregateInput = {
@@ -29225,6 +29047,7 @@ export namespace Prisma {
   export type photos_tags_rechercheCountOrderByAggregateInput = {
     id_tags?: SortOrder
     titre?: SortOrder
+    important?: SortOrder
   }
 
   export type photos_tags_rechercheAvgOrderByAggregateInput = {
@@ -29234,11 +29057,13 @@ export namespace Prisma {
   export type photos_tags_rechercheMaxOrderByAggregateInput = {
     id_tags?: SortOrder
     titre?: SortOrder
+    important?: SortOrder
   }
 
   export type photos_tags_rechercheMinOrderByAggregateInput = {
     id_tags?: SortOrder
     titre?: SortOrder
+    important?: SortOrder
   }
 
   export type photos_tags_rechercheSumOrderByAggregateInput = {
@@ -29478,6 +29303,7 @@ export namespace Prisma {
   export type videos_tagsCountOrderByAggregateInput = {
     id_tags?: SortOrder
     titre?: SortOrder
+    important?: SortOrder
   }
 
   export type videos_tagsAvgOrderByAggregateInput = {
@@ -29487,11 +29313,13 @@ export namespace Prisma {
   export type videos_tagsMaxOrderByAggregateInput = {
     id_tags?: SortOrder
     titre?: SortOrder
+    important?: SortOrder
   }
 
   export type videos_tagsMinOrderByAggregateInput = {
     id_tags?: SortOrder
     titre?: SortOrder
+    important?: SortOrder
   }
 
   export type videos_tagsSumOrderByAggregateInput = {
@@ -29538,26 +29366,6 @@ export namespace Prisma {
     id_tags?: SortOrder
   }
 
-  export type SessionListRelationFilter = {
-    every?: SessionWhereInput
-    some?: SessionWhereInput
-    none?: SessionWhereInput
-  }
-
-  export type AccountListRelationFilter = {
-    every?: AccountWhereInput
-    some?: AccountWhereInput
-    none?: AccountWhereInput
-  }
-
-  export type SessionOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type AccountOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type UserOrderByRelevanceInput = {
     fields: UserOrderByRelevanceFieldEnum | UserOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -29592,11 +29400,6 @@ export namespace Prisma {
     image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-  }
-
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
   }
 
   export type SessionOrderByRelevanceInput = {
@@ -30446,120 +30249,8 @@ export namespace Prisma {
     update?: XOR<XOR<videos_tagsUpdateToOneWithWhereWithoutVideos_tags_linkInput, videos_tagsUpdateWithoutVideos_tags_linkInput>, videos_tagsUncheckedUpdateWithoutVideos_tags_linkInput>
   }
 
-  export type SessionCreateNestedManyWithoutUserInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-  }
-
-  export type AccountCreateNestedManyWithoutUserInput = {
-    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
-    createMany?: AccountCreateManyUserInputEnvelope
-    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-  }
-
-  export type SessionUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-  }
-
-  export type AccountUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
-    createMany?: AccountCreateManyUserInputEnvelope
-    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-  }
-
-  export type SessionUpdateManyWithoutUserNestedInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
-  }
-
-  export type AccountUpdateManyWithoutUserNestedInput = {
-    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
-    upsert?: AccountUpsertWithWhereUniqueWithoutUserInput | AccountUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: AccountCreateManyUserInputEnvelope
-    set?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    disconnect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    delete?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
-  }
-
-  export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
-  }
-
-  export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
-    upsert?: AccountUpsertWithWhereUniqueWithoutUserInput | AccountUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: AccountCreateManyUserInputEnvelope
-    set?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    disconnect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    delete?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
-  }
-
-  export type UserCreateNestedOneWithoutSessionsInput = {
-    create?: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutSessionsInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
-    create?: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutSessionsInput
-    upsert?: UserUpsertWithoutSessionsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSessionsInput, UserUpdateWithoutSessionsInput>, UserUncheckedUpdateWithoutSessionsInput>
-  }
-
-  export type UserCreateNestedOneWithoutAccountsInput = {
-    create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
-  }
-
-  export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
-    create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
-    upsert?: UserUpsertWithoutAccountsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAccountsInput, UserUpdateWithoutAccountsInput>, UserUncheckedUpdateWithoutAccountsInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -31266,12 +30957,14 @@ export namespace Prisma {
 
   export type photos_tagsCreateWithoutPhotos_albums_tags_linkInput = {
     titre: string
+    important: boolean
     photos_tags_link?: photos_tags_linkCreateNestedManyWithoutPhotos_tagsInput
   }
 
   export type photos_tagsUncheckedCreateWithoutPhotos_albums_tags_linkInput = {
     id_tags?: number
     titre: string
+    important: boolean
     photos_tags_link?: photos_tags_linkUncheckedCreateNestedManyWithoutPhotos_tagsInput
   }
 
@@ -31321,12 +31014,14 @@ export namespace Prisma {
 
   export type photos_tagsUpdateWithoutPhotos_albums_tags_linkInput = {
     titre?: StringFieldUpdateOperationsInput | string
+    important?: BoolFieldUpdateOperationsInput | boolean
     photos_tags_link?: photos_tags_linkUpdateManyWithoutPhotos_tagsNestedInput
   }
 
   export type photos_tagsUncheckedUpdateWithoutPhotos_albums_tags_linkInput = {
     id_tags?: IntFieldUpdateOperationsInput | number
     titre?: StringFieldUpdateOperationsInput | string
+    important?: BoolFieldUpdateOperationsInput | boolean
     photos_tags_link?: photos_tags_linkUncheckedUpdateManyWithoutPhotos_tagsNestedInput
   }
 
@@ -31430,12 +31125,14 @@ export namespace Prisma {
 
   export type photos_tagsCreateWithoutPhotos_tags_linkInput = {
     titre: string
+    important: boolean
     photos_albums_tags_link?: photos_albums_tags_linkCreateNestedManyWithoutPhotos_tagsInput
   }
 
   export type photos_tagsUncheckedCreateWithoutPhotos_tags_linkInput = {
     id_tags?: number
     titre: string
+    important: boolean
     photos_albums_tags_link?: photos_albums_tags_linkUncheckedCreateNestedManyWithoutPhotos_tagsInput
   }
 
@@ -31493,12 +31190,14 @@ export namespace Prisma {
 
   export type photos_tagsUpdateWithoutPhotos_tags_linkInput = {
     titre?: StringFieldUpdateOperationsInput | string
+    important?: BoolFieldUpdateOperationsInput | boolean
     photos_albums_tags_link?: photos_albums_tags_linkUpdateManyWithoutPhotos_tagsNestedInput
   }
 
   export type photos_tagsUncheckedUpdateWithoutPhotos_tags_linkInput = {
     id_tags?: IntFieldUpdateOperationsInput | number
     titre?: StringFieldUpdateOperationsInput | string
+    important?: BoolFieldUpdateOperationsInput | boolean
     photos_albums_tags_link?: photos_albums_tags_linkUncheckedUpdateManyWithoutPhotos_tagsNestedInput
   }
 
@@ -31568,11 +31267,13 @@ export namespace Prisma {
 
   export type photos_tags_rechercheCreateWithoutPhotos_tags_recherche_linkInput = {
     titre: string
+    important: boolean
   }
 
   export type photos_tags_rechercheUncheckedCreateWithoutPhotos_tags_recherche_linkInput = {
     id_tags?: number
     titre: string
+    important: boolean
   }
 
   export type photos_tags_rechercheCreateOrConnectWithoutPhotos_tags_recherche_linkInput = {
@@ -31629,11 +31330,13 @@ export namespace Prisma {
 
   export type photos_tags_rechercheUpdateWithoutPhotos_tags_recherche_linkInput = {
     titre?: StringFieldUpdateOperationsInput | string
+    important?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type photos_tags_rechercheUncheckedUpdateWithoutPhotos_tags_recherche_linkInput = {
     id_tags?: IntFieldUpdateOperationsInput | number
     titre?: StringFieldUpdateOperationsInput | string
+    important?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type videos_tags_linkCreateWithoutVideosInput = {
@@ -31748,11 +31451,13 @@ export namespace Prisma {
 
   export type videos_tagsCreateWithoutVideos_tags_linkInput = {
     titre: string
+    important: boolean
   }
 
   export type videos_tagsUncheckedCreateWithoutVideos_tags_linkInput = {
     id_tags?: number
     titre: string
+    important: boolean
   }
 
   export type videos_tagsCreateOrConnectWithoutVideos_tags_linkInput = {
@@ -31813,266 +31518,13 @@ export namespace Prisma {
 
   export type videos_tagsUpdateWithoutVideos_tags_linkInput = {
     titre?: StringFieldUpdateOperationsInput | string
+    important?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type videos_tagsUncheckedUpdateWithoutVideos_tags_linkInput = {
     id_tags?: IntFieldUpdateOperationsInput | number
     titre?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type SessionCreateWithoutUserInput = {
-    id: string
-    expiresAt: Date | string
-    token: string
-    createdAt: Date | string
-    updatedAt: Date | string
-    ipAddress?: string | null
-    userAgent?: string | null
-  }
-
-  export type SessionUncheckedCreateWithoutUserInput = {
-    id: string
-    expiresAt: Date | string
-    token: string
-    createdAt: Date | string
-    updatedAt: Date | string
-    ipAddress?: string | null
-    userAgent?: string | null
-  }
-
-  export type SessionCreateOrConnectWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
-  }
-
-  export type SessionCreateManyUserInputEnvelope = {
-    data: SessionCreateManyUserInput | SessionCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type AccountCreateWithoutUserInput = {
-    id: string
-    accountId: string
-    providerId: string
-    accessToken?: string | null
-    refreshToken?: string | null
-    idToken?: string | null
-    accessTokenExpiresAt?: Date | string | null
-    refreshTokenExpiresAt?: Date | string | null
-    scope?: string | null
-    password?: string | null
-    createdAt: Date | string
-    updatedAt: Date | string
-  }
-
-  export type AccountUncheckedCreateWithoutUserInput = {
-    id: string
-    accountId: string
-    providerId: string
-    accessToken?: string | null
-    refreshToken?: string | null
-    idToken?: string | null
-    accessTokenExpiresAt?: Date | string | null
-    refreshTokenExpiresAt?: Date | string | null
-    scope?: string | null
-    password?: string | null
-    createdAt: Date | string
-    updatedAt: Date | string
-  }
-
-  export type AccountCreateOrConnectWithoutUserInput = {
-    where: AccountWhereUniqueInput
-    create: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput>
-  }
-
-  export type AccountCreateManyUserInputEnvelope = {
-    data: AccountCreateManyUserInput | AccountCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type SessionUpsertWithWhereUniqueWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
-    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
-  }
-
-  export type SessionUpdateWithWhereUniqueWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    data: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
-  }
-
-  export type SessionUpdateManyWithWhereWithoutUserInput = {
-    where: SessionScalarWhereInput
-    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type SessionScalarWhereInput = {
-    AND?: SessionScalarWhereInput | SessionScalarWhereInput[]
-    OR?: SessionScalarWhereInput[]
-    NOT?: SessionScalarWhereInput | SessionScalarWhereInput[]
-    id?: StringFilter<"Session"> | string
-    expiresAt?: DateTimeFilter<"Session"> | Date | string
-    token?: StringFilter<"Session"> | string
-    createdAt?: DateTimeFilter<"Session"> | Date | string
-    updatedAt?: DateTimeFilter<"Session"> | Date | string
-    ipAddress?: StringNullableFilter<"Session"> | string | null
-    userAgent?: StringNullableFilter<"Session"> | string | null
-    userId?: StringFilter<"Session"> | string
-  }
-
-  export type AccountUpsertWithWhereUniqueWithoutUserInput = {
-    where: AccountWhereUniqueInput
-    update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
-    create: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput>
-  }
-
-  export type AccountUpdateWithWhereUniqueWithoutUserInput = {
-    where: AccountWhereUniqueInput
-    data: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
-  }
-
-  export type AccountUpdateManyWithWhereWithoutUserInput = {
-    where: AccountScalarWhereInput
-    data: XOR<AccountUpdateManyMutationInput, AccountUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type AccountScalarWhereInput = {
-    AND?: AccountScalarWhereInput | AccountScalarWhereInput[]
-    OR?: AccountScalarWhereInput[]
-    NOT?: AccountScalarWhereInput | AccountScalarWhereInput[]
-    id?: StringFilter<"Account"> | string
-    accountId?: StringFilter<"Account"> | string
-    providerId?: StringFilter<"Account"> | string
-    userId?: StringFilter<"Account"> | string
-    accessToken?: StringNullableFilter<"Account"> | string | null
-    refreshToken?: StringNullableFilter<"Account"> | string | null
-    idToken?: StringNullableFilter<"Account"> | string | null
-    accessTokenExpiresAt?: DateTimeNullableFilter<"Account"> | Date | string | null
-    refreshTokenExpiresAt?: DateTimeNullableFilter<"Account"> | Date | string | null
-    scope?: StringNullableFilter<"Account"> | string | null
-    password?: StringNullableFilter<"Account"> | string | null
-    createdAt?: DateTimeFilter<"Account"> | Date | string
-    updatedAt?: DateTimeFilter<"Account"> | Date | string
-  }
-
-  export type UserCreateWithoutSessionsInput = {
-    id: string
-    name: string
-    email: string
-    emailVerified: boolean
-    image?: string | null
-    createdAt: Date | string
-    updatedAt: Date | string
-    accounts?: AccountCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutSessionsInput = {
-    id: string
-    name: string
-    email: string
-    emailVerified: boolean
-    image?: string | null
-    createdAt: Date | string
-    updatedAt: Date | string
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutSessionsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
-  }
-
-  export type UserUpsertWithoutSessionsInput = {
-    update: XOR<UserUpdateWithoutSessionsInput, UserUncheckedUpdateWithoutSessionsInput>
-    create: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutSessionsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutSessionsInput, UserUncheckedUpdateWithoutSessionsInput>
-  }
-
-  export type UserUpdateWithoutSessionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutSessionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserCreateWithoutAccountsInput = {
-    id: string
-    name: string
-    email: string
-    emailVerified: boolean
-    image?: string | null
-    createdAt: Date | string
-    updatedAt: Date | string
-    sessions?: SessionCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutAccountsInput = {
-    id: string
-    name: string
-    email: string
-    emailVerified: boolean
-    image?: string | null
-    createdAt: Date | string
-    updatedAt: Date | string
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutAccountsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
-  }
-
-  export type UserUpsertWithoutAccountsInput = {
-    update: XOR<UserUpdateWithoutAccountsInput, UserUncheckedUpdateWithoutAccountsInput>
-    create: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutAccountsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutAccountsInput, UserUncheckedUpdateWithoutAccountsInput>
-  }
-
-  export type UserUpdateWithoutAccountsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutAccountsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    important?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type autre_tags_linkCreateManyAutreInput = {
@@ -32265,106 +31717,6 @@ export namespace Prisma {
 
   export type videos_tags_linkUncheckedUpdateManyWithoutVideos_tagsInput = {
     id_vid?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type SessionCreateManyUserInput = {
-    id: string
-    expiresAt: Date | string
-    token: string
-    createdAt: Date | string
-    updatedAt: Date | string
-    ipAddress?: string | null
-    userAgent?: string | null
-  }
-
-  export type AccountCreateManyUserInput = {
-    id: string
-    accountId: string
-    providerId: string
-    accessToken?: string | null
-    refreshToken?: string | null
-    idToken?: string | null
-    accessTokenExpiresAt?: Date | string | null
-    refreshTokenExpiresAt?: Date | string | null
-    scope?: string | null
-    password?: string | null
-    createdAt: Date | string
-    updatedAt: Date | string
-  }
-
-  export type SessionUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    token?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type SessionUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    token?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type SessionUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    token?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type AccountUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    accountId?: StringFieldUpdateOperationsInput | string
-    providerId?: StringFieldUpdateOperationsInput | string
-    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    idToken?: NullableStringFieldUpdateOperationsInput | string | null
-    accessTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    refreshTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    scope?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AccountUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    accountId?: StringFieldUpdateOperationsInput | string
-    providerId?: StringFieldUpdateOperationsInput | string
-    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    idToken?: NullableStringFieldUpdateOperationsInput | string | null
-    accessTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    refreshTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    scope?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AccountUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    accountId?: StringFieldUpdateOperationsInput | string
-    providerId?: StringFieldUpdateOperationsInput | string
-    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    idToken?: NullableStringFieldUpdateOperationsInput | string | null
-    accessTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    refreshTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    scope?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

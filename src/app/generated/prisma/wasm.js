@@ -208,7 +208,8 @@ exports.Prisma.Photos_experiencesScalarFieldEnum = {
 
 exports.Prisma.Photos_tagsScalarFieldEnum = {
   id_tags: 'id_tags',
-  titre: 'titre'
+  titre: 'titre',
+  important: 'important'
 };
 
 exports.Prisma.Photos_tags_linkScalarFieldEnum = {
@@ -218,7 +219,8 @@ exports.Prisma.Photos_tags_linkScalarFieldEnum = {
 
 exports.Prisma.Photos_tags_rechercheScalarFieldEnum = {
   id_tags: 'id_tags',
-  titre: 'titre'
+  titre: 'titre',
+  important: 'important'
 };
 
 exports.Prisma.Photos_tags_recherche_linkScalarFieldEnum = {
@@ -261,7 +263,8 @@ exports.Prisma.VideosScalarFieldEnum = {
 
 exports.Prisma.Videos_tagsScalarFieldEnum = {
   id_tags: 'id_tags',
-  titre: 'titre'
+  titre: 'titre',
+  important: 'important'
 };
 
 exports.Prisma.Videos_tags_linkScalarFieldEnum = {

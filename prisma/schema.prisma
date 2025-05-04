@@ -119,6 +119,7 @@ model photos_experiences {
 model photos_tags {
   id_tags                 Int                       @id @default(autoincrement())
   titre                   String                    @db.VarChar(50)
+  important               Boolean
   photos_albums_tags_link photos_albums_tags_link[]
   photos_tags_link        photos_tags_link[]
 }
@@ -136,6 +137,7 @@ model photos_tags_link {
 model photos_tags_recherche {
   id_tags                    Int                          @id @default(autoincrement())
   titre                      String                       @db.VarChar(50)
+  important                  Boolean
   photos_tags_recherche_link photos_tags_recherche_link[]
 }
 
@@ -186,6 +188,7 @@ model videos {
 model videos_tags {
   id_tags          Int                @id @default(autoincrement())
   titre            String             @db.VarChar(50)
+  important        Boolean
   videos_tags_link videos_tags_link[]
 }
 
@@ -208,9 +211,6 @@ model User {
   createdAt     DateTime
   updatedAt     DateTime
 
-  sessions Session[]
-  accounts Account[]
-
   @@map("user")
 }
 
@@ -223,7 +223,6 @@ model Session {
   ipAddress String?  @db.Text
   userAgent String?  @db.Text
   userId    String
-  User      User     @relation(fields: [userId], references: [id])
 
   @@index([userId], map: "session_userId_fkey")
   @@map("session")
@@ -243,7 +242,6 @@ model Account {
   password              String?   @db.Text
   createdAt             DateTime
   updatedAt             DateTime
-  User                  User      @relation(fields: [userId], references: [id])
 
   @@index([userId], map: "account_userId_fkey")
   @@map("account")

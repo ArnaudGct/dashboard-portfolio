@@ -59,6 +59,7 @@ export async function addVideoAction(formData: FormData) {
           tag = await prisma.videos_tags.create({
             data: {
               titre: tagId, // Utiliser le tagId comme titre
+              important: false, // Par défaut, les tags créés automatiquement ne sont pas importants
             },
           });
           console.log("Tag créé avec succès:", tag);
@@ -145,6 +146,7 @@ export async function updateVideoAction(formData: FormData) {
         tag = await prisma.videos_tags.create({
           data: {
             titre: tagId,
+            important: false, // Par défaut, les tags créés automatiquement ne sont pas importants
           },
         });
       }
@@ -197,24 +199,6 @@ export async function deleteVideoAction(videoId: number) {
   }
 }
 
-// Action pour mettre à jour un tag
-export async function updateTagAction(id: number, title: string) {
-  try {
-    await prisma.videos_tags.update({
-      where: { id_tags: id },
-      data: { titre: title },
-    });
-
-    revalidatePath("/creations/videos/tags");
-    revalidatePath("/creations/videos");
-
-    return { success: true };
-  } catch (error) {
-    console.error("Erreur lors de la mise à jour du tag:", error);
-    throw error;
-  }
-}
-
 // Action pour supprimer un tag
 export async function deleteTagAction(id: number) {
   try {
@@ -238,8 +222,46 @@ export async function deleteTagAction(id: number) {
   }
 }
 
+export async function updateTagAction(
+  id: number,
+  title: string,
+  important?: boolean
+) {
+  try {
+    // Créer un objet de données à mettre à jour
+    const updateData: {
+      titre: string;
+      important?: boolean;
+    } = {
+      titre: title,
+    };
+
+    // Ajouter important à l'objet uniquement s'il est défini
+    if (important !== undefined) {
+      updateData.important = important;
+    }
+
+    // Mettre à jour le tag
+    await prisma.videos_tags.update({
+      where: { id_tags: id },
+      data: updateData,
+    });
+
+    revalidatePath("/creations/videos/tags");
+    revalidatePath("/creations/videos");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour du tag:", error);
+    throw error;
+  }
+}
+
 // Action pour créer un nouveau tag
-export async function createTagAction(title: string) {
+export async function createTagAction(
+  title: string,
+  important: boolean = false
+) {
   try {
     // Vérifier si le tag existe déjà (pour éviter les doublons)
     const existingTag = await prisma.videos_tags.findFirst({
@@ -254,9 +276,12 @@ export async function createTagAction(title: string) {
       };
     }
 
-    // Créer le nouveau tag
+    // Créer le nouveau tag avec le paramètre important
     const newTag = await prisma.videos_tags.create({
-      data: { titre: title },
+      data: {
+        titre: title,
+        important: important,
+      },
     });
 
     revalidatePath("/creations/videos/tags");

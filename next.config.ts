@@ -1,6 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "30mb",
+    },
+  },
+  serverExternalPackages: ["sharp"],
   images: {
     domains: ["localhost"], // Ajoutez ici le domaine de votre portfolio
     remotePatterns: [
