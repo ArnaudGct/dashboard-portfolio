@@ -203,6 +203,7 @@ export function TagItem({ initialTags }: TagsManagerProps) {
                   id="new-tag-important"
                   checked={isImportant}
                   onCheckedChange={setIsImportant}
+                  className="cursor-pointer"
                 />
                 <Label htmlFor="new-tag-important">Tag important</Label>
               </div>
@@ -288,6 +289,7 @@ export function TagItem({ initialTags }: TagsManagerProps) {
                 id="edit-tag-important"
                 checked={isEditImportant}
                 onCheckedChange={setIsEditImportant}
+                className="cursor-pointer"
               />
               <Label htmlFor="edit-tag-important">Tag important</Label>
             </div>

@@ -1,12 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import prisma from "@/lib/prisma";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -16,7 +11,9 @@ import {
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
+  BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
+import { Tag } from "@/components/tag";
 
 export default async function PhotoAlbums() {
   // Récupérer tous les albums avec leurs photos et tags associés
@@ -48,15 +45,22 @@ export default async function PhotoAlbums() {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbLink>Albums</BreadcrumbLink>
+                <BreadcrumbPage>Albums</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          <Link href="/creations/photos/albums/add">
-            <Button className="cursor-pointer">
-              <Plus /> Nouvel album
-            </Button>
-          </Link>
+          <div className="flex gap-2">
+            <Link href="/creations/photos/tags">
+              <Button variant="outline" className="cursor-pointer">
+                Tags
+              </Button>
+            </Link>
+            <Link href="/creations/photos/albums/add">
+              <Button className="cursor-pointer">
+                <Plus /> Nouvel album
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Si aucun album, afficher un message */}
@@ -73,45 +77,38 @@ export default async function PhotoAlbums() {
               <Link
                 href={`/creations/photos/albums/edit/${album.id_alb}`}
                 key={album.id_alb}
-                className="block"
               >
-                <Card className="hover:shadow-md transition-shadow h-full cursor-pointer">
-                  <CardHeader>
-                    <div className="flex justify-between">
-                      <h3 className="text-lg font-semibold hover:underline">
-                        {album.titre}
-                      </h3>
+                <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                  <div className="flex flex-col gap-4 px-6">
+                    <div className="flex flex-col gap-1.5">
+                      <p className="text-lg font-semibold">{album.titre}</p>
+
+                      <p className="text-sm text-muted-foreground line-clamp-2">
+                        {album.description || "Aucune description"}
+                      </p>
                     </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground line-clamp-2">
-                      {album.description || "Aucune description"}
-                    </p>
 
                     {album.photos_albums_tags_link.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mt-3">
+                      <div className="flex flex-wrap gap-2">
                         {album.photos_albums_tags_link.map((tagLink) => (
-                          <span
-                            key={tagLink.id_tags}
-                            className="bg-muted text-muted-foreground rounded-md px-1.5 py-0.5 text-xs"
-                          >
+                          <Tag key={`tag-${tagLink.id_tags}`} variant="default">
                             {tagLink.photos_tags.titre}
-                          </span>
+                          </Tag>
                         ))}
                       </div>
                     )}
-                  </CardContent>
-                  <CardFooter className="flex justify-between text-sm text-muted-foreground">
-                    <p>
-                      {album.photos_albums_link.length} photo
-                      {album.photos_albums_link.length !== 1 ? "s" : ""}
-                    </p>
-                    <p>
-                      {format(new Date(album.date), "d MMMM yyyy", {
-                        locale: fr,
-                      })}
-                    </p>
-                  </CardFooter>
+                    <div className="flex justify-between items-center">
+                      <p className="text-sm text-muted-foreground">
+                        {album.photos_albums_link.length} photo
+                        {album.photos_albums_link.length !== 1 ? "s" : ""}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {format(new Date(album.date), "d MMMM yyyy", {
+                          locale: fr,
+                        })}
+                      </p>
+                    </div>
+                  </div>
                 </Card>
               </Link>
             ))}

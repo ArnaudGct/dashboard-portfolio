@@ -309,7 +309,7 @@ export function AddPhotoItemSimple({
                 />
               </div>
               {selectedTags.length > 0 && (
-                <div className="mt-2 flex flex-wrap gap-1">
+                <div className="flex flex-wrap gap-1">
                   {selectedTags.map((tagId) => {
                     const tag = availableTags.find((t) => t.id === tagId);
                     return (
@@ -346,7 +346,7 @@ export function AddPhotoItemSimple({
                 />
               </div>
               {selectedSearchTags.length > 0 && (
-                <div className="mt-2 flex flex-wrap gap-1">
+                <div className="flex flex-wrap gap-1">
                   {selectedSearchTags.map((tagId) => {
                     const tag = availableSearchTags.find((t) => t.id === tagId);
                     return (
@@ -385,7 +385,7 @@ export function AddPhotoItemSimple({
                 />
               </div>
               {selectedAlbums.length > 0 && (
-                <div className="mt-2 flex flex-wrap gap-1">
+                <div className="flex flex-wrap gap-1">
                   {selectedAlbums.map((albumId) => {
                     const album = availableAlbums.find((a) => a.id === albumId);
                     return (
@@ -410,7 +410,12 @@ export function AddPhotoItemSimple({
 
           <div className="flex items-center space-x-2 mt-2">
             <Label htmlFor="isPublished">Afficher</Label>
-            <Switch id="isPublished" name="isPublished" defaultChecked />
+            <Switch
+              id="isPublished"
+              name="isPublished"
+              defaultChecked
+              className="cursor-pointer"
+            />
           </div>
           <div className="flex gap-2">
             <Button

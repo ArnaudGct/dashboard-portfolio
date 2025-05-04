@@ -304,6 +304,7 @@ export function EditVideoItem({
               id="isPublished"
               name="isPublished"
               defaultChecked={initialData.afficher}
+              className="cursor-pointer"
             />
           </div>
 

@@ -81,7 +81,7 @@ export default async function AddAlbumPage() {
     const baseUrl = process.env.NEXT_PUBLIC_PORTFOLIO_URL || "";
 
     return (
-      <div className="p-6">
+      <div className="w-[90%] mx-auto">
         <AddAlbumItem
           availableTags={formattedTags}
           availableImages={formattedPhotos}

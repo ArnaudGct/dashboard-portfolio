@@ -264,7 +264,12 @@ export function AddAutreItem({ availableTags }: AddAutreFormProps) {
 
           <div className="flex items-center space-x-2">
             <Label htmlFor="isPublished">Afficher</Label>
-            <Switch id="isPublished" name="isPublished" defaultChecked />
+            <Switch
+              id="isPublished"
+              name="isPublished"
+              defaultChecked
+              className="cursor-pointer"
+            />
           </div>
 
           <div className="flex gap-2">

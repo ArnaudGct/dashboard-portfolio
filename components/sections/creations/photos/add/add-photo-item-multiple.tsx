@@ -316,7 +316,7 @@ export function AddPhotoItemMultiple({
           </div>
 
           {selectedAlbums.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-1">
+            <div className="flex flex-wrap gap-1">
               {selectedAlbums.map((albumId) => {
                 const album = availableAlbums.find((a) => a.id === albumId);
                 return (

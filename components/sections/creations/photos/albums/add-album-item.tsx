@@ -39,6 +39,7 @@ import { CalendarIcon, X } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
+import { RemovableTag } from "@/components/removable-tag";
 
 // Mise à jour des props
 type AddAlbumFormProps = {
@@ -176,106 +177,113 @@ export function AddAlbumItem({
   };
 
   return (
-    <div className="w-[90%] mx-auto">
-      <div className="flex flex-col gap-8">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/creations/photos">Photos</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/creations/photos/albums">
-                Albums
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Nouvel album</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+    <div className="flex flex-col gap-8">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/creations/photos">Photos</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/creations/photos/albums">
+              Albums
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Nouvel album</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
-        <form className="flex flex-col gap-5" action={handleAddAlbum}>
-          <div className="grid w-full items-center gap-1.5">
-            <Label htmlFor="title">Titre</Label>
-            <Input
-              type="text"
-              id="title"
-              name="title"
-              placeholder="Titre de l'album"
-              required
-            />
-          </div>
+      <form className="flex flex-col gap-5" action={handleAddAlbum}>
+        <div className="grid w-full items-center gap-1.5">
+          <Label htmlFor="title">Titre</Label>
+          <Input
+            type="text"
+            id="title"
+            name="title"
+            placeholder="Titre de l'album"
+            required
+          />
+        </div>
 
-          <div className="grid w-full gap-1.5">
-            <Label htmlFor="description">Description</Label>
-            <Textarea
-              id="description"
-              name="description"
-              placeholder="Description de l'album"
-              rows={4}
-            />
-          </div>
+        <div className="grid w-full gap-1.5">
+          <Label htmlFor="description">Description</Label>
+          <Textarea
+            id="description"
+            name="description"
+            placeholder="Description de l'album"
+            rows={4}
+          />
+        </div>
 
-          <div className="grid w-full items-center gap-1.5">
-            <Label htmlFor="date">Date</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant={"outline"}
-                  className={cn(
-                    "w-full justify-start text-left font-normal",
-                    !date && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {date ? (
-                    format(date, "d MMMM yyyy", { locale: fr })
-                  ) : (
-                    <span>Sélectionner une date</span>
-                  )}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
-                <Calendar
-                  mode="single"
-                  selected={date}
-                  onSelect={setDate}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
+        <div className="grid w-full items-center gap-1.5">
+          <Label htmlFor="date">Date</Label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant={"outline"}
+                className={cn(
+                  "w-full justify-start text-left font-normal",
+                  !date && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {date ? (
+                  format(date, "d MMMM yyyy", { locale: fr })
+                ) : (
+                  <span>Sélectionner une date</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0">
+              <Calendar
+                mode="single"
+                selected={date}
+                onSelect={setDate}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
 
-          <div className="grid w-full gap-1.5">
-            <Label htmlFor="tags">Tags</Label>
-            <TagSheet
-              title="Sélection des tags"
-              description="Choisissez les tags à appliquer à cet album"
-              options={availableTags}
-              selectedTags={selectedTags}
-              onChange={handleTagsChange}
-              onAddNew={handleAddTag}
-              triggerLabel="Sélectionner des tags"
-              searchPlaceholder="Rechercher un tag..."
-              addNewLabel="Ajouter un nouveau tag"
-              type="tag"
-            />
-            {selectedTags.length > 0 && (
-              <div className="mt-2 flex flex-wrap gap-1">
-                {selectedTags.map((tagId) => {
-                  const tag = availableTags.find((t) => t.id === tagId);
-                  return (
-                    <Badge key={tagId} variant="secondary" className="text-xs">
-                      {tag?.label || tagId}
-                    </Badge>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+        <div className="grid w-full gap-1.5">
+          <Label htmlFor="tags">Tags</Label>
+          <TagSheet
+            title="Sélection des tags"
+            description="Choisissez les tags à appliquer à cet album"
+            options={availableTags}
+            selectedTags={selectedTags}
+            onChange={handleTagsChange}
+            onAddNew={handleAddTag}
+            triggerLabel="Sélectionner des tags"
+            searchPlaceholder="Rechercher un tag..."
+            addNewLabel="Ajouter un nouveau tag"
+            type="tag"
+          />
+          {selectedTags.length > 0 && (
+            <div className="flex flex-wrap gap-1">
+              {selectedTags.map((tagId) => {
+                const tag = availableTags.find((t) => t.id === tagId);
+                return (
+                  <RemovableTag
+                    key={tagId}
+                    id={tagId}
+                    label={tag?.label || tagId}
+                    important={tag?.important}
+                    onRemove={(id) => {
+                      setSelectedTags(selectedTags.filter((t) => t !== id));
+                    }}
+                    tagType="tag"
+                  />
+                );
+              })}
+            </div>
+          )}
+        </div>
 
+        <div className="grid w-full gap-2">
           <div className="grid w-full gap-1.5">
             <Label htmlFor="images">Images</Label>
             <ImageSheet
@@ -288,164 +296,140 @@ export function AddAlbumItem({
               searchPlaceholder="Rechercher une image..."
               baseUrl={baseUrl}
             />
+          </div>
 
-            {/* Afficher les miniatures des images sélectionnées */}
-            {selectedImages.length > 0 && (
-              <div className="mt-2">
-                <Label className="mb-2 block text-sm">
-                  Aperçu: {selectedImages.length} photo
-                  {selectedImages.length > 1 ? "s" : ""} dans l'album
-                  {hasImageChanges && (
-                    <span className="text-orange-500 ml-2">
-                      ({imagesToAdd.length > 0 ? `+${imagesToAdd.length}` : ""}
-                      {imagesToRemove.length > 0
-                        ? `-${imagesToRemove.length}`
-                        : ""}
-                      )
-                    </span>
-                  )}
-                </Label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                  {selectedImages.map((imageId) => {
-                    const image = availableImages.find(
-                      (img) => img.id === imageId
-                    );
-                    if (!image) return null;
+          {/* Afficher les miniatures des images sélectionnées */}
+          {selectedImages.length > 0 && (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+              {selectedImages.map((imageId) => {
+                const image = availableImages.find((img) => img.id === imageId);
+                if (!image) return null;
 
-                    const isNewlyAdded = !initialImages.includes(imageId);
+                const isNewlyAdded = !initialImages.includes(imageId);
 
-                    return (
-                      <div
-                        key={imageId}
-                        className={`group relative aspect-square rounded-md overflow-hidden bg-muted ${
-                          isNewlyAdded ? "ring-2 ring-green-500" : ""
-                        }`}
-                      >
-                        {/* Lien vers la page d'édition de la photo */}
-                        <Link
-                          href={`/creations/photos/edit/${imageId}`}
-                          className="block h-full w-full"
-                        >
-                          <Image
-                            src={
-                              image.url.startsWith("http")
-                                ? image.url
-                                : `${baseUrl}${image.url}`
-                            }
-                            alt={
-                              image.alt || image.title || "Image sélectionnée"
-                            }
-                            fill
-                            className="object-cover transition-transform group-hover:scale-105"
-                            sizes="(max-width: 768px) 33vw, 20vw"
-                            onError={(e) => {
-                              const target = e.target as HTMLImageElement;
-                              target.src = "/placeholder-photo.jpg";
-                            }}
-                          />
-                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
-                        </Link>
+                return (
+                  <div
+                    key={imageId}
+                    className={`group relative aspect-square rounded-md overflow-hidden bg-muted ${
+                      isNewlyAdded ? "ring-2 ring-green-500" : ""
+                    }`}
+                  >
+                    {/* Lien vers la page d'édition de la photo */}
+                    <Link
+                      href={`/creations/photos/edit/${imageId}`}
+                      className="block h-full w-full"
+                    >
+                      <Image
+                        src={
+                          image.url.startsWith("http")
+                            ? image.url
+                            : `${baseUrl}${image.url}`
+                        }
+                        alt={image.alt || image.title || "Image sélectionnée"}
+                        fill
+                        className="object-cover transition-transform group-hover:scale-105"
+                        sizes="(max-width: 768px) 33vw, 20vw"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = "/placeholder-photo.jpg";
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                    </Link>
 
-                        {/* Bouton pour retirer la photo directement */}
-                        <Button
-                          type="button"
-                          variant="destructive"
-                          size="icon"
-                          className="absolute top-1 right-1 h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            // Retrait de l'image de la sélection
-                            setSelectedImages((prev) =>
-                              prev.filter((id) => id !== imageId)
-                            );
-                            toast.success("Photo retirée de la sélection");
-                          }}
-                        >
-                          <X className="h-4 w-4" />
-                          <span className="sr-only">
-                            Retirer de la sélection
-                          </span>
-                        </Button>
+                    {/* Bouton pour retirer la photo directement */}
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="icon"
+                      className="absolute top-1 right-1 h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        // Retrait de l'image de la sélection
+                        setSelectedImages((prev) =>
+                          prev.filter((id) => id !== imageId)
+                        );
+                        toast.success("Photo retirée de la sélection");
+                      }}
+                    >
+                      <X className="h-4 w-4" />
+                      <span className="sr-only">Retirer de la sélection</span>
+                    </Button>
 
-                        {/* Indication visuelle pour les nouvelles photos */}
-                        {isNewlyAdded && (
-                          <div className="absolute top-1 left-1 bg-green-500 text-white text-xs rounded-full px-1.5 py-0.5">
-                            Nouvelle
-                          </div>
-                        )}
+                    {/* Indication visuelle pour les nouvelles photos */}
+                    {isNewlyAdded && (
+                      <div className="absolute top-1 left-1 bg-green-500 text-white text-xs rounded-full px-1.5 py-0.5">
+                        Nouvelle
                       </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
 
-            {/* Message informatif sur les changements */}
-            {hasInitializedImages && hasImageChanges && (
-              <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-md flex justify-between items-center">
-                <p className="text-sm text-yellow-800">
-                  {imagesToAdd.length > 0 && (
-                    <span>
-                      <strong>{imagesToAdd.length}</strong> nouvelle(s) photo(s)
-                      ajoutée(s).{" "}
-                    </span>
-                  )}
-                  {imagesToRemove.length > 0 && (
-                    <span>
-                      <strong>{imagesToRemove.length}</strong> photo(s)
-                      sera(ont) retirée(s).{" "}
-                    </span>
-                  )}
-                  Les modifications ne seront appliquées qu'après avoir cliqué
-                  sur "Créer l'album".
-                </p>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  className="ml-2 h-8 text-yellow-800 border-yellow-300 hover:bg-yellow-100"
-                  onClick={handleRestoreImages}
-                >
-                  Annuler les modifications
-                </Button>
-              </div>
-            )}
+          {/* Message informatif sur les changements */}
+          {hasInitializedImages && hasImageChanges && (
+            <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-md flex justify-between items-center">
+              <p className="text-sm text-yellow-800">
+                {imagesToAdd.length > 0 && (
+                  <span>
+                    <strong>{imagesToAdd.length}</strong> nouvelle(s) photo(s)
+                    ajoutée(s).{" "}
+                  </span>
+                )}
+                {imagesToRemove.length > 0 && (
+                  <span>
+                    <strong>{imagesToRemove.length}</strong> photo(s) sera(ont)
+                    retirée(s).{" "}
+                  </span>
+                )}
+                Les modifications ne seront appliquées qu'après avoir cliqué sur
+                "Créer l'album".
+              </p>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="ml-2 h-8 text-yellow-800 border-yellow-300 hover:bg-yellow-100 cursor-pointer"
+                onClick={handleRestoreImages}
+              >
+                Annuler les modifications
+              </Button>
+            </div>
+          )}
+        </div>
 
-            {/* Message si aucune photo n'est sélectionnée */}
-            {selectedImages.length === 0 && (
-              <div className="bg-muted p-4 rounded-md text-center text-muted-foreground">
-                Aucune photo sélectionnée. Utilisez le bouton "Sélectionner des
-                images" pour en ajouter.
-              </div>
-            )}
-          </div>
+        <div className="flex items-center space-x-2">
+          <Label htmlFor="isPublished">Afficher</Label>
+          <Switch
+            id="isPublished"
+            name="isPublished"
+            defaultChecked
+            className="cursor-pointer"
+          />
+        </div>
 
-          <div className="flex items-center space-x-2">
-            <Label htmlFor="isPublished">Afficher</Label>
-            <Switch id="isPublished" name="isPublished" defaultChecked />
-          </div>
-
-          <div className="flex gap-2">
-            <Button
-              type="submit"
-              className="cursor-pointer"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Création en cours..." : "Créer l'album"}
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              className="cursor-pointer"
-              onClick={() => router.push("/creations/photos/albums")}
-              disabled={isSubmitting}
-            >
-              Annuler
-            </Button>
-          </div>
-        </form>
-      </div>
+        <div className="flex gap-2">
+          <Button
+            type="submit"
+            className="cursor-pointer"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Création en cours..." : "Créer l'album"}
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="cursor-pointer"
+            onClick={() => router.push("/creations/photos/albums")}
+            disabled={isSubmitting}
+          >
+            Annuler
+          </Button>
+        </div>
+      </form>
     </div>
   );
 }

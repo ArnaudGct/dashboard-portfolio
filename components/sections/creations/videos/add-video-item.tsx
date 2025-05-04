@@ -209,7 +209,11 @@ export function AddVideoItem({ availableTags }: AddVideoFormProps) {
 
           <div className="flex items-center space-x-2">
             <Label htmlFor="isPublished">Afficher</Label>
-            <Switch id="isPublished" name="isPublished" />
+            <Switch
+              id="isPublished"
+              name="isPublished"
+              className="cursor-pointer"
+            />
           </div>
 
           <div className="flex gap-2">

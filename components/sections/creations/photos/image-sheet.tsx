@@ -123,7 +123,10 @@ export function ImageSheet({
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline" className="w-full justify-start">
+        <Button
+          variant="outline"
+          className="w-full justify-start cursor-pointer"
+        >
           <ImageIcon className="mr-2 h-4 w-4" />
           {triggerLabel}
           {selectedImages.length > 0 && (

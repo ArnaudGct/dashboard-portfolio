@@ -508,7 +508,7 @@ export function EditPhotoItem({
                 />
               </div>
               {selectedTags.length > 0 && (
-                <div className="mt-2 flex flex-wrap gap-1">
+                <div className="flex flex-wrap gap-1">
                   {selectedTags.map((tagId) => {
                     const tag = availableTags.find((t) => t.id === tagId);
                     return (
@@ -544,7 +544,7 @@ export function EditPhotoItem({
                 />
               </div>
               {selectedSearchTags.length > 0 && (
-                <div className="mt-2 flex flex-wrap gap-1">
+                <div className="flex flex-wrap gap-1">
                   {selectedSearchTags.map((tagId) => {
                     const tag = availableSearchTags.find((t) => t.id === tagId);
                     return (
@@ -584,7 +584,7 @@ export function EditPhotoItem({
               </div>
 
               {selectedAlbums.length > 0 && (
-                <div className="mt-2 flex flex-wrap gap-1">
+                <div className="flex flex-wrap gap-1">
                   {selectedAlbums.map((albumId) => {
                     const album = availableAlbums.find((a) => a.id === albumId);
                     return (
@@ -613,6 +613,7 @@ export function EditPhotoItem({
               id="isPublished"
               name="isPublished"
               defaultChecked={initialData.afficher}
+              className="cursor-pointer"
             />
           </div>
 

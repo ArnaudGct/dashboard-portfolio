@@ -139,7 +139,7 @@ export default async function EditAlbumPage({
     };
 
     return (
-      <div className="p-6">
+      <div className="w-[90%] mx-auto">
         <EditAlbumItem
           initialData={initialData}
           availableTags={formattedTags}
@@ -155,7 +155,7 @@ export default async function EditAlbumPage({
       error
     );
     return (
-      <div className="p-6">
+      <div className="w-[90%] mx-auto">
         <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-md">
           Une erreur est survenue lors du chargement des données. Veuillez
           réessayer ou contacter l'administrateur.

@@ -346,6 +346,7 @@ export function TagSheet({
                       id="important"
                       checked={isImportant}
                       onCheckedChange={setIsImportant}
+                      className="cursor-pointer"
                     />
                     <Label htmlFor="important" className="text-sm">
                       Tag important
