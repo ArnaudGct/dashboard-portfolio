@@ -49,7 +49,7 @@ async function saveImage(
     // URL de votre portfolio
     const portfolioUrl =
       process.env.PORTFOLIO_API_URL || "http://localhost:3001";
-    const apiUrl = `${portfolioUrl}/api/actions-creations/photos`;
+    const apiUrl = `${portfolioUrl}/api/actions/creations/photos`;
 
     console.log(
       `Uploading to: ${apiUrl}, file type: ${file.type}, size: ${(file.size / 1024).toFixed(2)}KB, type: ${type}, isWebP: ${file.type.includes("webp")}`
@@ -329,7 +329,7 @@ export async function deletePhotoAction(photoId: number) {
       try {
         const portfolioUrl =
           process.env.PORTFOLIO_API_URL || "http://localhost:3001";
-        const deleteUrl = `${portfolioUrl}/api/actions-creations/photos`;
+        const deleteUrl = `${portfolioUrl}/api/actions/creations/photos`;
 
         // Supprimer l'image haute résolution
         if (

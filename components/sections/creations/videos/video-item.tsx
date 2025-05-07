@@ -51,7 +51,7 @@ export function VideoItem({ video }: VideoType) {
           </div>
         )}
 
-        <div className="flex flex-col gap-4 py-6">
+        <div className="flex flex-col gap-4 py-6 w-full">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
               <p className="text-xl font-semibold">{video.titre}</p>

@@ -1,5 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -26,4 +28,34 @@ export function extractYoutubeId(url: string): string {
   }
 
   return "";
+}
+
+// Fonction de formatage de date ajoutée
+export function formatDate(
+  date: Date | string,
+  formatString: string = "dd MMMM yyyy"
+) {
+  const dateObj = typeof date === "string" ? new Date(date) : date;
+  return format(dateObj, formatString, { locale: fr });
+}
+
+// Format de date pour afficher la période (mois année - mois année)
+export function formatDatePeriod(
+  dateDebut: Date | string,
+  dateFin?: Date | string | null
+) {
+  const debut = typeof dateDebut === "string" ? new Date(dateDebut) : dateDebut;
+
+  // Format court pour le mois et l'année
+  const formatMoisAnnee = "MMM yyyy";
+
+  if (!dateFin) {
+    // Si pas de date de fin, on affiche "depuis mois année"
+    return `${format(debut, formatMoisAnnee, { locale: fr })}`;
+  }
+
+  const fin = typeof dateFin === "string" ? new Date(dateFin) : dateFin;
+
+  // Format de période complète
+  return `${format(debut, formatMoisAnnee, { locale: fr })} - ${format(fin, formatMoisAnnee, { locale: fr })}`;
 }

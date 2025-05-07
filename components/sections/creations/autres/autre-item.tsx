@@ -84,7 +84,7 @@ export function AutreItem({ autre }: AutreProps) {
             }}
           />
         </div>
-        <div className="flex flex-col gap-4 py-6">
+        <div className="flex flex-col gap-4 py-6 w-full">
           <div className="flex flex-col gap-2">
             <p className="text-xl font-semibold">{autre.titre}</p>
             <div className="leading-7 text-muted-foreground prose prose-sm dark:prose-invert max-w-none">
