@@ -6,6 +6,7 @@ import prisma from "@/lib/prisma";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import ReactMarkdown from "react-markdown";
+import Image from "next/image";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,14 +16,24 @@ import {
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
 import { Tag } from "@/components/tag";
-import React from "react";
+import { AlbumPreview } from "@/components/sections/creations/photos/albums/album-preview";
 
 export default async function PhotoAlbums() {
   // Récupérer tous les albums avec leurs photos et tags associés
   const albums = await prisma.photos_albums.findMany({
     include: {
       // Inclure les liens vers les photos
-      photos_albums_link: true,
+      photos_albums_link: {
+        include: {
+          photos: true, // Inclure les détails des photos
+        },
+        orderBy: {
+          photos: {
+            date: "desc", // Trier les photos par date décroissante
+          },
+        },
+        take: 5, // Limiter à 5 photos par album pour la prévisualisation
+      },
       // Inclure les tags de l'album
       photos_albums_tags_link: {
         include: {
@@ -74,41 +85,67 @@ export default async function PhotoAlbums() {
           </Card>
         ) : (
           // Sinon afficher tous les albums
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {albums.map((album) => (
               <Link
                 href={`/creations/photos/albums/edit/${album.id_alb}`}
                 key={album.id_alb}
+                className="block"
               >
-                <Card className="hover:shadow-md transition-shadow cursor-pointer">
-                  <div className="flex flex-col gap-4 px-6">
-                    <div className="flex flex-col gap-1.5">
-                      <p className="text-lg font-semibold">{album.titre}</p>
-
-                      <ReactMarkdown>
-                        {album.description || "Aucune description"}
-                      </ReactMarkdown>
-                    </div>
-
-                    {album.photos_albums_tags_link.length > 0 && (
-                      <div className="flex flex-wrap gap-2">
-                        {album.photos_albums_tags_link.map((tagLink) => (
-                          <Tag key={`tag-${tagLink.id_tags}`} variant="default">
-                            {tagLink.photos_tags.titre}
-                          </Tag>
-                        ))}
+                <Card className="hover:shadow-md transition-shadow cursor-pointer overflow-hidden">
+                  <div className="flex flex-col justify-center lg:justify-start items-center gap-6 px-6">
+                    {/* Mosaïque de prévisualisation */}
+                    {album.photos_albums_link.length > 0 && (
+                      <div className="w-full rounded-lg overflow-hidden">
+                        <AlbumPreview
+                          photos={album.photos_albums_link.map(
+                            (link) => link.photos
+                          )}
+                        />
                       </div>
                     )}
-                    <div className="flex justify-between items-center">
-                      <p className="text-sm text-muted-foreground">
-                        {album.photos_albums_link.length} photo
-                        {album.photos_albums_link.length !== 1 ? "s" : ""}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {format(new Date(album.date), "d MMMM yyyy", {
-                          locale: fr,
-                        })}
-                      </p>
+
+                    {/* Si pas de photos, ajouter un espace pour maintenir une apparence cohérente */}
+                    {album.photos_albums_link.length === 0 && (
+                      <div className="w-full h-40 bg-gray-100 flex items-center justify-center">
+                        <p className="text-muted-foreground">Aucune photo</p>
+                      </div>
+                    )}
+
+                    <div className="flex flex-col gap-4 w-full">
+                      <div className="flex flex-col gap-1.5">
+                        <p className="text-lg font-semibold">{album.titre}</p>
+
+                        {album.description && (
+                          <div className="text-sm text-muted-foreground line-clamp-2">
+                            <ReactMarkdown>{album.description}</ReactMarkdown>
+                          </div>
+                        )}
+                      </div>
+
+                      {album.photos_albums_tags_link.length > 0 && (
+                        <div className="flex flex-wrap gap-2">
+                          {album.photos_albums_tags_link.map((tagLink) => (
+                            <Tag
+                              key={`tag-${tagLink.id_tags}`}
+                              variant="default"
+                            >
+                              {tagLink.photos_tags.titre}
+                            </Tag>
+                          ))}
+                        </div>
+                      )}
+                      <div className="flex justify-between items-center">
+                        <p className="text-sm text-muted-foreground">
+                          {album.photos_albums_link.length} photo
+                          {album.photos_albums_link.length !== 1 ? "s" : ""}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {format(new Date(album.date), "d MMMM yyyy", {
+                            locale: fr,
+                          })}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </Card>

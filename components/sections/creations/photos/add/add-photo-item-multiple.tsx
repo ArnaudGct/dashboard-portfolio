@@ -68,10 +68,10 @@ export function AddPhotoItemMultiple({
 
       // Vérifier les tailles des fichiers
       const validImageFiles = imageFiles.filter((file) => {
-        if (file.size > 10 * 1024 * 1024) {
+        if (file.size > 20 * 1024 * 1024) {
           // 10MB
           toast.warning(
-            `L'image "${file.name}" est trop volumineuse (max 10MB).`
+            `L'image "${file.name}" est trop volumineuse (max 20MB).`
           );
           return false;
         }
