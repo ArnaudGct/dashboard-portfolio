@@ -38,7 +38,6 @@ type Photo = {
   date: Date;
   afficher: boolean;
   photos_tags_link: {
-    id_pho: number;
     id_tags: number;
     photos_tags: {
       id_tags: number;
@@ -46,16 +45,7 @@ type Photo = {
       important: boolean;
     };
   }[];
-  photos_tags_recherche_link: {
-    id_pho: number;
-    id_tags: number;
-    photos_tags_recherche: {
-      id_tags: number;
-      titre: string;
-    };
-  }[];
   photos_albums_link: {
-    id_pho: number;
     id_alb: number;
     photos_albums: {
       id_alb: number;
@@ -67,18 +57,15 @@ type Photo = {
 type Album = {
   id_alb: number;
   titre: string;
-  description: string;
-  date: Date;
-  afficher: boolean;
 };
 
-type PhotosGalleryProps = {
+type PhotosContainerProps = {
   photos: Photo[];
   albums: Album[];
 };
 
 // Composant principal qui combine la liste et les items
-export function PhotoItem({ photos, albums }: PhotosGalleryProps) {
+export function PhotoItem({ photos, albums }: PhotosContainerProps) {
   const [selectedAlbumId, setSelectedAlbumId] = useState<string | null>(null);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const router = useRouter();
@@ -102,6 +89,13 @@ export function PhotoItem({ photos, albums }: PhotosGalleryProps) {
 
   // Fonction pour la navigation vers l'édition
   const handlePhotoClick = (photoId: number) => {
+    // Précharger l'image basse résolution avant la navigation
+    const photo = photos.find((p) => p.id_pho === photoId);
+    if (photo) {
+      const img = new window.Image();
+      img.src = getImageUrl(photo.lien_low);
+    }
+
     router.push(`/creations/photos/edit/${photoId}`);
   };
 
@@ -121,9 +115,9 @@ export function PhotoItem({ photos, albums }: PhotosGalleryProps) {
   };
 
   return (
-    <section className="w-[90%] mx-auto mb-8">
+    <section className="">
       <div className="flex flex-col gap-8">
-        <div className="flex items-center justify-between">
+        {/* <div className="flex items-center justify-between">
           <p className="text-3xl font-bold">Photos</p>
           <div className="flex gap-2">
             <Link href="/creations/photos/albums">
@@ -142,7 +136,7 @@ export function PhotoItem({ photos, albums }: PhotosGalleryProps) {
               </Button>
             </Link>
           </div>
-        </div>
+        </div> */}
 
         {/* Combobox pour filtrer par album */}
         <div className="flex justify-between items-center">

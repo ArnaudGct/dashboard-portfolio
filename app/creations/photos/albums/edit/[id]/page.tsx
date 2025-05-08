@@ -2,12 +2,47 @@ import { EditAlbumItem } from "@/components/sections/creations/photos/albums/edi
 import prisma from "@/lib/prisma";
 import { type ImageOption } from "@/components/sections/creations/photos/image-sheet";
 import { notFound } from "next/navigation";
+import { Card } from "@/components/ui/card";
+import { Suspense } from "react";
 
-export default async function EditAlbumPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+// Composant de chargement
+function AlbumEditLoading() {
+  return (
+    <div className="w-[90%] mx-auto">
+      <div className="flex flex-col gap-8">
+        <div className="flex justify-between items-center">
+          <div className="h-8 w-32 bg-gray-200 dark:bg-gray-800 rounded"></div>
+          <div className="h-8 w-24 bg-gray-200 dark:bg-gray-800 rounded"></div>
+        </div>
+        <Card className="p-6 animate-pulse">
+          <div className="space-y-4">
+            <div className="h-6 w-2/3 bg-gray-200 dark:bg-gray-800 rounded"></div>
+            <div className="h-20 w-full bg-gray-200 dark:bg-gray-800 rounded"></div>
+            <div className="grid grid-cols-5 gap-4">
+              {Array.from({ length: 10 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="h-24 aspect-square bg-gray-200 dark:bg-gray-800 rounded"
+                ></div>
+              ))}
+            </div>
+            <div className="h-10 bg-gray-200 dark:bg-gray-800 rounded w-1/4"></div>
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
+export default function EditAlbumPage({ params }: { params: { id: string } }) {
+  return (
+    <Suspense fallback={<AlbumEditLoading />}>
+      <EditAlbumContent params={params} />
+    </Suspense>
+  );
+}
+
+async function EditAlbumContent({ params }: { params: { id: string } }) {
   try {
     const { id } = await params;
     const albumId = parseInt(id);

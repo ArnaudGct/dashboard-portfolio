@@ -61,9 +61,20 @@ type EditPhotoFormProps = {
     date: Date;
     afficher: boolean;
   };
-  availableTags: string[];
-  availableSearchTags: string[];
-  availableAlbums: string[];
+  availableTags: {
+    id: string;
+    label: string;
+    important: boolean;
+  }[];
+  availableSearchTags: {
+    id: string;
+    label: string;
+    important: boolean;
+  }[];
+  availableAlbums: {
+    id: string;
+    label: string;
+  }[];
   selectedTagIds: string[];
   selectedSearchTagIds: string[];
   selectedAlbumIds: string[];

@@ -1,91 +1,139 @@
 import { notFound } from "next/navigation";
 import prisma from "@/lib/prisma";
 import { EditVideoItem } from "@/components/sections/creations/videos/edit-video-item";
+import { Suspense } from "react";
+import { Card } from "@/components/ui/card";
 
-// Partie serveur pour récupérer les données
-async function getVideoData(id: number) {
+// Composant de chargement
+function VideoEditLoading() {
+  return (
+    <div className="w-[90%] mx-auto">
+      <div className="flex flex-col gap-8">
+        <div className="flex justify-between items-center">
+          <div className="h-8 w-32 bg-gray-200 dark:bg-gray-800 rounded"></div>
+          <div className="h-8 w-24 bg-gray-200 dark:bg-gray-800 rounded"></div>
+        </div>
+        <Card className="p-6 animate-pulse">
+          <div className="space-y-4">
+            <div className="h-6 w-2/3 bg-gray-200 dark:bg-gray-800 rounded"></div>
+            <div className="h-12 w-full bg-gray-200 dark:bg-gray-800 rounded"></div>
+            <div className="h-32 w-full bg-gray-200 dark:bg-gray-800 rounded"></div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="h-10 bg-gray-200 dark:bg-gray-800 rounded"></div>
+              <div className="h-10 bg-gray-200 dark:bg-gray-800 rounded"></div>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
+export default function EditVideoPage({ params }: { params: { id: string } }) {
+  return (
+    <Suspense fallback={<VideoEditLoading />}>
+      <EditVideoContent params={params} />
+    </Suspense>
+  );
+}
+
+async function EditVideoContent({ params }: { params: { id: string } }) {
   try {
-    const video = await prisma.videos.findUnique({
-      where: {
-        id_vid: id,
-      },
-      include: {
-        videos_tags_link: {
-          include: {
-            videos_tags: true,
+    const { id } = params;
+    const videoId = parseInt(id);
+
+    if (isNaN(videoId)) {
+      return notFound();
+    }
+
+    // Exécuter les requêtes en parallèle avec Promise.all et utiliser select au lieu de include
+    const [video, tags] = await Promise.all([
+      // Optimiser la requête de vidéo
+      prisma.videos.findUnique({
+        where: {
+          id_vid: videoId,
+        },
+        select: {
+          id_vid: true,
+          titre: true,
+          description: true,
+          lien: true,
+          duree: true,
+          date: true,
+          afficher: true,
+          videos_tags_link: {
+            select: {
+              videos_tags: {
+                select: {
+                  titre: true,
+                },
+              },
+            },
           },
         },
-      },
-    });
+      }),
 
-    return video;
-  } catch (error) {
-    console.error("Erreur lors de la récupération de la vidéo:", error);
-    return null;
-  }
-}
+      // Optimiser la requête de tags
+      prisma.videos_tags.findMany({
+        select: {
+          id_tags: true,
+          titre: true,
+          important: true,
+        },
+        orderBy: {
+          titre: "asc",
+        },
+      }),
+    ]);
 
-// Récupérer tous les tags disponibles
-async function getAllTags() {
-  try {
-    const tags = await prisma.videos_tags.findMany({
-      orderBy: {
-        titre: "asc",
-      },
-    });
+    if (!video) {
+      return notFound();
+    }
 
-    return tags.map((tag) => ({
+    // Extraire les tags de la vidéo de manière optimisée
+    const videoTags = video.videos_tags_link.map(
+      (link) => link.videos_tags.titre
+    );
+
+    // Convertir la date si elle existe
+    const videoDate = video.date ? new Date(video.date) : undefined;
+
+    // Transformer les tags pour le composant client
+    const formattedTags = tags.map((tag) => ({
       id: tag.titre,
       label: tag.titre,
-      important: false, // Adding the required 'important' property
+      important: Boolean(tag.important),
     }));
+
+    // Préparer les données pour le composant client
+    const initialData = {
+      id_vid: video.id_vid,
+      titre: video.titre,
+      description: video.description,
+      lien: video.lien,
+      duree: video.duree,
+      date: videoDate,
+      afficher: video.afficher,
+      tags: videoTags,
+    };
+
+    return (
+      <div className="w-[90%] mx-auto">
+        <EditVideoItem
+          initialData={initialData}
+          availableTags={formattedTags}
+        />
+      </div>
+    );
   } catch (error) {
-    console.error("Erreur lors de la récupération des tags:", error);
-    return [];
+    console.error("Erreur lors du chargement de la vidéo:", error);
+    return (
+      <div className="w-[90%] mx-auto">
+        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-md">
+          Une erreur est survenue lors du chargement des données. Veuillez
+          réessayer ou contacter l'administrateur.
+        </div>
+      </div>
+    );
   }
-}
-
-// Composant serveur principal
-export default async function EditVideoPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const { id } = await params;
-  const videoId = parseInt(id);
-
-  if (isNaN(videoId)) {
-    notFound();
-  }
-
-  const [videoData, allTags] = await Promise.all([
-    getVideoData(videoId),
-    getAllTags(),
-  ]);
-
-  if (!videoData) {
-    notFound();
-  }
-
-  // Extraire les tags de la vidéo
-  const videoTags = videoData.videos_tags_link.map(
-    (link) => link.videos_tags.titre
-  );
-
-  // Convertir la date si elle existe
-  const videoDate = videoData.date ? new Date(videoData.date) : undefined;
-
-  // Préparer les données pour le composant client
-  const initialData = {
-    id_vid: videoData.id_vid,
-    titre: videoData.titre,
-    description: videoData.description,
-    lien: videoData.lien,
-    duree: videoData.duree,
-    date: videoDate,
-    afficher: videoData.afficher,
-    tags: videoTags,
-  };
-
-  return <EditVideoItem initialData={initialData} availableTags={allTags} />;
 }

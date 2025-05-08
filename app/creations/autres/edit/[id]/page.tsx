@@ -1,93 +1,116 @@
 import { notFound } from "next/navigation";
 import prisma from "@/lib/prisma";
 import { EditAutreItem } from "@/components/sections/creations/autres/edit-autre-item";
+import { Card } from "@/components/ui/card";
+import { Suspense } from "react";
 
-// Partie serveur pour récupérer les données
-async function getAutreData(id: number) {
-  try {
-    const autre = await prisma.autre.findUnique({
-      where: {
-        id_autre: id,
-      },
-      include: {
-        autre_tags_link: {
-          include: {
-            autre_tags: true,
-          },
-        },
-      },
-    });
-
-    return autre;
-  } catch (error) {
-    console.error("Erreur lors de la récupération du projet:", error);
-    return null;
-  }
+// Composant de chargement
+function AutreEditLoading() {
+  return (
+    <div className="w-[90%] mx-auto">
+      <div className="flex flex-col gap-8">
+        <div className="flex justify-between items-center">
+          <div className="h-8 w-32 bg-gray-200 dark:bg-gray-800 rounded"></div>
+          <div className="h-8 w-24 bg-gray-200 dark:bg-gray-800 rounded"></div>
+        </div>
+        <Card className="p-6 animate-pulse">
+          <div className="space-y-4">
+            <div className="h-6 w-2/3 bg-gray-200 dark:bg-gray-800 rounded"></div>
+            <div className="h-20 w-full bg-gray-200 dark:bg-gray-800 rounded"></div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="h-10 bg-gray-200 dark:bg-gray-800 rounded"></div>
+              <div className="h-10 bg-gray-200 dark:bg-gray-800 rounded"></div>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
 }
 
-// Récupérer tous les tags disponibles
-async function getAllTags() {
-  try {
-    const tags = await prisma.autre_tags.findMany({
-      orderBy: {
-        titre: "asc",
-      },
-    });
-
-    return tags.map((tag) => ({
-      id: tag.titre,
-      label: tag.titre,
-      important: tag.important,
-    }));
-  } catch (error) {
-    console.error("Erreur lors de la récupération des tags:", error);
-    return [];
-  }
+export default function EditAutrePage({ params }: { params: { id: string } }) {
+  return (
+    <Suspense fallback={<AutreEditLoading />}>
+      <EditAutreContent params={params} />
+    </Suspense>
+  );
 }
 
-// Composant serveur principal
-export default async function EditAutrePage({
-  params,
-}: {
-  params: { id: string };
-}) {
+async function EditAutreContent({ params }: { params: { id: string } }) {
   const { id } = await params;
   const autreId = parseInt(id);
 
   if (isNaN(autreId)) {
-    notFound();
+    return notFound();
   }
 
-  const [autreData, allTags] = await Promise.all([
-    getAutreData(autreId),
-    getAllTags(),
-  ]);
+  // Optimisation: utilisation de select au lieu de include
+  const autre = await prisma.autre.findUnique({
+    where: {
+      id_autre: autreId,
+    },
+    select: {
+      id_autre: true,
+      titre: true,
+      description: true,
+      miniature: true,
+      lien_github: true,
+      lien_figma: true,
+      lien_site: true,
+      date: true,
+      afficher: true,
+      autre_tags_link: {
+        select: {
+          autre_tags: {
+            select: {
+              titre: true,
+            },
+          },
+        },
+      },
+    },
+  });
 
-  if (!autreData) {
-    notFound();
+  if (!autre) {
+    return notFound();
   }
 
-  // Extraire les tags du projet
-  const autreTags = autreData.autre_tags_link.map(
-    (link) => link.autre_tags.titre
-  );
+  // Requête parallèle pour les tags
+  const tags = await prisma.autre_tags.findMany({
+    select: {
+      id_tags: true,
+      titre: true,
+      important: true,
+    },
+    orderBy: {
+      titre: "asc",
+    },
+  });
 
-  // Convertir la date si elle existe
-  const autreDate = autreData.date ? new Date(autreData.date) : undefined;
+  // Extraire les tags du projet de manière optimisée
+  const autreTags = autre.autre_tags_link.map((link) => link.autre_tags.titre);
 
   // Préparer les données pour le composant client
   const initialData = {
-    id_autre: autreData.id_autre,
-    titre: autreData.titre,
-    description: autreData.description,
-    miniature: autreData.miniature,
-    lien_github: autreData.lien_github,
-    lien_figma: autreData.lien_figma,
-    lien_site: autreData.lien_site,
-    date: autreDate,
-    afficher: autreData.afficher,
+    id_autre: autre.id_autre,
+    titre: autre.titre,
+    description: autre.description,
+    miniature: autre.miniature,
+    lien_github: autre.lien_github,
+    lien_figma: autre.lien_figma,
+    lien_site: autre.lien_site,
+    date: autre.date,
+    afficher: autre.afficher,
     tags: autreTags,
   };
 
-  return <EditAutreItem initialData={initialData} availableTags={allTags} />;
+  const availableTags = tags.map((tag) => ({
+    id: tag.titre,
+    label: tag.titre,
+    important: tag.important,
+  }));
+
+  return (
+    <EditAutreItem initialData={initialData} availableTags={availableTags} />
+  );
 }
