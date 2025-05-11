@@ -159,14 +159,22 @@ export function EditVideoItem({
   ): Promise<TagOption | null> => {
     try {
       const result = await createVideoTagAction(tagName, important);
-      if (result.success && result.id) {
+      if (result.success && result.tag) {
         toast.success(`Tag "${tagName}" créé avec succès`);
-        return { id: result.id, label: tagName, important: important };
+        return {
+          id: result.tag.id_tags.toString(),
+          label: tagName,
+          important: important,
+        };
       }
 
       // Si le tag existe déjà, on peut quand même l'utiliser
-      if (!result.success && result.id) {
-        return { id: result.id, label: tagName, important: false };
+      if (!result.success && result.tag) {
+        return {
+          id: result.tag.id_tags.toString(),
+          label: tagName,
+          important: false,
+        };
       }
 
       toast.error("Impossible de créer le tag");

@@ -24,7 +24,10 @@ type TagOption = {
 type PhotoAddTabsProps = {
   availableTags: TagOption[];
   availableSearchTags: TagOption[];
-  availableAlbums: TagOption[];
+  availableAlbums: {
+    id: string;
+    label: string;
+  }[];
 };
 
 export function PhotoAddItem({

@@ -5944,65 +5944,39 @@ export namespace Prisma {
 
   export type ExperiencesAvgAggregateOutputType = {
     id_exp: number | null
-    poste_actuel: number | null
   }
 
   export type ExperiencesSumAggregateOutputType = {
     id_exp: number | null
-    poste_actuel: number | null
   }
 
   export type ExperiencesMinAggregateOutputType = {
     id_exp: number | null
-    date_debut: string | null
-    date_fin: string | null
+    date: Date | null
     titre: string | null
     description: string | null
     url_img: string | null
     position_img: string | null
-    position: string | null
-    categorie: string | null
-    img_logo: string | null
-    nom_entreprise: string | null
-    url_entreprise: string | null
-    type_emploi: string | null
-    poste_actuel: number | null
     afficher: boolean | null
   }
 
   export type ExperiencesMaxAggregateOutputType = {
     id_exp: number | null
-    date_debut: string | null
-    date_fin: string | null
+    date: Date | null
     titre: string | null
     description: string | null
     url_img: string | null
     position_img: string | null
-    position: string | null
-    categorie: string | null
-    img_logo: string | null
-    nom_entreprise: string | null
-    url_entreprise: string | null
-    type_emploi: string | null
-    poste_actuel: number | null
     afficher: boolean | null
   }
 
   export type ExperiencesCountAggregateOutputType = {
     id_exp: number
-    date_debut: number
-    date_fin: number
+    date: number
     titre: number
     description: number
     url_img: number
     position_img: number
-    position: number
-    categorie: number
-    img_logo: number
-    nom_entreprise: number
-    url_entreprise: number
-    type_emploi: number
-    poste_actuel: number
     afficher: number
     _all: number
   }
@@ -6010,65 +5984,39 @@ export namespace Prisma {
 
   export type ExperiencesAvgAggregateInputType = {
     id_exp?: true
-    poste_actuel?: true
   }
 
   export type ExperiencesSumAggregateInputType = {
     id_exp?: true
-    poste_actuel?: true
   }
 
   export type ExperiencesMinAggregateInputType = {
     id_exp?: true
-    date_debut?: true
-    date_fin?: true
+    date?: true
     titre?: true
     description?: true
     url_img?: true
     position_img?: true
-    position?: true
-    categorie?: true
-    img_logo?: true
-    nom_entreprise?: true
-    url_entreprise?: true
-    type_emploi?: true
-    poste_actuel?: true
     afficher?: true
   }
 
   export type ExperiencesMaxAggregateInputType = {
     id_exp?: true
-    date_debut?: true
-    date_fin?: true
+    date?: true
     titre?: true
     description?: true
     url_img?: true
     position_img?: true
-    position?: true
-    categorie?: true
-    img_logo?: true
-    nom_entreprise?: true
-    url_entreprise?: true
-    type_emploi?: true
-    poste_actuel?: true
     afficher?: true
   }
 
   export type ExperiencesCountAggregateInputType = {
     id_exp?: true
-    date_debut?: true
-    date_fin?: true
+    date?: true
     titre?: true
     description?: true
     url_img?: true
     position_img?: true
-    position?: true
-    categorie?: true
-    img_logo?: true
-    nom_entreprise?: true
-    url_entreprise?: true
-    type_emploi?: true
-    poste_actuel?: true
     afficher?: true
     _all?: true
   }
@@ -6161,19 +6109,11 @@ export namespace Prisma {
 
   export type ExperiencesGroupByOutputType = {
     id_exp: number
-    date_debut: string
-    date_fin: string
+    date: Date
     titre: string
     description: string
     url_img: string
     position_img: string
-    position: string
-    categorie: string
-    img_logo: string
-    nom_entreprise: string
-    url_entreprise: string
-    type_emploi: string
-    poste_actuel: number
     afficher: boolean
     _count: ExperiencesCountAggregateOutputType | null
     _avg: ExperiencesAvgAggregateOutputType | null
@@ -6198,19 +6138,11 @@ export namespace Prisma {
 
   export type experiencesSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id_exp?: boolean
-    date_debut?: boolean
-    date_fin?: boolean
+    date?: boolean
     titre?: boolean
     description?: boolean
     url_img?: boolean
     position_img?: boolean
-    position?: boolean
-    categorie?: boolean
-    img_logo?: boolean
-    nom_entreprise?: boolean
-    url_entreprise?: boolean
-    type_emploi?: boolean
-    poste_actuel?: boolean
     afficher?: boolean
   }, ExtArgs["result"]["experiences"]>
 
@@ -6218,42 +6150,26 @@ export namespace Prisma {
 
   export type experiencesSelectScalar = {
     id_exp?: boolean
-    date_debut?: boolean
-    date_fin?: boolean
+    date?: boolean
     titre?: boolean
     description?: boolean
     url_img?: boolean
     position_img?: boolean
-    position?: boolean
-    categorie?: boolean
-    img_logo?: boolean
-    nom_entreprise?: boolean
-    url_entreprise?: boolean
-    type_emploi?: boolean
-    poste_actuel?: boolean
     afficher?: boolean
   }
 
-  export type experiencesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_exp" | "date_debut" | "date_fin" | "titre" | "description" | "url_img" | "position_img" | "position" | "categorie" | "img_logo" | "nom_entreprise" | "url_entreprise" | "type_emploi" | "poste_actuel" | "afficher", ExtArgs["result"]["experiences"]>
+  export type experiencesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_exp" | "date" | "titre" | "description" | "url_img" | "position_img" | "afficher", ExtArgs["result"]["experiences"]>
 
   export type $experiencesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "experiences"
     objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id_exp: number
-      date_debut: string
-      date_fin: string
+      date: Date
       titre: string
       description: string
       url_img: string
       position_img: string
-      position: string
-      categorie: string
-      img_logo: string
-      nom_entreprise: string
-      url_entreprise: string
-      type_emploi: string
-      poste_actuel: number
       afficher: boolean
     }, ExtArgs["result"]["experiences"]>
     composites: {}
@@ -6625,19 +6541,11 @@ export namespace Prisma {
    */
   interface experiencesFieldRefs {
     readonly id_exp: FieldRef<"experiences", 'Int'>
-    readonly date_debut: FieldRef<"experiences", 'String'>
-    readonly date_fin: FieldRef<"experiences", 'String'>
+    readonly date: FieldRef<"experiences", 'DateTime'>
     readonly titre: FieldRef<"experiences", 'String'>
     readonly description: FieldRef<"experiences", 'String'>
     readonly url_img: FieldRef<"experiences", 'String'>
     readonly position_img: FieldRef<"experiences", 'String'>
-    readonly position: FieldRef<"experiences", 'String'>
-    readonly categorie: FieldRef<"experiences", 'String'>
-    readonly img_logo: FieldRef<"experiences", 'String'>
-    readonly nom_entreprise: FieldRef<"experiences", 'String'>
-    readonly url_entreprise: FieldRef<"experiences", 'String'>
-    readonly type_emploi: FieldRef<"experiences", 'String'>
-    readonly poste_actuel: FieldRef<"experiences", 'Int'>
     readonly afficher: FieldRef<"experiences", 'Boolean'>
   }
     
@@ -25144,19 +25052,11 @@ export namespace Prisma {
 
   export const ExperiencesScalarFieldEnum: {
     id_exp: 'id_exp',
-    date_debut: 'date_debut',
-    date_fin: 'date_fin',
+    date: 'date',
     titre: 'titre',
     description: 'description',
     url_img: 'url_img',
     position_img: 'position_img',
-    position: 'position',
-    categorie: 'categorie',
-    img_logo: 'img_logo',
-    nom_entreprise: 'nom_entreprise',
-    url_entreprise: 'url_entreprise',
-    type_emploi: 'type_emploi',
-    poste_actuel: 'poste_actuel',
     afficher: 'afficher'
   };
 
@@ -25405,18 +25305,10 @@ export namespace Prisma {
 
 
   export const experiencesOrderByRelevanceFieldEnum: {
-    date_debut: 'date_debut',
-    date_fin: 'date_fin',
     titre: 'titre',
     description: 'description',
     url_img: 'url_img',
-    position_img: 'position_img',
-    position: 'position',
-    categorie: 'categorie',
-    img_logo: 'img_logo',
-    nom_entreprise: 'nom_entreprise',
-    url_entreprise: 'url_entreprise',
-    type_emploi: 'type_emploi'
+    position_img: 'position_img'
   };
 
   export type experiencesOrderByRelevanceFieldEnum = (typeof experiencesOrderByRelevanceFieldEnum)[keyof typeof experiencesOrderByRelevanceFieldEnum]
@@ -25795,37 +25687,21 @@ export namespace Prisma {
     OR?: experiencesWhereInput[]
     NOT?: experiencesWhereInput | experiencesWhereInput[]
     id_exp?: IntFilter<"experiences"> | number
-    date_debut?: StringFilter<"experiences"> | string
-    date_fin?: StringFilter<"experiences"> | string
+    date?: DateTimeFilter<"experiences"> | Date | string
     titre?: StringFilter<"experiences"> | string
     description?: StringFilter<"experiences"> | string
     url_img?: StringFilter<"experiences"> | string
     position_img?: StringFilter<"experiences"> | string
-    position?: StringFilter<"experiences"> | string
-    categorie?: StringFilter<"experiences"> | string
-    img_logo?: StringFilter<"experiences"> | string
-    nom_entreprise?: StringFilter<"experiences"> | string
-    url_entreprise?: StringFilter<"experiences"> | string
-    type_emploi?: StringFilter<"experiences"> | string
-    poste_actuel?: IntFilter<"experiences"> | number
     afficher?: BoolFilter<"experiences"> | boolean
   }
 
   export type experiencesOrderByWithRelationInput = {
     id_exp?: SortOrder
-    date_debut?: SortOrder
-    date_fin?: SortOrder
+    date?: SortOrder
     titre?: SortOrder
     description?: SortOrder
     url_img?: SortOrder
     position_img?: SortOrder
-    position?: SortOrder
-    categorie?: SortOrder
-    img_logo?: SortOrder
-    nom_entreprise?: SortOrder
-    url_entreprise?: SortOrder
-    type_emploi?: SortOrder
-    poste_actuel?: SortOrder
     afficher?: SortOrder
     _relevance?: experiencesOrderByRelevanceInput
   }
@@ -25835,37 +25711,21 @@ export namespace Prisma {
     AND?: experiencesWhereInput | experiencesWhereInput[]
     OR?: experiencesWhereInput[]
     NOT?: experiencesWhereInput | experiencesWhereInput[]
-    date_debut?: StringFilter<"experiences"> | string
-    date_fin?: StringFilter<"experiences"> | string
+    date?: DateTimeFilter<"experiences"> | Date | string
     titre?: StringFilter<"experiences"> | string
     description?: StringFilter<"experiences"> | string
     url_img?: StringFilter<"experiences"> | string
     position_img?: StringFilter<"experiences"> | string
-    position?: StringFilter<"experiences"> | string
-    categorie?: StringFilter<"experiences"> | string
-    img_logo?: StringFilter<"experiences"> | string
-    nom_entreprise?: StringFilter<"experiences"> | string
-    url_entreprise?: StringFilter<"experiences"> | string
-    type_emploi?: StringFilter<"experiences"> | string
-    poste_actuel?: IntFilter<"experiences"> | number
     afficher?: BoolFilter<"experiences"> | boolean
   }, "id_exp">
 
   export type experiencesOrderByWithAggregationInput = {
     id_exp?: SortOrder
-    date_debut?: SortOrder
-    date_fin?: SortOrder
+    date?: SortOrder
     titre?: SortOrder
     description?: SortOrder
     url_img?: SortOrder
     position_img?: SortOrder
-    position?: SortOrder
-    categorie?: SortOrder
-    img_logo?: SortOrder
-    nom_entreprise?: SortOrder
-    url_entreprise?: SortOrder
-    type_emploi?: SortOrder
-    poste_actuel?: SortOrder
     afficher?: SortOrder
     _count?: experiencesCountOrderByAggregateInput
     _avg?: experiencesAvgOrderByAggregateInput
@@ -25879,19 +25739,11 @@ export namespace Prisma {
     OR?: experiencesScalarWhereWithAggregatesInput[]
     NOT?: experiencesScalarWhereWithAggregatesInput | experiencesScalarWhereWithAggregatesInput[]
     id_exp?: IntWithAggregatesFilter<"experiences"> | number
-    date_debut?: StringWithAggregatesFilter<"experiences"> | string
-    date_fin?: StringWithAggregatesFilter<"experiences"> | string
+    date?: DateTimeWithAggregatesFilter<"experiences"> | Date | string
     titre?: StringWithAggregatesFilter<"experiences"> | string
     description?: StringWithAggregatesFilter<"experiences"> | string
     url_img?: StringWithAggregatesFilter<"experiences"> | string
     position_img?: StringWithAggregatesFilter<"experiences"> | string
-    position?: StringWithAggregatesFilter<"experiences"> | string
-    categorie?: StringWithAggregatesFilter<"experiences"> | string
-    img_logo?: StringWithAggregatesFilter<"experiences"> | string
-    nom_entreprise?: StringWithAggregatesFilter<"experiences"> | string
-    url_entreprise?: StringWithAggregatesFilter<"experiences"> | string
-    type_emploi?: StringWithAggregatesFilter<"experiences"> | string
-    poste_actuel?: IntWithAggregatesFilter<"experiences"> | number
     afficher?: BoolWithAggregatesFilter<"experiences"> | boolean
   }
 
@@ -27184,125 +27036,69 @@ export namespace Prisma {
   }
 
   export type experiencesCreateInput = {
-    date_debut: string
-    date_fin: string
+    date: Date | string
     titre: string
     description: string
     url_img: string
     position_img: string
-    position: string
-    categorie: string
-    img_logo: string
-    nom_entreprise: string
-    url_entreprise: string
-    type_emploi: string
-    poste_actuel: number
     afficher: boolean
   }
 
   export type experiencesUncheckedCreateInput = {
     id_exp?: number
-    date_debut: string
-    date_fin: string
+    date: Date | string
     titre: string
     description: string
     url_img: string
     position_img: string
-    position: string
-    categorie: string
-    img_logo: string
-    nom_entreprise: string
-    url_entreprise: string
-    type_emploi: string
-    poste_actuel: number
     afficher: boolean
   }
 
   export type experiencesUpdateInput = {
-    date_debut?: StringFieldUpdateOperationsInput | string
-    date_fin?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     titre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     url_img?: StringFieldUpdateOperationsInput | string
     position_img?: StringFieldUpdateOperationsInput | string
-    position?: StringFieldUpdateOperationsInput | string
-    categorie?: StringFieldUpdateOperationsInput | string
-    img_logo?: StringFieldUpdateOperationsInput | string
-    nom_entreprise?: StringFieldUpdateOperationsInput | string
-    url_entreprise?: StringFieldUpdateOperationsInput | string
-    type_emploi?: StringFieldUpdateOperationsInput | string
-    poste_actuel?: IntFieldUpdateOperationsInput | number
     afficher?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type experiencesUncheckedUpdateInput = {
     id_exp?: IntFieldUpdateOperationsInput | number
-    date_debut?: StringFieldUpdateOperationsInput | string
-    date_fin?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     titre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     url_img?: StringFieldUpdateOperationsInput | string
     position_img?: StringFieldUpdateOperationsInput | string
-    position?: StringFieldUpdateOperationsInput | string
-    categorie?: StringFieldUpdateOperationsInput | string
-    img_logo?: StringFieldUpdateOperationsInput | string
-    nom_entreprise?: StringFieldUpdateOperationsInput | string
-    url_entreprise?: StringFieldUpdateOperationsInput | string
-    type_emploi?: StringFieldUpdateOperationsInput | string
-    poste_actuel?: IntFieldUpdateOperationsInput | number
     afficher?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type experiencesCreateManyInput = {
     id_exp?: number
-    date_debut: string
-    date_fin: string
+    date: Date | string
     titre: string
     description: string
     url_img: string
     position_img: string
-    position: string
-    categorie: string
-    img_logo: string
-    nom_entreprise: string
-    url_entreprise: string
-    type_emploi: string
-    poste_actuel: number
     afficher: boolean
   }
 
   export type experiencesUpdateManyMutationInput = {
-    date_debut?: StringFieldUpdateOperationsInput | string
-    date_fin?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     titre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     url_img?: StringFieldUpdateOperationsInput | string
     position_img?: StringFieldUpdateOperationsInput | string
-    position?: StringFieldUpdateOperationsInput | string
-    categorie?: StringFieldUpdateOperationsInput | string
-    img_logo?: StringFieldUpdateOperationsInput | string
-    nom_entreprise?: StringFieldUpdateOperationsInput | string
-    url_entreprise?: StringFieldUpdateOperationsInput | string
-    type_emploi?: StringFieldUpdateOperationsInput | string
-    poste_actuel?: IntFieldUpdateOperationsInput | number
     afficher?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type experiencesUncheckedUpdateManyInput = {
     id_exp?: IntFieldUpdateOperationsInput | number
-    date_debut?: StringFieldUpdateOperationsInput | string
-    date_fin?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     titre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     url_img?: StringFieldUpdateOperationsInput | string
     position_img?: StringFieldUpdateOperationsInput | string
-    position?: StringFieldUpdateOperationsInput | string
-    categorie?: StringFieldUpdateOperationsInput | string
-    img_logo?: StringFieldUpdateOperationsInput | string
-    nom_entreprise?: StringFieldUpdateOperationsInput | string
-    url_entreprise?: StringFieldUpdateOperationsInput | string
-    type_emploi?: StringFieldUpdateOperationsInput | string
-    poste_actuel?: IntFieldUpdateOperationsInput | number
     afficher?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -28640,66 +28436,40 @@ export namespace Prisma {
 
   export type experiencesCountOrderByAggregateInput = {
     id_exp?: SortOrder
-    date_debut?: SortOrder
-    date_fin?: SortOrder
+    date?: SortOrder
     titre?: SortOrder
     description?: SortOrder
     url_img?: SortOrder
     position_img?: SortOrder
-    position?: SortOrder
-    categorie?: SortOrder
-    img_logo?: SortOrder
-    nom_entreprise?: SortOrder
-    url_entreprise?: SortOrder
-    type_emploi?: SortOrder
-    poste_actuel?: SortOrder
     afficher?: SortOrder
   }
 
   export type experiencesAvgOrderByAggregateInput = {
     id_exp?: SortOrder
-    poste_actuel?: SortOrder
   }
 
   export type experiencesMaxOrderByAggregateInput = {
     id_exp?: SortOrder
-    date_debut?: SortOrder
-    date_fin?: SortOrder
+    date?: SortOrder
     titre?: SortOrder
     description?: SortOrder
     url_img?: SortOrder
     position_img?: SortOrder
-    position?: SortOrder
-    categorie?: SortOrder
-    img_logo?: SortOrder
-    nom_entreprise?: SortOrder
-    url_entreprise?: SortOrder
-    type_emploi?: SortOrder
-    poste_actuel?: SortOrder
     afficher?: SortOrder
   }
 
   export type experiencesMinOrderByAggregateInput = {
     id_exp?: SortOrder
-    date_debut?: SortOrder
-    date_fin?: SortOrder
+    date?: SortOrder
     titre?: SortOrder
     description?: SortOrder
     url_img?: SortOrder
     position_img?: SortOrder
-    position?: SortOrder
-    categorie?: SortOrder
-    img_logo?: SortOrder
-    nom_entreprise?: SortOrder
-    url_entreprise?: SortOrder
-    type_emploi?: SortOrder
-    poste_actuel?: SortOrder
     afficher?: SortOrder
   }
 
   export type experiencesSumOrderByAggregateInput = {
     id_exp?: SortOrder
-    poste_actuel?: SortOrder
   }
 
   export type faqOrderByRelevanceInput = {

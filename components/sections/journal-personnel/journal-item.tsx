@@ -15,19 +15,11 @@ const PORTFOLIO_BASE_URL = process.env.NEXT_PUBLIC_PORTFOLIO_URL || "";
 type JournalItemProps = {
   entry: {
     id_exp: number;
-    date_debut: string;
-    date_fin: string;
+    date?: Date;
     titre: string;
     description: string;
     url_img: string;
     position_img: string;
-    position: string;
-    categorie: string;
-    img_logo: string;
-    nom_entreprise: string;
-    url_entreprise: string;
-    type_emploi: string;
-    poste_actuel: number;
     afficher: boolean;
   };
 };
@@ -111,7 +103,12 @@ export function JournalItem({ entry }: JournalItemProps) {
             </div>
             <div className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
               <Calendar className="h-3 w-3" />
-              {formatDatePeriod(entry.date_debut, entry.date_fin)}
+              {entry.date
+                ? new Date(entry.date).toLocaleDateString("fr-FR", {
+                    year: "numeric",
+                    month: "long",
+                  })
+                : "Sans date"}
             </div>
           </div>
         </div>

@@ -80,6 +80,12 @@ type EditPhotoFormProps = {
   selectedAlbumIds: string[];
 };
 
+type TagOption = {
+  id: string;
+  label: string;
+  important: boolean;
+};
+
 export function EditPhotoItem({
   initialData,
   availableTags,
@@ -156,7 +162,7 @@ export function EditPhotoItem({
         setPreviewHighRes(reader.result as string);
 
         // Charger l'image pour obtenir les dimensions
-        const img = new Image();
+        const img = new window.Image();
         img.onload = () => {
           setDimensions({
             width: img.naturalWidth,
@@ -315,13 +321,7 @@ export function EditPhotoItem({
     try {
       const result = await createPhotoTagAction(tagName, important);
       if (result.success && result.id) {
-        // Ajouter le nouveau tag à la liste des tags disponibles
-        const newTag: TagOption = {
-          id: result.id,
-          label: tagName,
-          important: important,
-        };
-        return newTag;
+        return { id: result.id, label: tagName, important: important };
       }
 
       // Si le tag existe déjà mais qu'on a quand même récupéré son ID
@@ -363,14 +363,19 @@ export function EditPhotoItem({
 
   const handleAddAlbum = async (tagName: string): Promise<TagOption | null> => {
     try {
-      const result = await createAlbumAction(tagName);
+      // Créer un FormData pour correspondre à la signature attendue
+      const formData = new FormData();
+      formData.append("title", tagName);
+      formData.append("isPublished", "on"); // Par défaut l'album est visible
+
+      const result = await createAlbumAction(formData);
       if (result.success && result.id) {
-        return { id: result.id, label: tagName, important: false };
+        return { id: String(result.id), label: tagName, important: false };
       }
 
       // Si l'album existe déjà mais qu'on a quand même récupéré son ID
       if (!result.success && result.id) {
-        return { id: result.id, label: tagName, important: false };
+        return { id: String(result.id), label: tagName, important: false };
       }
 
       return null;
@@ -655,7 +660,7 @@ export function EditPhotoItem({
                         key={albumId}
                         id={albumId}
                         label={album?.label || albumId}
-                        important={album?.important}
+                        important={false}
                         onRemove={(id) => {
                           setSelectedAlbums(
                             selectedAlbums.filter((a) => a !== id)

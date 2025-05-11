@@ -103,7 +103,8 @@ async function AlbumsList() {
           photos: {
             select: {
               id_pho: true,
-              lien_low: true, // Utiliser uniquement la version basse résolution
+              lien_low: true,
+              lien_high: true, // Ajout du lien haute résolution pour correspondre au type Photo
               alt: true,
               date: true,
             },

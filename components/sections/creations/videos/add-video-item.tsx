@@ -107,8 +107,12 @@ export function AddVideoItem({ availableTags }: AddVideoFormProps) {
   ): Promise<TagOption | null> => {
     try {
       const result = await createVideoTagAction(tagName, important);
-      if (result.success && result.id) {
-        return { id: result.id, label: tagName, important: important };
+      if (result.success && result.tag && result.tag.id_tags) {
+        return {
+          id: String(result.tag.id_tags),
+          label: tagName,
+          important: important,
+        };
       }
       return null;
     } catch (error) {

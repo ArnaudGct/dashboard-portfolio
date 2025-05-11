@@ -8,7 +8,6 @@ const nextConfig: NextConfig = {
   },
   serverExternalPackages: ["sharp"],
   images: {
-    domains: ["localhost"], // Ajoutez ici le domaine de votre portfolio
     remotePatterns: [
       {
         protocol: "http",

@@ -28,10 +28,12 @@ export default async function AddPhoto() {
       availableTags={tags.map((tag) => ({
         id: tag.id_tags.toString(),
         label: tag.titre,
+        important: tag.important,
       }))}
       availableSearchTags={searchTags.map((tag) => ({
         id: tag.id_tags.toString(),
         label: tag.titre,
+        important: tag.important,
       }))}
       availableAlbums={albums.map((album) => ({
         id: album.id_alb.toString(),

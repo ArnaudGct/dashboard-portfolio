@@ -59,3 +59,24 @@ export function formatDatePeriod(
   // Format de période complète
   return `${format(debut, formatMoisAnnee, { locale: fr })} - ${format(fin, formatMoisAnnee, { locale: fr })}`;
 }
+
+export function isValidDate(dateStr: string): boolean {
+  if (!dateStr) return false;
+
+  // Vérifier le format YYYY-MM-DD
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return false;
+
+  // Vérifier que c'est une date valide
+  const [year, month, day] = dateStr.split("-").map(Number);
+
+  // Vérifier que le mois et le jour sont valides (pas de zéro)
+  if (month <= 0 || month > 12 || day <= 0 || day > 31) return false;
+
+  // Créer la date et vérifier qu'elle est valide
+  const date = new Date(year, month - 1, day);
+  return (
+    date.getFullYear() === year &&
+    date.getMonth() === month - 1 &&
+    date.getDate() === day
+  );
+}

@@ -74,9 +74,10 @@ async function saveImage(
     console.log("Réponse de l'API:", data);
 
     return data.imageUrl;
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Erreur lors de l'upload de l'image:", error);
-    throw new Error(`Erreur d'upload: ${error.message}`);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    throw new Error(`Erreur d'upload: ${errorMessage}`);
   }
 }
 
@@ -555,8 +556,8 @@ export async function createAlbumAction(formData: FormData) {
     const newAlbum = await prisma.photos_albums.create({
       data: {
         titre: title,
-        description: description || null,
-        date: date ? new Date(date) : null,
+        description: description || "",
+        date: date ? new Date(date) : "",
         afficher: isPublished,
       },
     });
@@ -615,8 +616,8 @@ export async function updateAlbumAction(formData: FormData) {
       where: { id_alb: id },
       data: {
         titre: title,
-        description: description || null,
-        date: date ? new Date(date) : null,
+        description: description || "",
+        date: date ? new Date(date) : "",
         afficher: isPublished,
       },
     });
@@ -891,7 +892,7 @@ export async function batchUploadPhotosWithMetadataAction(formData: FormData) {
           const newPhoto = await prisma.photos.create({
             data: {
               lien_high: lienHigh,
-              lien_low: generateLowRes ? lienLow : null,
+              lien_low: generateLowRes ? lienLow : "",
               alt: itemAlt,
               largeur: width,
               hauteur: height,

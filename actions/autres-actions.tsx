@@ -54,7 +54,8 @@ async function saveImage(file: File): Promise<string> {
     return data.imageUrl;
   } catch (error) {
     console.error("Erreur lors de l'upload de l'image:", error);
-    throw new Error(`Erreur d'upload: ${error.message}`);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    throw new Error(`Erreur d'upload: ${errorMessage}`);
   }
 }
 

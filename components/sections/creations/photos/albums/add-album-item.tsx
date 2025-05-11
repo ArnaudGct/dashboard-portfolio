@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import Link from "next/link"; // Ajout de l'import Link pour la navigation
-// import { MDXEditorMethods } from "@mdxeditor/editor";
+import { MDXEditorMethods } from "@mdxeditor/editor";
 import {
   createAlbumAction,
   createPhotoTagAction,

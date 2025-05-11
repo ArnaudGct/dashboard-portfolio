@@ -39,11 +39,13 @@ function TagsLoading() {
   );
 }
 
+type searchParams = Promise<{ from?: string }>;
+
 // Composant principal avec Suspense
 export default function PhotosTagsPage({
   searchParams,
 }: {
-  searchParams: { from?: string };
+  searchParams: searchParams;
 }) {
   return (
     <Suspense fallback={<TagsLoading />}>
@@ -53,13 +55,9 @@ export default function PhotosTagsPage({
 }
 
 // Composant qui récupère les données de manière asynchrone
-async function TagsContent({
-  searchParams,
-}: {
-  searchParams: { from?: string };
-}) {
+async function TagsContent({ searchParams }: { searchParams: searchParams }) {
   try {
-    const { from } = searchParams;
+    const { from } = await searchParams;
 
     // Optimisation: Exécuter les requêtes en parallèle avec Promise.all
     const [normalTags, searchTags] = await Promise.all([

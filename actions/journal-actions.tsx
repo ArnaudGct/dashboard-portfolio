@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
+import { isValidDate } from "@/lib/utils";
 
 // Helper pour sauvegarder une image via l'API du portfolio
 async function saveImage(file: File): Promise<string> {
@@ -52,7 +53,9 @@ async function saveImage(file: File): Promise<string> {
     return data.imageUrl;
   } catch (error) {
     console.error("Erreur lors de l'upload de l'image:", error);
-    throw new Error(`Erreur d'upload: ${error.message}`);
+    throw new Error(
+      `Erreur d'upload: ${error instanceof Error ? error.message : String(error)}`
+    );
   }
 }
 
@@ -61,11 +64,11 @@ export async function getAllJournalEntriesAction() {
   try {
     const entries = await prisma.experiences.findMany({
       where: {
-        categorie: "personnel",
+        afficher: true,
       },
       orderBy: [
         {
-          date_debut: "desc",
+          date: "desc",
         },
       ],
     });
@@ -86,7 +89,7 @@ export async function getJournalEntryByIdAction(id: number) {
     const entry = await prisma.experiences.findUnique({
       where: {
         id_exp: id,
-        categorie: "personnel",
+        afficher: true,
       },
     });
 
@@ -101,46 +104,43 @@ export async function getJournalEntryByIdAction(id: number) {
 }
 
 // Ajouter une entrée de journal
+// Ajouter une entrée de journal
 export async function addJournalEntryAction(formData: FormData) {
   try {
     const mediaType = formData.get("media_type")?.toString();
     let imageUrl = "";
 
+    const dateStr = formData.get("date")?.toString();
+    let dateValue: Date | undefined;
+
+    if (dateStr) {
+      // Convertir YYYY-MM-DD en objet Date complet
+      dateValue = new Date(dateStr);
+      // S'assurer qu'il s'agit d'une date valide
+      if (isNaN(dateValue.getTime())) {
+        dateValue = undefined;
+      }
+    }
+
     // Traiter selon le type de média
     if (mediaType === "image") {
       const imageFile = formData.get("image") as File;
-      console.log("Image file reçu:", !!imageFile);
-      console.log("Taille de l'image:", imageFile?.size || "Non disponible");
-
       if (imageFile && imageFile.size > 0) {
         imageUrl = await saveImage(imageFile);
-        console.log("Image uploadée avec succès:", imageUrl);
-      } else {
-        console.warn("Type média 'image' spécifié mais aucun fichier trouvé");
       }
     } else if (mediaType === "youtube") {
-      // Récupérer l'URL YouTube
       imageUrl = formData.get("url_img")?.toString() || "";
-      console.log("URL YouTube détectée:", imageUrl);
     }
-    // Si mediaType est "none", imageUrl reste vide
 
     // Créer l'entrée de journal
     const entry = await prisma.experiences.create({
       data: {
         titre: formData.get("titre")?.toString() || "",
         description: formData.get("description")?.toString() || "",
-        date_debut: formData.get("date_debut")?.toString() || "",
-        date_fin: formData.get("date_fin")?.toString() || "",
-        url_img: imageUrl, // Utiliser l'URL déterminée ci-dessus
+        // Utiliser 'date' au lieu de 'date_debut'
+        date: dateValue || new Date(), // Utiliser la date validée
+        url_img: imageUrl,
         position_img: formData.get("position_img")?.toString() || "centre",
-        position: formData.get("position")?.toString() || "left",
-        categorie: formData.get("categorie")?.toString() || "personnel",
-        img_logo: formData.get("img_logo")?.toString() || "",
-        nom_entreprise: formData.get("nom_entreprise")?.toString() || "",
-        url_entreprise: formData.get("url_entreprise")?.toString() || "",
-        type_emploi: formData.get("type_emploi")?.toString() || "",
-        poste_actuel: formData.get("poste_actuel") === "on" ? 1 : 0,
         afficher: formData.get("afficher") === "on",
       },
     });
@@ -149,7 +149,11 @@ export async function addJournalEntryAction(formData: FormData) {
     return { success: true, id: entry.id_exp };
   } catch (error) {
     console.error("Erreur lors de l'ajout de l'entrée de journal:", error);
-    return { success: false, error: error.message };
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "Une erreur inconnue s'est produite";
+    return { success: false, error: errorMessage };
   }
 }
 
@@ -172,55 +176,55 @@ export async function updateJournalEntryAction(formData: FormData) {
     }
 
     const mediaType = formData.get("media_type")?.toString();
-    let imageUrl = existingEntry.url_img; // Valeur par défaut
+    let imageUrl = existingEntry.url_img;
 
     // Traiter selon le type de média
     if (mediaType === "image") {
-      // Cas d'une image uploadée
       const imageFile = formData.get("image") as File;
       if (imageFile && imageFile.size > 0) {
         imageUrl = await saveImage(imageFile);
-        console.log("Image mise à jour avec succès:", imageUrl);
       }
     } else if (mediaType === "youtube") {
-      // Cas d'une URL YouTube
       imageUrl = formData.get("url_img")?.toString() || "";
-      console.log("URL YouTube mise à jour:", imageUrl);
     } else if (mediaType === "none") {
-      // Cas où on ne veut pas de média
       imageUrl = "";
     }
 
-    // Mettre à jour l'entrée
+    const dateStr = formData.get("date")?.toString();
+    let dateValue: Date | undefined;
+
+    if (dateStr) {
+      // Convertir YYYY-MM-DD en objet Date complet
+      dateValue = new Date(dateStr);
+      // S'assurer qu'il s'agit d'une date valide
+      if (isNaN(dateValue.getTime())) {
+        dateValue = undefined;
+      }
+    }
+    // Mettre à jour l'entrée avec la date correctement formatée
     await prisma.experiences.update({
       where: { id_exp: id },
       data: {
-        // Les champs restent identiques, seul imageUrl change
         titre: formData.get("titre")?.toString() || "",
         description: formData.get("description")?.toString() || "",
-        date_debut: formData.get("date_debut")?.toString() || "",
-        date_fin: formData.get("date_fin")?.toString() || "",
+        date: dateValue, // Utiliser la date validée
         url_img: imageUrl,
         position_img: formData.get("position_img")?.toString() || "centre",
-        position: formData.get("position")?.toString() || "left",
-        categorie: formData.get("categorie")?.toString() || "personnel",
-        img_logo: formData.get("img_logo")?.toString() || "",
-        nom_entreprise: formData.get("nom_entreprise")?.toString() || "",
-        url_entreprise: formData.get("url_entreprise")?.toString() || "",
-        type_emploi: formData.get("type_emploi")?.toString() || "",
-        poste_actuel: formData.get("poste_actuel") === "on" ? 1 : 0,
         afficher: formData.get("afficher") === "on",
       },
     });
 
     revalidatePath("/journal-personnel");
-    return { success: true };
   } catch (error) {
     console.error(
       "Erreur lors de la mise à jour de l'entrée de journal:",
       error
     );
-    return { success: false, error: error.message };
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "Une erreur inconnue s'est produite";
+    return { success: false, error: errorMessage };
   }
 }
 
@@ -230,14 +234,15 @@ export async function deleteJournalEntryAction(id: number) {
     await prisma.experiences.delete({
       where: { id_exp: id },
     });
-
-    revalidatePath("/journal-personnel");
-    return { success: true };
   } catch (error) {
     console.error(
       "Erreur lors de la suppression de l'entrée de journal:",
       error
     );
-    return { success: false, error: error.message };
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "Une erreur inconnue s'est produite";
+    return { success: false, error: errorMessage };
   }
 }

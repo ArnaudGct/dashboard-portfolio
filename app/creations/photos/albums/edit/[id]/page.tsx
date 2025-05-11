@@ -34,7 +34,9 @@ function AlbumEditLoading() {
   );
 }
 
-export default function EditAlbumPage({ params }: { params: { id: string } }) {
+type Params = Promise<{ id: string }>;
+
+export default function EditAlbumPage({ params }: { params: Params }) {
   return (
     <Suspense fallback={<AlbumEditLoading />}>
       <EditAlbumContent params={params} />
@@ -42,7 +44,7 @@ export default function EditAlbumPage({ params }: { params: { id: string } }) {
   );
 }
 
-async function EditAlbumContent({ params }: { params: { id: string } }) {
+async function EditAlbumContent({ params }: { params: Params }) {
   try {
     const { id } = await params;
     const albumId = parseInt(id);

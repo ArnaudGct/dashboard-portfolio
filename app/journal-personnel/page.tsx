@@ -71,10 +71,9 @@ async function JournalContent() {
     experiences.forEach((experience) => {
       let year = "Sans date";
 
-      if (experience.date_debut) {
-        // Parse date_debut de manière plus efficace
-        const dateStr = experience.date_debut;
-        year = dateStr.includes("-") ? dateStr.split("-")[0] : dateStr;
+      if (experience.date) {
+        const dateObj = new Date(experience.date);
+        year = dateObj.getFullYear().toString();
       }
 
       // Optimisation avec Map

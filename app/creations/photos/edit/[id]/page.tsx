@@ -21,7 +21,9 @@ function PhotoEditLoading() {
   );
 }
 
-export default function EditPhotoPage({ params }: { params: { id: string } }) {
+type Params = Promise<{ id: string }>;
+
+export default function EditPhotoPage({ params }: { params: Params }) {
   return (
     <Suspense fallback={<PhotoEditLoading />}>
       <EditPhotoContent params={params} />
@@ -29,7 +31,7 @@ export default function EditPhotoPage({ params }: { params: { id: string } }) {
   );
 }
 
-async function EditPhotoContent({ params }: { params: { id: string } }) {
+async function EditPhotoContent({ params }: { params: Params }) {
   const { id } = await params;
   const photoId = parseInt(id);
 

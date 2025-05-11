@@ -45,25 +45,21 @@ import {
 } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar } from "@/components/ui/calendar";
-import { clear } from "console";
 
 export function AddJournalItem() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [markdown, setMarkdown] = useState<string>("");
   const editorRef = useRef<MDXEditorMethods | null>(null);
-  const [selectedMonth, setSelectedMonth] = useState<Date | undefined>(
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
     new Date()
   );
-  const [dateType, setDateType] = useState<"single" | "range">("single");
-  const [endMonth, setEndMonth] = useState<Date | undefined>(undefined);
   const [mediaType, setMediaType] = useState<"image" | "youtube" | "none">(
     "none"
   );
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [youtubeUrl, setYoutubeUrl] = useState<string>("");
   const [imagePosition, setImagePosition] = useState<string>("centre");
-  const [position, setPosition] = useState<string>("left");
 
   const handleEditorChange = (newMarkdown: string) => {
     setMarkdown(newMarkdown);
@@ -111,17 +107,21 @@ export function AddJournalItem() {
       // Ajouter la description markdown
       formData.set("description", markdown);
 
-      // Formater les dates
-      if (selectedMonth) {
-        const formattedStartDate = format(selectedMonth, "yyyy-MM");
-        formData.set("date_debut", formattedStartDate);
-      }
+      if (selectedDate) {
+        // Format MySQL DATE (YYYY-MM-DD)
+        // S'assurer que la date est valide (pas de jour ou mois à zéro)
+        const year = selectedDate.getFullYear();
+        const month = selectedDate.getMonth() + 1; // getMonth() retourne 0-11
+        const day = selectedDate.getDate();
 
-      if (dateType === "range" && endMonth) {
-        const formattedEndDate = format(endMonth, "yyyy-MM");
-        formData.set("date_fin", formattedEndDate);
-      } else {
-        formData.set("date_fin", "");
+        // Vérifier que tous les éléments sont valides
+        if (year > 0 && month > 0 && day > 0) {
+          const formattedDate = format(selectedDate, "yyyy-MM-dd");
+          formData.set("date", formattedDate);
+        } else {
+          // Date invalide, ne pas l'inclure
+          formData.delete("date");
+        }
       }
 
       // Gérer les médias en fonction du type sélectionné
@@ -156,10 +156,6 @@ export function AddJournalItem() {
 
       // Ajouter les paramètres de position
       formData.set("position_img", imagePosition);
-      formData.set("position", position);
-
-      // Catégorie "journal" pour toutes les entrées de journal
-      formData.set("categorie", "personnel");
 
       // Vérifier si on a au moins un titre et une description
       const titre = formData.get("titre")?.toString();
@@ -217,29 +213,29 @@ export function AddJournalItem() {
           </div>
 
           <div className="grid w-full items-center gap-1.5">
-            <Label htmlFor="date">date</Label>
+            <Label htmlFor="date">Date</Label>
             <Popover>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
                   className={cn(
                     "w-full justify-start text-left font-normal cursor-pointer",
-                    !selectedMonth && "text-muted-foreground"
+                    !selectedDate && "text-muted-foreground"
                   )}
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
-                  {selectedMonth ? (
-                    format(selectedMonth, "MMMM yyyy", { locale: fr })
+                  {selectedDate ? (
+                    format(selectedDate, "d MMMM yyyy", { locale: fr })
                   ) : (
-                    <span>Sélectionner un mois</span>
+                    <span>Sélectionner une date</span>
                   )}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
                 <Calendar
                   mode="single"
-                  selected={selectedMonth}
-                  onSelect={setSelectedMonth}
+                  selected={selectedDate}
+                  onSelect={setSelectedDate}
                   initialFocus
                   locale={fr}
                 />

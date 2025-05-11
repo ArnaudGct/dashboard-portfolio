@@ -65,12 +65,9 @@ interface EditJournalItemProps {
     id_exp: number;
     titre: string;
     description: string;
-    date_debut: string;
-    date_fin: string | null;
+    date?: Date;
     url_img: string | null;
     position_img: string;
-    position: string;
-    categorie: string;
     afficher: boolean;
   };
 }
@@ -86,21 +83,10 @@ export function EditJournalItem({ initialData }: EditJournalItemProps) {
   );
   const editorRef = useRef<MDXEditorMethods | null>(null);
 
-  // Traiter les dates
-  const startDate = initialData.date_debut
-    ? new Date(initialData.date_debut)
-    : new Date();
-  const endDate = initialData.date_fin
-    ? new Date(initialData.date_fin)
-    : undefined;
-
-  const [selectedMonth, setSelectedMonth] = useState<Date | undefined>(
-    startDate
+  // Traiter la date
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+    initialData.date ? new Date(initialData.date) : new Date()
   );
-  const [dateType, setDateType] = useState<"single" | "range">(
-    initialData.date_fin ? "range" : "single"
-  );
-  const [endMonth, setEndMonth] = useState<Date | undefined>(endDate);
 
   // Déterminer le type de média
   const hasImage =
@@ -120,9 +106,6 @@ export function EditJournalItem({ initialData }: EditJournalItemProps) {
   );
   const [imagePosition, setImagePosition] = useState<string>(
     initialData.position_img || "centre"
-  );
-  const [position, setPosition] = useState<string>(
-    initialData.position || "left"
   );
   const [isPublished, setIsPublished] = useState<boolean>(initialData.afficher);
 
@@ -170,17 +153,29 @@ export function EditJournalItem({ initialData }: EditJournalItemProps) {
       // Ajouter la description markdown
       formData.set("description", markdown);
 
-      // Formater les dates
-      if (selectedMonth) {
-        const formattedStartDate = format(selectedMonth, "yyyy-MM");
-        formData.set("date_debut", formattedStartDate);
-      }
+      // Dans edit-journal-item.tsx, modifiez cette partie du code (vers la ligne 192)
+      if (selectedDate) {
+        // S'assurer que la date est valide (pas de jour ou mois à zéro)
+        const year = selectedDate.getFullYear();
+        const month = selectedDate.getMonth() + 1; // getMonth() retourne 0-11
+        const day = selectedDate.getDate();
 
-      if (dateType === "range" && endMonth) {
-        const formattedEndDate = format(endMonth, "yyyy-MM");
-        formData.set("date_fin", formattedEndDate);
-      } else {
-        formData.set("date_fin", "");
+        // Vérifier que tous les éléments sont valides
+        if (year > 0 && month > 0 && day > 0) {
+          // Utiliser un formatage manuel au lieu de date-fns pour éviter les problèmes de fuseau horaire
+          const formattedMonth = month.toString().padStart(2, "0");
+          const formattedDay = day.toString().padStart(2, "0");
+          const formattedDate = `${year}-${formattedMonth}-${formattedDay}`;
+
+          // Ajouter la date formatée au formData
+          formData.set("date", formattedDate);
+
+          // Pour déboguer
+          console.log("Date formatée envoyée:", formattedDate);
+        } else {
+          // Date invalide, ne pas l'inclure
+          formData.delete("date");
+        }
       }
 
       // Gérer les médias en fonction du type sélectionné
@@ -189,12 +184,10 @@ export function EditJournalItem({ initialData }: EditJournalItemProps) {
         formData.delete("image"); // Supprimer l'image du formData
         formData.set("url_img", youtubeUrl);
         formData.set("media_type", "youtube");
-        console.log("URL YouTube envoyée:", youtubeUrl);
       } else if (mediaType === "image") {
         // Vérifier explicitement si un fichier est présent
         const imageFile = formData.get("image") as File;
         if (imageFile && imageFile.size > 0) {
-          console.log("Image détectée et sera envoyée:", imageFile.name);
           formData.set("url_img", ""); // Effacer toute URL YouTube
           formData.set("media_type", "image");
         } else if (previewImage && previewImage.includes(PORTFOLIO_BASE_URL)) {
@@ -202,14 +195,7 @@ export function EditJournalItem({ initialData }: EditJournalItemProps) {
           formData.delete("image");
           formData.set("url_img", initialData.url_img || "");
           formData.set("media_type", "image");
-          console.log(
-            "Conservation de l'image existante:",
-            initialData.url_img
-          );
         } else {
-          console.warn(
-            "Mode image sélectionné mais aucun fichier n'est présent"
-          );
           formData.delete("image");
           formData.set("url_img", "");
           formData.set("media_type", "none");
@@ -223,10 +209,9 @@ export function EditJournalItem({ initialData }: EditJournalItemProps) {
 
       // Ajouter les paramètres de position
       formData.set("position_img", imagePosition);
-      formData.set("position", position);
 
-      // Catégorie "journal" pour toutes les entrées de journal
-      formData.set("categorie", "personnel");
+      // Supprimer cette ligne si position n'est plus utilisée
+      // formData.set("position", position);
 
       // État de publication
       formData.set("afficher", isPublished ? "on" : "off");
@@ -240,14 +225,15 @@ export function EditJournalItem({ initialData }: EditJournalItemProps) {
 
       const result = await updateJournalEntryAction(formData);
 
-      if (result.success) {
+      // Check if result exists before accessing its properties
+      if (result && result.success) {
         toast.success("Entrée de journal mise à jour avec succès");
         router.push("/journal-personnel");
         router.refresh();
       } else {
         toast.error(
           "Erreur lors de la mise à jour: " +
-            (result.error || "Erreur inconnue")
+            (result?.error || "Erreur inconnue")
         );
       }
     } catch (error) {
@@ -264,7 +250,7 @@ export function EditJournalItem({ initialData }: EditJournalItemProps) {
       setIsDeleting(true);
       const result = await deleteJournalEntryAction(initialData.id_exp);
 
-      if (result.success) {
+      if (result && result.success) {
         toast.success("Entrée de journal supprimée avec succès");
         router.push("/journal-personnel");
         router.refresh();
@@ -347,22 +333,22 @@ export function EditJournalItem({ initialData }: EditJournalItemProps) {
                 variant="outline"
                 className={cn(
                   "w-full justify-start text-left font-normal cursor-pointer",
-                  !selectedMonth && "text-muted-foreground"
+                  !selectedDate && "text-muted-foreground"
                 )}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                {selectedMonth ? (
-                  format(selectedMonth, "MMMM yyyy", { locale: fr })
+                {selectedDate ? (
+                  format(selectedDate, "d MMMM yyyy", { locale: fr })
                 ) : (
-                  <span>Sélectionner un mois</span>
+                  <span>Sélectionner une date</span>
                 )}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
               <Calendar
                 mode="single"
-                selected={selectedMonth}
-                onSelect={setSelectedMonth}
+                selected={selectedDate}
+                onSelect={setSelectedDate}
                 initialFocus
                 locale={fr}
               />

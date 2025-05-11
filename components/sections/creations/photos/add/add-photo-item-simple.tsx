@@ -25,14 +25,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { TagCheckbox, type TagOption } from "@/components/tag-checkbox";
 import { toast } from "sonner";
 import { RemovableTag } from "@/components/removable-tag";
+
+type TagOption = {
+  id: string;
+  label: string;
+  important: boolean;
+};
 
 type AddPhotoFormProps = {
   availableTags: TagOption[];
   availableSearchTags: TagOption[];
-  availableAlbums: TagOption[];
+  availableAlbums: {
+    id: string;
+    label: string;
+  }[];
 };
 
 export function AddPhotoItemSimple({
@@ -81,7 +89,7 @@ export function AddPhotoItemSimple({
         setPreviewHighRes(reader.result as string);
 
         // Charger l'image pour obtenir les dimensions
-        const img = new Image();
+        const img = new window.Image();
         img.onload = () => {
           setDimensions({
             width: img.naturalWidth,
@@ -214,9 +222,13 @@ export function AddPhotoItemSimple({
   };
 
   const handleAddAlbum = async (tagName: string): Promise<TagOption | null> => {
-    const result = await createAlbumAction(tagName);
+    const formData = new FormData();
+    formData.append("title", tagName);
+    formData.append("isPublished", "on");
+
+    const result = await createAlbumAction(formData);
     if (result.success && result.id) {
-      return { id: result.id, label: tagName, important: false };
+      return { id: String(result.id), label: tagName, important: false };
     }
     return null;
   };
@@ -433,7 +445,7 @@ export function AddPhotoItemSimple({
                         key={albumId}
                         id={albumId}
                         label={album?.label || albumId}
-                        important={album?.important}
+                        important={false}
                         onRemove={(id) => {
                           setSelectedAlbums(
                             selectedAlbums.filter((a) => a !== id)

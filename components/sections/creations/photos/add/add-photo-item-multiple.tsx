@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { TagOption } from "@/components/tag-checkbox";
 import { toast } from "sonner";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -20,10 +19,19 @@ import { Badge } from "@/components/ui/badge";
 import { X, UploadCloud, Trash2 } from "lucide-react";
 import Image from "next/image";
 
+type TagOption = {
+  id: string;
+  label: string;
+  important: boolean;
+};
+
 type AddPhotoItemMultipleProps = {
   availableTags: TagOption[];
   availableSearchTags: TagOption[];
-  availableAlbums: TagOption[];
+  availableAlbums: {
+    id: string;
+    label: string;
+  }[];
 };
 
 type PreviewImage = {

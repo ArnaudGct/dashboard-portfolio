@@ -28,7 +28,9 @@ function AutreEditLoading() {
   );
 }
 
-export default function EditAutrePage({ params }: { params: { id: string } }) {
+type Params = Promise<{ id: string }>;
+
+export default function EditAutrePage({ params }: { params: Params }) {
   return (
     <Suspense fallback={<AutreEditLoading />}>
       <EditAutreContent params={params} />
@@ -36,7 +38,7 @@ export default function EditAutrePage({ params }: { params: { id: string } }) {
   );
 }
 
-async function EditAutreContent({ params }: { params: { id: string } }) {
+async function EditAutreContent({ params }: { params: Params }) {
   const { id } = await params;
   const autreId = parseInt(id);
 

@@ -29,13 +29,9 @@ function JournalEditLoading() {
   );
 }
 
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
+type Params = Promise<{ id: string }>;
 
-export default function EditJournalItemPage({ params }: PageProps) {
+export default function EditJournalItemPage({ params }: { params: Params }) {
   return (
     <Suspense fallback={<JournalEditLoading />}>
       <EditJournalContent params={params} />
@@ -44,7 +40,7 @@ export default function EditJournalItemPage({ params }: PageProps) {
 }
 
 // Composant asynchrone pour charger les données
-async function EditJournalContent({ params }: PageProps) {
+async function EditJournalContent({ params }: { params: Params }) {
   try {
     const { id } = await params;
     const journalId = parseInt(id);

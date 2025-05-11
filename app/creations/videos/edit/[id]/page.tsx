@@ -29,7 +29,9 @@ function VideoEditLoading() {
   );
 }
 
-export default function EditVideoPage({ params }: { params: { id: string } }) {
+type Params = Promise<{ id: string }>;
+
+export default function EditVideoPage({ params }: { params: Params }) {
   return (
     <Suspense fallback={<VideoEditLoading />}>
       <EditVideoContent params={params} />
@@ -37,9 +39,9 @@ export default function EditVideoPage({ params }: { params: { id: string } }) {
   );
 }
 
-async function EditVideoContent({ params }: { params: { id: string } }) {
+async function EditVideoContent({ params }: { params: Params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const videoId = parseInt(id);
 
     if (isNaN(videoId)) {

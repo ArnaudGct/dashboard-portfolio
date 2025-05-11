@@ -41,21 +41,13 @@ model autre_tags_link {
 }
 
 model experiences {
-  id_exp         Int     @id @default(autoincrement())
-  date_debut     String  @db.VarChar(50)
-  date_fin       String  @db.VarChar(10)
-  titre          String  @db.VarChar(150)
-  description    String  @db.VarChar(10000)
-  url_img        String  @db.VarChar(250)
-  position_img   String  @db.VarChar(50)
-  position       String  @db.VarChar(10)
-  categorie      String  @db.VarChar(25)
-  img_logo       String  @db.VarChar(250)
-  nom_entreprise String  @db.VarChar(50)
-  url_entreprise String  @db.VarChar(1000)
-  type_emploi    String  @db.VarChar(50)
-  poste_actuel   Int
-  afficher       Boolean
+  id_exp       Int      @id @default(autoincrement())
+  date         DateTime @db.Date
+  titre        String   @db.VarChar(150)
+  description  String   @db.VarChar(10000)
+  url_img      String   @db.VarChar(250)
+  position_img String   @db.VarChar(50)
+  afficher     Boolean
 }
 
 model faq {

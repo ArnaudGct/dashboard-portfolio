@@ -147,19 +147,11 @@ exports.Prisma.Autre_tags_linkScalarFieldEnum = {
 
 exports.Prisma.ExperiencesScalarFieldEnum = {
   id_exp: 'id_exp',
-  date_debut: 'date_debut',
-  date_fin: 'date_fin',
+  date: 'date',
   titre: 'titre',
   description: 'description',
   url_img: 'url_img',
   position_img: 'position_img',
-  position: 'position',
-  categorie: 'categorie',
-  img_logo: 'img_logo',
-  nom_entreprise: 'nom_entreprise',
-  url_entreprise: 'url_entreprise',
-  type_emploi: 'type_emploi',
-  poste_actuel: 'poste_actuel',
   afficher: 'afficher'
 };
 
@@ -339,18 +331,10 @@ exports.Prisma.autre_tagsOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.experiencesOrderByRelevanceFieldEnum = {
-  date_debut: 'date_debut',
-  date_fin: 'date_fin',
   titre: 'titre',
   description: 'description',
   url_img: 'url_img',
-  position_img: 'position_img',
-  position: 'position',
-  categorie: 'categorie',
-  img_logo: 'img_logo',
-  nom_entreprise: 'nom_entreprise',
-  url_entreprise: 'url_entreprise',
-  type_emploi: 'type_emploi'
+  position_img: 'position_img'
 };
 
 exports.Prisma.faqOrderByRelevanceFieldEnum = {
