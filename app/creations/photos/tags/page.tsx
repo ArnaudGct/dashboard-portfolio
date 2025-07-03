@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { TagItem } from "@/components/sections/creations/photos/tag-item";
 import prisma from "@/lib/prisma";
 import { Suspense } from "react";
