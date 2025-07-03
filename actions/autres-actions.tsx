@@ -20,7 +20,8 @@ async function saveImage(file: File): Promise<string> {
 
     // URL de votre portfolio (à ajuster selon votre configuration)
     const portfolioUrl =
-      process.env.PORTFOLIO_API_URL || "http://localhost:3001";
+      process.env.PORTFOLIO_API_URL ||
+      "https://portfolio.srv892985.hstgr.cloud:3000";
     const apiUrl = `${portfolioUrl}/api/actions/creations/autres`;
     console.log("Tentative d'upload vers:", apiUrl);
 
@@ -292,7 +293,8 @@ export async function deleteAutreAction(projetId: number) {
 
           // URL de votre portfolio avec la nouvelle API combinée
           const portfolioUrl =
-            process.env.PORTFOLIO_API_URL || "http://localhost:3001";
+            process.env.PORTFOLIO_API_URL ||
+            "https://portfolio.srv892985.hstgr.cloud:3000";
           const deleteUrl = `${portfolioUrl}/api/actions/creations/autres`;
 
           // Envoyer une requête pour supprimer le fichier distant

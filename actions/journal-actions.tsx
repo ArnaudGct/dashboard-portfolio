@@ -19,7 +19,8 @@ async function saveImage(file: File): Promise<string> {
 
     // URL de votre portfolio (à ajuster selon votre configuration)
     const portfolioUrl =
-      process.env.PORTFOLIO_API_URL || "http://localhost:3001";
+      process.env.PORTFOLIO_API_URL ||
+      "https://portfolio.srv892985.hstgr.cloud:3000";
     const apiUrl = `${portfolioUrl}/api/actions/journal-personnel`;
     console.log("Tentative d'upload vers:", apiUrl);
 

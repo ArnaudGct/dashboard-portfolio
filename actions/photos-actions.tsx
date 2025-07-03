@@ -48,7 +48,8 @@ async function saveImage(
 
     // URL de votre portfolio
     const portfolioUrl =
-      process.env.PORTFOLIO_API_URL || "http://localhost:3001";
+      process.env.PORTFOLIO_API_URL ||
+      "https://portfolio.srv892985.hstgr.cloud:3000";
     const apiUrl = `${portfolioUrl}/api/actions/creations/photos`;
 
     console.log(
@@ -329,7 +330,8 @@ export async function deletePhotoAction(photoId: number) {
     if (photo.lien_high || photo.lien_low) {
       try {
         const portfolioUrl =
-          process.env.PORTFOLIO_API_URL || "http://localhost:3001";
+          process.env.PORTFOLIO_API_URL ||
+          "https://portfolio.srv892985.hstgr.cloud:3000";
         const deleteUrl = `${portfolioUrl}/api/actions/creations/photos`;
 
         // Supprimer l'image haute résolution
