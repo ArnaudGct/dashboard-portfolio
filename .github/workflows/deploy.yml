@@ -1,0 +1,36 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - master # ou la branche que tu utilises
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18" # adapte la version si besoin
+
+      - name: Create .env file
+        run: |
+          echo "RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}" > .env
+          echo "BETTER_AUTH_SECRET=${{ secrets.BETTER_AUTH_SECRET }}" >> .env
+          echo "BETTER_AUTH_URL=${{ secrets.BETTER_AUTH_URL }}" >> .env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          echo "PORTFOLIO_API_TOKEN=${{ secrets.PORTFOLIO_API_TOKEN }}" >> .env
+          echo "PORTFOLIO_API_URL=${{ secrets.PORTFOLIO_API_URL }}" >> .env
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      # Ici tu peux ajouter les étapes pour déployer si besoin
