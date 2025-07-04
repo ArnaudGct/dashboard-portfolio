@@ -18,11 +18,15 @@ export async function analyzeImageWithGoogleVision(
     });
 
     // Analyse des objets dans l'image
-    const [objectResult] = await client.objectLocalization({
-      image: {
-        content: imageBase64,
-      },
-    });
+    let objectResult: any = { localizedObjectAnnotations: [] };
+
+    if (client.objectLocalization) {
+      [objectResult] = await client.objectLocalization({
+        image: {
+          content: imageBase64,
+        },
+      });
+    }
 
     // Traitement des résultats
     const labels = labelResult.labelAnnotations || [];
