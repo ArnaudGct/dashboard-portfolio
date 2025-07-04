@@ -20,12 +20,6 @@ ENV RESEND_API_KEY=$RESEND_API_KEY
 
 # Installer deps
 COPY package*.json ./
-COPY .next ./.next
-COPY public ./public
-COPY package.json ./
-COPY package-lock.json ./
-COPY next.config.ts ./
-COPY .env ./
 RUN npm install
 
 # Copier le code et générer Prisma + build

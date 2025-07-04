@@ -3,10 +3,10 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - master
+      - master # ou la branche que tu utilises
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: "18" # adapte la version si besoin
 
       - name: Create .env file
         run: |
@@ -33,17 +33,4 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Build Docker image
-        run: |
-          docker build -f Dockerfile -t ${{ secrets.CAPROVER_APP_NAME }}:latest .
-
-      - name: Save Docker image
-        run: |
-          docker save ${{ secrets.CAPROVER_APP_NAME }}:latest > image.tar
-
-      - name: Deploy to CapRover
-        run: |
-          curl -X POST \
-            -H "X-Captain-Auth: ${{ secrets.CAPROVER_PASSWORD }}" \
-            -F "sourceFile=@image.tar" \
-            https://captain.${{ secrets.CAPROVER_DOMAIN }}/api/v2/user/apps/${{ secrets.CAPROVER_APP_NAME }}/deploy/
+      # Ici tu peux ajouter les étapes pour déployer si besoin
