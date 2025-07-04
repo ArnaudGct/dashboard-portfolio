@@ -68,6 +68,8 @@ interface EditJournalItemProps {
     date?: Date;
     url_img: string | null;
     position_img: string;
+    credit_nom?: string | null;
+    credit_url?: string | null;
     afficher: boolean;
   };
 }
@@ -88,6 +90,24 @@ export function EditJournalItem({ initialData }: EditJournalItemProps) {
     initialData.date ? new Date(initialData.date) : new Date()
   );
 
+  // Fonction helper pour déterminer si une URL est une URL Cloudinary complète
+  const isCloudinaryUrl = (url: string | null): boolean => {
+    return url?.startsWith("https://res.cloudinary.com/") || false;
+  };
+
+  // Fonction helper pour formater correctement l'URL d'image
+  const formatImageUrl = (url: string | null): string | null => {
+    if (!url) return null;
+
+    // Si c'est déjà une URL Cloudinary complète, la retourner telle quelle
+    if (isCloudinaryUrl(url)) {
+      return url;
+    }
+
+    // Sinon, ajouter le PORTFOLIO_BASE_URL pour les anciennes images
+    return `${PORTFOLIO_BASE_URL}${url}`;
+  };
+
   // Déterminer le type de média
   const hasImage =
     !!initialData.url_img && !initialData.url_img.includes("youtube");
@@ -99,7 +119,7 @@ export function EditJournalItem({ initialData }: EditJournalItemProps) {
     initialMediaType
   );
   const [previewImage, setPreviewImage] = useState<string | null>(
-    hasImage ? `${PORTFOLIO_BASE_URL}${initialData.url_img}` : null
+    hasImage ? formatImageUrl(initialData.url_img) : null
   );
   const [youtubeUrl, setYoutubeUrl] = useState<string>(
     hasYoutube ? initialData.url_img || "" : ""
@@ -153,55 +173,51 @@ export function EditJournalItem({ initialData }: EditJournalItemProps) {
       // Ajouter la description markdown
       formData.set("description", markdown);
 
-      // Dans edit-journal-item.tsx, modifiez cette partie du code (vers la ligne 192)
+      // Gestion de la date
       if (selectedDate) {
-        // S'assurer que la date est valide (pas de jour ou mois à zéro)
         const year = selectedDate.getFullYear();
-        const month = selectedDate.getMonth() + 1; // getMonth() retourne 0-11
+        const month = selectedDate.getMonth() + 1;
         const day = selectedDate.getDate();
 
-        // Vérifier que tous les éléments sont valides
         if (year > 0 && month > 0 && day > 0) {
-          // Utiliser un formatage manuel au lieu de date-fns pour éviter les problèmes de fuseau horaire
           const formattedMonth = month.toString().padStart(2, "0");
           const formattedDay = day.toString().padStart(2, "0");
           const formattedDate = `${year}-${formattedMonth}-${formattedDay}`;
-
-          // Ajouter la date formatée au formData
           formData.set("date", formattedDate);
-
-          // Pour déboguer
           console.log("Date formatée envoyée:", formattedDate);
         } else {
-          // Date invalide, ne pas l'inclure
           formData.delete("date");
         }
       }
 
       // Gérer les médias en fonction du type sélectionné
       if (mediaType === "youtube" && youtubeUrl) {
-        // Si on a choisi YouTube et qu'il y a une URL
-        formData.delete("image"); // Supprimer l'image du formData
+        formData.delete("image");
         formData.set("url_img", youtubeUrl);
         formData.set("media_type", "youtube");
       } else if (mediaType === "image") {
-        // Vérifier explicitement si un fichier est présent
         const imageFile = formData.get("image") as File;
         if (imageFile && imageFile.size > 0) {
-          formData.set("url_img", ""); // Effacer toute URL YouTube
+          // Nouvelle image uploadée
+          formData.set("url_img", "");
           formData.set("media_type", "image");
-        } else if (previewImage && previewImage.includes(PORTFOLIO_BASE_URL)) {
+        } else if (
+          previewImage &&
+          (previewImage.includes(PORTFOLIO_BASE_URL) ||
+            isCloudinaryUrl(previewImage))
+        ) {
           // Conserver l'image existante
           formData.delete("image");
           formData.set("url_img", initialData.url_img || "");
           formData.set("media_type", "image");
         } else {
+          // Pas d'image
           formData.delete("image");
           formData.set("url_img", "");
           formData.set("media_type", "none");
         }
       } else {
-        // Si aucun média n'est activé ou si le média sélectionné n'a pas de contenu
+        // Aucun média
         formData.delete("image");
         formData.set("url_img", "");
         formData.set("media_type", "none");
@@ -209,9 +225,6 @@ export function EditJournalItem({ initialData }: EditJournalItemProps) {
 
       // Ajouter les paramètres de position
       formData.set("position_img", imagePosition);
-
-      // Supprimer cette ligne si position n'est plus utilisée
-      // formData.set("position", position);
 
       // État de publication
       formData.set("afficher", isPublished ? "on" : "off");
@@ -225,7 +238,6 @@ export function EditJournalItem({ initialData }: EditJournalItemProps) {
 
       const result = await updateJournalEntryAction(formData);
 
-      // Check if result exists before accessing its properties
       if (result && result.success) {
         toast.success("Entrée de journal mise à jour avec succès");
         router.push("/journal-personnel");
@@ -407,7 +419,6 @@ export function EditJournalItem({ initialData }: EditJournalItemProps) {
                     accept="image/*"
                     className="cursor-pointer"
                     onChange={(e) => {
-                      // Si on ajoute une image, on efface toute URL YouTube
                       if (e.target.files?.length) {
                         setYoutubeUrl("");
                       }
@@ -428,7 +439,7 @@ export function EditJournalItem({ initialData }: EditJournalItemProps) {
                 </div>
 
                 {previewImage && (
-                  <div className="flex gap-6">
+                  <div className="flex gap-6 items-center">
                     <div className="relative">
                       <Image
                         src={previewImage}
@@ -436,32 +447,57 @@ export function EditJournalItem({ initialData }: EditJournalItemProps) {
                         width={400}
                         height={300}
                         className="rounded-md object-cover"
-                        unoptimized={previewImage.startsWith(
-                          PORTFOLIO_BASE_URL
-                        )} // Ne pas optimiser les images du serveur
+                        unoptimized={
+                          previewImage.startsWith("data:") ||
+                          isCloudinaryUrl(previewImage)
+                        }
                       />
                     </div>
-                    <div className="flex flex-col gap-1.5">
-                      <Label>Position dans l'image</Label>
-                      <Select
-                        value={imagePosition}
-                        onValueChange={setImagePosition}
-                        name="position_img"
-                      >
-                        <SelectTrigger className="cursor-pointer">
-                          <SelectValue placeholder="Choisir une position" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="centre">Centrée</SelectItem>
-                          <SelectItem value="gauche">
-                            Alignée à gauche
-                          </SelectItem>
-                          <SelectItem value="droite">
-                            Alignée à droite
-                          </SelectItem>
-                          <SelectItem value="none">Sans alignement</SelectItem>
-                        </SelectContent>
-                      </Select>
+                    <div className="flex flex-col gap-4 w-full">
+                      <div className="flex flex-col gap-1.5">
+                        <Label>Position dans l'image</Label>
+                        <Select
+                          value={imagePosition}
+                          onValueChange={setImagePosition}
+                          name="position_img"
+                        >
+                          <SelectTrigger className="cursor-pointer">
+                            <SelectValue placeholder="Choisir une position" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="centre">Centrée</SelectItem>
+                            <SelectItem value="gauche">
+                              Alignée à gauche
+                            </SelectItem>
+                            <SelectItem value="droite">
+                              Alignée à droite
+                            </SelectItem>
+                            <SelectItem value="none">
+                              Sans alignement
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="grid w-full items-center gap-1.5">
+                        <Label htmlFor="credit_nom">Crédit</Label>
+                        <Input
+                          type="text"
+                          id="credit_nom"
+                          name="credit_nom"
+                          defaultValue={initialData.credit_nom || ""}
+                          placeholder="Nom du crédit"
+                        />
+                      </div>
+                      <div className="grid w-full items-center gap-1.5">
+                        <Label htmlFor="credit_url">URL du crédit</Label>
+                        <Input
+                          type="url"
+                          id="credit_url"
+                          name="credit_url"
+                          defaultValue={initialData.credit_url || ""}
+                          placeholder="URL du crédit"
+                        />
+                      </div>
                     </div>
                   </div>
                 )}
@@ -478,7 +514,6 @@ export function EditJournalItem({ initialData }: EditJournalItemProps) {
                     placeholder="https://www.youtube.com/watch?v=..."
                     value={youtubeUrl}
                     onChange={(e) => {
-                      // Si on ajoute une URL YouTube, on efface toute image
                       if (e.target.value && e.target.value !== youtubeUrl) {
                         clearImage();
                       }

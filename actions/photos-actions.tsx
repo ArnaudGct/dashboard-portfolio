@@ -3,109 +3,118 @@
 import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
 import sharp from "sharp";
-import path from "path";
-import fs from "fs/promises";
+import {
+  uploadToCloudinary,
+  deleteFromCloudinary,
+  extractPublicIdFromUrl,
+  uploadOriginalToCloudinary, // NOUVEAU
+} from "@/lib/cloudinary";
 
-// Helper pour sauvegarder une image via l'API du portfolio
-// Helper pour sauvegarder une image via l'API du portfolio
-async function saveImage(
+// Helper pour sauvegarder une image via Cloudinary
+async function saveImageToCloudinary(
   file: File,
-  type: "low" | "high" = "high"
+  type: "low" | "high" = "high",
+  originalPublicId?: string
 ): Promise<string> {
   try {
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    // Créer un FormData pour l'upload
-    const formData = new FormData();
-
-    // Pour la version low-res, toujours appliquer l'optimisation
-    if (type === "low") {
-      // Activer le redimensionnement pour toutes les images en basse résolution
-      formData.append("resize", "true");
-      formData.append("maxWidth", "800");
-
-      // Paramètres de qualité et compression
-      if (file.type.includes("webp")) {
-        // Pour les WebP, ne pas convertir mais optimiser quand même
-        formData.append("optimize", "true");
-        formData.append("quality", "75"); // Qualité légèrement meilleure pour WebP
-      } else {
-        // Pour les autres formats, convertir en WebP
-        formData.append("optimize", "true");
-        formData.append("convertToWebp", "true");
-        formData.append("quality", "70");
-      }
-    }
-
-    // Ajouter l'image avec le bon nom et type MIME
-    const blob = new Blob([buffer], { type: file.type });
-    formData.append("image", blob, file.name);
-    formData.append("type", type);
-
-    // Spécifier le chemin de destination
-    formData.append("destination", "uploads/photos");
-
-    // URL de votre portfolio
-    const portfolioUrl =
-      process.env.PORTFOLIO_API_URL ||
-      "https://portfolio.srv892985.hstgr.cloud:3000";
-    const apiUrl = `${portfolioUrl}/api/actions/creations/photos`;
-
     console.log(
-      `Uploading to: ${apiUrl}, file type: ${file.type}, size: ${(file.size / 1024).toFixed(2)}KB, type: ${type}, isWebP: ${file.type.includes("webp")}`
+      `Début upload vers Cloudinary - Type: ${type}, Taille: ${file.size} bytes`
     );
 
-    const response = await fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.PORTFOLIO_API_TOKEN}`,
-      },
-      body: formData,
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      const errorMessage = errorData.error || response.statusText;
-      console.error("Réponse d'erreur API:", errorMessage);
-      throw new Error(`Échec de l'upload: ${errorMessage}`);
+    if (!file || file.size === 0) {
+      throw new Error("Fichier invalide ou vide");
     }
 
-    const data = await response.json();
-    console.log("Réponse de l'API:", data);
-
-    return data.imageUrl;
-  } catch (error: unknown) {
-    console.error("Erreur lors de l'upload de l'image:", error);
+    const result = await uploadToCloudinary(
+      file,
+      type,
+      "portfolio/photos",
+      originalPublicId
+    );
+    console.log(`Upload réussi - URL: ${result.url}`);
+    return result.url;
+  } catch (error) {
+    console.error("Erreur lors de l'upload vers Cloudinary:", error);
     const errorMessage = error instanceof Error ? error.message : String(error);
-    throw new Error(`Erreur d'upload: ${errorMessage}`);
+    throw new Error(`Erreur d'upload Cloudinary: ${errorMessage}`);
   }
 }
 
 // Action pour ajouter une photo
 export async function addPhotoAction(formData: FormData) {
   try {
+    console.log("=== DÉBUT AJOUT PHOTO ===");
+
     // Récupérer les fichiers d'image
     const imageHighRes = formData.get("imageHigh") as File;
-    const imageLowRes = (formData.get("imageLow") as File) || imageHighRes; // Si pas d'image basse résolution, utiliser la haute résolution
+    const imageLowRes = (formData.get("imageLow") as File) || imageHighRes;
+
+    console.log("Images reçues:", {
+      imageHigh: imageHighRes
+        ? `${imageHighRes.name} (${imageHighRes.size} bytes)`
+        : "Aucune",
+      imageLow: imageLowRes
+        ? `${imageLowRes.name} (${imageLowRes.size} bytes)`
+        : "Aucune",
+    });
+
+    if (!imageHighRes || imageHighRes.size === 0) {
+      throw new Error("Aucune image fournie");
+    }
 
     let lienHigh = "";
     let lienLow = "";
+    let originalPublicId = "";
 
-    // Uploader les images si elles existent
-    if (imageHighRes && imageHighRes.size > 0) {
-      lienHigh = await saveImage(imageHighRes, "high");
+    // NOUVEAU: Sauvegarder l'image originale sans retouche
+    console.log("Sauvegarde de l'image originale...");
+    try {
+      const originalResult = await uploadOriginalToCloudinary(imageHighRes);
+      originalPublicId = originalResult.publicId;
+      console.log(
+        "✓ Image originale sauvegardée avec succès:",
+        originalPublicId
+      );
+    } catch (originalError) {
+      console.warn(
+        "⚠️ Erreur lors de la sauvegarde de l'original (continuons quand même):",
+        originalError
+      );
     }
 
+    // Uploader l'image haute résolution avec le lien vers l'original
+    console.log("Upload image haute résolution...");
+    lienHigh = await saveImageToCloudinary(
+      imageHighRes,
+      "high",
+      originalPublicId
+    );
+    console.log("Image haute résolution uploadée:", lienHigh);
+
+    // Uploader l'image basse résolution si elle existe et est différente
     if (imageLowRes && imageLowRes.size > 0) {
-      lienLow = await saveImage(imageLowRes, "low");
+      console.log("Upload image basse résolution...");
+      lienLow = await saveImageToCloudinary(
+        imageLowRes,
+        "low",
+        originalPublicId
+      );
+      console.log("Image basse résolution uploadée:", lienLow);
     }
 
-    // Récupérer les dimensions
-    const largeur = parseInt(formData.get("largeur")?.toString() || "0");
-    const hauteur = parseInt(formData.get("hauteur")?.toString() || "0");
+    // Obtenir les dimensions de l'image originale
+    const arrayBuffer = await imageHighRes.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const metadata = await sharp(buffer).metadata();
+    const largeur = metadata.width || 0;
+    const hauteur = metadata.height || 0;
+
+    console.log(`Dimensions détectées: ${largeur}x${hauteur}`);
+
     const alt = formData.get("alt")?.toString() || "";
     const afficher = formData.get("isPublished") === "on";
+
+    console.log("Création en base de données...");
 
     // Créer la photo dans la base de données
     const photo = await prisma.photos.create({
@@ -117,8 +126,11 @@ export async function addPhotoAction(formData: FormData) {
         alt,
         date: new Date(),
         afficher,
+        derniere_modification: new Date(),
       },
     });
+
+    console.log("Photo créée en base:", photo.id_pho);
 
     // Gérer les tags de recherche
     const tagsRecherche = formData.getAll("tagsRecherche");
@@ -185,29 +197,95 @@ export async function updatePhotoAction(formData: FormData) {
       throw new Error("Photo non trouvée");
     }
 
+    console.log("=== DÉBUT MISE À JOUR PHOTO ===");
+    console.log("Photo existante:", {
+      id: photoId,
+      lien_high: existingPhoto.lien_high,
+      lien_low: existingPhoto.lien_low,
+    });
+
     // Gérer les images
     const imageHighRes = formData.get("imageHigh") as File;
     const imageLowRes = formData.get("imageLow") as File;
 
     let lienHigh = existingPhoto.lien_high;
     let lienLow = existingPhoto.lien_low;
+    let largeur = existingPhoto.largeur;
+    let hauteur = existingPhoto.hauteur;
 
-    // Uploader les nouvelles images si elles existent
+    // Sauvegarder TOUS les anciens publicIds AVANT l'upload
+    const oldPublicIdHigh = existingPhoto.lien_high
+      ? extractPublicIdFromUrl(existingPhoto.lien_high)
+      : null;
+    const oldPublicIdLow = existingPhoto.lien_low
+      ? extractPublicIdFromUrl(existingPhoto.lien_low)
+      : null;
+
+    console.log("Anciens publicIds extraits:", {
+      oldPublicIdHigh,
+      oldPublicIdLow,
+    });
+
+    // Variables pour suivre les uploads
+    let hasUploadedNewHighRes = false;
+    let hasUploadedNewLowRes = false;
+
+    // ====== UPLOAD DES NOUVELLES IMAGES ======
     if (imageHighRes && imageHighRes.size > 0) {
-      lienHigh = await saveImage(imageHighRes, "high");
+      console.log("Upload nouvelle image haute résolution...");
+
+      try {
+        // NOUVEAU: Sauvegarder l'image originale sans retouche
+        console.log("Sauvegarde de la nouvelle image originale...");
+        try {
+          await uploadOriginalToCloudinary(imageHighRes);
+          console.log("✓ Nouvelle image originale sauvegardée avec succès");
+        } catch (originalError) {
+          console.warn(
+            "⚠️ Erreur lors de la sauvegarde de l'original (continuons quand même):",
+            originalError
+          );
+        }
+
+        // Upload de la nouvelle image haute résolution
+        lienHigh = await saveImageToCloudinary(imageHighRes, "high");
+        hasUploadedNewHighRes = true;
+
+        // Obtenir les nouvelles dimensions
+        const arrayBuffer = await imageHighRes.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+        const metadata = await sharp(buffer).metadata();
+        largeur = metadata.width || existingPhoto.largeur;
+        hauteur = metadata.height || existingPhoto.hauteur;
+
+        console.log(`✓ Nouvelle image haute résolution uploadée: ${lienHigh}`);
+      } catch (uploadError) {
+        console.error(
+          "❌ Erreur lors de l'upload de l'image haute résolution:",
+          uploadError
+        );
+        throw uploadError;
+      }
     }
 
     if (imageLowRes && imageLowRes.size > 0) {
-      lienLow = await saveImage(imageLowRes, "low");
+      console.log("Upload nouvelle image basse résolution...");
+
+      try {
+        // Upload de la nouvelle image basse résolution
+        lienLow = await saveImageToCloudinary(imageLowRes, "low");
+        hasUploadedNewLowRes = true;
+        console.log(`✓ Nouvelle image basse résolution uploadée: ${lienLow}`);
+      } catch (uploadError) {
+        console.error(
+          "❌ Erreur lors de l'upload de l'image basse résolution:",
+          uploadError
+        );
+        throw uploadError;
+      }
     }
 
-    // Récupérer les dimensions
-    const largeur =
-      parseInt(formData.get("largeur")?.toString() || "0") ||
-      existingPhoto.largeur;
-    const hauteur =
-      parseInt(formData.get("hauteur")?.toString() || "0") ||
-      existingPhoto.hauteur;
+    // ====== MISE À JOUR EN BASE DE DONNÉES ======
     const alt = formData.get("alt")?.toString() || existingPhoto.alt;
     const afficher = formData.get("isPublished") === "on";
 
@@ -216,7 +294,7 @@ export async function updatePhotoAction(formData: FormData) {
       photoDate = new Date(formData.get("date")!.toString());
     }
 
-    // Mettre à jour la photo
+    // Mettre à jour la photo avec toutes les nouvelles données
     const photo = await prisma.photos.update({
       where: { id_pho: photoId },
       data: {
@@ -227,9 +305,62 @@ export async function updatePhotoAction(formData: FormData) {
         alt,
         afficher,
         ...(photoDate && { date: photoDate }),
+        derniere_modification: new Date(),
       },
     });
 
+    console.log(`✓ Photo mise à jour en base de données`);
+
+    // ====== SUPPRESSION DES ANCIENNES IMAGES DE CLOUDINARY (CORRIGÉ) ======
+    const deletionPromises = [];
+
+    // Si une nouvelle image HR a été uploadée et qu'une ancienne existait, on la supprime.
+    if (hasUploadedNewHighRes && oldPublicIdHigh) {
+      console.log(
+        `🗑️ Programmation suppression ancienne image HR: ${oldPublicIdHigh}`
+      );
+      deletionPromises.push(deleteFromCloudinary(oldPublicIdHigh));
+
+      // Supprimer l'ancienne image originale
+      deletionPromises.push(deleteOriginalFromCloudinary(oldPublicIdHigh));
+    }
+
+    // Si une nouvelle image BR a été uploadée et qu'une ancienne existait, on la supprime.
+    // On vérifie qu'on ne la supprime pas une deuxième fois si elle était identique à l'ancienne HR.
+    if (
+      hasUploadedNewLowRes &&
+      oldPublicIdLow &&
+      oldPublicIdLow !== oldPublicIdHigh
+    ) {
+      console.log(
+        `🗑️ Programmation suppression ancienne image BR: ${oldPublicIdLow}`
+      );
+      deletionPromises.push(deleteFromCloudinary(oldPublicIdLow));
+    }
+
+    if (deletionPromises.length > 0) {
+      console.log(
+        `Exécution de ${deletionPromises.length} suppression(s) sur Cloudinary...`
+      );
+      const results = await Promise.allSettled(deletionPromises);
+      results.forEach((result, index) => {
+        if (result.status === "rejected") {
+          console.error(
+            `⚠️ Erreur lors de la suppression d'une image Cloudinary:`,
+            result.reason
+          );
+        } else {
+          console.log(`✓ Une ancienne image a été supprimée avec succès.`);
+        }
+      });
+      console.log("🗑️ Suppression des anciennes images terminée.");
+    } else {
+      console.log(
+        "ℹ️ Aucune nouvelle image uploadée, conservation des images existantes."
+      );
+    }
+
+    // ====== MISE À JOUR DES RELATIONS ======
     // Supprimer les anciennes relations de tags de recherche
     await prisma.photos_tags_recherche_link.deleteMany({
       where: { id_pho: photoId },
@@ -285,9 +416,12 @@ export async function updatePhotoAction(formData: FormData) {
     }
 
     revalidatePath("/creations/photos");
+    revalidatePath(`/creations/photos/${photoId}/edit`);
+
+    console.log("=== FIN MISE À JOUR PHOTO ===");
     return { success: true };
   } catch (error) {
-    console.error("Erreur lors de la mise à jour de la photo:", error);
+    console.error("❌ Erreur lors de la mise à jour de la photo:", error);
     throw error;
   }
 }
@@ -326,52 +460,51 @@ export async function deletePhotoAction(photoId: number) {
       where: { id_pho: photoId },
     });
 
-    // Supprimer les images si elles existent
+    // Supprimer les images de Cloudinary si elles existent
     if (photo.lien_high || photo.lien_low) {
       try {
-        const portfolioUrl =
-          process.env.PORTFOLIO_API_URL ||
-          "https://portfolio.srv892985.hstgr.cloud:3000";
-        const deleteUrl = `${portfolioUrl}/api/actions/creations/photos`;
+        const deletionPromises = [];
 
         // Supprimer l'image haute résolution
-        if (
-          photo.lien_high &&
-          (photo.lien_high.startsWith("/photos/") ||
-            photo.lien_high.startsWith("/uploads/"))
-        ) {
-          await fetch(deleteUrl, {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${process.env.PORTFOLIO_API_TOKEN}`,
-            },
-            body: JSON.stringify({
-              imagePath: photo.lien_high,
-            }),
-          });
+        if (photo.lien_high) {
+          const publicIdHigh = extractPublicIdFromUrl(photo.lien_high);
+          if (publicIdHigh) {
+            deletionPromises.push(deleteFromCloudinary(publicIdHigh));
+            console.log(`🗑️ Suppression image HR: ${publicIdHigh}`);
+
+            // Supprimer l'image originale correspondante
+            deletionPromises.push(deleteOriginalFromCloudinary(publicIdHigh));
+          }
         }
 
-        // Supprimer l'image basse résolution
-        if (
-          photo.lien_low &&
-          (photo.lien_low.startsWith("/photos/") ||
-            photo.lien_low.startsWith("/uploads/")) &&
-          photo.lien_low !== photo.lien_high
-        ) {
-          await fetch(deleteUrl, {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${process.env.PORTFOLIO_API_TOKEN}`,
-            },
-            body: JSON.stringify({
-              imagePath: photo.lien_low,
-            }),
+        // Supprimer l'image basse résolution si elle est différente
+        if (photo.lien_low && photo.lien_low !== photo.lien_high) {
+          const publicIdLow = extractPublicIdFromUrl(photo.lien_low);
+          if (publicIdLow) {
+            deletionPromises.push(deleteFromCloudinary(publicIdLow));
+            console.log(`🗑️ Suppression image BR: ${publicIdLow}`);
+          }
+        }
+
+        // Exécuter toutes les suppressions
+        if (deletionPromises.length > 0) {
+          const results = await Promise.allSettled(deletionPromises);
+          results.forEach((result, index) => {
+            if (result.status === "rejected") {
+              console.error(
+                `⚠️ Erreur lors de la suppression d'une image Cloudinary:`,
+                result.reason
+              );
+            } else {
+              console.log(`✓ Image supprimée avec succès`);
+            }
           });
         }
       } catch (imageError) {
-        console.error("Erreur lors de la suppression des images:", imageError);
+        console.error(
+          "Erreur lors de la suppression des images depuis Cloudinary:",
+          imageError
+        );
       }
     }
 
@@ -559,8 +692,9 @@ export async function createAlbumAction(formData: FormData) {
       data: {
         titre: title,
         description: description || "",
-        date: date ? new Date(date) : "",
+        date: date ? new Date(date) : new Date(),
         afficher: isPublished,
+        derniere_modification: new Date(),
       },
     });
 
@@ -578,14 +712,15 @@ export async function createAlbumAction(formData: FormData) {
       );
     }
 
-    // Associer les images
+    // Associer les images avec leur position basée sur l'ordre de sélection
     if (images.length > 0) {
       await Promise.all(
-        images.map((imageId) =>
+        images.map((imageId, index) =>
           prisma.photos_albums_link.create({
             data: {
               id_alb: newAlbum.id_alb,
               id_pho: parseInt(imageId),
+              position: index, // Utiliser position au lieu d'ordre
             },
           })
         )
@@ -612,6 +747,7 @@ export async function updateAlbumAction(formData: FormData) {
     const isPublished = formData.get("isPublished") === "on";
     const tags = formData.getAll("tags") as string[];
     const images = formData.getAll("images") as string[];
+    const imageOrders = formData.getAll("imageOrders") as string[];
 
     // Mettre à jour l'album
     await prisma.photos_albums.update({
@@ -619,7 +755,7 @@ export async function updateAlbumAction(formData: FormData) {
       data: {
         titre: title,
         description: description || "",
-        date: date ? new Date(date) : "",
+        date: date ? new Date(date) : new Date(),
         afficher: isPublished,
       },
     });
@@ -643,27 +779,32 @@ export async function updateAlbumAction(formData: FormData) {
       );
     }
 
-    // Gérer les images - supprimer toutes les associations existantes
+    // Gérer les images avec leur position - supprimer toutes les associations existantes
     await prisma.photos_albums_link.deleteMany({
       where: { id_alb: id },
     });
 
-    // Recréer les associations d'images
+    // Recréer les associations d'images avec leur position
     if (images.length > 0) {
       await Promise.all(
-        images.map((imageId) =>
+        images.map((imageId, index) =>
           prisma.photos_albums_link.create({
             data: {
               id_alb: id,
               id_pho: parseInt(imageId),
+              position: imageOrders[index]
+                ? parseInt(imageOrders[index])
+                : index, // Utiliser position
             },
           })
         )
       );
     }
 
+    // Forcer le rechargement de la page
     revalidatePath("/creations/photos/albums");
-    revalidatePath(`/creations/photos/albums/${id}/edit`);
+    revalidatePath(`/creations/photos/albums/edit/${id}`);
+
     return { success: true };
   } catch (error) {
     console.error("Erreur lors de la mise à jour de l'album:", error);
@@ -836,12 +977,29 @@ export async function batchUploadPhotosWithMetadataAction(formData: FormData) {
 
         console.log(`Image ${i}: dimensions détectées ${width}x${height}`);
 
-        // Uploader l'image haute résolution
-        lienHigh = await saveImage(photo, "high");
+        // NOUVEAU: Sauvegarder l'image originale sans retouche
+        console.log(`Sauvegarde de l'image originale ${i}...`);
+        let originalPublicId = "";
+        try {
+          const originalResult = await uploadOriginalToCloudinary(photo);
+          originalPublicId = originalResult.publicId;
+          console.log(
+            `✓ Image originale ${i} sauvegardée avec succès:`,
+            originalPublicId
+          );
+        } catch (originalError) {
+          console.warn(
+            `⚠️ Erreur lors de la sauvegarde de l'original ${i} (continuons quand même):`,
+            originalError
+          );
+        }
+
+        // Uploader l'image haute résolution avec le lien vers l'original
+        lienHigh = await saveImageToCloudinary(photo, "high", originalPublicId);
 
         // Si generateLowRes est vrai, uploader aussi la version basse résolution
         if (generateLowRes) {
-          lienLow = await saveImage(photo, "low");
+          lienLow = await saveImageToCloudinary(photo, "low", originalPublicId);
         }
 
         // En mode mise à jour, nous mettons à jour la photo existante
@@ -849,7 +1007,7 @@ export async function batchUploadPhotosWithMetadataAction(formData: FormData) {
           // Pour la mise à jour, on ne prend que la première image
           console.log(`Mise à jour de la photo ${photoId} avec nouvelle image`);
 
-          // Récupérer la photo existante
+          // Récupérer la photo existante pour obtenir les anciens liens
           const existingPhoto = await prisma.photos.findUnique({
             where: { id_pho: photoId },
           });
@@ -857,6 +1015,14 @@ export async function batchUploadPhotosWithMetadataAction(formData: FormData) {
           if (!existingPhoto) {
             throw new Error("Photo non trouvée pour mise à jour");
           }
+
+          // Sauvegarder les anciens publicIds AVANT la mise à jour
+          const oldPublicIdHigh = existingPhoto.lien_high
+            ? extractPublicIdFromUrl(existingPhoto.lien_high)
+            : null;
+          const oldPublicIdLow = existingPhoto.lien_low
+            ? extractPublicIdFromUrl(existingPhoto.lien_low)
+            : null;
 
           // Mettre à jour la photo
           const updatedPhoto = await prisma.photos.update({
@@ -868,156 +1034,193 @@ export async function batchUploadPhotosWithMetadataAction(formData: FormData) {
               largeur: width,
               hauteur: height,
               afficher: isPublished,
-              // Ajouter la date si elle est définie, sinon conserver la date existante
+              derniere_modification: new Date(),
               ...(photoDate && { date: photoDate }),
             },
           });
 
           uploadedPhotos.push(updatedPhoto);
 
-          // Supprimer les anciennes relations
-          await prisma.photos_tags_link.deleteMany({
-            where: { id_pho: photoId },
-          });
+          // ====== SUPPRESSION DES ANCIENNES IMAGES DE CLOUDINARY ======
+          const deletionPromises = [];
 
-          await prisma.photos_tags_recherche_link.deleteMany({
-            where: { id_pho: photoId },
-          });
+          // Une nouvelle image HR a toujours été uploadée dans ce bloc.
+          if (oldPublicIdHigh) {
+            console.log(
+              `🗑️ Programmation suppression ancienne image HR: ${oldPublicIdHigh}`
+            );
+            deletionPromises.push(deleteFromCloudinary(oldPublicIdHigh));
 
-          await prisma.photos_albums_link.deleteMany({
-            where: { id_pho: photoId },
-          });
-        } else {
-          // Créer une nouvelle photo
-          console.log("Création d'une nouvelle photo");
-
-          const newPhoto = await prisma.photos.create({
-            data: {
-              lien_high: lienHigh,
-              lien_low: generateLowRes ? lienLow : "",
-              alt: itemAlt,
-              largeur: width,
-              hauteur: height,
-              // Utiliser la date spécifiée ou la date actuelle
-              date: photoDate || new Date(),
-              afficher: isPublished,
-            },
-          });
-
-          uploadedPhotos.push(newPhoto);
-
-          // Si c'est la première photo en mode mise à jour, utiliser cet ID pour les relations
-          const currentPhotoId =
-            isUpdateMode && i === 0 ? photoId : newPhoto.id_pho;
-
-          // Associer les tags uniquement pour les nouvelles photos ou la première en mode update
-          if (i === 0 || !isUpdateMode) {
-            // Associer les tags
-            if (tags && tags.length > 0) {
-              for (const tagId of tags) {
-                await prisma.photos_tags_link.create({
-                  data: {
-                    id_pho: currentPhotoId,
-                    id_tags: parseInt(tagId.toString()),
-                  },
-                });
-              }
-            }
-
-            // Associer les tags de recherche
-            if (tagsRecherche && tagsRecherche.length > 0) {
-              for (const tagId of tagsRecherche) {
-                await prisma.photos_tags_recherche_link.create({
-                  data: {
-                    id_pho: currentPhotoId,
-                    id_tags: parseInt(tagId.toString()),
-                  },
-                });
-              }
-            }
-
-            // Associer aux albums
-            if (albums && albums.length > 0) {
-              for (const albumId of albums) {
-                await prisma.photos_albums_link.create({
-                  data: {
-                    id_pho: currentPhotoId,
-                    id_alb: parseInt(albumId.toString()),
-                  },
-                });
-              }
-            }
+            // Supprimer l'ancienne image originale
+            deletionPromises.push(
+              deleteOriginalFromCloudinary(oldPublicIdHigh)
+            );
           }
+
+          // Si une nouvelle image BR a été générée et qu'une ancienne existait.
+          if (
+            generateLowRes &&
+            oldPublicIdLow &&
+            oldPublicIdLow !== oldPublicIdHigh
+          ) {
+            console.log(
+              `🗑️ Programmation suppression ancienne image BR: ${oldPublicIdLow}`
+            );
+            deletionPromises.push(deleteFromCloudinary(oldPublicIdLow));
+          }
+
+          if (deletionPromises.length > 0) {
+            console.log(
+              `Exécution de ${deletionPromises.length} suppression(s) sur Cloudinary...`
+            );
+            const results = await Promise.allSettled(deletionPromises);
+            results.forEach((result) => {
+              if (result.status === "rejected") {
+                console.error(
+                  `⚠️ Erreur lors de la suppression d'une image Cloudinary:`,
+                  result.reason
+                );
+              } else {
+                console.log(
+                  `✓ Une ancienne image a été supprimée avec succès.`
+                );
+              }
+            });
+            console.log("🗑️ Suppression des anciennes images terminée.");
+          } else {
+            console.log(
+              "ℹ️ Aucune nouvelle image uploadée, conservation des images existantes."
+            );
+          }
+
+          // Revalider les chemins
+          revalidatePath("/creations/photos");
+          revalidatePath(`/creations/photos/${photoId}/edit`);
+
+          return { success: true, mode: "update" };
         }
+
+        uploadedPhotos.push({
+          lien_high: lienHigh,
+          lien_low: lienLow,
+          largeur: width,
+          hauteur: height,
+          alt: itemAlt,
+          afficher: isPublished,
+          date: new Date(),
+          derniere_modification: new Date(),
+        });
       } catch (error) {
-        console.error(
-          `Erreur lors de l'upload de l'image ${photo.name}:`,
-          error
-        );
-        // Continuer avec les autres images en cas d'erreur sur une image
+        console.error("Erreur lors du traitement de l'image:", error);
+        throw error;
       }
     }
 
-    // Revalider les chemins pour la mise à jour de l'interface
-    revalidatePath("/creations/photos");
-    revalidatePath("/creations/photos/albums");
-    if (isUpdateMode) {
-      revalidatePath(`/creations/photos/${photoId}/edit`);
+    // Enregistrer les métadonnées dans la base de données pour chaque photo uploadée
+    if (uploadedPhotos.length > 0) {
+      await Promise.all(
+        uploadedPhotos.map(async (photoData) => {
+          const photo = await prisma.photos.create({
+            data: {
+              lien_high: photoData.lien_high,
+              lien_low: photoData.lien_low,
+              largeur: photoData.largeur,
+              hauteur: photoData.hauteur,
+              alt: photoData.alt,
+              afficher: photoData.afficher,
+              date: photoData.date,
+              derniere_modification: photoData.derniere_modification,
+            },
+          });
+
+          // Gérer les tags de recherche
+          if (tagsRecherche && tagsRecherche.length > 0) {
+            for (const tagId of tagsRecherche) {
+              await prisma.photos_tags_recherche_link.create({
+                data: {
+                  id_pho: photo.id_pho,
+                  id_tags: parseInt(tagId.toString()),
+                },
+              });
+            }
+          }
+
+          // Gérer les tags normaux
+          if (tags && tags.length > 0) {
+            for (const tagId of tags) {
+              await prisma.photos_tags_link.create({
+                data: {
+                  id_pho: photo.id_pho,
+                  id_tags: parseInt(tagId.toString()),
+                },
+              });
+            }
+          }
+
+          // Gérer les albums
+          if (albums && albums.length > 0) {
+            for (const albumId of albums) {
+              await prisma.photos_albums_link.create({
+                data: {
+                  id_pho: photo.id_pho,
+                  id_alb: parseInt(albumId.toString()),
+                },
+              });
+            }
+          }
+        })
+      );
     }
 
-    return {
-      success: true,
-      count: uploadedPhotos.length,
-      mode: isUpdateMode ? "update-with-image" : "create",
-    };
+    revalidatePath("/creations/photos");
+    return { success: true };
   } catch (error) {
-    console.error("Erreur lors de l'upload batch des photos:", error);
+    console.error("Erreur lors de l'upload par lot des photos:", error);
     throw error;
   }
 }
 
-export async function removePhotoFromAlbumAction({
-  photoId,
-  albumId,
-}: {
-  photoId: number;
-  albumId: number;
-}) {
+// Helper pour supprimer l'image originale basée sur le public_id des images transformées
+async function deleteOriginalFromCloudinary(
+  publicId: string
+): Promise<boolean> {
   try {
-    // Vérifier si la photo existe dans l'album
-    // Correction du nom de colonne: id_phot -> id_pho
-    const existingLink = await prisma.photos_albums_link.findFirst({
-      where: {
-        id_pho: photoId, // Corrigé ici: id_phot -> id_pho
-        id_alb: albumId,
-      },
-    });
+    console.log(`🐛 Public ID reçu: ${publicId}`);
 
-    if (!existingLink) {
-      throw new Error("Cette photo n'est pas dans cet album");
+    // Le publicId contient déjà le chemin complet, exemple: "portfolio/photos/img_1751614573663_cfu1nxit3_high"
+    let originalPublicId = "";
+
+    if (publicId.includes("portfolio/photos/")) {
+      // Extraire le nom de base (sans _high ou _low)
+      const baseName = publicId.replace(/_high$|_low$/, "");
+
+      // Remplacer portfolio/photos/ par portfolio/photos/originals/
+      originalPublicId = baseName.replace(
+        "portfolio/photos/",
+        "portfolio/photos/originals/"
+      );
+    } else {
+      // Cas où on n'a que le nom de fichier
+      const baseName = publicId.replace(/_high$|_low$/, "");
+      originalPublicId = `portfolio/photos/originals/${baseName}`;
     }
 
-    // Supprimer le lien entre la photo et l'album
-    // La table ne semble pas avoir de clé primaire id_link, mais une clé composite (id_pho, id_alb)
-    await prisma.photos_albums_link.delete({
-      where: {
-        id_pho_id_alb: {
-          // Utiliser la syntaxe de clé composite de Prisma
-          id_pho: photoId, // Corrigé ici: id_phot -> id_pho
-          id_alb: albumId,
-        },
-      },
-    });
+    console.log(
+      `🗑️ Tentative de suppression de l'image originale: ${originalPublicId}`
+    );
 
-    revalidatePath(`/creations/photos/albums`);
-    revalidatePath(`/creations/photos/albums/${albumId}/edit`);
-    revalidatePath(`/creations/photos/${photoId}/edit`);
-    return { success: true };
+    const result = await deleteFromCloudinary(originalPublicId);
+    if (result) {
+      console.log(`✓ Image originale supprimée: ${originalPublicId}`);
+    } else {
+      console.log(`⚠️ Image originale non trouvée: ${originalPublicId}`);
+    }
+    return result;
   } catch (error) {
-    console.error("Erreur lors du retrait de la photo de l'album:", error);
-    return {
-      success: false,
-      error: "Impossible de retirer la photo de l'album",
-    };
+    console.warn(
+      `⚠️ Erreur lors de la suppression de l'image originale:`,
+      error
+    );
+    return false;
   }
 }

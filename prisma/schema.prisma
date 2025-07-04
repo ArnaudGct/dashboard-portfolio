@@ -9,18 +9,19 @@ datasource db {
 }
 
 model autre {
-  id_autre        Int               @id @default(autoincrement())
-  titre           String            @db.VarChar(100)
-  description     String            @db.VarChar(3500)
-  miniature       String            @db.VarChar(500)
-  lien_github     String            @db.VarChar(500)
-  lien_figma      String            @db.VarChar(500)
-  lien_site       String            @db.VarChar(500)
-  categorie       String            @db.VarChar(50)
-  tags            String            @db.VarChar(50)
-  date            DateTime          @db.Date
-  afficher        Boolean
-  autre_tags_link autre_tags_link[]
+  id_autre              Int               @id @default(autoincrement())
+  titre                 String            @db.VarChar(100)
+  description           String            @db.VarChar(3500)
+  miniature             String            @db.VarChar(500)
+  lien_github           String            @db.VarChar(500)
+  lien_figma            String            @db.VarChar(500)
+  lien_site             String            @db.VarChar(500)
+  categorie             String            @db.VarChar(50)
+  tags                  String            @db.VarChar(50)
+  date                  DateTime          @db.Date
+  afficher              Boolean
+  derniere_modification DateTime          @db.DateTime(0)
+  autre_tags_link       autre_tags_link[]
 }
 
 model autre_tags {
@@ -47,6 +48,8 @@ model experiences {
   description  String   @db.VarChar(10000)
   url_img      String   @db.VarChar(250)
   position_img String   @db.VarChar(50)
+  credit_nom   String   @db.VarChar(50)
+  credit_url   String   @db.VarChar(250)
   afficher     Boolean
 }
 
@@ -66,6 +69,7 @@ model photos {
   alt                        String                       @db.VarChar(500)
   date                       DateTime                     @db.Date
   afficher                   Boolean
+  derniere_modification      DateTime                     @db.DateTime(0)
   photos_albums_link         photos_albums_link[]
   photos_tags_link           photos_tags_link[]
   photos_tags_recherche_link photos_tags_recherche_link[]
@@ -77,6 +81,7 @@ model photos_albums {
   description             String                    @db.VarChar(1000)
   date                    DateTime                  @db.Date
   afficher                Boolean
+  derniere_modification   DateTime                  @db.DateTime(0)
   photos_albums_link      photos_albums_link[]
   photos_albums_tags_link photos_albums_tags_link[]
 }
@@ -84,6 +89,7 @@ model photos_albums {
 model photos_albums_link {
   id_pho        Int
   id_alb        Int
+  position      Int?          @default(0)
   photos        photos        @relation(fields: [id_pho], references: [id_pho], onDelete: Cascade, map: "fk_photos2")
   photos_albums photos_albums @relation(fields: [id_alb], references: [id_alb], onDelete: Cascade, map: "fk_photos_albums")
 

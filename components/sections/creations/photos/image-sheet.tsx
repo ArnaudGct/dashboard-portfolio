@@ -142,7 +142,7 @@ export function ImageSheet({
           {description && <SheetDescription>{description}</SheetDescription>}
         </SheetHeader>
 
-        <div className="flex-1 flex flex-col gap-4 px-4">
+        <div className="flex flex-col gap-4 px-4 flex-grow overflow-hidden">
           <div className="flex flex-col gap-2">
             <div className="relative">
               <SearchIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -188,13 +188,13 @@ export function ImageSheet({
           </div>
 
           {/* List of images - maintenant avec hauteur adaptative */}
-          <ScrollArea className="flex-1 rounded-md border p-2 min-h-[300px]">
+          <ScrollArea className="flex-grow border rounded-md p-2 h-[calc(100vh-300px)]">
             {filteredOptions.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
                 <p>Aucune image trouvée</p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pb-40">
                 {filteredOptions.map((image) => {
                   const isSelected = localSelectedImages.includes(image.id);
 
@@ -292,7 +292,7 @@ export function ImageSheet({
         </div>
 
         {/* Pied de page fixe */}
-        <SheetFooter className="mt-6 border-t pt-4 sticky bottom-0 bg-background">
+        <SheetFooter className="mt-auto border-t pt-4 sticky bottom-0 bg-background">
           <div className="flex justify-between w-full items-center">
             <span className="text-sm text-muted-foreground">
               {localSelectedImages.length} image(s) sélectionnée(s)

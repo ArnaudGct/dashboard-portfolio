@@ -318,7 +318,7 @@ export function AddJournalItem() {
                   </div>
 
                   {previewImage && (
-                    <div className="flex gap-6">
+                    <div className="flex gap-6 items-center">
                       <div className="relative">
                         <Image
                           src={previewImage}
@@ -328,29 +328,49 @@ export function AddJournalItem() {
                           className="rounded-md object-cover"
                         />
                       </div>
-                      <div className="flex flex-col gap-1.5">
-                        <Label>Position dans l'image</Label>
-                        <Select
-                          value={imagePosition}
-                          onValueChange={setImagePosition}
-                          name="position_img"
-                        >
-                          <SelectTrigger className="cursor-pointer">
-                            <SelectValue placeholder="Choisir une position" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="centre">Centrée</SelectItem>
-                            <SelectItem value="gauche">
-                              Alignée à gauche
-                            </SelectItem>
-                            <SelectItem value="droite">
-                              Alignée à droite
-                            </SelectItem>
-                            <SelectItem value="none">
-                              Sans alignement
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
+                      <div className="flex flex-col gap-4 w-full">
+                        <div className="flex flex-col gap-1.5">
+                          <Label>Position dans l'image</Label>
+                          <Select
+                            value={imagePosition}
+                            onValueChange={setImagePosition}
+                            name="position_img"
+                          >
+                            <SelectTrigger className="cursor-pointer">
+                              <SelectValue placeholder="Choisir une position" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="centre">Centrée</SelectItem>
+                              <SelectItem value="gauche">
+                                Alignée à gauche
+                              </SelectItem>
+                              <SelectItem value="droite">
+                                Alignée à droite
+                              </SelectItem>
+                              <SelectItem value="none">
+                                Sans alignement
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="grid w-full items-center gap-1.5">
+                          <Label htmlFor="credit_nom">Crédit</Label>
+                          <Input
+                            type="text"
+                            id="credit_nom"
+                            name="credit_nom"
+                            placeholder="Nom du crédit"
+                          />
+                        </div>
+                        <div className="grid w-full items-center gap-1.5">
+                          <Label htmlFor="credit_nom">URL du crédit</Label>
+                          <Input
+                            type="url"
+                            id="credit_url"
+                            name="credit_url"
+                            placeholder="URL du crédit"
+                          />
+                        </div>
                       </div>
                     </div>
                   )}

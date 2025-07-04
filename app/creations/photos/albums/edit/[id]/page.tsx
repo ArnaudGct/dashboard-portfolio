@@ -49,7 +49,7 @@ async function EditAlbumContent({ params }: { params: Params }) {
     const { id } = await params;
     const albumId = parseInt(id);
 
-    // Récupérer l'album avec ses photos
+    // Récupérer l'album avec ses photos (incluant l'ordre)
     const album = await prisma.photos_albums.findUnique({
       where: { id_alb: albumId },
       include: {
@@ -68,6 +68,9 @@ async function EditAlbumContent({ params }: { params: Params }) {
                 alt: true,
               },
             },
+          },
+          orderBy: {
+            position: "asc", // Trier par ordre
           },
         },
       },
@@ -150,12 +153,13 @@ async function EditAlbumContent({ params }: { params: Params }) {
       })),
     }));
 
-    // Formater les photos de l'album
+    // Formater les photos de l'album avec la position
     const albumPhotos = album.photos_albums_link.map((link) => ({
       id: link.photos.id_pho,
       lien: link.photos.lien_high,
       alt: link.photos.alt || "",
       titre: `Photo #${link.photos.id_pho}`,
+      position: link.position || 0, // Utiliser position au lieu d'ordre
     }));
 
     // Extraire les IDs des tags sélectionnés

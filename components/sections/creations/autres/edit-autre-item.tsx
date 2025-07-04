@@ -74,7 +74,7 @@ type EditAutreFormProps = {
     afficher: boolean;
     tags: string[];
   };
-  availableTags: TagOption[]; // Nouvelles props pour les tags disponibles
+  availableTags: TagOption[];
 };
 
 export function EditAutreItem({
@@ -96,13 +96,28 @@ export function EditAutreItem({
   const [isDeleting, setIsDeleting] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const editorRef = useRef<MDXEditorMethods | null>(null);
-  const [previewImage, setPreviewImage] = useState<string | null>(() => {
-    // Si l'image est une URL relative et commence par /uploads, ajouter le domaine
-    if (initialData.miniature && initialData.miniature.startsWith("/uploads")) {
-      return `${PORTFOLIO_BASE_URL}${initialData.miniature}`;
+
+  // Fonction helper pour déterminer si une URL est une URL Cloudinary complète
+  const isCloudinaryUrl = (url: string | null): boolean => {
+    return url?.startsWith("https://res.cloudinary.com/") || false;
+  };
+
+  // Fonction helper pour formater correctement l'URL d'image
+  const formatImageUrl = (url: string | null): string | null => {
+    if (!url) return null;
+
+    // Si c'est déjà une URL Cloudinary complète, la retourner telle quelle
+    if (isCloudinaryUrl(url)) {
+      return url;
     }
-    return initialData.miniature || null;
-  });
+
+    // Sinon, ajouter le PORTFOLIO_BASE_URL pour les anciennes images
+    return `${PORTFOLIO_BASE_URL}${url}`;
+  };
+
+  const [previewImage, setPreviewImage] = useState<string | null>(
+    formatImageUrl(initialData.miniature)
+  );
 
   const handleTagsChange = (newSelectedTags: string[]) => {
     setSelectedTags(newSelectedTags);
@@ -126,14 +141,19 @@ export function EditAutreItem({
   const handleDeleteAutre = async () => {
     try {
       setIsDeleting(true);
-      await deleteAutreAction(initialData.id_autre);
-      toast.success("Projet supprimé avec succès");
-      // Rediriger vers la liste des projets après la suppression
-      router.push("/creations/autres");
-      router.refresh();
+      const result = await deleteAutreAction(initialData.id_autre);
+
+      if (result && result.success) {
+        toast.success("Projet supprimé avec succès");
+        router.push("/creations/autres");
+        router.refresh();
+      } else {
+        toast.error("Erreur lors de la suppression du projet");
+        setIsDeleting(false);
+      }
     } catch (error) {
       console.error("Erreur lors de la suppression:", error);
-      toast.error("Erreur lors de la suppression du projet.");
+      toast.error("Erreur lors de la suppression du projet");
       setIsDeleting(false);
     }
   };
@@ -141,6 +161,7 @@ export function EditAutreItem({
   const handleUpdateAutre = async (formData: FormData) => {
     try {
       setIsUpdating(true);
+
       // Ajouter l'ID à formData
       formData.append("id", initialData.id_autre.toString());
 
@@ -161,16 +182,18 @@ export function EditAutreItem({
         formData.delete("date");
       }
 
-      await updateAutreAction(formData);
+      const result = await updateAutreAction(formData);
 
-      toast.success("Projet mis à jour avec succès");
-
-      // Rediriger vers la liste des projets après la mise à jour
-      router.push("/creations/autres");
-      router.refresh();
+      if (result && result.success) {
+        toast.success("Projet mis à jour avec succès");
+        router.push("/creations/autres");
+        router.refresh();
+      } else {
+        toast.error("Erreur lors de la mise à jour du projet");
+      }
     } catch (error) {
       console.error("Erreur lors de la mise à jour:", error);
-      toast.error("Erreur lors de la mise à jour du projet.");
+      toast.error("Erreur lors de la mise à jour du projet");
     } finally {
       setIsUpdating(false);
     }
@@ -298,6 +321,7 @@ export function EditAutreItem({
                 name="miniature"
                 accept="image/*"
                 onChange={handleImageChange}
+                className="cursor-pointer"
               />
             </div>
 
@@ -310,18 +334,10 @@ export function EditAutreItem({
                     fill
                     sizes="(max-width: 768px) 100vw, 320px"
                     className="rounded-md object-cover"
-                    onError={(e) => {
-                      // En cas d'erreur, essayer avec l'URL du portfolio
-                      const target = e.target as HTMLImageElement;
-                      if (
-                        previewImage.startsWith("/uploads") &&
-                        !previewImage.includes(PORTFOLIO_BASE_URL)
-                      ) {
-                        target.src = `${PORTFOLIO_BASE_URL}${previewImage}`;
-                      } else {
-                        target.src = "/placeholder-project.jpg";
-                      }
-                    }}
+                    unoptimized={
+                      previewImage.startsWith("data:") ||
+                      isCloudinaryUrl(previewImage)
+                    }
                   />
                 </div>
               </div>
@@ -336,7 +352,7 @@ export function EditAutreItem({
                   type="button"
                   variant={"outline"}
                   className={cn(
-                    "w-full justify-start text-left font-normal",
+                    "w-full justify-start text-left font-normal cursor-pointer",
                     !date && "text-muted-foreground"
                   )}
                 >

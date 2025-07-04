@@ -151,6 +151,11 @@ export function AddAutreItem({ availableTags }: AddAutreFormProps) {
     }
   };
 
+  // Fonction helper pour déterminer si une URL est une URL Cloudinary complète
+  const isCloudinaryUrl = (url: string | null): boolean => {
+    return url?.startsWith("https://res.cloudinary.com/") || false;
+  };
+
   return (
     <div className="w-[90%] mx-auto">
       <div className="flex flex-col gap-8">
@@ -213,6 +218,10 @@ export function AddAutreItem({ availableTags }: AddAutreFormProps) {
                     fill
                     sizes="(max-width: 768px) 100vw, 320px"
                     className="w-full h-full object-cover rounded-md"
+                    unoptimized={
+                      previewImage.startsWith("data:") ||
+                      isCloudinaryUrl(previewImage)
+                    }
                   />
                 </div>
               </div>
@@ -253,7 +262,9 @@ export function AddAutreItem({ availableTags }: AddAutreFormProps) {
               <input
                 type="hidden"
                 name="date"
-                value={`${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`}
+                value={`${date.getFullYear()}-${String(
+                  date.getMonth() + 1
+                ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`}
               />
             )}
           </div>

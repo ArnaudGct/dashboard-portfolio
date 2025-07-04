@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   experimental: {
     serverActions: {
-      bodySizeLimit: "100mb",
+      bodySizeLimit: "500mb",
     },
   },
   serverExternalPackages: ["sharp"],
@@ -20,6 +20,11 @@ const nextConfig: NextConfig = {
         hostname: "portfolio.srv892985.hstgr.cloud",
         port: "3000",
         pathname: "/uploads/**",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        pathname: "/**",
       },
       // Ajoutez d'autres patterns selon vos besoins
     ],

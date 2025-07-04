@@ -1,4 +1,4 @@
-import { clsx, type ClassValue } from "clsx";
+import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -33,8 +33,9 @@ export function extractYoutubeId(url: string): string {
 // Fonction de formatage de date ajoutée
 export function formatDate(
   date: Date | string,
-  formatString: string = "dd MMMM yyyy"
+  formatString: string = "dd MMMM yyyy 'à' HH:mm" // Ajoutons l'heure pour voir le résultat
 ) {
+  // new Date(date) convertit la chaîne ISO (UTC) de la BDD en objet Date local au navigateur
   const dateObj = typeof date === "string" ? new Date(date) : date;
   return format(dateObj, formatString, { locale: fr });
 }

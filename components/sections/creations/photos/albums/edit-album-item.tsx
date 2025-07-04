@@ -16,6 +16,24 @@ import {
   type ImageOption,
 } from "@/components/sections/creations/photos/image-sheet";
 
+// Ajout des imports pour le drag & drop
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { useSortable } from "@dnd-kit/sortable";
+
 import { Button } from "@/components/ui/button";
 import {
   Breadcrumb,
@@ -28,9 +46,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
 import { type TagOption } from "@/components/tag-checkbox";
-import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -38,7 +54,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { CalendarIcon, Trash2, X } from "lucide-react";
+import { CalendarIcon, Trash2, X, GripVertical } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
@@ -64,7 +80,100 @@ type PhotoInfo = {
   id: number;
   lien: string;
   alt: string;
+  position?: number; // Ajout du champ ordre
 };
+
+// Composant pour une photo triable
+function SortablePhotoItem({
+  photo,
+  image,
+  baseUrl,
+  isNewlyAdded,
+  onRemove,
+}: {
+  photo: PhotoInfo;
+  image: ImageOption;
+  baseUrl: string;
+  isNewlyAdded: boolean;
+  onRemove: () => void;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: photo.id });
+
+  const style = {
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={`group relative aspect-square rounded-md overflow-hidden bg-muted ${
+        isNewlyAdded ? "ring-2 ring-green-500" : ""
+      }`}
+    >
+      {/* Poignée de déplacement */}
+      <div
+        {...attributes}
+        {...listeners}
+        className="absolute top-1 left-1 z-10 bg-white/80 hover:bg-white rounded p-1 opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing"
+      >
+        <GripVertical className="h-4 w-4 text-gray-600" />
+      </div>
+
+      {/* Lien vers la page d'édition de la photo */}
+      <Link
+        href={`/creations/photos/edit/${photo.id}`}
+        className="block h-full w-full"
+      >
+        <Image
+          src={
+            image.url.startsWith("http") ? image.url : `${baseUrl}${image.url}`
+          }
+          alt={image.alt || image.title || "Image sélectionnée"}
+          fill
+          className="object-cover transition-transform group-hover:scale-105"
+          sizes="(max-width: 768px) 33vw, 20vw"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = "/placeholder-photo.jpg";
+          }}
+        />
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+      </Link>
+
+      {/* Bouton pour retirer la photo */}
+      <Button
+        type="button"
+        variant="destructive"
+        size="icon"
+        className="absolute top-1 right-1 h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onRemove();
+        }}
+      >
+        <X className="h-4 w-4" />
+        <span className="sr-only">Retirer de l'album</span>
+      </Button>
+
+      {/* Indication visuelle pour les nouvelles photos */}
+      {isNewlyAdded && (
+        <div className="absolute bottom-1 left-1 bg-green-500 text-white text-xs rounded-full px-1.5 py-0.5">
+          Nouvelle
+        </div>
+      )}
+    </div>
+  );
+}
 
 type EditAlbumFormProps = {
   initialData: {
@@ -100,21 +209,51 @@ export function EditAlbumItem({
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  // Trier les photos par ordre (ou par ID si pas d'ordre)
+  const sortedInitialPhotos = [...initialData.photos].sort((a, b) => {
+    if (a.position !== undefined && b.position !== undefined) {
+      return a.position - b.position;
+    }
+    return a.id - b.id;
+  });
+
+  // Initialiser les images sélectionnées avec celles de l'album (triées)
+  const [selectedImages, setSelectedImages] = useState<number[]>(
+    sortedInitialPhotos.map((photo) => photo.id)
+  );
+
+  // Configuration des capteurs pour le drag & drop
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  // Gestion du drag & drop
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      setSelectedImages((items) => {
+        const oldIndex = items.indexOf(active.id as number);
+        const newIndex = items.indexOf(over?.id as number);
+
+        const newOrder = arrayMove(items, oldIndex, newIndex);
+        toast.success("Ordre des photos modifié");
+        return newOrder;
+      });
+    }
+  };
+
   // Ajoutez cette fonction pour gérer les changements dans l'éditeur
   const handleEditorChange = (newMarkdown: string) => {
     setMarkdown(newMarkdown);
   };
-
-  // Initialiser les images sélectionnées avec celles de l'album
-  const [selectedImages, setSelectedImages] = useState<number[]>(
-    initialData.photos.map((photo) => photo.id)
-  );
-
-  // Effet pour synchroniser les images sélectionnées avec l'interface unifiée
-  useEffect(() => {
-    // Met à jour les images sélectionnées quand selectedImages change
-    setSelectedImages(selectedImages);
-  }, [selectedImages]);
 
   const handleTagsChange = (newSelectedTags: string[]) => {
     setSelectedTags(newSelectedTags);
@@ -125,8 +264,8 @@ export function EditAlbumItem({
   };
 
   const handleRestoreImages = () => {
-    // Restaure la sélection d'images à l'état initial
-    setSelectedImages(initialData.photos.map((photo) => photo.id));
+    // Restaure la sélection d'images à l'état initial (triées)
+    setSelectedImages(sortedInitialPhotos.map((photo) => photo.id));
     toast.success("Modifications annulées, sélection d'images restaurée");
   };
 
@@ -138,7 +277,6 @@ export function EditAlbumItem({
     try {
       const result = await createPhotoTagAction(tagName, important);
       if (result.success && result.id) {
-        // Ajouter le nouveau tag à la liste des tags disponibles
         const newTag: TagOption = {
           id: result.id,
           label: tagName,
@@ -147,7 +285,6 @@ export function EditAlbumItem({
         return newTag;
       }
 
-      // Si le tag existe déjà mais qu'on a quand même récupéré son ID
       if (!result.success && result.id) {
         return { id: result.id, label: tagName, important: false };
       }
@@ -160,29 +297,13 @@ export function EditAlbumItem({
     }
   };
 
-  // Fonction pour obtenir l'URL complète d'une image
-  const getImageUrl = (path: string) => {
-    if (!path) return "/placeholder-photo.jpg";
-
-    if (path.startsWith("http")) {
-      return path;
-    }
-
-    if (path.startsWith("/photos/") || path.startsWith("/uploads/")) {
-      return `${baseUrl}${path}`;
-    }
-
-    return path;
-  };
-
-  // Modifier la fonction de mise à jour
+  // Modifier la fonction de mise à jour pour inclure l'ordre
   const handleUpdateAlbum = async (formData: FormData) => {
     try {
       setIsUpdating(true);
 
       // Ajouter l'ID de l'album
       formData.set("id", initialData.id_alb.toString());
-
       formData.set("description", markdown);
 
       // Ajouter les tags sélectionnés
@@ -191,10 +312,12 @@ export function EditAlbumItem({
         formData.append("tags", tag);
       });
 
-      // Ajouter les images sélectionnées
+      // Ajouter les images sélectionnées avec leur ordre
       formData.delete("images");
-      selectedImages.forEach((imageId) => {
+      formData.delete("imageOrders");
+      selectedImages.forEach((imageId, index) => {
         formData.append("images", imageId.toString());
+        formData.append("imageOrders", index.toString());
       });
 
       // Ajouter la date au format YYYY-MM-DD
@@ -203,7 +326,6 @@ export function EditAlbumItem({
         const month = String(date.getMonth() + 1).padStart(2, "0");
         const day = String(date.getDate()).padStart(2, "0");
         const formattedDate = `${year}-${month}-${day}`;
-
         formData.set("date", formattedDate);
       }
 
@@ -211,8 +333,6 @@ export function EditAlbumItem({
       await updateAlbumAction(formData);
 
       toast.success("Album mis à jour avec succès !");
-
-      // Rediriger vers la liste des albums
       router.push("/creations/photos/albums");
       router.refresh();
     } catch (error) {
@@ -224,7 +344,7 @@ export function EditAlbumItem({
   };
 
   // Calculer les modifications apportées aux images
-  const initialImageIds = initialData.photos.map((photo) => photo.id);
+  const initialImageIds = sortedInitialPhotos.map((photo) => photo.id);
   const imagesToAdd = selectedImages.filter(
     (id) => !initialImageIds.includes(id)
   );
@@ -233,14 +353,16 @@ export function EditAlbumItem({
   );
   const hasImageChanges = imagesToAdd.length > 0 || imagesToRemove.length > 0;
 
+  // Vérifier si l'ordre a changé
+  const hasOrderChanged = !selectedImages.every((id, index) => {
+    return initialImageIds[index] === id;
+  });
+
   const handleDeleteAlbum = async () => {
     try {
       setIsDeleting(true);
       await deleteAlbumAction(initialData.id_alb);
-
       toast.success("Album supprimé avec succès !");
-
-      // Rediriger vers la liste des albums
       router.push("/creations/photos/albums");
       router.refresh();
     } catch (error) {
@@ -398,7 +520,7 @@ export function EditAlbumItem({
           </div>
         </div>
 
-        {/* SECTION UNIFIÉE : Photos de l'album */}
+        {/* SECTION PHOTOS avec drag & drop */}
         <div className="grid w-full gap-1.5">
           <div className="grid w-full gap-1.5">
             <Label htmlFor="images">Modifier des photos dans l'album</Label>
@@ -414,79 +536,59 @@ export function EditAlbumItem({
             />
           </div>
 
-          {/* Aperçu des photos sélectionnées */}
+          {/* Aperçu des photos avec drag & drop */}
           {selectedImages.length > 0 && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-              {selectedImages.map((imageId) => {
-                const image = availableImages.find((img) => img.id === imageId);
-                if (!image) return null;
+            <div className="space-y-2">
+              <p className="text-sm text-muted-foreground">
+                Glissez-déposez les photos pour modifier leur ordre
+              </p>
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+              >
+                <SortableContext
+                  items={selectedImages}
+                  strategy={verticalListSortingStrategy}
+                >
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                    {selectedImages.map((imageId) => {
+                      const image = availableImages.find(
+                        (img) => img.id === imageId
+                      );
+                      if (!image) return null;
 
-                const isNewlyAdded = !initialImageIds.includes(imageId);
+                      const isNewlyAdded = !initialImageIds.includes(imageId);
+                      const photo = {
+                        id: imageId,
+                        lien: image.url,
+                        alt: image.alt || "",
+                      };
 
-                return (
-                  <div
-                    key={imageId}
-                    className={`group relative aspect-square rounded-md overflow-hidden bg-muted ${
-                      isNewlyAdded ? "ring-2 ring-green-500" : ""
-                    }`}
-                  >
-                    {/* Lien vers la page d'édition de la photo */}
-                    <Link
-                      href={`/creations/photos/edit/${imageId}`}
-                      className="block h-full w-full"
-                    >
-                      <Image
-                        src={
-                          image.url.startsWith("http")
-                            ? image.url
-                            : `${baseUrl}${image.url}`
-                        }
-                        alt={image.alt || image.title || "Image sélectionnée"}
-                        fill
-                        className="object-cover transition-transform group-hover:scale-105"
-                        sizes="(max-width: 768px) 33vw, 20vw"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src = "/placeholder-photo.jpg";
-                        }}
-                      />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
-                    </Link>
-
-                    {/* Bouton pour retirer la photo directement */}
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      size="icon"
-                      className="absolute top-1 right-1 h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        // Retrait de l'image de la sélection
-                        setSelectedImages((prev) =>
-                          prev.filter((id) => id !== imageId)
-                        );
-                        toast.success("Photo retirée de l'album");
-                      }}
-                    >
-                      <X className="h-4 w-4" />
-                      <span className="sr-only">Retirer de l'album</span>
-                    </Button>
-
-                    {/* Indication visuelle pour les nouvelles photos */}
-                    {isNewlyAdded && (
-                      <div className="absolute top-1 left-1 bg-green-500 text-white text-xs rounded-full px-1.5 py-0.5">
-                        Nouvelle
-                      </div>
-                    )}
+                      return (
+                        <SortablePhotoItem
+                          key={imageId}
+                          photo={photo}
+                          image={image}
+                          baseUrl={baseUrl}
+                          isNewlyAdded={isNewlyAdded}
+                          onRemove={() => {
+                            setSelectedImages((prev) =>
+                              prev.filter((id) => id !== imageId)
+                            );
+                            toast.success("Photo retirée de l'album");
+                          }}
+                        />
+                      );
+                    })}
                   </div>
-                );
-              })}
+                </SortableContext>
+              </DndContext>
             </div>
           )}
 
           {/* Message informatif sur les changements */}
-          {hasImageChanges && (
+          {(hasImageChanges || hasOrderChanged) && (
             <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-md flex justify-between items-center">
               <p className="text-sm text-yellow-800">
                 {imagesToAdd.length > 0 && (
@@ -500,6 +602,9 @@ export function EditAlbumItem({
                     <strong>{imagesToRemove.length}</strong> photo(s) sera(ont)
                     retirée(s).{" "}
                   </span>
+                )}
+                {hasOrderChanged && (
+                  <span>L'ordre des photos a été modifié. </span>
                 )}
                 Les modifications ne seront appliquées qu'après avoir cliqué sur
                 "Mettre à jour".

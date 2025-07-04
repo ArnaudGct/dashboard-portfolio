@@ -18,6 +18,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { X, UploadCloud, Trash2 } from "lucide-react";
 import Image from "next/image";
+import { analyzeImageClient } from "@/lib/image-analyzer-client";
 
 type TagOption = {
   id: string;
@@ -50,6 +51,9 @@ export function AddPhotoItemMultiple({
   const [images, setImages] = useState<PreviewImage[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [analyzingImages, setAnalyzingImages] = useState<Set<number>>(
+    new Set()
+  );
 
   // Album sélectionné
   const [selectedAlbums, setSelectedAlbums] = useState<string[]>([]);
@@ -59,7 +63,7 @@ export function AddPhotoItemMultiple({
     setSelectedAlbums(newSelectedAlbums);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const newFiles = Array.from(e.target.files);
 
@@ -77,7 +81,7 @@ export function AddPhotoItemMultiple({
       // Vérifier les tailles des fichiers
       const validImageFiles = imageFiles.filter((file) => {
         if (file.size > 20 * 1024 * 1024) {
-          // 10MB
+          // 20MB
           toast.warning(
             `L'image "${file.name}" est trop volumineuse (max 20MB).`
           );
@@ -86,27 +90,60 @@ export function AddPhotoItemMultiple({
         return true;
       });
 
-      // Créer les prévisualisations
+      // Créer les prévisualisations avec analyse automatique
       const newImages: PreviewImage[] = [];
+      let processedCount = 0;
 
-      validImageFiles.forEach((file) => {
+      for (let i = 0; i < validImageFiles.length; i++) {
+        const file = validImageFiles[i];
+        const currentIndex = images.length + i;
+
+        // Marquer cette image comme en cours d'analyse
+        setAnalyzingImages((prev) => new Set(prev).add(currentIndex));
+
         const reader = new FileReader();
-        reader.onloadend = () => {
-          // Extraire le nom de fichier sans extension pour l'utiliser comme alt par défaut
-          const fileName = file.name.split(".")[0].replace(/[-_]/g, " ");
+        reader.onloadend = async () => {
+          try {
+            // Analyser l'image avec Google Vision
+            const base64 = (reader.result as string).split(",")[1];
+            const analyzedAlt = await analyzeImageClient(base64);
 
-          newImages.push({
-            file,
-            preview: reader.result as string,
-            alt: fileName,
-          });
+            newImages.push({
+              file,
+              preview: reader.result as string,
+              alt: analyzedAlt,
+            });
+          } catch (error) {
+            console.error("Erreur lors de l'analyse Google Vision:", error);
 
-          if (newImages.length === validImageFiles.length) {
+            // Fallback sur le nom de fichier formaté
+            const fileName = file.name.split(".")[0].replace(/[-_]/g, " ");
+            const formattedName = fileName.replace(/\b\w/g, (char) =>
+              char.toUpperCase()
+            );
+
+            newImages.push({
+              file,
+              preview: reader.result as string,
+              alt: formattedName,
+            });
+          } finally {
+            // Retirer cette image de la liste des analyses en cours
+            setAnalyzingImages((prev) => {
+              const newSet = new Set(prev);
+              newSet.delete(currentIndex);
+              return newSet;
+            });
+          }
+
+          processedCount++;
+          if (processedCount === validImageFiles.length) {
             setImages((prev) => [...prev, ...newImages]);
+            toast.success(`${newImages.length} images analysées et ajoutées`);
           }
         };
         reader.readAsDataURL(file);
-      });
+      }
     }
   };
 
@@ -215,7 +252,7 @@ export function AddPhotoItemMultiple({
       );
 
       toast.success(
-        `${result.count} photos ajoutées avec succès dans ${
+        `${result} photos ajoutées avec succès dans ${
           albumNames.length > 1
             ? `les albums ${albumNames.slice(0, -1).join(", ")} et ${albumNames.slice(-1)}`
             : `l'album ${albumNames[0]}`

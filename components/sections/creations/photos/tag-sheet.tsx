@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -64,7 +64,17 @@ export function TagSheet({
   const [newTagName, setNewTagName] = useState("");
   const [isAddingTag, setIsAddingTag] = useState(false);
   const [localSelectedTags, setLocalSelectedTags] = useState<string[]>([]);
-  const [isImportant, setIsImportant] = useState(false); // État pour le Switch important
+  const [isImportant, setIsImportant] = useState(false);
+  const [newlyCreatedTags, setNewlyCreatedTags] = useState<TagOption[]>([]);
+
+  // Combiner les options en évitant les doublons
+  const allOptions = React.useMemo(() => {
+    const existingIds = new Set(options.map((option) => option.id));
+    const uniqueNewTags = newlyCreatedTags.filter(
+      (tag) => !existingIds.has(tag.id)
+    );
+    return [...options, ...uniqueNewTags];
+  }, [options, newlyCreatedTags]);
 
   // Déterminer les termes à utiliser selon le type
   const typeTerms = {
@@ -74,7 +84,7 @@ export function TagSheet({
   }[type];
 
   // Filtrer les options en fonction de la recherche
-  const filteredOptions = options.filter((option) =>
+  const filteredOptions = allOptions.filter((option) =>
     option.label.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -111,6 +121,14 @@ export function TagSheet({
     }
   }, [isOpen]);
 
+  // Nettoyer les tags nouvellement créés quand ils apparaissent dans les options
+  useEffect(() => {
+    const existingIds = new Set(options.map((option) => option.id));
+    setNewlyCreatedTags((prev) =>
+      prev.filter((tag) => !existingIds.has(tag.id))
+    );
+  }, [options]);
+
   // Fonction pour ajouter un nouveau tag/album
   const handleAddNewTag = async () => {
     if (!newTagName.trim() || !onAddNew) return;
@@ -118,30 +136,40 @@ export function TagSheet({
     try {
       setIsAddingTag(true);
 
-      // Log pour débugger
-      console.log(
-        "Ajout d'un nouveau tag:",
-        newTagName,
-        "important:",
-        isImportant
-      );
-
-      // Passer le paramètre important explicitement comme booléen
       const result = await onAddNew(newTagName.trim(), isImportant === true);
 
       if (result) {
-        // Ajouter aux tags sélectionnés
-        setLocalSelectedTags((prev) => [...prev, result.id]);
-        setNewTagName("");
-        setIsImportant(false); // Réinitialiser le switch important
+        // Vérifier si le tag n'existe pas déjà dans les options
+        const existsInOptions = options.some(
+          (option) => option.id === result.id
+        );
 
-        // Message de succès avec information sur l'importance
+        if (!existsInOptions) {
+          // Ajouter uniquement si pas déjà dans les options
+          setNewlyCreatedTags((prev) => {
+            const alreadyExists = prev.some((tag) => tag.id === result.id);
+            if (alreadyExists) return prev;
+            return [...prev, result];
+          });
+        }
+
+        // Ajouter aux tags sélectionnés
+        setLocalSelectedTags((prev) => {
+          if (prev.includes(result.id)) return prev;
+          return [...prev, result.id];
+        });
+
+        setNewTagName("");
+        setIsImportant(false);
+
         toast.success(
-          `${typeTerms.singular.charAt(0).toUpperCase() + typeTerms.singular.slice(1)} "${result.label}"${isImportant ? " (important)" : ""} ajouté avec succès !`
+          `${typeTerms.singular.charAt(0).toUpperCase() + typeTerms.singular.slice(1)} "${result.label}"${
+            isImportant ? " (important)" : ""
+          } ajouté avec succès !`
         );
       } else {
         // L'élément existe probablement déjà
-        const existingTag = options.find(
+        const existingTag = allOptions.find(
           (tag) => tag.label.toLowerCase() === newTagName.trim().toLowerCase()
         );
 
@@ -208,7 +236,7 @@ export function TagSheet({
             {localSelectedTags.length > 0 && (
               <div className="flex flex-wrap gap-2 max-h-[120px] overflow-y-auto">
                 {localSelectedTags.map((tagId) => {
-                  const tag = options.find((o) => o.id === tagId);
+                  const tag = allOptions.find((o) => o.id === tagId); // Utiliser allOptions au lieu de options
                   return (
                     <RemovableTag
                       key={tagId}

@@ -15,6 +15,7 @@
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
+    "@google-cloud/vision": "^5.2.0",
     "@icons-pack/react-simple-icons": "^12.7.0",
     "@mdxeditor/editor": "^3.32.1",
     "@prisma/client": "^6.8.2",
@@ -39,6 +40,7 @@
     "@radix-ui/react-tooltip": "^1.2.4",
     "better-auth": "^1.2.7",
     "class-variance-authority": "^0.7.1",
+    "cloudinary": "^2.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
@@ -54,9 +56,10 @@
     "react-lite-yt-embed": "^1.2.7",
     "react-markdown": "^10.1.0",
     "resend": "^4.5.0",
+    "sharp": "^0.34.2",
     "simple-icons": "^14.12.3",
     "sonner": "^2.0.3",
-    "tailwind-merge": "^3.2.0",
+    "tailwind-merge": "^3.3.1",
     "uuid": "^11.1.0"
   },
   "devDependencies": {

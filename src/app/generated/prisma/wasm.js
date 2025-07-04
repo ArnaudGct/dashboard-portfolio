@@ -20,12 +20,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.7.0
- * Query Engine version: 3cff47a7f5d65c3ea74883f1d736e41d68ce91ed
+ * Prisma Client JS version: 6.11.0
+ * Query Engine version: 9c30299f5a0ea26a96790e13f796dc6094db3173
  */
 Prisma.prismaVersion = {
-  client: "6.7.0",
-  engine: "3cff47a7f5d65c3ea74883f1d736e41d68ce91ed"
+  client: "6.11.0",
+  engine: "9c30299f5a0ea26a96790e13f796dc6094db3173"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -131,7 +131,8 @@ exports.Prisma.AutreScalarFieldEnum = {
   categorie: 'categorie',
   tags: 'tags',
   date: 'date',
-  afficher: 'afficher'
+  afficher: 'afficher',
+  derniere_modification: 'derniere_modification'
 };
 
 exports.Prisma.Autre_tagsScalarFieldEnum = {
@@ -152,6 +153,8 @@ exports.Prisma.ExperiencesScalarFieldEnum = {
   description: 'description',
   url_img: 'url_img',
   position_img: 'position_img',
+  credit_nom: 'credit_nom',
+  credit_url: 'credit_url',
   afficher: 'afficher'
 };
 
@@ -170,7 +173,8 @@ exports.Prisma.PhotosScalarFieldEnum = {
   hauteur: 'hauteur',
   alt: 'alt',
   date: 'date',
-  afficher: 'afficher'
+  afficher: 'afficher',
+  derniere_modification: 'derniere_modification'
 };
 
 exports.Prisma.Photos_albumsScalarFieldEnum = {
@@ -178,12 +182,14 @@ exports.Prisma.Photos_albumsScalarFieldEnum = {
   titre: 'titre',
   description: 'description',
   date: 'date',
-  afficher: 'afficher'
+  afficher: 'afficher',
+  derniere_modification: 'derniere_modification'
 };
 
 exports.Prisma.Photos_albums_linkScalarFieldEnum = {
   id_pho: 'id_pho',
-  id_alb: 'id_alb'
+  id_alb: 'id_alb',
+  position: 'position'
 };
 
 exports.Prisma.Photos_albums_tags_linkScalarFieldEnum = {
@@ -334,7 +340,9 @@ exports.Prisma.experiencesOrderByRelevanceFieldEnum = {
   titre: 'titre',
   description: 'description',
   url_img: 'url_img',
-  position_img: 'position_img'
+  position_img: 'position_img',
+  credit_nom: 'credit_nom',
+  credit_url: 'credit_url'
 };
 
 exports.Prisma.faqOrderByRelevanceFieldEnum = {
@@ -353,6 +361,11 @@ exports.Prisma.photos_albumsOrderByRelevanceFieldEnum = {
   description: 'description'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
 exports.Prisma.photos_experiencesOrderByRelevanceFieldEnum = {
   titre: 'titre',
   url: 'url',
@@ -365,11 +378,6 @@ exports.Prisma.photos_tagsOrderByRelevanceFieldEnum = {
 
 exports.Prisma.photos_tags_rechercheOrderByRelevanceFieldEnum = {
   titre: 'titre'
-};
-
-exports.Prisma.NullsOrder = {
-  first: 'first',
-  last: 'last'
 };
 
 exports.Prisma.temoignagesOrderByRelevanceFieldEnum = {

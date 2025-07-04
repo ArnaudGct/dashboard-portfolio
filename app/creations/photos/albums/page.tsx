@@ -99,7 +99,7 @@ async function AlbumsList() {
       date: true,
       // Sélectionner uniquement les champs nécessaires pour les liens vers les photos
       photos_albums_link: {
-        select: {
+        include: {
           photos: {
             select: {
               id_pho: true,
@@ -111,9 +111,7 @@ async function AlbumsList() {
           },
         },
         orderBy: {
-          photos: {
-            date: "desc",
-          },
+          position: "asc",
         },
         take: 5, // Limiter à 5 photos par album pour la prévisualisation
       },
