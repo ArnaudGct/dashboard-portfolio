@@ -35,7 +35,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -f Dockerfile.prod -t ${{ secrets.CAPROVER_APP_NAME }}:latest .
+          docker build -f Dockerfile -t ${{ secrets.CAPROVER_APP_NAME }}:latest .
 
       - name: Save Docker image
         run: |
