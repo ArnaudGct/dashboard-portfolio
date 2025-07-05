@@ -1,5 +1,5 @@
 # Étape 1 : Build l'application
-FROM node:18-alpine AS builder
+FROM node:22-alpine AS builder
 
 WORKDIR /app
 
@@ -29,7 +29,7 @@ RUN npx prisma generate
 RUN npm run build
 
 # Étape 2 : Image de prod
-FROM node:18-alpine
+FROM node:22-alpine
 
 WORKDIR /app
 

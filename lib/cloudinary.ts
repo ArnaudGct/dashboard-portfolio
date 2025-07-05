@@ -142,7 +142,7 @@ export async function uploadToCloudinary(
           width: 800,
           height: 800,
           crop: "limit",
-          quality: 20,
+          quality: "auto:low",
         },
       ];
     } else {
@@ -151,7 +151,7 @@ export async function uploadToCloudinary(
           width: "iw_div_2",
           height: "ih_div_2",
           crop: "scale",
-          quality: 40,
+          quality: "auto:eco",
         },
       ];
     }
