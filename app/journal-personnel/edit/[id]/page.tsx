@@ -1,8 +1,8 @@
-import { getJournalEntryByIdAction } from "@/actions/journal-actions";
 import { EditJournalItem } from "@/components/sections/journal-personnel/edit-journal-item";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Card } from "@/components/ui/card";
+import prisma from "@/lib/prisma";
 
 // Composant de chargement
 function JournalEditLoading() {
@@ -49,7 +49,12 @@ async function EditJournalContent({ params }: { params: Params }) {
       return notFound();
     }
 
-    const journalEntry = await getJournalEntryByIdAction(journalId);
+    // Récupérer l'entrée directement avec Prisma
+    const journalEntry = await prisma.experiences.findUnique({
+      where: {
+        id_exp: journalId,
+      },
+    });
 
     if (!journalEntry) {
       return notFound();

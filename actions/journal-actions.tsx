@@ -9,27 +9,6 @@ import {
   extractPublicIdFromUrl,
 } from "@/lib/cloudinary";
 
-// Récupérer toutes les entrées du journal
-export async function getAllJournalEntriesAction() {
-  try {
-    const entries = await prisma.experiences.findMany({
-      orderBy: [
-        {
-          date: "desc",
-        },
-      ],
-    });
-
-    return entries;
-  } catch (error) {
-    console.error(
-      "Erreur lors de la récupération des entrées de journal:",
-      error
-    );
-    throw error;
-  }
-}
-
 // Récupérer une entrée de journal par son ID
 export async function getJournalEntryByIdAction(id: number) {
   try {

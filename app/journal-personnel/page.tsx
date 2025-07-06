@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { getAllJournalEntriesAction } from "@/actions/journal-actions";
 import { JournalItem } from "@/components/sections/journal-personnel/journal-item";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Suspense } from "react";
+import prisma from "@/lib/prisma";
 
 // Composant de chargement pour Suspense
 function JournalLoading() {
@@ -36,6 +36,8 @@ function JournalLoading() {
   );
 }
 
+export const revalidate = 60; // Revalidation des données toutes les 60 secondes
+
 export default function JournalPersonnel() {
   return (
     <section className="w-[90%] mx-auto mb-8">
@@ -51,39 +53,25 @@ export default function JournalPersonnel() {
           </div>
         </div>
 
+        {/* Utiliser Suspense pour le chargement asynchrone */}
         <Suspense fallback={<JournalLoading />}>
-          <JournalContent />
+          <JournalList />
         </Suspense>
       </div>
     </section>
   );
 }
 
-// Composant asynchrone pour récupérer et afficher les données
-async function JournalContent() {
+async function JournalList() {
   try {
-    const experiences = await getAllJournalEntriesAction();
-
-    // Utilisation de Map pour de meilleures performances
-    const experiencesByYear = new Map<string, typeof experiences>();
-
-    // Optimisation: utiliser forEach au lieu d'itérer plusieurs fois
-    experiences.forEach((experience) => {
-      let year = "Sans date";
-
-      if (experience.date) {
-        const dateObj = new Date(experience.date);
-        year = dateObj.getFullYear().toString();
-      }
-
-      // Optimisation avec Map
-      if (!experiencesByYear.has(year)) {
-        experiencesByYear.set(year, []);
-      }
-      experiencesByYear.get(year)?.push(experience);
+    // Récupérer toutes les expériences
+    const experiences = await prisma.experiences.findMany({
+      orderBy: {
+        date: "desc",
+      },
     });
 
-    // Pas d'expériences trouvées
+    // Si aucune expérience, afficher un message
     if (experiences.length === 0) {
       return (
         <Card className="p-6">
@@ -93,6 +81,36 @@ async function JournalContent() {
         </Card>
       );
     }
+
+    // Utilisation de Map pour de meilleures performances
+    const experiencesByYear = new Map<string, typeof experiences>();
+
+    // Optimisation: utiliser forEach au lieu d'itérer plusieurs fois
+    experiences.forEach((experience) => {
+      let year = "Sans date";
+
+      if (experience.date) {
+        try {
+          const dateObj = new Date(experience.date);
+          // Vérifier si la date est valide
+          if (!isNaN(dateObj.getTime())) {
+            year = dateObj.getFullYear().toString();
+          }
+        } catch (dateError) {
+          console.warn(
+            "Date invalide pour l'expérience:",
+            experience.id_exp,
+            dateError
+          );
+        }
+      }
+
+      // Optimisation avec Map
+      if (!experiencesByYear.has(year)) {
+        experiencesByYear.set(year, []);
+      }
+      experiencesByYear.get(year)?.push(experience);
+    });
 
     // Convertir Map en array et trier les années
     const sortedYears = Array.from(experiencesByYear.keys()).sort(
@@ -122,7 +140,7 @@ async function JournalContent() {
       <Card className="p-6">
         <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-md">
           Une erreur est survenue lors du chargement des expériences. Veuillez
-          rafraîchir la page ou contacter l'administrateur.
+          réessayer ou contacter l'administrateur.
         </div>
       </Card>
     );
