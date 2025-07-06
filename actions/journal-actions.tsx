@@ -13,9 +13,6 @@ import {
 export async function getAllJournalEntriesAction() {
   try {
     const entries = await prisma.experiences.findMany({
-      where: {
-        afficher: true,
-      },
       orderBy: [
         {
           date: "desc",
