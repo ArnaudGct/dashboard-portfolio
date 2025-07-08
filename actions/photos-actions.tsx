@@ -40,6 +40,331 @@ async function saveImageToCloudinary(
   }
 }
 
+// Helper pour créer une image de couverture d'album avec Sharp
+async function generateAlbumCover(albumId: number): Promise<string> {
+  try {
+    console.log(`Génération de la couverture pour l'album ${albumId}`);
+
+    // Récupérer les 3 premières photos de l'album triées par position
+    const albumPhotos = await prisma.photos_albums_link.findMany({
+      where: { id_alb: albumId },
+      include: {
+        photos: true,
+      },
+      orderBy: {
+        position: "asc",
+      },
+      take: 3,
+    });
+
+    if (albumPhotos.length === 0) {
+      console.log("Aucune photo trouvée pour l'album");
+      return "";
+    }
+
+    // Préparer les URLs des images
+    const imageUrls = albumPhotos.map((link) => link.photos.lien_high);
+    console.log(`Images trouvées pour la couverture:`, imageUrls);
+
+    // Dimensions de l'image de couverture
+    const coverWidth = 1200;
+    const coverHeight = 800;
+
+    // Fonction helper pour télécharger et redimensionner une image
+    async function downloadAndResize(
+      url: string,
+      width: number,
+      height: number
+    ) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Erreur HTTP: ${response.status}`);
+        }
+        const arrayBuffer = await response.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+
+        return await sharp(buffer)
+          .resize(width, height, { fit: "cover", position: "center" })
+          .jpeg({ quality: 95 }) // Augmenté de 80 à 95 pour moins de compression
+          .toBuffer();
+      } catch (error) {
+        console.error(`Erreur lors du téléchargement de ${url}:`, error);
+        // Créer une image placeholder grise
+        return await sharp({
+          create: {
+            width,
+            height,
+            channels: 3,
+            background: { r: 200, g: 200, b: 200 },
+          },
+        })
+          .jpeg({ quality: 95 }) // Même qualité pour le placeholder
+          .toBuffer();
+      }
+    }
+
+    let coverBuffer: Buffer;
+
+    if (imageUrls.length === 1) {
+      // Une seule image - prendre toute la largeur
+      coverBuffer = await downloadAndResize(
+        imageUrls[0],
+        coverWidth,
+        coverHeight
+      );
+    } else if (imageUrls.length === 2) {
+      // Deux images - côte à côte (50% chacune)
+      const imgWidth = Math.floor(coverWidth / 2);
+      const [img1, img2] = await Promise.all([
+        downloadAndResize(imageUrls[0], imgWidth, coverHeight),
+        downloadAndResize(imageUrls[1], imgWidth, coverHeight),
+      ]);
+
+      coverBuffer = await sharp({
+        create: {
+          width: coverWidth,
+          height: coverHeight,
+          channels: 3,
+          background: { r: 255, g: 255, b: 255 },
+        },
+      })
+        .composite([
+          { input: img1, left: 0, top: 0 },
+          { input: img2, left: imgWidth, top: 0 },
+        ])
+        .jpeg({ quality: 95 }) // Augmenté de 80 à 95
+        .toBuffer();
+    } else {
+      // Trois images - image de gauche 50%, deux images de droite 50% (empilées)
+      const leftWidth = Math.floor(coverWidth / 2);
+      const rightWidth = Math.floor(coverWidth / 2);
+      const rightHeight = Math.floor(coverHeight / 2);
+
+      const [mainImg, img2, img3] = await Promise.all([
+        downloadAndResize(imageUrls[0], leftWidth, coverHeight),
+        downloadAndResize(imageUrls[1], rightWidth, rightHeight),
+        downloadAndResize(imageUrls[2], rightWidth, rightHeight),
+      ]);
+
+      coverBuffer = await sharp({
+        create: {
+          width: coverWidth,
+          height: coverHeight,
+          channels: 3,
+          background: { r: 255, g: 255, b: 255 },
+        },
+      })
+        .composite([
+          { input: mainImg, left: 0, top: 0 },
+          { input: img2, left: leftWidth, top: 0 },
+          { input: img3, left: leftWidth, top: rightHeight },
+        ])
+        .jpeg({ quality: 95 }) // Augmenté de 80 à 95
+        .toBuffer();
+    }
+
+    // Créer un objet File-like pour l'upload
+    const coverFile = new File([coverBuffer], `album_${albumId}_cover.jpg`, {
+      type: "image/jpeg",
+    });
+
+    // Uploader vers Cloudinary dans le dossier albums
+    const result = await uploadToCloudinary(
+      coverFile,
+      "high",
+      "portfolio/albums"
+    );
+
+    console.log(`Couverture d'album générée: ${result.url}`);
+    return result.url;
+  } catch (error) {
+    console.error(
+      "Erreur lors de la génération de la couverture d'album:",
+      error
+    );
+    throw error;
+  }
+}
+
+// Helper pour régénérer les couvertures des albums concernés
+async function regenerateAlbumCovers(photoId: number): Promise<void> {
+  try {
+    console.log(
+      `Régénération des couvertures pour les albums contenant la photo ${photoId}`
+    );
+
+    // Récupérer tous les albums qui contiennent cette photo
+    const albumsContainingPhoto = await prisma.photos_albums_link.findMany({
+      where: { id_pho: photoId },
+      include: {
+        photos_albums: true,
+      },
+    });
+
+    if (albumsContainingPhoto.length === 0) {
+      console.log("Aucun album ne contient cette photo");
+      return;
+    }
+
+    // Régénérer la couverture pour chaque album
+    for (const albumLink of albumsContainingPhoto) {
+      const albumId = albumLink.id_alb;
+      console.log(`Régénération de la couverture pour l'album ${albumId}`);
+
+      try {
+        // Supprimer l'ancienne couverture
+        if (albumLink.photos_albums.lien_cover) {
+          await deleteAlbumCover(albumLink.photos_albums.lien_cover);
+        }
+
+        // Générer la nouvelle couverture
+        const coverUrl = await generateAlbumCover(albumId);
+        if (coverUrl) {
+          await prisma.photos_albums.update({
+            where: { id_alb: albumId },
+            data: { lien_cover: coverUrl },
+          });
+          console.log(`✓ Couverture régénérée pour l'album ${albumId}`);
+        }
+      } catch (coverError) {
+        console.error(
+          `Erreur lors de la régénération de la couverture pour l'album ${albumId}:`,
+          coverError
+        );
+      }
+    }
+
+    // Revalider les chemins des albums
+    revalidatePath("/creations/photos/albums");
+  } catch (error) {
+    console.error(
+      "Erreur lors de la régénération des couvertures d'albums:",
+      error
+    );
+  }
+}
+
+export async function regenerateAllAlbumCoversAction() {
+  try {
+    console.log(
+      "=== DÉBUT RÉGÉNÉRATION DE TOUTES LES COUVERTURES D'ALBUMS ==="
+    );
+
+    // Récupérer tous les albums
+    const albums = await prisma.photos_albums.findMany({
+      select: {
+        id_alb: true,
+        titre: true,
+        lien_cover: true,
+      },
+      orderBy: {
+        date: "desc",
+      },
+    });
+
+    if (albums.length === 0) {
+      console.log("Aucun album trouvé");
+      return { success: true, message: "Aucun album trouvé" };
+    }
+
+    console.log(`Found ${albums.length} albums to process`);
+
+    let successCount = 0;
+    let errorCount = 0;
+    const errors: string[] = [];
+
+    // Traiter chaque album
+    for (const album of albums) {
+      console.log(
+        `\n--- Traitement de l'album ${album.id_alb}: "${album.titre}" ---`
+      );
+
+      try {
+        // Supprimer l'ancienne couverture si elle existe
+        if (album.lien_cover) {
+          try {
+            await deleteAlbumCover(album.lien_cover);
+            console.log(
+              `✓ Ancienne couverture supprimée pour l'album ${album.id_alb}`
+            );
+          } catch (deleteError) {
+            console.warn(
+              `⚠️ Erreur lors de la suppression de l'ancienne couverture pour l'album ${album.id_alb}:`,
+              deleteError
+            );
+          }
+        }
+
+        // Générer la nouvelle couverture
+        const coverUrl = await generateAlbumCover(album.id_alb);
+
+        if (coverUrl) {
+          // Mettre à jour l'album avec la nouvelle couverture
+          await prisma.photos_albums.update({
+            where: { id_alb: album.id_alb },
+            data: { lien_cover: coverUrl },
+          });
+
+          console.log(
+            `✓ Couverture générée avec succès pour l'album ${album.id_alb}`
+          );
+          successCount++;
+        } else {
+          // Album sans photos - nettoyer le champ couverture
+          await prisma.photos_albums.update({
+            where: { id_alb: album.id_alb },
+            data: { lien_cover: "" },
+          });
+
+          console.log(
+            `✓ Couverture vidée pour l'album ${album.id_alb} (aucune photo)`
+          );
+          successCount++;
+        }
+      } catch (error) {
+        console.error(
+          `❌ Erreur lors du traitement de l'album ${album.id_alb}:`,
+          error
+        );
+        errorCount++;
+        errors.push(
+          `Album "${album.titre}" (ID: ${album.id_alb}): ${error instanceof Error ? error.message : String(error)}`
+        );
+      }
+    }
+
+    // Revalider les chemins
+    revalidatePath("/creations/photos/albums");
+
+    console.log(`\n=== RÉSULTATS ===`);
+    console.log(`Albums traités avec succès: ${successCount}`);
+    console.log(`Albums en erreur: ${errorCount}`);
+    console.log(`=== FIN RÉGÉNÉRATION ===\n`);
+
+    return {
+      success: true,
+      message: `Régénération terminée: ${successCount} album(s) traité(s) avec succès${errorCount > 0 ? `, ${errorCount} erreur(s)` : ""}`,
+      details: {
+        successCount,
+        errorCount,
+        errors,
+        totalAlbums: albums.length,
+      },
+    };
+  } catch (error) {
+    console.error(
+      "❌ Erreur lors de la régénération de toutes les couvertures:",
+      error
+    );
+    return {
+      success: false,
+      message: "Erreur lors de la régénération des couvertures",
+      error: error instanceof Error ? error.message : String(error),
+    };
+  }
+}
+
 // Action pour ajouter une photo
 export async function addPhotoAction(formData: FormData) {
   try {
@@ -169,6 +494,17 @@ export async function addPhotoAction(formData: FormData) {
           },
         });
       }
+
+      // NOUVEAU: Régénérer les couvertures des albums concernés
+      console.log("Régénération des couvertures d'albums...");
+      try {
+        await regenerateAlbumCovers(photo.id_pho);
+      } catch (coverError) {
+        console.error(
+          "Erreur lors de la régénération des couvertures:",
+          coverError
+        );
+      }
     }
 
     revalidatePath("/creations/photos");
@@ -197,6 +533,12 @@ export async function updatePhotoAction(formData: FormData) {
       throw new Error("Photo non trouvée");
     }
 
+    // Récupérer les anciens albums AVANT la mise à jour
+    const oldAlbums = await prisma.photos_albums_link.findMany({
+      where: { id_pho: photoId },
+      select: { id_alb: true },
+    });
+
     console.log("=== DÉBUT MISE À JOUR PHOTO ===");
     console.log("Photo existante:", {
       id: photoId,
@@ -212,6 +554,7 @@ export async function updatePhotoAction(formData: FormData) {
     let lienLow = existingPhoto.lien_low;
     let largeur = existingPhoto.largeur;
     let hauteur = existingPhoto.hauteur;
+    let imageHasChanged = false;
 
     // Sauvegarder TOUS les anciens publicIds AVANT l'upload
     const oldPublicIdHigh = existingPhoto.lien_high
@@ -233,6 +576,7 @@ export async function updatePhotoAction(formData: FormData) {
     // ====== UPLOAD DES NOUVELLES IMAGES ======
     if (imageHighRes && imageHighRes.size > 0) {
       console.log("Upload nouvelle image haute résolution...");
+      imageHasChanged = true;
 
       try {
         // NOUVEAU: Sauvegarder l'image originale sans retouche
@@ -270,6 +614,7 @@ export async function updatePhotoAction(formData: FormData) {
 
     if (imageLowRes && imageLowRes.size > 0) {
       console.log("Upload nouvelle image basse résolution...");
+      imageHasChanged = true;
 
       try {
         // Upload de la nouvelle image basse résolution
@@ -404,6 +749,7 @@ export async function updatePhotoAction(formData: FormData) {
 
     // Créer les nouvelles relations d'albums
     const albums = formData.getAll("albums");
+    const newAlbumIds = [];
     if (albums && albums.length > 0) {
       for (const albumId of albums) {
         await prisma.photos_albums_link.create({
@@ -412,11 +758,72 @@ export async function updatePhotoAction(formData: FormData) {
             id_alb: parseInt(albumId.toString()),
           },
         });
+        newAlbumIds.push(parseInt(albumId.toString()));
       }
+    }
+
+    // ====== RÉGÉNÉRATION DES COUVERTURES D'ALBUMS ======
+    console.log("Régénération des couvertures d'albums...");
+    try {
+      // Créer un Set avec tous les albums qui ont été affectés
+      const affectedAlbumIds = new Set<number>();
+
+      // Ajouter les anciens albums
+      oldAlbums.forEach((album) => affectedAlbumIds.add(album.id_alb));
+
+      // Ajouter les nouveaux albums
+      newAlbumIds.forEach((albumId) => affectedAlbumIds.add(albumId));
+
+      // Régénérer les couvertures pour tous les albums affectés
+      for (const albumId of affectedAlbumIds) {
+        console.log(`Régénération de la couverture pour l'album ${albumId}`);
+
+        try {
+          // Récupérer l'album pour obtenir l'ancienne couverture
+          const album = await prisma.photos_albums.findUnique({
+            where: { id_alb: albumId },
+          });
+
+          // Supprimer l'ancienne couverture
+          if (album?.lien_cover) {
+            await deleteAlbumCover(album.lien_cover);
+          }
+
+          // Générer la nouvelle couverture
+          const coverUrl = await generateAlbumCover(albumId);
+          if (coverUrl) {
+            await prisma.photos_albums.update({
+              where: { id_alb: albumId },
+              data: { lien_cover: coverUrl },
+            });
+            console.log(`✓ Couverture régénérée pour l'album ${albumId}`);
+          } else {
+            // Si pas de couverture générée (album vide), nettoyer le champ
+            await prisma.photos_albums.update({
+              where: { id_alb: albumId },
+              data: { lien_cover: "" },
+            });
+            console.log(
+              `✓ Couverture vidée pour l'album ${albumId} (aucune photo)`
+            );
+          }
+        } catch (coverError) {
+          console.error(
+            `Erreur lors de la régénération de la couverture pour l'album ${albumId}:`,
+            coverError
+          );
+        }
+      }
+    } catch (coverError) {
+      console.error(
+        "Erreur lors de la régénération des couvertures:",
+        coverError
+      );
     }
 
     revalidatePath("/creations/photos");
     revalidatePath(`/creations/photos/${photoId}/edit`);
+    revalidatePath("/creations/photos/albums"); // Ajouter cette ligne
 
     console.log("=== FIN MISE À JOUR PHOTO ===");
     return { success: true };
@@ -441,6 +848,12 @@ export async function deletePhotoAction(photoId: number) {
     if (!photo) {
       throw new Error("Photo non trouvée");
     }
+
+    // Récupérer les albums qui contiennent cette photo AVANT la suppression
+    const albumsContainingPhoto = await prisma.photos_albums_link.findMany({
+      where: { id_pho: photoId },
+      select: { id_alb: true },
+    });
 
     // Supprimer toutes les relations
     await prisma.photos_tags_recherche_link.deleteMany({
@@ -508,7 +921,58 @@ export async function deletePhotoAction(photoId: number) {
       }
     }
 
+    // ====== RÉGÉNÉRATION DES COUVERTURES D'ALBUMS ======
+    console.log("Régénération des couvertures d'albums après suppression...");
+    try {
+      for (const albumLink of albumsContainingPhoto) {
+        const albumId = albumLink.id_alb;
+        console.log(`Régénération de la couverture pour l'album ${albumId}`);
+
+        try {
+          // Récupérer l'album pour obtenir l'ancienne couverture
+          const album = await prisma.photos_albums.findUnique({
+            where: { id_alb: albumId },
+          });
+
+          // Supprimer l'ancienne couverture
+          if (album?.lien_cover) {
+            await deleteAlbumCover(album.lien_cover);
+          }
+
+          // Générer la nouvelle couverture
+          const coverUrl = await generateAlbumCover(albumId);
+          if (coverUrl) {
+            await prisma.photos_albums.update({
+              where: { id_alb: albumId },
+              data: { lien_cover: coverUrl },
+            });
+            console.log(`✓ Couverture régénérée pour l'album ${albumId}`);
+          } else {
+            // Si pas de couverture générée (album vide), nettoyer le champ
+            await prisma.photos_albums.update({
+              where: { id_alb: albumId },
+              data: { lien_cover: "" },
+            });
+            console.log(
+              `✓ Couverture vidée pour l'album ${albumId} (aucune photo)`
+            );
+          }
+        } catch (coverError) {
+          console.error(
+            `Erreur lors de la régénération de la couverture pour l'album ${albumId}:`,
+            coverError
+          );
+        }
+      }
+    } catch (coverError) {
+      console.error(
+        "Erreur lors de la régénération des couvertures:",
+        coverError
+      );
+    }
+
     revalidatePath("/creations/photos");
+    revalidatePath("/creations/photos/albums"); // Ajouter cette ligne
     return { success: true };
   } catch (error) {
     console.error("Erreur lors de la suppression de la photo:", error);
@@ -694,6 +1158,7 @@ export async function createAlbumAction(formData: FormData) {
         description: description || "",
         date: date ? new Date(date) : new Date(),
         afficher: isPublished,
+        lien_cover: "", // Sera mis à jour après génération
         derniere_modification: new Date(),
       },
     });
@@ -720,11 +1185,27 @@ export async function createAlbumAction(formData: FormData) {
             data: {
               id_alb: newAlbum.id_alb,
               id_pho: parseInt(imageId),
-              position: index, // Utiliser position au lieu d'ordre
+              position: index,
             },
           })
         )
       );
+
+      // Générer la couverture d'album
+      try {
+        const coverUrl = await generateAlbumCover(newAlbum.id_alb);
+        if (coverUrl) {
+          await prisma.photos_albums.update({
+            where: { id_alb: newAlbum.id_alb },
+            data: { lien_cover: coverUrl },
+          });
+        }
+      } catch (coverError) {
+        console.error(
+          "Erreur lors de la génération de la couverture:",
+          coverError
+        );
+      }
     }
 
     revalidatePath("/creations/photos/albums");
@@ -749,6 +1230,11 @@ export async function updateAlbumAction(formData: FormData) {
     const images = formData.getAll("images") as string[];
     const imageOrders = formData.getAll("imageOrders") as string[];
 
+    // Récupérer l'album existant pour la couverture
+    const existingAlbum = await prisma.photos_albums.findUnique({
+      where: { id_alb: id },
+    });
+
     // Mettre à jour l'album
     await prisma.photos_albums.update({
       where: { id_alb: id },
@@ -757,6 +1243,7 @@ export async function updateAlbumAction(formData: FormData) {
         description: description || "",
         date: date ? new Date(date) : new Date(),
         afficher: isPublished,
+        derniere_modification: new Date(),
       },
     });
 
@@ -794,11 +1281,42 @@ export async function updateAlbumAction(formData: FormData) {
               id_pho: parseInt(imageId),
               position: imageOrders[index]
                 ? parseInt(imageOrders[index])
-                : index, // Utiliser position
+                : index,
             },
           })
         )
       );
+
+      // Régénérer la couverture d'album
+      try {
+        // Supprimer l'ancienne couverture
+        if (existingAlbum?.lien_cover) {
+          await deleteAlbumCover(existingAlbum.lien_cover);
+        }
+
+        // Générer la nouvelle couverture
+        const coverUrl = await generateAlbumCover(id);
+        if (coverUrl) {
+          await prisma.photos_albums.update({
+            where: { id_alb: id },
+            data: { lien_cover: coverUrl },
+          });
+        }
+      } catch (coverError) {
+        console.error(
+          "Erreur lors de la régénération de la couverture:",
+          coverError
+        );
+      }
+    } else {
+      // Si aucune image, supprimer la couverture
+      if (existingAlbum?.lien_cover) {
+        await deleteAlbumCover(existingAlbum.lien_cover);
+        await prisma.photos_albums.update({
+          where: { id_alb: id },
+          data: { lien_cover: "" },
+        });
+      }
     }
 
     // Forcer le rechargement de la page
@@ -818,13 +1336,17 @@ export async function deleteAlbumAction(albumId: number) {
       throw new Error("ID d'album invalide");
     }
 
+    // Récupérer l'album pour obtenir le lien de couverture
+    const album = await prisma.photos_albums.findUnique({
+      where: { id_alb: albumId },
+    });
+
     // Supprimer les relations de tags
     await prisma.photos_albums_tags_link.deleteMany({
       where: { id_alb: albumId },
     });
 
     // Supprimer les relations avec les photos
-    // Note: Les photos ne sont pas supprimées, juste les liens avec l'album
     await prisma.photos_albums_link.deleteMany({
       where: { id_alb: albumId },
     });
@@ -833,6 +1355,18 @@ export async function deleteAlbumAction(albumId: number) {
     await prisma.photos_albums.delete({
       where: { id_alb: albumId },
     });
+
+    // Supprimer la couverture d'album de Cloudinary
+    if (album?.lien_cover) {
+      try {
+        await deleteAlbumCover(album.lien_cover);
+      } catch (coverError) {
+        console.error(
+          "Erreur lors de la suppression de la couverture:",
+          coverError
+        );
+      }
+    }
 
     revalidatePath("/creations/photos/albums");
     return { success: true };
@@ -1177,6 +1711,24 @@ export async function batchUploadPhotosWithMetadataAction(formData: FormData) {
   } catch (error) {
     console.error("Erreur lors de l'upload par lot des photos:", error);
     throw error;
+  }
+}
+
+// Helper pour supprimer l'ancienne couverture d'album
+async function deleteAlbumCover(coverUrl: string): Promise<void> {
+  try {
+    if (coverUrl) {
+      const publicId = extractPublicIdFromUrl(coverUrl);
+      if (publicId) {
+        await deleteFromCloudinary(publicId);
+        console.log(`Ancienne couverture supprimée: ${publicId}`);
+      }
+    }
+  } catch (error) {
+    console.error(
+      "Erreur lors de la suppression de l'ancienne couverture:",
+      error
+    );
   }
 }
 

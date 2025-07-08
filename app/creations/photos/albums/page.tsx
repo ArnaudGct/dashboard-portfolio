@@ -16,7 +16,7 @@ import {
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
 import { Tag } from "@/components/tag";
-import { AlbumPreview } from "@/components/sections/creations/photos/albums/album-preview";
+import { RegenerateCoversButton } from "@/components/ui/regenerate-covers-button";
 import { Suspense } from "react";
 
 // Composant de chargement
@@ -66,6 +66,7 @@ export default function PhotoAlbums() {
             </BreadcrumbList>
           </Breadcrumb>
           <div className="flex gap-2">
+            <RegenerateCoversButton />
             <Link href="/creations/photos/tags?from=albums">
               <Button variant="outline" className="cursor-pointer">
                 Tags
@@ -90,30 +91,19 @@ export default function PhotoAlbums() {
 
 // Composant serveur pour charger les albums
 async function AlbumsList() {
-  // Optimiser la requête avec select au lieu de include
+  // Optimiser la requête - on n'a plus besoin des photos individuelles
   const albums = await prisma.photos_albums.findMany({
     select: {
       id_alb: true,
       titre: true,
       description: true,
       date: true,
-      // Sélectionner uniquement les champs nécessaires pour les liens vers les photos
+      lien_cover: true, // Utiliser l'image de couverture générée
+      // Compter les photos pour afficher le nombre
       photos_albums_link: {
-        include: {
-          photos: {
-            select: {
-              id_pho: true,
-              lien_low: true,
-              lien_high: true, // Ajout du lien haute résolution pour correspondre au type Photo
-              alt: true,
-              date: true,
-            },
-          },
+        select: {
+          id_pho: true, // Juste pour compter, pas besoin des détails
         },
-        orderBy: {
-          position: "asc",
-        },
-        take: 5, // Limiter à 5 photos par album pour la prévisualisation
       },
       // Sélectionner uniquement les champs nécessaires pour les tags de l'album
       photos_albums_tags_link: {
@@ -153,21 +143,28 @@ async function AlbumsList() {
             >
               <Card className="hover:shadow-md transition-shadow cursor-pointer overflow-hidden">
                 <div className="flex flex-col justify-center lg:justify-start items-center gap-6 px-6">
-                  {/* Mosaïque de prévisualisation */}
-                  {album.photos_albums_link.length > 0 && (
-                    <div className="w-full rounded-lg overflow-hidden">
-                      <AlbumPreview
-                        photos={album.photos_albums_link.map(
-                          (link) => link.photos
-                        )}
+                  {/* Image de couverture */}
+                  {album.lien_cover ? (
+                    <div className="w-full h-60 rounded-lg overflow-hidden relative">
+                      <Image
+                        src={album.lien_cover}
+                        alt={`Couverture de l'album ${album.titre}`}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover hover:scale-105 transition-transform duration-300"
                       />
                     </div>
-                  )}
-
-                  {/* Si pas de photos, ajouter un espace pour maintenir une apparence cohérente */}
-                  {album.photos_albums_link.length === 0 && (
-                    <div className="w-full h-40 bg-gray-100 flex items-center justify-center">
-                      <p className="text-muted-foreground">Aucune photo</p>
+                  ) : (
+                    // Placeholder si pas de couverture
+                    <div className="w-full h-48 bg-gray-100 dark:bg-gray-800 flex items-center justify-center rounded-lg">
+                      <div className="text-center text-muted-foreground">
+                        <p className="text-sm">Aucune couverture</p>
+                        <p className="text-xs mt-1">
+                          {album.photos_albums_link.length === 0
+                            ? "Album vide"
+                            : "Couverture en cours de génération"}
+                        </p>
+                      </div>
                     </div>
                   )}
 

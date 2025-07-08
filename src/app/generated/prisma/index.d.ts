@@ -8927,6 +8927,7 @@ export namespace Prisma {
     id_alb: number | null
     titre: string | null
     description: string | null
+    lien_cover: string | null
     date: Date | null
     afficher: boolean | null
     derniere_modification: Date | null
@@ -8936,6 +8937,7 @@ export namespace Prisma {
     id_alb: number | null
     titre: string | null
     description: string | null
+    lien_cover: string | null
     date: Date | null
     afficher: boolean | null
     derniere_modification: Date | null
@@ -8945,6 +8947,7 @@ export namespace Prisma {
     id_alb: number
     titre: number
     description: number
+    lien_cover: number
     date: number
     afficher: number
     derniere_modification: number
@@ -8964,6 +8967,7 @@ export namespace Prisma {
     id_alb?: true
     titre?: true
     description?: true
+    lien_cover?: true
     date?: true
     afficher?: true
     derniere_modification?: true
@@ -8973,6 +8977,7 @@ export namespace Prisma {
     id_alb?: true
     titre?: true
     description?: true
+    lien_cover?: true
     date?: true
     afficher?: true
     derniere_modification?: true
@@ -8982,6 +8987,7 @@ export namespace Prisma {
     id_alb?: true
     titre?: true
     description?: true
+    lien_cover?: true
     date?: true
     afficher?: true
     derniere_modification?: true
@@ -9078,6 +9084,7 @@ export namespace Prisma {
     id_alb: number
     titre: string
     description: string
+    lien_cover: string
     date: Date
     afficher: boolean
     derniere_modification: Date
@@ -9106,6 +9113,7 @@ export namespace Prisma {
     id_alb?: boolean
     titre?: boolean
     description?: boolean
+    lien_cover?: boolean
     date?: boolean
     afficher?: boolean
     derniere_modification?: boolean
@@ -9120,12 +9128,13 @@ export namespace Prisma {
     id_alb?: boolean
     titre?: boolean
     description?: boolean
+    lien_cover?: boolean
     date?: boolean
     afficher?: boolean
     derniere_modification?: boolean
   }
 
-  export type photos_albumsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_alb" | "titre" | "description" | "date" | "afficher" | "derniere_modification", ExtArgs["result"]["photos_albums"]>
+  export type photos_albumsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_alb" | "titre" | "description" | "lien_cover" | "date" | "afficher" | "derniere_modification", ExtArgs["result"]["photos_albums"]>
   export type photos_albumsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     photos_albums_link?: boolean | photos_albums$photos_albums_linkArgs<ExtArgs>
     photos_albums_tags_link?: boolean | photos_albums$photos_albums_tags_linkArgs<ExtArgs>
@@ -9142,6 +9151,7 @@ export namespace Prisma {
       id_alb: number
       titre: string
       description: string
+      lien_cover: string
       date: Date
       afficher: boolean
       derniere_modification: Date
@@ -9519,6 +9529,7 @@ export namespace Prisma {
     readonly id_alb: FieldRef<"photos_albums", 'Int'>
     readonly titre: FieldRef<"photos_albums", 'String'>
     readonly description: FieldRef<"photos_albums", 'String'>
+    readonly lien_cover: FieldRef<"photos_albums", 'String'>
     readonly date: FieldRef<"photos_albums", 'DateTime'>
     readonly afficher: FieldRef<"photos_albums", 'Boolean'>
     readonly derniere_modification: FieldRef<"photos_albums", 'DateTime'>
@@ -25165,6 +25176,7 @@ export namespace Prisma {
     id_alb: 'id_alb',
     titre: 'titre',
     description: 'description',
+    lien_cover: 'lien_cover',
     date: 'date',
     afficher: 'afficher',
     derniere_modification: 'derniere_modification'
@@ -25411,7 +25423,8 @@ export namespace Prisma {
 
   export const photos_albumsOrderByRelevanceFieldEnum: {
     titre: 'titre',
-    description: 'description'
+    description: 'description',
+    lien_cover: 'lien_cover'
   };
 
   export type photos_albumsOrderByRelevanceFieldEnum = (typeof photos_albumsOrderByRelevanceFieldEnum)[keyof typeof photos_albumsOrderByRelevanceFieldEnum]
@@ -25981,6 +25994,7 @@ export namespace Prisma {
     id_alb?: IntFilter<"photos_albums"> | number
     titre?: StringFilter<"photos_albums"> | string
     description?: StringFilter<"photos_albums"> | string
+    lien_cover?: StringFilter<"photos_albums"> | string
     date?: DateTimeFilter<"photos_albums"> | Date | string
     afficher?: BoolFilter<"photos_albums"> | boolean
     derniere_modification?: DateTimeFilter<"photos_albums"> | Date | string
@@ -25992,6 +26006,7 @@ export namespace Prisma {
     id_alb?: SortOrder
     titre?: SortOrder
     description?: SortOrder
+    lien_cover?: SortOrder
     date?: SortOrder
     afficher?: SortOrder
     derniere_modification?: SortOrder
@@ -26007,6 +26022,7 @@ export namespace Prisma {
     NOT?: photos_albumsWhereInput | photos_albumsWhereInput[]
     titre?: StringFilter<"photos_albums"> | string
     description?: StringFilter<"photos_albums"> | string
+    lien_cover?: StringFilter<"photos_albums"> | string
     date?: DateTimeFilter<"photos_albums"> | Date | string
     afficher?: BoolFilter<"photos_albums"> | boolean
     derniere_modification?: DateTimeFilter<"photos_albums"> | Date | string
@@ -26018,6 +26034,7 @@ export namespace Prisma {
     id_alb?: SortOrder
     titre?: SortOrder
     description?: SortOrder
+    lien_cover?: SortOrder
     date?: SortOrder
     afficher?: SortOrder
     derniere_modification?: SortOrder
@@ -26035,6 +26052,7 @@ export namespace Prisma {
     id_alb?: IntWithAggregatesFilter<"photos_albums"> | number
     titre?: StringWithAggregatesFilter<"photos_albums"> | string
     description?: StringWithAggregatesFilter<"photos_albums"> | string
+    lien_cover?: StringWithAggregatesFilter<"photos_albums"> | string
     date?: DateTimeWithAggregatesFilter<"photos_albums"> | Date | string
     afficher?: BoolWithAggregatesFilter<"photos_albums"> | boolean
     derniere_modification?: DateTimeWithAggregatesFilter<"photos_albums"> | Date | string
@@ -27373,6 +27391,7 @@ export namespace Prisma {
   export type photos_albumsCreateInput = {
     titre: string
     description: string
+    lien_cover: string
     date: Date | string
     afficher: boolean
     derniere_modification: Date | string
@@ -27384,6 +27403,7 @@ export namespace Prisma {
     id_alb?: number
     titre: string
     description: string
+    lien_cover: string
     date: Date | string
     afficher: boolean
     derniere_modification: Date | string
@@ -27394,6 +27414,7 @@ export namespace Prisma {
   export type photos_albumsUpdateInput = {
     titre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    lien_cover?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     afficher?: BoolFieldUpdateOperationsInput | boolean
     derniere_modification?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27405,6 +27426,7 @@ export namespace Prisma {
     id_alb?: IntFieldUpdateOperationsInput | number
     titre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    lien_cover?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     afficher?: BoolFieldUpdateOperationsInput | boolean
     derniere_modification?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27416,6 +27438,7 @@ export namespace Prisma {
     id_alb?: number
     titre: string
     description: string
+    lien_cover: string
     date: Date | string
     afficher: boolean
     derniere_modification: Date | string
@@ -27424,6 +27447,7 @@ export namespace Prisma {
   export type photos_albumsUpdateManyMutationInput = {
     titre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    lien_cover?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     afficher?: BoolFieldUpdateOperationsInput | boolean
     derniere_modification?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27433,6 +27457,7 @@ export namespace Prisma {
     id_alb?: IntFieldUpdateOperationsInput | number
     titre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    lien_cover?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     afficher?: BoolFieldUpdateOperationsInput | boolean
     derniere_modification?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28769,6 +28794,7 @@ export namespace Prisma {
     id_alb?: SortOrder
     titre?: SortOrder
     description?: SortOrder
+    lien_cover?: SortOrder
     date?: SortOrder
     afficher?: SortOrder
     derniere_modification?: SortOrder
@@ -28782,6 +28808,7 @@ export namespace Prisma {
     id_alb?: SortOrder
     titre?: SortOrder
     description?: SortOrder
+    lien_cover?: SortOrder
     date?: SortOrder
     afficher?: SortOrder
     derniere_modification?: SortOrder
@@ -28791,6 +28818,7 @@ export namespace Prisma {
     id_alb?: SortOrder
     titre?: SortOrder
     description?: SortOrder
+    lien_cover?: SortOrder
     date?: SortOrder
     afficher?: SortOrder
     derniere_modification?: SortOrder
@@ -30862,6 +30890,7 @@ export namespace Prisma {
   export type photos_albumsCreateWithoutPhotos_albums_linkInput = {
     titre: string
     description: string
+    lien_cover: string
     date: Date | string
     afficher: boolean
     derniere_modification: Date | string
@@ -30872,6 +30901,7 @@ export namespace Prisma {
     id_alb?: number
     titre: string
     description: string
+    lien_cover: string
     date: Date | string
     afficher: boolean
     derniere_modification: Date | string
@@ -30935,6 +30965,7 @@ export namespace Prisma {
   export type photos_albumsUpdateWithoutPhotos_albums_linkInput = {
     titre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    lien_cover?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     afficher?: BoolFieldUpdateOperationsInput | boolean
     derniere_modification?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30945,6 +30976,7 @@ export namespace Prisma {
     id_alb?: IntFieldUpdateOperationsInput | number
     titre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    lien_cover?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     afficher?: BoolFieldUpdateOperationsInput | boolean
     derniere_modification?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30954,6 +30986,7 @@ export namespace Prisma {
   export type photos_albumsCreateWithoutPhotos_albums_tags_linkInput = {
     titre: string
     description: string
+    lien_cover: string
     date: Date | string
     afficher: boolean
     derniere_modification: Date | string
@@ -30964,6 +30997,7 @@ export namespace Prisma {
     id_alb?: number
     titre: string
     description: string
+    lien_cover: string
     date: Date | string
     afficher: boolean
     derniere_modification: Date | string
@@ -31007,6 +31041,7 @@ export namespace Prisma {
   export type photos_albumsUpdateWithoutPhotos_albums_tags_linkInput = {
     titre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    lien_cover?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     afficher?: BoolFieldUpdateOperationsInput | boolean
     derniere_modification?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31017,6 +31052,7 @@ export namespace Prisma {
     id_alb?: IntFieldUpdateOperationsInput | number
     titre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    lien_cover?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     afficher?: BoolFieldUpdateOperationsInput | boolean
     derniere_modification?: DateTimeFieldUpdateOperationsInput | Date | string

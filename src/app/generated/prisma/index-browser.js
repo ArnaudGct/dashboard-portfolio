@@ -181,6 +181,7 @@ exports.Prisma.Photos_albumsScalarFieldEnum = {
   id_alb: 'id_alb',
   titre: 'titre',
   description: 'description',
+  lien_cover: 'lien_cover',
   date: 'date',
   afficher: 'afficher',
   derniere_modification: 'derniere_modification'
@@ -358,7 +359,8 @@ exports.Prisma.photosOrderByRelevanceFieldEnum = {
 
 exports.Prisma.photos_albumsOrderByRelevanceFieldEnum = {
   titre: 'titre',
-  description: 'description'
+  description: 'description',
+  lien_cover: 'lien_cover'
 };
 
 exports.Prisma.NullsOrder = {
