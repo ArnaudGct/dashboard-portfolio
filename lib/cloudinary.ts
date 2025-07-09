@@ -505,7 +505,7 @@ export async function uploadAProposImageToCloudinary(
         {
           width: customTransformation.width || 400,
           height: customTransformation.height,
-          crop: customTransformation.crop || "scale",
+          crop: customTransformation.crop || "fit",
           quality: customTransformation.quality || "auto:good",
         },
       ];
@@ -514,7 +514,7 @@ export async function uploadAProposImageToCloudinary(
       uploadOptions.transformation = [
         {
           width: 400,
-          crop: "scale",
+          crop: "fit",
           quality: "auto:good",
         },
       ];

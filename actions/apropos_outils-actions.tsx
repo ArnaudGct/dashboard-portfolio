@@ -40,7 +40,7 @@ export async function createOutilAction(formData: FormData) {
         {
           width: 64,
           height: 64,
-          crop: "scale",
+          crop: "fit",
           quality: "auto:good",
           format: "png",
         }
@@ -131,7 +131,7 @@ export async function updateOutilAction(formData: FormData) {
         {
           width: 64,
           height: 64,
-          crop: "scale",
+          crop: "fit",
           quality: "auto:good",
           format: "png",
         }
