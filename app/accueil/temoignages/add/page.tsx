@@ -1,4 +1,4 @@
-import { AddTemoignageItem } from "@/components/sections/temoignages/add-temoignage-item";
+import { AddTemoignageItem } from "@/components/sections/accueil/temoignages/add-temoignage-item";
 
 export default function AddTemoignagePage() {
   return (

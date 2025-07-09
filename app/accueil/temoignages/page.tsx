@@ -4,7 +4,7 @@ import { Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Suspense } from "react";
 import prisma from "@/lib/prisma";
-import { TemoignageItem } from "@/components/sections/temoignages/temoignage-item";
+import { TemoignageItem } from "@/components/sections/accueil/temoignages/temoignage-item";
 
 // Composant de chargement pour Suspense
 function TemoignagesLoading() {

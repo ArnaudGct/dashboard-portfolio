@@ -1,4 +1,4 @@
-import { AddFaqItem } from "@/components/sections/faq/add-faq-item";
+import { AddFaqItem } from "@/components/sections/accueil/faq/add-faq-item";
 import { Suspense } from "react";
 import { Card } from "@/components/ui/card";
 

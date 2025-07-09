@@ -1,4 +1,4 @@
-import { EditFaqItem } from "@/components/sections/faq/edit-faq-item";
+import { EditFaqItem } from "@/components/sections/accueil/faq/edit-faq-item";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Card } from "@/components/ui/card";

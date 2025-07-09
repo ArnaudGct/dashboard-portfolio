@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Suspense } from "react";
 import prisma from "@/lib/prisma";
-import { FaqItem } from "@/components/sections/faq/faq-item";
+import { FaqItem } from "@/components/sections/accueil/faq/faq-item";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";

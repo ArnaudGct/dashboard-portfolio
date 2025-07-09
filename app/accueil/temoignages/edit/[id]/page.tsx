@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getTemoignageByIdAction } from "@/actions/temoignages-actions";
-import { EditTemoignageItem } from "@/components/sections/temoignages/edit-temoignage-item";
+import { EditTemoignageItem } from "@/components/sections/accueil/temoignages/edit-temoignage-item";
 
 interface EditTemoignagePageProps {
   params: {
