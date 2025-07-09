@@ -321,6 +321,7 @@ exports.Prisma.Accueil_generalScalarFieldEnum = {
   id_gen: 'id_gen',
   video_desktop: 'video_desktop',
   video_mobile: 'video_mobile',
+  video_cover: 'video_cover',
   photo: 'photo',
   photo_alt: 'photo_alt',
   credit_nom: 'credit_nom',
@@ -485,6 +486,7 @@ exports.Prisma.VerificationOrderByRelevanceFieldEnum = {
 exports.Prisma.accueil_generalOrderByRelevanceFieldEnum = {
   video_desktop: 'video_desktop',
   video_mobile: 'video_mobile',
+  video_cover: 'video_cover',
   photo: 'photo',
   photo_alt: 'photo_alt',
   credit_nom: 'credit_nom',

@@ -19,6 +19,7 @@ type AccueilData = {
   id_gen: number;
   video_desktop: string;
   video_mobile: string;
+  video_cover: string;
   photo: string;
   photo_alt: string;
   credit_nom: string;
@@ -53,6 +54,7 @@ export function AccueilGeneralForm({
     useState<File | null>(null);
   const [selectedVideoMobileFile, setSelectedVideoMobileFile] =
     useState<File | null>(null);
+  const [forceRegenerateFrame, setForceRegenerateFrame] = useState(false);
   const editorRef = useRef<MDXEditorMethods | null>(null);
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -147,6 +149,7 @@ export function AccueilGeneralForm({
       formData.set("credit_nom", (e.target as any).credit_nom.value);
       formData.set("credit_url", (e.target as any).credit_url.value);
       formData.set("description", markdown);
+      formData.set("force_regenerate_frame", forceRegenerateFrame.toString());
 
       const result = await updateAction(formData);
 
@@ -211,6 +214,28 @@ export function AccueilGeneralForm({
                   preload="metadata"
                 />
               </div>
+            </div>
+          )}
+
+          {/* Aperçu de la cover générée */}
+          {accueilData?.video_cover && (
+            <div className="mt-4">
+              <p className="text-sm text-gray-500 mb-2">
+                Cover générée automatiquement :
+              </p>
+              <div className="rounded-md overflow-hidden bg-muted w-full relative aspect-video max-w-md">
+                <Image
+                  src={accueilData.video_cover}
+                  alt="Cover générée à partir de la vidéo"
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
+              <p className="text-xs text-gray-400 mt-1">
+                Cette image est générée automatiquement lors de l'upload d'une
+                nouvelle vidéo desktop
+              </p>
             </div>
           )}
 
@@ -383,6 +408,22 @@ export function AccueilGeneralForm({
           />
         </div>
       </div>
+
+      {/* Régénérer la frame de la vidéo desktop */}
+      {accueilData?.video_desktop && (
+        <div className="mt-4 flex items-center space-x-2">
+          <input
+            type="checkbox"
+            id="regenerate_frame"
+            checked={forceRegenerateFrame}
+            onChange={(e) => setForceRegenerateFrame(e.target.checked)}
+            className="rounded"
+          />
+          <Label htmlFor="regenerate_frame" className="text-sm">
+            Régénérer la frame de la vidéo desktop
+          </Label>
+        </div>
+      )}
 
       {/* Bouton de mise à jour */}
       <Button type="submit" className="w-full" disabled={isUploading}>

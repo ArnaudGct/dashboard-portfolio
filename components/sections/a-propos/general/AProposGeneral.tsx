@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -37,11 +37,16 @@ export function AProposGeneralForm({
 }: AProposGeneralFormProps) {
   const [preview, setPreview] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [markdown, setMarkdown] = useState<string>(
-    aproposData?.description || ""
-  );
+  const [markdown, setMarkdown] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
   const editorRef = useRef<MDXEditorMethods | null>(null);
+
+  // Initialiser le markdown après le montage du composant
+  useEffect(() => {
+    setIsMounted(true);
+    setMarkdown(aproposData?.description || "");
+  }, [aproposData?.description]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -62,7 +67,10 @@ export function AProposGeneralForm({
   };
 
   const handleEditorChange = (newMarkdown: string) => {
-    setMarkdown(newMarkdown);
+    // Ne mettre à jour l'état que si le composant est monté
+    if (isMounted) {
+      setMarkdown(newMarkdown);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

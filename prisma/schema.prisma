@@ -261,6 +261,7 @@ model accueil_general {
   id_gen        Int    @id @default(autoincrement())
   video_desktop String @db.VarChar(255)
   video_mobile  String @db.VarChar(255)
+  video_cover   String @db.VarChar(255)
   photo         String @db.VarChar(255)
   photo_alt     String @db.VarChar(255)
   credit_nom    String @db.VarChar(255)

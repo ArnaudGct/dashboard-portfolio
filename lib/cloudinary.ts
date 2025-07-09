@@ -355,10 +355,69 @@ export async function uploadOriginalToCloudinary(
 // Helper pour supprimer une image de Cloudinary
 export async function deleteFromCloudinary(publicId: string): Promise<boolean> {
   try {
-    const result = await cloudinary.uploader.destroy(publicId);
-    return result.result === "ok";
+    console.log(
+      `Tentative de suppression Cloudinary pour publicId: ${publicId}`
+    );
+
+    // Tenter de supprimer comme vidéo d'abord
+    try {
+      const videoResult = await cloudinary.uploader.destroy(publicId, {
+        resource_type: "video",
+      });
+      console.log(`Résultat suppression vidéo:`, videoResult);
+
+      if (videoResult.result === "ok") {
+        console.log("✓ Vidéo supprimée avec succès");
+        return true;
+      }
+    } catch (videoError) {
+      console.log("Pas une vidéo, tentative comme image...");
+    }
+
+    // Si ce n'est pas une vidéo, tenter comme image
+    const imageResult = await cloudinary.uploader.destroy(publicId, {
+      resource_type: "image",
+    });
+    console.log(`Résultat suppression image:`, imageResult);
+
+    if (imageResult.result === "ok") {
+      console.log("✓ Image supprimée avec succès");
+      return true;
+    }
+
+    console.warn(`Échec de la suppression pour publicId: ${publicId}`);
+    return false;
   } catch (error) {
     console.error("Erreur lors de la suppression depuis Cloudinary:", error);
+    return false;
+  }
+}
+
+// Helper spécifique pour supprimer une vidéo
+export async function deleteVideoFromCloudinary(
+  publicId: string
+): Promise<boolean> {
+  try {
+    console.log(`Suppression vidéo Cloudinary pour publicId: ${publicId}`);
+
+    const result = await cloudinary.uploader.destroy(publicId, {
+      resource_type: "video",
+    });
+
+    console.log(`Résultat suppression vidéo:`, result);
+
+    if (result.result === "ok") {
+      console.log("✓ Vidéo supprimée avec succès");
+      return true;
+    }
+
+    console.warn(`Échec de la suppression vidéo pour publicId: ${publicId}`);
+    return false;
+  } catch (error) {
+    console.error(
+      "Erreur lors de la suppression vidéo depuis Cloudinary:",
+      error
+    );
     return false;
   }
 }
@@ -366,8 +425,43 @@ export async function deleteFromCloudinary(publicId: string): Promise<boolean> {
 // Helper pour extraire le public_id depuis une URL Cloudinary
 export function extractPublicIdFromUrl(url: string): string | null {
   try {
-    const match = url.match(/\/upload\/(?:v\d+\/)?([^\.]+)/);
-    return match ? match[1] : null;
+    console.log(`Extraction du publicId depuis l'URL: ${url}`);
+
+    // Nettoyer l'URL des paramètres de query
+    const cleanUrl = url.split("?")[0];
+
+    // Pattern pour extraire tout ce qui suit /upload/v{version}/ ou /upload/
+    const uploadMatch = cleanUrl.match(/\/upload\/(?:v\d+\/)?(.+)$/);
+
+    if (!uploadMatch || !uploadMatch[1]) {
+      console.warn(
+        `Impossible de trouver la partie upload dans l'URL: ${cleanUrl}`
+      );
+      return null;
+    }
+
+    let pathAfterUpload = uploadMatch[1];
+
+    // Si il y a des transformations (détectées par des paramètres comme c_scale, w_1280, etc.)
+    // On cherche le dernier segment qui ne contient pas de transformations
+    const segments = pathAfterUpload.split("/");
+    const cleanSegments = segments.filter((segment) => {
+      // Filtrer les segments qui ressemblent à des transformations
+      return (
+        !segment.match(/^[a-z]_[^\/]+$/) && // c_scale, w_1280, etc.
+        !segment.match(/^[0-9]+x[0-9]+$/) && // dimensions 1280x720
+        segment.length > 0
+      );
+    });
+
+    // Reconstituer le chemin sans les transformations
+    let publicIdWithPath = cleanSegments.join("/");
+
+    // Enlever l'extension du fichier final
+    publicIdWithPath = publicIdWithPath.replace(/\.[^.]+$/, "");
+
+    console.log(`PublicId extrait avec succès: ${publicIdWithPath}`);
+    return publicIdWithPath;
   } catch (error) {
     console.error("Erreur lors de l'extraction du public_id:", error);
     return null;

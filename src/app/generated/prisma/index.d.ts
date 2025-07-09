@@ -25356,6 +25356,7 @@ export namespace Prisma {
     id_gen: number | null
     video_desktop: string | null
     video_mobile: string | null
+    video_cover: string | null
     photo: string | null
     photo_alt: string | null
     credit_nom: string | null
@@ -25367,6 +25368,7 @@ export namespace Prisma {
     id_gen: number | null
     video_desktop: string | null
     video_mobile: string | null
+    video_cover: string | null
     photo: string | null
     photo_alt: string | null
     credit_nom: string | null
@@ -25378,6 +25380,7 @@ export namespace Prisma {
     id_gen: number
     video_desktop: number
     video_mobile: number
+    video_cover: number
     photo: number
     photo_alt: number
     credit_nom: number
@@ -25399,6 +25402,7 @@ export namespace Prisma {
     id_gen?: true
     video_desktop?: true
     video_mobile?: true
+    video_cover?: true
     photo?: true
     photo_alt?: true
     credit_nom?: true
@@ -25410,6 +25414,7 @@ export namespace Prisma {
     id_gen?: true
     video_desktop?: true
     video_mobile?: true
+    video_cover?: true
     photo?: true
     photo_alt?: true
     credit_nom?: true
@@ -25421,6 +25426,7 @@ export namespace Prisma {
     id_gen?: true
     video_desktop?: true
     video_mobile?: true
+    video_cover?: true
     photo?: true
     photo_alt?: true
     credit_nom?: true
@@ -25519,6 +25525,7 @@ export namespace Prisma {
     id_gen: number
     video_desktop: string
     video_mobile: string
+    video_cover: string
     photo: string
     photo_alt: string
     credit_nom: string
@@ -25549,6 +25556,7 @@ export namespace Prisma {
     id_gen?: boolean
     video_desktop?: boolean
     video_mobile?: boolean
+    video_cover?: boolean
     photo?: boolean
     photo_alt?: boolean
     credit_nom?: boolean
@@ -25562,6 +25570,7 @@ export namespace Prisma {
     id_gen?: boolean
     video_desktop?: boolean
     video_mobile?: boolean
+    video_cover?: boolean
     photo?: boolean
     photo_alt?: boolean
     credit_nom?: boolean
@@ -25569,7 +25578,7 @@ export namespace Prisma {
     description?: boolean
   }
 
-  export type accueil_generalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_gen" | "video_desktop" | "video_mobile" | "photo" | "photo_alt" | "credit_nom" | "credit_url" | "description", ExtArgs["result"]["accueil_general"]>
+  export type accueil_generalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_gen" | "video_desktop" | "video_mobile" | "video_cover" | "photo" | "photo_alt" | "credit_nom" | "credit_url" | "description", ExtArgs["result"]["accueil_general"]>
 
   export type $accueil_generalPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "accueil_general"
@@ -25578,6 +25587,7 @@ export namespace Prisma {
       id_gen: number
       video_desktop: string
       video_mobile: string
+      video_cover: string
       photo: string
       photo_alt: string
       credit_nom: string
@@ -25955,6 +25965,7 @@ export namespace Prisma {
     readonly id_gen: FieldRef<"accueil_general", 'Int'>
     readonly video_desktop: FieldRef<"accueil_general", 'String'>
     readonly video_mobile: FieldRef<"accueil_general", 'String'>
+    readonly video_cover: FieldRef<"accueil_general", 'String'>
     readonly photo: FieldRef<"accueil_general", 'String'>
     readonly photo_alt: FieldRef<"accueil_general", 'String'>
     readonly credit_nom: FieldRef<"accueil_general", 'String'>
@@ -28507,6 +28518,7 @@ export namespace Prisma {
     id_gen: 'id_gen',
     video_desktop: 'video_desktop',
     video_mobile: 'video_mobile',
+    video_cover: 'video_cover',
     photo: 'photo',
     photo_alt: 'photo_alt',
     credit_nom: 'credit_nom',
@@ -28737,6 +28749,7 @@ export namespace Prisma {
   export const accueil_generalOrderByRelevanceFieldEnum: {
     video_desktop: 'video_desktop',
     video_mobile: 'video_mobile',
+    video_cover: 'video_cover',
     photo: 'photo',
     photo_alt: 'photo_alt',
     credit_nom: 'credit_nom',
@@ -30219,6 +30232,7 @@ export namespace Prisma {
     id_gen?: IntFilter<"accueil_general"> | number
     video_desktop?: StringFilter<"accueil_general"> | string
     video_mobile?: StringFilter<"accueil_general"> | string
+    video_cover?: StringFilter<"accueil_general"> | string
     photo?: StringFilter<"accueil_general"> | string
     photo_alt?: StringFilter<"accueil_general"> | string
     credit_nom?: StringFilter<"accueil_general"> | string
@@ -30230,6 +30244,7 @@ export namespace Prisma {
     id_gen?: SortOrder
     video_desktop?: SortOrder
     video_mobile?: SortOrder
+    video_cover?: SortOrder
     photo?: SortOrder
     photo_alt?: SortOrder
     credit_nom?: SortOrder
@@ -30245,6 +30260,7 @@ export namespace Prisma {
     NOT?: accueil_generalWhereInput | accueil_generalWhereInput[]
     video_desktop?: StringFilter<"accueil_general"> | string
     video_mobile?: StringFilter<"accueil_general"> | string
+    video_cover?: StringFilter<"accueil_general"> | string
     photo?: StringFilter<"accueil_general"> | string
     photo_alt?: StringFilter<"accueil_general"> | string
     credit_nom?: StringFilter<"accueil_general"> | string
@@ -30256,6 +30272,7 @@ export namespace Prisma {
     id_gen?: SortOrder
     video_desktop?: SortOrder
     video_mobile?: SortOrder
+    video_cover?: SortOrder
     photo?: SortOrder
     photo_alt?: SortOrder
     credit_nom?: SortOrder
@@ -30275,6 +30292,7 @@ export namespace Prisma {
     id_gen?: IntWithAggregatesFilter<"accueil_general"> | number
     video_desktop?: StringWithAggregatesFilter<"accueil_general"> | string
     video_mobile?: StringWithAggregatesFilter<"accueil_general"> | string
+    video_cover?: StringWithAggregatesFilter<"accueil_general"> | string
     photo?: StringWithAggregatesFilter<"accueil_general"> | string
     photo_alt?: StringWithAggregatesFilter<"accueil_general"> | string
     credit_nom?: StringWithAggregatesFilter<"accueil_general"> | string
@@ -31826,6 +31844,7 @@ export namespace Prisma {
   export type accueil_generalCreateInput = {
     video_desktop: string
     video_mobile: string
+    video_cover: string
     photo: string
     photo_alt: string
     credit_nom: string
@@ -31837,6 +31856,7 @@ export namespace Prisma {
     id_gen?: number
     video_desktop: string
     video_mobile: string
+    video_cover: string
     photo: string
     photo_alt: string
     credit_nom: string
@@ -31847,6 +31867,7 @@ export namespace Prisma {
   export type accueil_generalUpdateInput = {
     video_desktop?: StringFieldUpdateOperationsInput | string
     video_mobile?: StringFieldUpdateOperationsInput | string
+    video_cover?: StringFieldUpdateOperationsInput | string
     photo?: StringFieldUpdateOperationsInput | string
     photo_alt?: StringFieldUpdateOperationsInput | string
     credit_nom?: StringFieldUpdateOperationsInput | string
@@ -31858,6 +31879,7 @@ export namespace Prisma {
     id_gen?: IntFieldUpdateOperationsInput | number
     video_desktop?: StringFieldUpdateOperationsInput | string
     video_mobile?: StringFieldUpdateOperationsInput | string
+    video_cover?: StringFieldUpdateOperationsInput | string
     photo?: StringFieldUpdateOperationsInput | string
     photo_alt?: StringFieldUpdateOperationsInput | string
     credit_nom?: StringFieldUpdateOperationsInput | string
@@ -31869,6 +31891,7 @@ export namespace Prisma {
     id_gen?: number
     video_desktop: string
     video_mobile: string
+    video_cover: string
     photo: string
     photo_alt: string
     credit_nom: string
@@ -31879,6 +31902,7 @@ export namespace Prisma {
   export type accueil_generalUpdateManyMutationInput = {
     video_desktop?: StringFieldUpdateOperationsInput | string
     video_mobile?: StringFieldUpdateOperationsInput | string
+    video_cover?: StringFieldUpdateOperationsInput | string
     photo?: StringFieldUpdateOperationsInput | string
     photo_alt?: StringFieldUpdateOperationsInput | string
     credit_nom?: StringFieldUpdateOperationsInput | string
@@ -31890,6 +31914,7 @@ export namespace Prisma {
     id_gen?: IntFieldUpdateOperationsInput | number
     video_desktop?: StringFieldUpdateOperationsInput | string
     video_mobile?: StringFieldUpdateOperationsInput | string
+    video_cover?: StringFieldUpdateOperationsInput | string
     photo?: StringFieldUpdateOperationsInput | string
     photo_alt?: StringFieldUpdateOperationsInput | string
     credit_nom?: StringFieldUpdateOperationsInput | string
@@ -33264,6 +33289,7 @@ export namespace Prisma {
     id_gen?: SortOrder
     video_desktop?: SortOrder
     video_mobile?: SortOrder
+    video_cover?: SortOrder
     photo?: SortOrder
     photo_alt?: SortOrder
     credit_nom?: SortOrder
@@ -33279,6 +33305,7 @@ export namespace Prisma {
     id_gen?: SortOrder
     video_desktop?: SortOrder
     video_mobile?: SortOrder
+    video_cover?: SortOrder
     photo?: SortOrder
     photo_alt?: SortOrder
     credit_nom?: SortOrder
@@ -33290,6 +33317,7 @@ export namespace Prisma {
     id_gen?: SortOrder
     video_desktop?: SortOrder
     video_mobile?: SortOrder
+    video_cover?: SortOrder
     photo?: SortOrder
     photo_alt?: SortOrder
     credit_nom?: SortOrder
