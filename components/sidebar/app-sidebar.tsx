@@ -33,6 +33,7 @@ import {
   SidebarFooter,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import Image from "next/image";
 
 const data = {
   navMain: [
@@ -113,7 +114,14 @@ export function AppSidebar({
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        <div className="flex items-center justify-between px-4 py-2">
+        <div className="flex items-center justify-start px-4 py-2 gap-4">
+          <Image
+            src="/arnaud_graciet_pp.webp"
+            alt="Logo"
+            width={32}
+            height={32}
+            className="rounded-lg"
+          />
           <h1 className="text-lg font-bold">ArnaudGct</h1>
         </div>
       </SidebarHeader>

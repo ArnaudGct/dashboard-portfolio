@@ -108,7 +108,7 @@ export function AnalyticsOverview() {
                     <div className="w-full bg-muted rounded-full h-2">
                       <Skeleton
                         className="h-2 rounded-full"
-                        style={{ width: `${Math.random() * 60 + 20}%` }}
+                        style={{ width: `${[75, 60, 45, 80, 35][i % 5]}%` }}
                       />
                     </div>
                   </div>
@@ -156,7 +156,7 @@ export function AnalyticsOverview() {
                     <div className="w-full bg-muted rounded-full h-2">
                       <Skeleton
                         className="h-2 rounded-full"
-                        style={{ width: `${Math.random() * 50 + 30}%` }}
+                        style={{ width: `${[65, 45, 55][i % 3]}%` }}
                       />
                     </div>
                   </div>
