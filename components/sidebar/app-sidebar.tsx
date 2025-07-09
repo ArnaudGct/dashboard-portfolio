@@ -55,9 +55,18 @@ const data = {
     },
     {
       title: "À propos",
-      url: "/a-propos",
+      url: "#",
       icon: UserIcon, // Icône pour cette page
-      items: [], // Pas de sous-items, lien direct
+      items: [
+        {
+          title: "Général",
+          url: "/a-propos/general",
+        },
+        {
+          title: "Outils",
+          url: "/a-propos/outils",
+        },
+      ],
     },
     {
       title: "Journal personnel",
