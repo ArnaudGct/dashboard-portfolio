@@ -262,6 +262,7 @@ model accueil_general {
   video_desktop String @db.VarChar(255)
   video_mobile  String @db.VarChar(255)
   photo         String @db.VarChar(255)
+  photo_alt     String @db.VarChar(255)
   credit_nom    String @db.VarChar(255)
   credit_url    String @db.VarChar(255)
   description   String @db.VarChar(1024)
@@ -270,18 +271,25 @@ model accueil_general {
 model apropos_general {
   id_gen      Int    @id @default(autoincrement())
   photo       String @db.VarChar(255)
+  photo_alt   String @db.VarChar(255)
   credit_nom  String @db.VarChar(255)
   credit_url  String @db.VarChar(255)
   description String @db.VarChar(1024)
 }
 
 model apropos_outils {
-  id_outil        Int     @id @default(autoincrement())
-  titre           String  @db.VarChar(255)
-  description     String  @db.VarChar(255)
-  icone           String  @db.VarChar(255)
-  couleur_fond    String  @db.VarChar(7)
-  couleur_contour String  @db.VarChar(7)
-  couleur_texte   String  @db.VarChar(7)
-  afficher        Boolean
+  id_outil             Int     @id @default(autoincrement())
+  titre                String  @db.VarChar(255)
+  description          String  @db.VarChar(255)
+  icone                String  @db.VarChar(255)
+  icone_alt            String  @db.VarChar(255)
+  icone_rounded        Boolean
+  lien                 String  @db.VarChar(255)
+  couleur_fond         String  @db.VarChar(7)
+  couleur_contour      String  @db.VarChar(7)
+  couleur_texte        String  @db.VarChar(7)
+  couleur_fond_dark    String  @db.VarChar(7)
+  couleur_contour_dark String  @db.VarChar(7)
+  couleur_texte_dark   String  @db.VarChar(7)
+  afficher             Boolean
 }

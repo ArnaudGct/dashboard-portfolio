@@ -11,12 +11,21 @@ import sharp from "sharp";
 
 export async function updateAProposGeneral(formData: FormData) {
   const photoFile = formData.get("photo") as File;
+  const photoAlt = formData.get("photo_alt") as string;
   const creditNom = formData.get("credit_nom") as string;
   const creditUrl = formData.get("credit_url") as string;
   const description = formData.get("description") as string;
 
   try {
     console.log("=== DÉBUT MISE À JOUR À PROPOS GÉNÉRAL ===");
+
+    // Validation du texte alternatif
+    if (!photoAlt || !photoAlt.trim()) {
+      return {
+        success: false,
+        message: "Le texte alternatif de la photo est obligatoire",
+      };
+    }
 
     // Vérifier s'il y a déjà un enregistrement
     const existingRecord = await prisma.apropos_general.findFirst();
@@ -81,6 +90,7 @@ export async function updateAProposGeneral(formData: FormData) {
         where: { id_gen: existingRecord.id_gen },
         data: {
           photo: photoUrl,
+          photo_alt: photoAlt.trim(),
           credit_nom: creditNom,
           credit_url: creditUrl,
           description: description,
@@ -92,6 +102,7 @@ export async function updateAProposGeneral(formData: FormData) {
       await prisma.apropos_general.create({
         data: {
           photo: photoUrl,
+          photo_alt: photoAlt.trim(),
           credit_nom: creditNom,
           credit_url: creditUrl,
           description: description,

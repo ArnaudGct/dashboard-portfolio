@@ -12,6 +12,7 @@ import sharp from "sharp";
 
 export async function updateAccueilGeneral(formData: FormData) {
   const photoFile = formData.get("photo") as File;
+  const photoAlt = formData.get("photo_alt") as string;
   const videoDesktopFile = formData.get("video_desktop") as File;
   const videoMobileFile = formData.get("video_mobile") as File;
   const creditNom = formData.get("credit_nom") as string;
@@ -23,6 +24,16 @@ export async function updateAccueilGeneral(formData: FormData) {
 
     // Vérifier s'il y a déjà un enregistrement
     const existingRecord = await prisma.accueil_general.findFirst();
+
+    // Validation du texte alternatif si une photo est présente ou uploadée
+    if ((photoFile && photoFile.size > 0) || existingRecord?.photo) {
+      if (!photoAlt || !photoAlt.trim()) {
+        return {
+          success: false,
+          message: "Le texte alternatif de la photo est obligatoire",
+        };
+      }
+    }
 
     let photoUrl = existingRecord?.photo || "";
     let videoDesktopUrl = existingRecord?.video_desktop || "";
@@ -184,6 +195,7 @@ export async function updateAccueilGeneral(formData: FormData) {
         where: { id_gen: existingRecord.id_gen },
         data: {
           photo: photoUrl,
+          photo_alt: photoAlt?.trim() || existingRecord.photo_alt,
           video_desktop: videoDesktopUrl,
           video_mobile: videoMobileUrl,
           credit_nom: creditNom,
@@ -197,6 +209,7 @@ export async function updateAccueilGeneral(formData: FormData) {
       await prisma.accueil_general.create({
         data: {
           photo: photoUrl,
+          photo_alt: photoAlt?.trim() || "",
           video_desktop: videoDesktopUrl,
           video_mobile: videoMobileUrl,
           credit_nom: creditNom,

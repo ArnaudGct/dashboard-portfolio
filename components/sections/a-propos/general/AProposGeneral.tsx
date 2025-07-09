@@ -18,6 +18,7 @@ const EditorComp = dynamic(() => import("@/components/editor-textarea"), {
 type AProposData = {
   id_gen: number;
   photo: string;
+  photo_alt: string;
   credit_nom: string;
   credit_url: string;
   description: string;
@@ -78,6 +79,7 @@ export function AProposGeneralForm({
       }
 
       // Ajouter les autres données
+      formData.set("photo_alt", (e.target as any).photo_alt.value);
       formData.set("credit_nom", (e.target as any).credit_nom.value);
       formData.set("credit_url", (e.target as any).credit_url.value);
       formData.set("description", markdown);
@@ -106,25 +108,41 @@ export function AProposGeneralForm({
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid grid-cols-2 gap-6">
         {/* Upload d'image */}
-        <div className="space-y-2">
-          <Label htmlFor="photo">Photo</Label>
-          <div className="flex items-center space-x-2">
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="photo">Photo</Label>
+            <div className="flex items-center space-x-2">
+              <Input
+                id="photo"
+                name="photo"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="flex-1"
+              />
+            </div>
+          </div>
+
+          {/* Texte alternatif de la photo */}
+          <div className="space-y-2">
+            <Label htmlFor="photo_alt">Texte alternatif de la photo</Label>
             <Input
-              id="photo"
-              name="photo"
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="flex-1"
+              id="photo_alt"
+              name="photo_alt"
+              type="text"
+              placeholder="Description de la photo"
+              defaultValue={aproposData?.photo_alt || ""}
+              required
             />
           </div>
+
           {aproposData?.photo && !preview && (
-            <div className="mt-2">
+            <div className="mt-4">
               <p className="text-sm text-gray-500 mb-2">Photo actuelle :</p>
               <div className="rounded-md overflow-hidden bg-muted w-full relative aspect-video max-w-md">
                 <Image
                   src={aproposData.photo}
-                  alt="Photo actuelle"
+                  alt={aproposData.photo_alt || "Photo actuelle"}
                   fill
                   className="object-contain"
                   sizes="(max-width: 768px) 100vw, 50vw"
@@ -135,7 +153,7 @@ export function AProposGeneralForm({
 
           {/* Aperçu de la nouvelle image */}
           {preview && (
-            <div className="mt-2 w-full">
+            <div className="mt-4 w-full">
               <p className="text-sm text-gray-600 mb-2">
                 Aperçu de la nouvelle image :
               </p>
@@ -152,6 +170,7 @@ export function AProposGeneralForm({
             </div>
           )}
         </div>
+
         <div className="flex flex-col gap-4">
           {/* Crédit nom */}
           <div className="space-y-2">
@@ -166,7 +185,7 @@ export function AProposGeneralForm({
           </div>
 
           {/* Crédit URL */}
-          <div className="space-y-2 md:col-span-2">
+          <div className="space-y-2">
             <Label htmlFor="credit_url">URL du crédit</Label>
             <Input
               id="credit_url"

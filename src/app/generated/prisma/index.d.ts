@@ -25357,6 +25357,7 @@ export namespace Prisma {
     video_desktop: string | null
     video_mobile: string | null
     photo: string | null
+    photo_alt: string | null
     credit_nom: string | null
     credit_url: string | null
     description: string | null
@@ -25367,6 +25368,7 @@ export namespace Prisma {
     video_desktop: string | null
     video_mobile: string | null
     photo: string | null
+    photo_alt: string | null
     credit_nom: string | null
     credit_url: string | null
     description: string | null
@@ -25377,6 +25379,7 @@ export namespace Prisma {
     video_desktop: number
     video_mobile: number
     photo: number
+    photo_alt: number
     credit_nom: number
     credit_url: number
     description: number
@@ -25397,6 +25400,7 @@ export namespace Prisma {
     video_desktop?: true
     video_mobile?: true
     photo?: true
+    photo_alt?: true
     credit_nom?: true
     credit_url?: true
     description?: true
@@ -25407,6 +25411,7 @@ export namespace Prisma {
     video_desktop?: true
     video_mobile?: true
     photo?: true
+    photo_alt?: true
     credit_nom?: true
     credit_url?: true
     description?: true
@@ -25417,6 +25422,7 @@ export namespace Prisma {
     video_desktop?: true
     video_mobile?: true
     photo?: true
+    photo_alt?: true
     credit_nom?: true
     credit_url?: true
     description?: true
@@ -25514,6 +25520,7 @@ export namespace Prisma {
     video_desktop: string
     video_mobile: string
     photo: string
+    photo_alt: string
     credit_nom: string
     credit_url: string
     description: string
@@ -25543,6 +25550,7 @@ export namespace Prisma {
     video_desktop?: boolean
     video_mobile?: boolean
     photo?: boolean
+    photo_alt?: boolean
     credit_nom?: boolean
     credit_url?: boolean
     description?: boolean
@@ -25555,12 +25563,13 @@ export namespace Prisma {
     video_desktop?: boolean
     video_mobile?: boolean
     photo?: boolean
+    photo_alt?: boolean
     credit_nom?: boolean
     credit_url?: boolean
     description?: boolean
   }
 
-  export type accueil_generalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_gen" | "video_desktop" | "video_mobile" | "photo" | "credit_nom" | "credit_url" | "description", ExtArgs["result"]["accueil_general"]>
+  export type accueil_generalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_gen" | "video_desktop" | "video_mobile" | "photo" | "photo_alt" | "credit_nom" | "credit_url" | "description", ExtArgs["result"]["accueil_general"]>
 
   export type $accueil_generalPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "accueil_general"
@@ -25570,6 +25579,7 @@ export namespace Prisma {
       video_desktop: string
       video_mobile: string
       photo: string
+      photo_alt: string
       credit_nom: string
       credit_url: string
       description: string
@@ -25946,6 +25956,7 @@ export namespace Prisma {
     readonly video_desktop: FieldRef<"accueil_general", 'String'>
     readonly video_mobile: FieldRef<"accueil_general", 'String'>
     readonly photo: FieldRef<"accueil_general", 'String'>
+    readonly photo_alt: FieldRef<"accueil_general", 'String'>
     readonly credit_nom: FieldRef<"accueil_general", 'String'>
     readonly credit_url: FieldRef<"accueil_general", 'String'>
     readonly description: FieldRef<"accueil_general", 'String'>
@@ -26293,6 +26304,7 @@ export namespace Prisma {
   export type Apropos_generalMinAggregateOutputType = {
     id_gen: number | null
     photo: string | null
+    photo_alt: string | null
     credit_nom: string | null
     credit_url: string | null
     description: string | null
@@ -26301,6 +26313,7 @@ export namespace Prisma {
   export type Apropos_generalMaxAggregateOutputType = {
     id_gen: number | null
     photo: string | null
+    photo_alt: string | null
     credit_nom: string | null
     credit_url: string | null
     description: string | null
@@ -26309,6 +26322,7 @@ export namespace Prisma {
   export type Apropos_generalCountAggregateOutputType = {
     id_gen: number
     photo: number
+    photo_alt: number
     credit_nom: number
     credit_url: number
     description: number
@@ -26327,6 +26341,7 @@ export namespace Prisma {
   export type Apropos_generalMinAggregateInputType = {
     id_gen?: true
     photo?: true
+    photo_alt?: true
     credit_nom?: true
     credit_url?: true
     description?: true
@@ -26335,6 +26350,7 @@ export namespace Prisma {
   export type Apropos_generalMaxAggregateInputType = {
     id_gen?: true
     photo?: true
+    photo_alt?: true
     credit_nom?: true
     credit_url?: true
     description?: true
@@ -26343,6 +26359,7 @@ export namespace Prisma {
   export type Apropos_generalCountAggregateInputType = {
     id_gen?: true
     photo?: true
+    photo_alt?: true
     credit_nom?: true
     credit_url?: true
     description?: true
@@ -26438,6 +26455,7 @@ export namespace Prisma {
   export type Apropos_generalGroupByOutputType = {
     id_gen: number
     photo: string
+    photo_alt: string
     credit_nom: string
     credit_url: string
     description: string
@@ -26465,6 +26483,7 @@ export namespace Prisma {
   export type apropos_generalSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id_gen?: boolean
     photo?: boolean
+    photo_alt?: boolean
     credit_nom?: boolean
     credit_url?: boolean
     description?: boolean
@@ -26475,12 +26494,13 @@ export namespace Prisma {
   export type apropos_generalSelectScalar = {
     id_gen?: boolean
     photo?: boolean
+    photo_alt?: boolean
     credit_nom?: boolean
     credit_url?: boolean
     description?: boolean
   }
 
-  export type apropos_generalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_gen" | "photo" | "credit_nom" | "credit_url" | "description", ExtArgs["result"]["apropos_general"]>
+  export type apropos_generalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_gen" | "photo" | "photo_alt" | "credit_nom" | "credit_url" | "description", ExtArgs["result"]["apropos_general"]>
 
   export type $apropos_generalPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "apropos_general"
@@ -26488,6 +26508,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id_gen: number
       photo: string
+      photo_alt: string
       credit_nom: string
       credit_url: string
       description: string
@@ -26862,6 +26883,7 @@ export namespace Prisma {
   interface apropos_generalFieldRefs {
     readonly id_gen: FieldRef<"apropos_general", 'Int'>
     readonly photo: FieldRef<"apropos_general", 'String'>
+    readonly photo_alt: FieldRef<"apropos_general", 'String'>
     readonly credit_nom: FieldRef<"apropos_general", 'String'>
     readonly credit_url: FieldRef<"apropos_general", 'String'>
     readonly description: FieldRef<"apropos_general", 'String'>
@@ -27211,9 +27233,15 @@ export namespace Prisma {
     titre: string | null
     description: string | null
     icone: string | null
+    icone_alt: string | null
+    icone_rounded: boolean | null
+    lien: string | null
     couleur_fond: string | null
     couleur_contour: string | null
     couleur_texte: string | null
+    couleur_fond_dark: string | null
+    couleur_contour_dark: string | null
+    couleur_texte_dark: string | null
     afficher: boolean | null
   }
 
@@ -27222,9 +27250,15 @@ export namespace Prisma {
     titre: string | null
     description: string | null
     icone: string | null
+    icone_alt: string | null
+    icone_rounded: boolean | null
+    lien: string | null
     couleur_fond: string | null
     couleur_contour: string | null
     couleur_texte: string | null
+    couleur_fond_dark: string | null
+    couleur_contour_dark: string | null
+    couleur_texte_dark: string | null
     afficher: boolean | null
   }
 
@@ -27233,9 +27267,15 @@ export namespace Prisma {
     titre: number
     description: number
     icone: number
+    icone_alt: number
+    icone_rounded: number
+    lien: number
     couleur_fond: number
     couleur_contour: number
     couleur_texte: number
+    couleur_fond_dark: number
+    couleur_contour_dark: number
+    couleur_texte_dark: number
     afficher: number
     _all: number
   }
@@ -27254,9 +27294,15 @@ export namespace Prisma {
     titre?: true
     description?: true
     icone?: true
+    icone_alt?: true
+    icone_rounded?: true
+    lien?: true
     couleur_fond?: true
     couleur_contour?: true
     couleur_texte?: true
+    couleur_fond_dark?: true
+    couleur_contour_dark?: true
+    couleur_texte_dark?: true
     afficher?: true
   }
 
@@ -27265,9 +27311,15 @@ export namespace Prisma {
     titre?: true
     description?: true
     icone?: true
+    icone_alt?: true
+    icone_rounded?: true
+    lien?: true
     couleur_fond?: true
     couleur_contour?: true
     couleur_texte?: true
+    couleur_fond_dark?: true
+    couleur_contour_dark?: true
+    couleur_texte_dark?: true
     afficher?: true
   }
 
@@ -27276,9 +27328,15 @@ export namespace Prisma {
     titre?: true
     description?: true
     icone?: true
+    icone_alt?: true
+    icone_rounded?: true
+    lien?: true
     couleur_fond?: true
     couleur_contour?: true
     couleur_texte?: true
+    couleur_fond_dark?: true
+    couleur_contour_dark?: true
+    couleur_texte_dark?: true
     afficher?: true
     _all?: true
   }
@@ -27374,9 +27432,15 @@ export namespace Prisma {
     titre: string
     description: string
     icone: string
+    icone_alt: string
+    icone_rounded: boolean
+    lien: string
     couleur_fond: string
     couleur_contour: string
     couleur_texte: string
+    couleur_fond_dark: string
+    couleur_contour_dark: string
+    couleur_texte_dark: string
     afficher: boolean
     _count: Apropos_outilsCountAggregateOutputType | null
     _avg: Apropos_outilsAvgAggregateOutputType | null
@@ -27404,9 +27468,15 @@ export namespace Prisma {
     titre?: boolean
     description?: boolean
     icone?: boolean
+    icone_alt?: boolean
+    icone_rounded?: boolean
+    lien?: boolean
     couleur_fond?: boolean
     couleur_contour?: boolean
     couleur_texte?: boolean
+    couleur_fond_dark?: boolean
+    couleur_contour_dark?: boolean
+    couleur_texte_dark?: boolean
     afficher?: boolean
   }, ExtArgs["result"]["apropos_outils"]>
 
@@ -27417,13 +27487,19 @@ export namespace Prisma {
     titre?: boolean
     description?: boolean
     icone?: boolean
+    icone_alt?: boolean
+    icone_rounded?: boolean
+    lien?: boolean
     couleur_fond?: boolean
     couleur_contour?: boolean
     couleur_texte?: boolean
+    couleur_fond_dark?: boolean
+    couleur_contour_dark?: boolean
+    couleur_texte_dark?: boolean
     afficher?: boolean
   }
 
-  export type apropos_outilsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_outil" | "titre" | "description" | "icone" | "couleur_fond" | "couleur_contour" | "couleur_texte" | "afficher", ExtArgs["result"]["apropos_outils"]>
+  export type apropos_outilsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_outil" | "titre" | "description" | "icone" | "icone_alt" | "icone_rounded" | "lien" | "couleur_fond" | "couleur_contour" | "couleur_texte" | "couleur_fond_dark" | "couleur_contour_dark" | "couleur_texte_dark" | "afficher", ExtArgs["result"]["apropos_outils"]>
 
   export type $apropos_outilsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "apropos_outils"
@@ -27433,9 +27509,15 @@ export namespace Prisma {
       titre: string
       description: string
       icone: string
+      icone_alt: string
+      icone_rounded: boolean
+      lien: string
       couleur_fond: string
       couleur_contour: string
       couleur_texte: string
+      couleur_fond_dark: string
+      couleur_contour_dark: string
+      couleur_texte_dark: string
       afficher: boolean
     }, ExtArgs["result"]["apropos_outils"]>
     composites: {}
@@ -27810,9 +27892,15 @@ export namespace Prisma {
     readonly titre: FieldRef<"apropos_outils", 'String'>
     readonly description: FieldRef<"apropos_outils", 'String'>
     readonly icone: FieldRef<"apropos_outils", 'String'>
+    readonly icone_alt: FieldRef<"apropos_outils", 'String'>
+    readonly icone_rounded: FieldRef<"apropos_outils", 'Boolean'>
+    readonly lien: FieldRef<"apropos_outils", 'String'>
     readonly couleur_fond: FieldRef<"apropos_outils", 'String'>
     readonly couleur_contour: FieldRef<"apropos_outils", 'String'>
     readonly couleur_texte: FieldRef<"apropos_outils", 'String'>
+    readonly couleur_fond_dark: FieldRef<"apropos_outils", 'String'>
+    readonly couleur_contour_dark: FieldRef<"apropos_outils", 'String'>
+    readonly couleur_texte_dark: FieldRef<"apropos_outils", 'String'>
     readonly afficher: FieldRef<"apropos_outils", 'Boolean'>
   }
     
@@ -28420,6 +28508,7 @@ export namespace Prisma {
     video_desktop: 'video_desktop',
     video_mobile: 'video_mobile',
     photo: 'photo',
+    photo_alt: 'photo_alt',
     credit_nom: 'credit_nom',
     credit_url: 'credit_url',
     description: 'description'
@@ -28431,6 +28520,7 @@ export namespace Prisma {
   export const Apropos_generalScalarFieldEnum: {
     id_gen: 'id_gen',
     photo: 'photo',
+    photo_alt: 'photo_alt',
     credit_nom: 'credit_nom',
     credit_url: 'credit_url',
     description: 'description'
@@ -28444,9 +28534,15 @@ export namespace Prisma {
     titre: 'titre',
     description: 'description',
     icone: 'icone',
+    icone_alt: 'icone_alt',
+    icone_rounded: 'icone_rounded',
+    lien: 'lien',
     couleur_fond: 'couleur_fond',
     couleur_contour: 'couleur_contour',
     couleur_texte: 'couleur_texte',
+    couleur_fond_dark: 'couleur_fond_dark',
+    couleur_contour_dark: 'couleur_contour_dark',
+    couleur_texte_dark: 'couleur_texte_dark',
     afficher: 'afficher'
   };
 
@@ -28642,6 +28738,7 @@ export namespace Prisma {
     video_desktop: 'video_desktop',
     video_mobile: 'video_mobile',
     photo: 'photo',
+    photo_alt: 'photo_alt',
     credit_nom: 'credit_nom',
     credit_url: 'credit_url',
     description: 'description'
@@ -28652,6 +28749,7 @@ export namespace Prisma {
 
   export const apropos_generalOrderByRelevanceFieldEnum: {
     photo: 'photo',
+    photo_alt: 'photo_alt',
     credit_nom: 'credit_nom',
     credit_url: 'credit_url',
     description: 'description'
@@ -28664,9 +28762,14 @@ export namespace Prisma {
     titre: 'titre',
     description: 'description',
     icone: 'icone',
+    icone_alt: 'icone_alt',
+    lien: 'lien',
     couleur_fond: 'couleur_fond',
     couleur_contour: 'couleur_contour',
-    couleur_texte: 'couleur_texte'
+    couleur_texte: 'couleur_texte',
+    couleur_fond_dark: 'couleur_fond_dark',
+    couleur_contour_dark: 'couleur_contour_dark',
+    couleur_texte_dark: 'couleur_texte_dark'
   };
 
   export type apropos_outilsOrderByRelevanceFieldEnum = (typeof apropos_outilsOrderByRelevanceFieldEnum)[keyof typeof apropos_outilsOrderByRelevanceFieldEnum]
@@ -30117,6 +30220,7 @@ export namespace Prisma {
     video_desktop?: StringFilter<"accueil_general"> | string
     video_mobile?: StringFilter<"accueil_general"> | string
     photo?: StringFilter<"accueil_general"> | string
+    photo_alt?: StringFilter<"accueil_general"> | string
     credit_nom?: StringFilter<"accueil_general"> | string
     credit_url?: StringFilter<"accueil_general"> | string
     description?: StringFilter<"accueil_general"> | string
@@ -30127,6 +30231,7 @@ export namespace Prisma {
     video_desktop?: SortOrder
     video_mobile?: SortOrder
     photo?: SortOrder
+    photo_alt?: SortOrder
     credit_nom?: SortOrder
     credit_url?: SortOrder
     description?: SortOrder
@@ -30141,6 +30246,7 @@ export namespace Prisma {
     video_desktop?: StringFilter<"accueil_general"> | string
     video_mobile?: StringFilter<"accueil_general"> | string
     photo?: StringFilter<"accueil_general"> | string
+    photo_alt?: StringFilter<"accueil_general"> | string
     credit_nom?: StringFilter<"accueil_general"> | string
     credit_url?: StringFilter<"accueil_general"> | string
     description?: StringFilter<"accueil_general"> | string
@@ -30151,6 +30257,7 @@ export namespace Prisma {
     video_desktop?: SortOrder
     video_mobile?: SortOrder
     photo?: SortOrder
+    photo_alt?: SortOrder
     credit_nom?: SortOrder
     credit_url?: SortOrder
     description?: SortOrder
@@ -30169,6 +30276,7 @@ export namespace Prisma {
     video_desktop?: StringWithAggregatesFilter<"accueil_general"> | string
     video_mobile?: StringWithAggregatesFilter<"accueil_general"> | string
     photo?: StringWithAggregatesFilter<"accueil_general"> | string
+    photo_alt?: StringWithAggregatesFilter<"accueil_general"> | string
     credit_nom?: StringWithAggregatesFilter<"accueil_general"> | string
     credit_url?: StringWithAggregatesFilter<"accueil_general"> | string
     description?: StringWithAggregatesFilter<"accueil_general"> | string
@@ -30180,6 +30288,7 @@ export namespace Prisma {
     NOT?: apropos_generalWhereInput | apropos_generalWhereInput[]
     id_gen?: IntFilter<"apropos_general"> | number
     photo?: StringFilter<"apropos_general"> | string
+    photo_alt?: StringFilter<"apropos_general"> | string
     credit_nom?: StringFilter<"apropos_general"> | string
     credit_url?: StringFilter<"apropos_general"> | string
     description?: StringFilter<"apropos_general"> | string
@@ -30188,6 +30297,7 @@ export namespace Prisma {
   export type apropos_generalOrderByWithRelationInput = {
     id_gen?: SortOrder
     photo?: SortOrder
+    photo_alt?: SortOrder
     credit_nom?: SortOrder
     credit_url?: SortOrder
     description?: SortOrder
@@ -30200,6 +30310,7 @@ export namespace Prisma {
     OR?: apropos_generalWhereInput[]
     NOT?: apropos_generalWhereInput | apropos_generalWhereInput[]
     photo?: StringFilter<"apropos_general"> | string
+    photo_alt?: StringFilter<"apropos_general"> | string
     credit_nom?: StringFilter<"apropos_general"> | string
     credit_url?: StringFilter<"apropos_general"> | string
     description?: StringFilter<"apropos_general"> | string
@@ -30208,6 +30319,7 @@ export namespace Prisma {
   export type apropos_generalOrderByWithAggregationInput = {
     id_gen?: SortOrder
     photo?: SortOrder
+    photo_alt?: SortOrder
     credit_nom?: SortOrder
     credit_url?: SortOrder
     description?: SortOrder
@@ -30224,6 +30336,7 @@ export namespace Prisma {
     NOT?: apropos_generalScalarWhereWithAggregatesInput | apropos_generalScalarWhereWithAggregatesInput[]
     id_gen?: IntWithAggregatesFilter<"apropos_general"> | number
     photo?: StringWithAggregatesFilter<"apropos_general"> | string
+    photo_alt?: StringWithAggregatesFilter<"apropos_general"> | string
     credit_nom?: StringWithAggregatesFilter<"apropos_general"> | string
     credit_url?: StringWithAggregatesFilter<"apropos_general"> | string
     description?: StringWithAggregatesFilter<"apropos_general"> | string
@@ -30237,9 +30350,15 @@ export namespace Prisma {
     titre?: StringFilter<"apropos_outils"> | string
     description?: StringFilter<"apropos_outils"> | string
     icone?: StringFilter<"apropos_outils"> | string
+    icone_alt?: StringFilter<"apropos_outils"> | string
+    icone_rounded?: BoolFilter<"apropos_outils"> | boolean
+    lien?: StringFilter<"apropos_outils"> | string
     couleur_fond?: StringFilter<"apropos_outils"> | string
     couleur_contour?: StringFilter<"apropos_outils"> | string
     couleur_texte?: StringFilter<"apropos_outils"> | string
+    couleur_fond_dark?: StringFilter<"apropos_outils"> | string
+    couleur_contour_dark?: StringFilter<"apropos_outils"> | string
+    couleur_texte_dark?: StringFilter<"apropos_outils"> | string
     afficher?: BoolFilter<"apropos_outils"> | boolean
   }
 
@@ -30248,9 +30367,15 @@ export namespace Prisma {
     titre?: SortOrder
     description?: SortOrder
     icone?: SortOrder
+    icone_alt?: SortOrder
+    icone_rounded?: SortOrder
+    lien?: SortOrder
     couleur_fond?: SortOrder
     couleur_contour?: SortOrder
     couleur_texte?: SortOrder
+    couleur_fond_dark?: SortOrder
+    couleur_contour_dark?: SortOrder
+    couleur_texte_dark?: SortOrder
     afficher?: SortOrder
     _relevance?: apropos_outilsOrderByRelevanceInput
   }
@@ -30263,9 +30388,15 @@ export namespace Prisma {
     titre?: StringFilter<"apropos_outils"> | string
     description?: StringFilter<"apropos_outils"> | string
     icone?: StringFilter<"apropos_outils"> | string
+    icone_alt?: StringFilter<"apropos_outils"> | string
+    icone_rounded?: BoolFilter<"apropos_outils"> | boolean
+    lien?: StringFilter<"apropos_outils"> | string
     couleur_fond?: StringFilter<"apropos_outils"> | string
     couleur_contour?: StringFilter<"apropos_outils"> | string
     couleur_texte?: StringFilter<"apropos_outils"> | string
+    couleur_fond_dark?: StringFilter<"apropos_outils"> | string
+    couleur_contour_dark?: StringFilter<"apropos_outils"> | string
+    couleur_texte_dark?: StringFilter<"apropos_outils"> | string
     afficher?: BoolFilter<"apropos_outils"> | boolean
   }, "id_outil">
 
@@ -30274,9 +30405,15 @@ export namespace Prisma {
     titre?: SortOrder
     description?: SortOrder
     icone?: SortOrder
+    icone_alt?: SortOrder
+    icone_rounded?: SortOrder
+    lien?: SortOrder
     couleur_fond?: SortOrder
     couleur_contour?: SortOrder
     couleur_texte?: SortOrder
+    couleur_fond_dark?: SortOrder
+    couleur_contour_dark?: SortOrder
+    couleur_texte_dark?: SortOrder
     afficher?: SortOrder
     _count?: apropos_outilsCountOrderByAggregateInput
     _avg?: apropos_outilsAvgOrderByAggregateInput
@@ -30293,9 +30430,15 @@ export namespace Prisma {
     titre?: StringWithAggregatesFilter<"apropos_outils"> | string
     description?: StringWithAggregatesFilter<"apropos_outils"> | string
     icone?: StringWithAggregatesFilter<"apropos_outils"> | string
+    icone_alt?: StringWithAggregatesFilter<"apropos_outils"> | string
+    icone_rounded?: BoolWithAggregatesFilter<"apropos_outils"> | boolean
+    lien?: StringWithAggregatesFilter<"apropos_outils"> | string
     couleur_fond?: StringWithAggregatesFilter<"apropos_outils"> | string
     couleur_contour?: StringWithAggregatesFilter<"apropos_outils"> | string
     couleur_texte?: StringWithAggregatesFilter<"apropos_outils"> | string
+    couleur_fond_dark?: StringWithAggregatesFilter<"apropos_outils"> | string
+    couleur_contour_dark?: StringWithAggregatesFilter<"apropos_outils"> | string
+    couleur_texte_dark?: StringWithAggregatesFilter<"apropos_outils"> | string
     afficher?: BoolWithAggregatesFilter<"apropos_outils"> | boolean
   }
 
@@ -31684,6 +31827,7 @@ export namespace Prisma {
     video_desktop: string
     video_mobile: string
     photo: string
+    photo_alt: string
     credit_nom: string
     credit_url: string
     description: string
@@ -31694,6 +31838,7 @@ export namespace Prisma {
     video_desktop: string
     video_mobile: string
     photo: string
+    photo_alt: string
     credit_nom: string
     credit_url: string
     description: string
@@ -31703,6 +31848,7 @@ export namespace Prisma {
     video_desktop?: StringFieldUpdateOperationsInput | string
     video_mobile?: StringFieldUpdateOperationsInput | string
     photo?: StringFieldUpdateOperationsInput | string
+    photo_alt?: StringFieldUpdateOperationsInput | string
     credit_nom?: StringFieldUpdateOperationsInput | string
     credit_url?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -31713,6 +31859,7 @@ export namespace Prisma {
     video_desktop?: StringFieldUpdateOperationsInput | string
     video_mobile?: StringFieldUpdateOperationsInput | string
     photo?: StringFieldUpdateOperationsInput | string
+    photo_alt?: StringFieldUpdateOperationsInput | string
     credit_nom?: StringFieldUpdateOperationsInput | string
     credit_url?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -31723,6 +31870,7 @@ export namespace Prisma {
     video_desktop: string
     video_mobile: string
     photo: string
+    photo_alt: string
     credit_nom: string
     credit_url: string
     description: string
@@ -31732,6 +31880,7 @@ export namespace Prisma {
     video_desktop?: StringFieldUpdateOperationsInput | string
     video_mobile?: StringFieldUpdateOperationsInput | string
     photo?: StringFieldUpdateOperationsInput | string
+    photo_alt?: StringFieldUpdateOperationsInput | string
     credit_nom?: StringFieldUpdateOperationsInput | string
     credit_url?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -31742,6 +31891,7 @@ export namespace Prisma {
     video_desktop?: StringFieldUpdateOperationsInput | string
     video_mobile?: StringFieldUpdateOperationsInput | string
     photo?: StringFieldUpdateOperationsInput | string
+    photo_alt?: StringFieldUpdateOperationsInput | string
     credit_nom?: StringFieldUpdateOperationsInput | string
     credit_url?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -31749,6 +31899,7 @@ export namespace Prisma {
 
   export type apropos_generalCreateInput = {
     photo: string
+    photo_alt: string
     credit_nom: string
     credit_url: string
     description: string
@@ -31757,6 +31908,7 @@ export namespace Prisma {
   export type apropos_generalUncheckedCreateInput = {
     id_gen?: number
     photo: string
+    photo_alt: string
     credit_nom: string
     credit_url: string
     description: string
@@ -31764,6 +31916,7 @@ export namespace Prisma {
 
   export type apropos_generalUpdateInput = {
     photo?: StringFieldUpdateOperationsInput | string
+    photo_alt?: StringFieldUpdateOperationsInput | string
     credit_nom?: StringFieldUpdateOperationsInput | string
     credit_url?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -31772,6 +31925,7 @@ export namespace Prisma {
   export type apropos_generalUncheckedUpdateInput = {
     id_gen?: IntFieldUpdateOperationsInput | number
     photo?: StringFieldUpdateOperationsInput | string
+    photo_alt?: StringFieldUpdateOperationsInput | string
     credit_nom?: StringFieldUpdateOperationsInput | string
     credit_url?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -31780,6 +31934,7 @@ export namespace Prisma {
   export type apropos_generalCreateManyInput = {
     id_gen?: number
     photo: string
+    photo_alt: string
     credit_nom: string
     credit_url: string
     description: string
@@ -31787,6 +31942,7 @@ export namespace Prisma {
 
   export type apropos_generalUpdateManyMutationInput = {
     photo?: StringFieldUpdateOperationsInput | string
+    photo_alt?: StringFieldUpdateOperationsInput | string
     credit_nom?: StringFieldUpdateOperationsInput | string
     credit_url?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -31795,6 +31951,7 @@ export namespace Prisma {
   export type apropos_generalUncheckedUpdateManyInput = {
     id_gen?: IntFieldUpdateOperationsInput | number
     photo?: StringFieldUpdateOperationsInput | string
+    photo_alt?: StringFieldUpdateOperationsInput | string
     credit_nom?: StringFieldUpdateOperationsInput | string
     credit_url?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -31804,9 +31961,15 @@ export namespace Prisma {
     titre: string
     description: string
     icone: string
+    icone_alt: string
+    icone_rounded: boolean
+    lien: string
     couleur_fond: string
     couleur_contour: string
     couleur_texte: string
+    couleur_fond_dark: string
+    couleur_contour_dark: string
+    couleur_texte_dark: string
     afficher: boolean
   }
 
@@ -31815,9 +31978,15 @@ export namespace Prisma {
     titre: string
     description: string
     icone: string
+    icone_alt: string
+    icone_rounded: boolean
+    lien: string
     couleur_fond: string
     couleur_contour: string
     couleur_texte: string
+    couleur_fond_dark: string
+    couleur_contour_dark: string
+    couleur_texte_dark: string
     afficher: boolean
   }
 
@@ -31825,9 +31994,15 @@ export namespace Prisma {
     titre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     icone?: StringFieldUpdateOperationsInput | string
+    icone_alt?: StringFieldUpdateOperationsInput | string
+    icone_rounded?: BoolFieldUpdateOperationsInput | boolean
+    lien?: StringFieldUpdateOperationsInput | string
     couleur_fond?: StringFieldUpdateOperationsInput | string
     couleur_contour?: StringFieldUpdateOperationsInput | string
     couleur_texte?: StringFieldUpdateOperationsInput | string
+    couleur_fond_dark?: StringFieldUpdateOperationsInput | string
+    couleur_contour_dark?: StringFieldUpdateOperationsInput | string
+    couleur_texte_dark?: StringFieldUpdateOperationsInput | string
     afficher?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -31836,9 +32011,15 @@ export namespace Prisma {
     titre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     icone?: StringFieldUpdateOperationsInput | string
+    icone_alt?: StringFieldUpdateOperationsInput | string
+    icone_rounded?: BoolFieldUpdateOperationsInput | boolean
+    lien?: StringFieldUpdateOperationsInput | string
     couleur_fond?: StringFieldUpdateOperationsInput | string
     couleur_contour?: StringFieldUpdateOperationsInput | string
     couleur_texte?: StringFieldUpdateOperationsInput | string
+    couleur_fond_dark?: StringFieldUpdateOperationsInput | string
+    couleur_contour_dark?: StringFieldUpdateOperationsInput | string
+    couleur_texte_dark?: StringFieldUpdateOperationsInput | string
     afficher?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -31847,9 +32028,15 @@ export namespace Prisma {
     titre: string
     description: string
     icone: string
+    icone_alt: string
+    icone_rounded: boolean
+    lien: string
     couleur_fond: string
     couleur_contour: string
     couleur_texte: string
+    couleur_fond_dark: string
+    couleur_contour_dark: string
+    couleur_texte_dark: string
     afficher: boolean
   }
 
@@ -31857,9 +32044,15 @@ export namespace Prisma {
     titre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     icone?: StringFieldUpdateOperationsInput | string
+    icone_alt?: StringFieldUpdateOperationsInput | string
+    icone_rounded?: BoolFieldUpdateOperationsInput | boolean
+    lien?: StringFieldUpdateOperationsInput | string
     couleur_fond?: StringFieldUpdateOperationsInput | string
     couleur_contour?: StringFieldUpdateOperationsInput | string
     couleur_texte?: StringFieldUpdateOperationsInput | string
+    couleur_fond_dark?: StringFieldUpdateOperationsInput | string
+    couleur_contour_dark?: StringFieldUpdateOperationsInput | string
+    couleur_texte_dark?: StringFieldUpdateOperationsInput | string
     afficher?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -31868,9 +32061,15 @@ export namespace Prisma {
     titre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     icone?: StringFieldUpdateOperationsInput | string
+    icone_alt?: StringFieldUpdateOperationsInput | string
+    icone_rounded?: BoolFieldUpdateOperationsInput | boolean
+    lien?: StringFieldUpdateOperationsInput | string
     couleur_fond?: StringFieldUpdateOperationsInput | string
     couleur_contour?: StringFieldUpdateOperationsInput | string
     couleur_texte?: StringFieldUpdateOperationsInput | string
+    couleur_fond_dark?: StringFieldUpdateOperationsInput | string
+    couleur_contour_dark?: StringFieldUpdateOperationsInput | string
+    couleur_texte_dark?: StringFieldUpdateOperationsInput | string
     afficher?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -33066,6 +33265,7 @@ export namespace Prisma {
     video_desktop?: SortOrder
     video_mobile?: SortOrder
     photo?: SortOrder
+    photo_alt?: SortOrder
     credit_nom?: SortOrder
     credit_url?: SortOrder
     description?: SortOrder
@@ -33080,6 +33280,7 @@ export namespace Prisma {
     video_desktop?: SortOrder
     video_mobile?: SortOrder
     photo?: SortOrder
+    photo_alt?: SortOrder
     credit_nom?: SortOrder
     credit_url?: SortOrder
     description?: SortOrder
@@ -33090,6 +33291,7 @@ export namespace Prisma {
     video_desktop?: SortOrder
     video_mobile?: SortOrder
     photo?: SortOrder
+    photo_alt?: SortOrder
     credit_nom?: SortOrder
     credit_url?: SortOrder
     description?: SortOrder
@@ -33108,6 +33310,7 @@ export namespace Prisma {
   export type apropos_generalCountOrderByAggregateInput = {
     id_gen?: SortOrder
     photo?: SortOrder
+    photo_alt?: SortOrder
     credit_nom?: SortOrder
     credit_url?: SortOrder
     description?: SortOrder
@@ -33120,6 +33323,7 @@ export namespace Prisma {
   export type apropos_generalMaxOrderByAggregateInput = {
     id_gen?: SortOrder
     photo?: SortOrder
+    photo_alt?: SortOrder
     credit_nom?: SortOrder
     credit_url?: SortOrder
     description?: SortOrder
@@ -33128,6 +33332,7 @@ export namespace Prisma {
   export type apropos_generalMinOrderByAggregateInput = {
     id_gen?: SortOrder
     photo?: SortOrder
+    photo_alt?: SortOrder
     credit_nom?: SortOrder
     credit_url?: SortOrder
     description?: SortOrder
@@ -33148,9 +33353,15 @@ export namespace Prisma {
     titre?: SortOrder
     description?: SortOrder
     icone?: SortOrder
+    icone_alt?: SortOrder
+    icone_rounded?: SortOrder
+    lien?: SortOrder
     couleur_fond?: SortOrder
     couleur_contour?: SortOrder
     couleur_texte?: SortOrder
+    couleur_fond_dark?: SortOrder
+    couleur_contour_dark?: SortOrder
+    couleur_texte_dark?: SortOrder
     afficher?: SortOrder
   }
 
@@ -33163,9 +33374,15 @@ export namespace Prisma {
     titre?: SortOrder
     description?: SortOrder
     icone?: SortOrder
+    icone_alt?: SortOrder
+    icone_rounded?: SortOrder
+    lien?: SortOrder
     couleur_fond?: SortOrder
     couleur_contour?: SortOrder
     couleur_texte?: SortOrder
+    couleur_fond_dark?: SortOrder
+    couleur_contour_dark?: SortOrder
+    couleur_texte_dark?: SortOrder
     afficher?: SortOrder
   }
 
@@ -33174,9 +33391,15 @@ export namespace Prisma {
     titre?: SortOrder
     description?: SortOrder
     icone?: SortOrder
+    icone_alt?: SortOrder
+    icone_rounded?: SortOrder
+    lien?: SortOrder
     couleur_fond?: SortOrder
     couleur_contour?: SortOrder
     couleur_texte?: SortOrder
+    couleur_fond_dark?: SortOrder
+    couleur_contour_dark?: SortOrder
+    couleur_texte_dark?: SortOrder
     afficher?: SortOrder
   }
 

@@ -20,6 +20,7 @@ type AccueilData = {
   video_desktop: string;
   video_mobile: string;
   photo: string;
+  photo_alt: string;
   credit_nom: string;
   credit_url: string;
   description: string;
@@ -142,6 +143,7 @@ export function AccueilGeneralForm({
       }
 
       // Ajouter les autres données
+      formData.set("photo_alt", (e.target as any).photo_alt.value);
       formData.set("credit_nom", (e.target as any).credit_nom.value);
       formData.set("credit_url", (e.target as any).credit_url.value);
       formData.set("description", markdown);
@@ -279,25 +281,42 @@ export function AccueilGeneralForm({
       </div>
 
       <div className="grid grid-cols-2 gap-6">
-        <div className="space-y-2">
-          <Label htmlFor="photo">Photo</Label>
-          <div className="flex items-center space-x-2">
+        {/* Upload de photo */}
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="photo">Photo</Label>
+            <div className="flex items-center space-x-2">
+              <Input
+                id="photo"
+                name="photo"
+                type="file"
+                accept="image/*"
+                onChange={handlePhotoChange}
+                className="flex-1"
+              />
+            </div>
+          </div>
+
+          {/* Texte alternatif de la photo */}
+          <div className="space-y-2">
+            <Label htmlFor="photo_alt">Texte alternatif de la photo</Label>
             <Input
-              id="photo"
-              name="photo"
-              type="file"
-              accept="image/*"
-              onChange={handlePhotoChange}
-              className="flex-1"
+              id="photo_alt"
+              name="photo_alt"
+              type="text"
+              placeholder="Description de la photo"
+              defaultValue={accueilData?.photo_alt || ""}
+              required={!!(accueilData?.photo || selectedPhotoFile)}
             />
           </div>
+
           {accueilData?.photo && !photoPreview && (
-            <div className="mt-2">
+            <div className="mt-4">
               <p className="text-sm text-gray-500 mb-2">Photo actuelle :</p>
               <div className="rounded-md overflow-hidden bg-muted w-full relative aspect-video max-w-md">
                 <Image
                   src={accueilData.photo}
-                  alt="Photo actuelle"
+                  alt={accueilData.photo_alt || "Photo actuelle"}
                   fill
                   className="object-contain"
                   sizes="(max-width: 768px) 100vw, 50vw"
@@ -308,7 +327,7 @@ export function AccueilGeneralForm({
 
           {/* Aperçu de la nouvelle photo */}
           {photoPreview && (
-            <div className="mt-2 w-full">
+            <div className="mt-4 w-full">
               <p className="text-sm text-gray-600 mb-2">
                 Aperçu de la nouvelle photo :
               </p>
@@ -325,6 +344,7 @@ export function AccueilGeneralForm({
             </div>
           )}
         </div>
+
         <div className="flex flex-col gap-4">
           {/* Crédit nom */}
           <div className="space-y-2">
