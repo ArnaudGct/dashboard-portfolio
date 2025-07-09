@@ -1,9 +1,16 @@
 import { ImageAnnotatorClient } from "@google-cloud/vision";
 
-// Configuration du client Google Vision
+// Configuration du client Google Vision avec les variables d'environnement
 const client = new ImageAnnotatorClient({
   projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
-  keyFilename: "./lib/portfolio-458718-ffe32580c850.json",
+  credentials: {
+    type: "service_account",
+    project_id: process.env.GOOGLE_CLOUD_PROJECT_ID,
+    private_key_id: process.env.GOOGLE_CLOUD_PRIVATE_KEY_ID,
+    private_key: process.env.GOOGLE_CLOUD_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+    client_email: process.env.GOOGLE_CLOUD_CLIENT_EMAIL,
+    client_id: process.env.GOOGLE_CLOUD_CLIENT_ID,
+  },
 });
 
 export async function analyzeImageWithGoogleVision(

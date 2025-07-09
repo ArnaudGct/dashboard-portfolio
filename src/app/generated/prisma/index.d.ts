@@ -128,6 +128,21 @@ export type Account = $Result.DefaultSelection<Prisma.$AccountPayload>
  * 
  */
 export type Verification = $Result.DefaultSelection<Prisma.$VerificationPayload>
+/**
+ * Model accueil_general
+ * 
+ */
+export type accueil_general = $Result.DefaultSelection<Prisma.$accueil_generalPayload>
+/**
+ * Model apropos_general
+ * 
+ */
+export type apropos_general = $Result.DefaultSelection<Prisma.$apropos_generalPayload>
+/**
+ * Model apropos_outils
+ * 
+ */
+export type apropos_outils = $Result.DefaultSelection<Prisma.$apropos_outilsPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -483,6 +498,36 @@ export class PrismaClient<
     * ```
     */
   get verification(): Prisma.VerificationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.accueil_general`: Exposes CRUD operations for the **accueil_general** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Accueil_generals
+    * const accueil_generals = await prisma.accueil_general.findMany()
+    * ```
+    */
+  get accueil_general(): Prisma.accueil_generalDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.apropos_general`: Exposes CRUD operations for the **apropos_general** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Apropos_generals
+    * const apropos_generals = await prisma.apropos_general.findMany()
+    * ```
+    */
+  get apropos_general(): Prisma.apropos_generalDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.apropos_outils`: Exposes CRUD operations for the **apropos_outils** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Apropos_outils
+    * const apropos_outils = await prisma.apropos_outils.findMany()
+    * ```
+    */
+  get apropos_outils(): Prisma.apropos_outilsDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -945,7 +990,10 @@ export namespace Prisma {
     User: 'User',
     Session: 'Session',
     Account: 'Account',
-    Verification: 'Verification'
+    Verification: 'Verification',
+    accueil_general: 'accueil_general',
+    apropos_general: 'apropos_general',
+    apropos_outils: 'apropos_outils'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -964,7 +1012,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "autre" | "autre_tags" | "autre_tags_link" | "experiences" | "faq" | "photos" | "photos_albums" | "photos_albums_link" | "photos_albums_tags_link" | "photos_experiences" | "photos_tags" | "photos_tags_link" | "photos_tags_recherche" | "photos_tags_recherche_link" | "temoignages" | "utilisateurs" | "videos" | "videos_tags" | "videos_tags_link" | "user" | "session" | "account" | "verification"
+      modelProps: "autre" | "autre_tags" | "autre_tags_link" | "experiences" | "faq" | "photos" | "photos_albums" | "photos_albums_link" | "photos_albums_tags_link" | "photos_experiences" | "photos_tags" | "photos_tags_link" | "photos_tags_recherche" | "photos_tags_recherche_link" | "temoignages" | "utilisateurs" | "videos" | "videos_tags" | "videos_tags_link" | "user" | "session" | "account" | "verification" | "accueil_general" | "apropos_general" | "apropos_outils"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2486,6 +2534,204 @@ export namespace Prisma {
           }
         }
       }
+      accueil_general: {
+        payload: Prisma.$accueil_generalPayload<ExtArgs>
+        fields: Prisma.accueil_generalFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.accueil_generalFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$accueil_generalPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.accueil_generalFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$accueil_generalPayload>
+          }
+          findFirst: {
+            args: Prisma.accueil_generalFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$accueil_generalPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.accueil_generalFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$accueil_generalPayload>
+          }
+          findMany: {
+            args: Prisma.accueil_generalFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$accueil_generalPayload>[]
+          }
+          create: {
+            args: Prisma.accueil_generalCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$accueil_generalPayload>
+          }
+          createMany: {
+            args: Prisma.accueil_generalCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.accueil_generalDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$accueil_generalPayload>
+          }
+          update: {
+            args: Prisma.accueil_generalUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$accueil_generalPayload>
+          }
+          deleteMany: {
+            args: Prisma.accueil_generalDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.accueil_generalUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.accueil_generalUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$accueil_generalPayload>
+          }
+          aggregate: {
+            args: Prisma.Accueil_generalAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAccueil_general>
+          }
+          groupBy: {
+            args: Prisma.accueil_generalGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Accueil_generalGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.accueil_generalCountArgs<ExtArgs>
+            result: $Utils.Optional<Accueil_generalCountAggregateOutputType> | number
+          }
+        }
+      }
+      apropos_general: {
+        payload: Prisma.$apropos_generalPayload<ExtArgs>
+        fields: Prisma.apropos_generalFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.apropos_generalFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$apropos_generalPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.apropos_generalFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$apropos_generalPayload>
+          }
+          findFirst: {
+            args: Prisma.apropos_generalFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$apropos_generalPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.apropos_generalFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$apropos_generalPayload>
+          }
+          findMany: {
+            args: Prisma.apropos_generalFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$apropos_generalPayload>[]
+          }
+          create: {
+            args: Prisma.apropos_generalCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$apropos_generalPayload>
+          }
+          createMany: {
+            args: Prisma.apropos_generalCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.apropos_generalDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$apropos_generalPayload>
+          }
+          update: {
+            args: Prisma.apropos_generalUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$apropos_generalPayload>
+          }
+          deleteMany: {
+            args: Prisma.apropos_generalDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.apropos_generalUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.apropos_generalUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$apropos_generalPayload>
+          }
+          aggregate: {
+            args: Prisma.Apropos_generalAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateApropos_general>
+          }
+          groupBy: {
+            args: Prisma.apropos_generalGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Apropos_generalGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.apropos_generalCountArgs<ExtArgs>
+            result: $Utils.Optional<Apropos_generalCountAggregateOutputType> | number
+          }
+        }
+      }
+      apropos_outils: {
+        payload: Prisma.$apropos_outilsPayload<ExtArgs>
+        fields: Prisma.apropos_outilsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.apropos_outilsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$apropos_outilsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.apropos_outilsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$apropos_outilsPayload>
+          }
+          findFirst: {
+            args: Prisma.apropos_outilsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$apropos_outilsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.apropos_outilsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$apropos_outilsPayload>
+          }
+          findMany: {
+            args: Prisma.apropos_outilsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$apropos_outilsPayload>[]
+          }
+          create: {
+            args: Prisma.apropos_outilsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$apropos_outilsPayload>
+          }
+          createMany: {
+            args: Prisma.apropos_outilsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.apropos_outilsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$apropos_outilsPayload>
+          }
+          update: {
+            args: Prisma.apropos_outilsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$apropos_outilsPayload>
+          }
+          deleteMany: {
+            args: Prisma.apropos_outilsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.apropos_outilsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.apropos_outilsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$apropos_outilsPayload>
+          }
+          aggregate: {
+            args: Prisma.Apropos_outilsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateApropos_outils>
+          }
+          groupBy: {
+            args: Prisma.apropos_outilsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Apropos_outilsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.apropos_outilsCountArgs<ExtArgs>
+            result: $Utils.Optional<Apropos_outilsCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2593,6 +2839,9 @@ export namespace Prisma {
     session?: SessionOmit
     account?: AccountOmit
     verification?: VerificationOmit
+    accueil_general?: accueil_generalOmit
+    apropos_general?: apropos_generalOmit
+    apropos_outils?: apropos_outilsOmit
   }
 
   /* Types for Logging */
@@ -25084,6 +25333,2908 @@ export namespace Prisma {
 
 
   /**
+   * Model accueil_general
+   */
+
+  export type AggregateAccueil_general = {
+    _count: Accueil_generalCountAggregateOutputType | null
+    _avg: Accueil_generalAvgAggregateOutputType | null
+    _sum: Accueil_generalSumAggregateOutputType | null
+    _min: Accueil_generalMinAggregateOutputType | null
+    _max: Accueil_generalMaxAggregateOutputType | null
+  }
+
+  export type Accueil_generalAvgAggregateOutputType = {
+    id_gen: number | null
+  }
+
+  export type Accueil_generalSumAggregateOutputType = {
+    id_gen: number | null
+  }
+
+  export type Accueil_generalMinAggregateOutputType = {
+    id_gen: number | null
+    video_desktop: string | null
+    video_mobile: string | null
+    video_cover: string | null
+    photo: string | null
+    photo_alt: string | null
+    credit_nom: string | null
+    credit_url: string | null
+    description: string | null
+  }
+
+  export type Accueil_generalMaxAggregateOutputType = {
+    id_gen: number | null
+    video_desktop: string | null
+    video_mobile: string | null
+    video_cover: string | null
+    photo: string | null
+    photo_alt: string | null
+    credit_nom: string | null
+    credit_url: string | null
+    description: string | null
+  }
+
+  export type Accueil_generalCountAggregateOutputType = {
+    id_gen: number
+    video_desktop: number
+    video_mobile: number
+    video_cover: number
+    photo: number
+    photo_alt: number
+    credit_nom: number
+    credit_url: number
+    description: number
+    _all: number
+  }
+
+
+  export type Accueil_generalAvgAggregateInputType = {
+    id_gen?: true
+  }
+
+  export type Accueil_generalSumAggregateInputType = {
+    id_gen?: true
+  }
+
+  export type Accueil_generalMinAggregateInputType = {
+    id_gen?: true
+    video_desktop?: true
+    video_mobile?: true
+    video_cover?: true
+    photo?: true
+    photo_alt?: true
+    credit_nom?: true
+    credit_url?: true
+    description?: true
+  }
+
+  export type Accueil_generalMaxAggregateInputType = {
+    id_gen?: true
+    video_desktop?: true
+    video_mobile?: true
+    video_cover?: true
+    photo?: true
+    photo_alt?: true
+    credit_nom?: true
+    credit_url?: true
+    description?: true
+  }
+
+  export type Accueil_generalCountAggregateInputType = {
+    id_gen?: true
+    video_desktop?: true
+    video_mobile?: true
+    video_cover?: true
+    photo?: true
+    photo_alt?: true
+    credit_nom?: true
+    credit_url?: true
+    description?: true
+    _all?: true
+  }
+
+  export type Accueil_generalAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which accueil_general to aggregate.
+     */
+    where?: accueil_generalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of accueil_generals to fetch.
+     */
+    orderBy?: accueil_generalOrderByWithRelationInput | accueil_generalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: accueil_generalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` accueil_generals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` accueil_generals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned accueil_generals
+    **/
+    _count?: true | Accueil_generalCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Accueil_generalAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Accueil_generalSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Accueil_generalMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Accueil_generalMaxAggregateInputType
+  }
+
+  export type GetAccueil_generalAggregateType<T extends Accueil_generalAggregateArgs> = {
+        [P in keyof T & keyof AggregateAccueil_general]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAccueil_general[P]>
+      : GetScalarType<T[P], AggregateAccueil_general[P]>
+  }
+
+
+
+
+  export type accueil_generalGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: accueil_generalWhereInput
+    orderBy?: accueil_generalOrderByWithAggregationInput | accueil_generalOrderByWithAggregationInput[]
+    by: Accueil_generalScalarFieldEnum[] | Accueil_generalScalarFieldEnum
+    having?: accueil_generalScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Accueil_generalCountAggregateInputType | true
+    _avg?: Accueil_generalAvgAggregateInputType
+    _sum?: Accueil_generalSumAggregateInputType
+    _min?: Accueil_generalMinAggregateInputType
+    _max?: Accueil_generalMaxAggregateInputType
+  }
+
+  export type Accueil_generalGroupByOutputType = {
+    id_gen: number
+    video_desktop: string
+    video_mobile: string
+    video_cover: string
+    photo: string
+    photo_alt: string
+    credit_nom: string
+    credit_url: string
+    description: string
+    _count: Accueil_generalCountAggregateOutputType | null
+    _avg: Accueil_generalAvgAggregateOutputType | null
+    _sum: Accueil_generalSumAggregateOutputType | null
+    _min: Accueil_generalMinAggregateOutputType | null
+    _max: Accueil_generalMaxAggregateOutputType | null
+  }
+
+  type GetAccueil_generalGroupByPayload<T extends accueil_generalGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Accueil_generalGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Accueil_generalGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Accueil_generalGroupByOutputType[P]>
+            : GetScalarType<T[P], Accueil_generalGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type accueil_generalSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id_gen?: boolean
+    video_desktop?: boolean
+    video_mobile?: boolean
+    video_cover?: boolean
+    photo?: boolean
+    photo_alt?: boolean
+    credit_nom?: boolean
+    credit_url?: boolean
+    description?: boolean
+  }, ExtArgs["result"]["accueil_general"]>
+
+
+
+  export type accueil_generalSelectScalar = {
+    id_gen?: boolean
+    video_desktop?: boolean
+    video_mobile?: boolean
+    video_cover?: boolean
+    photo?: boolean
+    photo_alt?: boolean
+    credit_nom?: boolean
+    credit_url?: boolean
+    description?: boolean
+  }
+
+  export type accueil_generalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_gen" | "video_desktop" | "video_mobile" | "video_cover" | "photo" | "photo_alt" | "credit_nom" | "credit_url" | "description", ExtArgs["result"]["accueil_general"]>
+
+  export type $accueil_generalPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "accueil_general"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id_gen: number
+      video_desktop: string
+      video_mobile: string
+      video_cover: string
+      photo: string
+      photo_alt: string
+      credit_nom: string
+      credit_url: string
+      description: string
+    }, ExtArgs["result"]["accueil_general"]>
+    composites: {}
+  }
+
+  type accueil_generalGetPayload<S extends boolean | null | undefined | accueil_generalDefaultArgs> = $Result.GetResult<Prisma.$accueil_generalPayload, S>
+
+  type accueil_generalCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<accueil_generalFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Accueil_generalCountAggregateInputType | true
+    }
+
+  export interface accueil_generalDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['accueil_general'], meta: { name: 'accueil_general' } }
+    /**
+     * Find zero or one Accueil_general that matches the filter.
+     * @param {accueil_generalFindUniqueArgs} args - Arguments to find a Accueil_general
+     * @example
+     * // Get one Accueil_general
+     * const accueil_general = await prisma.accueil_general.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends accueil_generalFindUniqueArgs>(args: SelectSubset<T, accueil_generalFindUniqueArgs<ExtArgs>>): Prisma__accueil_generalClient<$Result.GetResult<Prisma.$accueil_generalPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Accueil_general that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {accueil_generalFindUniqueOrThrowArgs} args - Arguments to find a Accueil_general
+     * @example
+     * // Get one Accueil_general
+     * const accueil_general = await prisma.accueil_general.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends accueil_generalFindUniqueOrThrowArgs>(args: SelectSubset<T, accueil_generalFindUniqueOrThrowArgs<ExtArgs>>): Prisma__accueil_generalClient<$Result.GetResult<Prisma.$accueil_generalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Accueil_general that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {accueil_generalFindFirstArgs} args - Arguments to find a Accueil_general
+     * @example
+     * // Get one Accueil_general
+     * const accueil_general = await prisma.accueil_general.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends accueil_generalFindFirstArgs>(args?: SelectSubset<T, accueil_generalFindFirstArgs<ExtArgs>>): Prisma__accueil_generalClient<$Result.GetResult<Prisma.$accueil_generalPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Accueil_general that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {accueil_generalFindFirstOrThrowArgs} args - Arguments to find a Accueil_general
+     * @example
+     * // Get one Accueil_general
+     * const accueil_general = await prisma.accueil_general.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends accueil_generalFindFirstOrThrowArgs>(args?: SelectSubset<T, accueil_generalFindFirstOrThrowArgs<ExtArgs>>): Prisma__accueil_generalClient<$Result.GetResult<Prisma.$accueil_generalPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Accueil_generals that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {accueil_generalFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Accueil_generals
+     * const accueil_generals = await prisma.accueil_general.findMany()
+     * 
+     * // Get first 10 Accueil_generals
+     * const accueil_generals = await prisma.accueil_general.findMany({ take: 10 })
+     * 
+     * // Only select the `id_gen`
+     * const accueil_generalWithId_genOnly = await prisma.accueil_general.findMany({ select: { id_gen: true } })
+     * 
+     */
+    findMany<T extends accueil_generalFindManyArgs>(args?: SelectSubset<T, accueil_generalFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$accueil_generalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Accueil_general.
+     * @param {accueil_generalCreateArgs} args - Arguments to create a Accueil_general.
+     * @example
+     * // Create one Accueil_general
+     * const Accueil_general = await prisma.accueil_general.create({
+     *   data: {
+     *     // ... data to create a Accueil_general
+     *   }
+     * })
+     * 
+     */
+    create<T extends accueil_generalCreateArgs>(args: SelectSubset<T, accueil_generalCreateArgs<ExtArgs>>): Prisma__accueil_generalClient<$Result.GetResult<Prisma.$accueil_generalPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Accueil_generals.
+     * @param {accueil_generalCreateManyArgs} args - Arguments to create many Accueil_generals.
+     * @example
+     * // Create many Accueil_generals
+     * const accueil_general = await prisma.accueil_general.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends accueil_generalCreateManyArgs>(args?: SelectSubset<T, accueil_generalCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Accueil_general.
+     * @param {accueil_generalDeleteArgs} args - Arguments to delete one Accueil_general.
+     * @example
+     * // Delete one Accueil_general
+     * const Accueil_general = await prisma.accueil_general.delete({
+     *   where: {
+     *     // ... filter to delete one Accueil_general
+     *   }
+     * })
+     * 
+     */
+    delete<T extends accueil_generalDeleteArgs>(args: SelectSubset<T, accueil_generalDeleteArgs<ExtArgs>>): Prisma__accueil_generalClient<$Result.GetResult<Prisma.$accueil_generalPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Accueil_general.
+     * @param {accueil_generalUpdateArgs} args - Arguments to update one Accueil_general.
+     * @example
+     * // Update one Accueil_general
+     * const accueil_general = await prisma.accueil_general.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends accueil_generalUpdateArgs>(args: SelectSubset<T, accueil_generalUpdateArgs<ExtArgs>>): Prisma__accueil_generalClient<$Result.GetResult<Prisma.$accueil_generalPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Accueil_generals.
+     * @param {accueil_generalDeleteManyArgs} args - Arguments to filter Accueil_generals to delete.
+     * @example
+     * // Delete a few Accueil_generals
+     * const { count } = await prisma.accueil_general.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends accueil_generalDeleteManyArgs>(args?: SelectSubset<T, accueil_generalDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Accueil_generals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {accueil_generalUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Accueil_generals
+     * const accueil_general = await prisma.accueil_general.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends accueil_generalUpdateManyArgs>(args: SelectSubset<T, accueil_generalUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Accueil_general.
+     * @param {accueil_generalUpsertArgs} args - Arguments to update or create a Accueil_general.
+     * @example
+     * // Update or create a Accueil_general
+     * const accueil_general = await prisma.accueil_general.upsert({
+     *   create: {
+     *     // ... data to create a Accueil_general
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Accueil_general we want to update
+     *   }
+     * })
+     */
+    upsert<T extends accueil_generalUpsertArgs>(args: SelectSubset<T, accueil_generalUpsertArgs<ExtArgs>>): Prisma__accueil_generalClient<$Result.GetResult<Prisma.$accueil_generalPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Accueil_generals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {accueil_generalCountArgs} args - Arguments to filter Accueil_generals to count.
+     * @example
+     * // Count the number of Accueil_generals
+     * const count = await prisma.accueil_general.count({
+     *   where: {
+     *     // ... the filter for the Accueil_generals we want to count
+     *   }
+     * })
+    **/
+    count<T extends accueil_generalCountArgs>(
+      args?: Subset<T, accueil_generalCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Accueil_generalCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Accueil_general.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Accueil_generalAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Accueil_generalAggregateArgs>(args: Subset<T, Accueil_generalAggregateArgs>): Prisma.PrismaPromise<GetAccueil_generalAggregateType<T>>
+
+    /**
+     * Group by Accueil_general.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {accueil_generalGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends accueil_generalGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: accueil_generalGroupByArgs['orderBy'] }
+        : { orderBy?: accueil_generalGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, accueil_generalGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAccueil_generalGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the accueil_general model
+   */
+  readonly fields: accueil_generalFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for accueil_general.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__accueil_generalClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the accueil_general model
+   */
+  interface accueil_generalFieldRefs {
+    readonly id_gen: FieldRef<"accueil_general", 'Int'>
+    readonly video_desktop: FieldRef<"accueil_general", 'String'>
+    readonly video_mobile: FieldRef<"accueil_general", 'String'>
+    readonly video_cover: FieldRef<"accueil_general", 'String'>
+    readonly photo: FieldRef<"accueil_general", 'String'>
+    readonly photo_alt: FieldRef<"accueil_general", 'String'>
+    readonly credit_nom: FieldRef<"accueil_general", 'String'>
+    readonly credit_url: FieldRef<"accueil_general", 'String'>
+    readonly description: FieldRef<"accueil_general", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * accueil_general findUnique
+   */
+  export type accueil_generalFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the accueil_general
+     */
+    select?: accueil_generalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the accueil_general
+     */
+    omit?: accueil_generalOmit<ExtArgs> | null
+    /**
+     * Filter, which accueil_general to fetch.
+     */
+    where: accueil_generalWhereUniqueInput
+  }
+
+  /**
+   * accueil_general findUniqueOrThrow
+   */
+  export type accueil_generalFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the accueil_general
+     */
+    select?: accueil_generalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the accueil_general
+     */
+    omit?: accueil_generalOmit<ExtArgs> | null
+    /**
+     * Filter, which accueil_general to fetch.
+     */
+    where: accueil_generalWhereUniqueInput
+  }
+
+  /**
+   * accueil_general findFirst
+   */
+  export type accueil_generalFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the accueil_general
+     */
+    select?: accueil_generalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the accueil_general
+     */
+    omit?: accueil_generalOmit<ExtArgs> | null
+    /**
+     * Filter, which accueil_general to fetch.
+     */
+    where?: accueil_generalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of accueil_generals to fetch.
+     */
+    orderBy?: accueil_generalOrderByWithRelationInput | accueil_generalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for accueil_generals.
+     */
+    cursor?: accueil_generalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` accueil_generals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` accueil_generals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of accueil_generals.
+     */
+    distinct?: Accueil_generalScalarFieldEnum | Accueil_generalScalarFieldEnum[]
+  }
+
+  /**
+   * accueil_general findFirstOrThrow
+   */
+  export type accueil_generalFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the accueil_general
+     */
+    select?: accueil_generalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the accueil_general
+     */
+    omit?: accueil_generalOmit<ExtArgs> | null
+    /**
+     * Filter, which accueil_general to fetch.
+     */
+    where?: accueil_generalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of accueil_generals to fetch.
+     */
+    orderBy?: accueil_generalOrderByWithRelationInput | accueil_generalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for accueil_generals.
+     */
+    cursor?: accueil_generalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` accueil_generals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` accueil_generals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of accueil_generals.
+     */
+    distinct?: Accueil_generalScalarFieldEnum | Accueil_generalScalarFieldEnum[]
+  }
+
+  /**
+   * accueil_general findMany
+   */
+  export type accueil_generalFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the accueil_general
+     */
+    select?: accueil_generalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the accueil_general
+     */
+    omit?: accueil_generalOmit<ExtArgs> | null
+    /**
+     * Filter, which accueil_generals to fetch.
+     */
+    where?: accueil_generalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of accueil_generals to fetch.
+     */
+    orderBy?: accueil_generalOrderByWithRelationInput | accueil_generalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing accueil_generals.
+     */
+    cursor?: accueil_generalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` accueil_generals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` accueil_generals.
+     */
+    skip?: number
+    distinct?: Accueil_generalScalarFieldEnum | Accueil_generalScalarFieldEnum[]
+  }
+
+  /**
+   * accueil_general create
+   */
+  export type accueil_generalCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the accueil_general
+     */
+    select?: accueil_generalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the accueil_general
+     */
+    omit?: accueil_generalOmit<ExtArgs> | null
+    /**
+     * The data needed to create a accueil_general.
+     */
+    data: XOR<accueil_generalCreateInput, accueil_generalUncheckedCreateInput>
+  }
+
+  /**
+   * accueil_general createMany
+   */
+  export type accueil_generalCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many accueil_generals.
+     */
+    data: accueil_generalCreateManyInput | accueil_generalCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * accueil_general update
+   */
+  export type accueil_generalUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the accueil_general
+     */
+    select?: accueil_generalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the accueil_general
+     */
+    omit?: accueil_generalOmit<ExtArgs> | null
+    /**
+     * The data needed to update a accueil_general.
+     */
+    data: XOR<accueil_generalUpdateInput, accueil_generalUncheckedUpdateInput>
+    /**
+     * Choose, which accueil_general to update.
+     */
+    where: accueil_generalWhereUniqueInput
+  }
+
+  /**
+   * accueil_general updateMany
+   */
+  export type accueil_generalUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update accueil_generals.
+     */
+    data: XOR<accueil_generalUpdateManyMutationInput, accueil_generalUncheckedUpdateManyInput>
+    /**
+     * Filter which accueil_generals to update
+     */
+    where?: accueil_generalWhereInput
+    /**
+     * Limit how many accueil_generals to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * accueil_general upsert
+   */
+  export type accueil_generalUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the accueil_general
+     */
+    select?: accueil_generalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the accueil_general
+     */
+    omit?: accueil_generalOmit<ExtArgs> | null
+    /**
+     * The filter to search for the accueil_general to update in case it exists.
+     */
+    where: accueil_generalWhereUniqueInput
+    /**
+     * In case the accueil_general found by the `where` argument doesn't exist, create a new accueil_general with this data.
+     */
+    create: XOR<accueil_generalCreateInput, accueil_generalUncheckedCreateInput>
+    /**
+     * In case the accueil_general was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<accueil_generalUpdateInput, accueil_generalUncheckedUpdateInput>
+  }
+
+  /**
+   * accueil_general delete
+   */
+  export type accueil_generalDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the accueil_general
+     */
+    select?: accueil_generalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the accueil_general
+     */
+    omit?: accueil_generalOmit<ExtArgs> | null
+    /**
+     * Filter which accueil_general to delete.
+     */
+    where: accueil_generalWhereUniqueInput
+  }
+
+  /**
+   * accueil_general deleteMany
+   */
+  export type accueil_generalDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which accueil_generals to delete
+     */
+    where?: accueil_generalWhereInput
+    /**
+     * Limit how many accueil_generals to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * accueil_general without action
+   */
+  export type accueil_generalDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the accueil_general
+     */
+    select?: accueil_generalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the accueil_general
+     */
+    omit?: accueil_generalOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model apropos_general
+   */
+
+  export type AggregateApropos_general = {
+    _count: Apropos_generalCountAggregateOutputType | null
+    _avg: Apropos_generalAvgAggregateOutputType | null
+    _sum: Apropos_generalSumAggregateOutputType | null
+    _min: Apropos_generalMinAggregateOutputType | null
+    _max: Apropos_generalMaxAggregateOutputType | null
+  }
+
+  export type Apropos_generalAvgAggregateOutputType = {
+    id_gen: number | null
+  }
+
+  export type Apropos_generalSumAggregateOutputType = {
+    id_gen: number | null
+  }
+
+  export type Apropos_generalMinAggregateOutputType = {
+    id_gen: number | null
+    photo: string | null
+    photo_alt: string | null
+    credit_nom: string | null
+    credit_url: string | null
+    description: string | null
+  }
+
+  export type Apropos_generalMaxAggregateOutputType = {
+    id_gen: number | null
+    photo: string | null
+    photo_alt: string | null
+    credit_nom: string | null
+    credit_url: string | null
+    description: string | null
+  }
+
+  export type Apropos_generalCountAggregateOutputType = {
+    id_gen: number
+    photo: number
+    photo_alt: number
+    credit_nom: number
+    credit_url: number
+    description: number
+    _all: number
+  }
+
+
+  export type Apropos_generalAvgAggregateInputType = {
+    id_gen?: true
+  }
+
+  export type Apropos_generalSumAggregateInputType = {
+    id_gen?: true
+  }
+
+  export type Apropos_generalMinAggregateInputType = {
+    id_gen?: true
+    photo?: true
+    photo_alt?: true
+    credit_nom?: true
+    credit_url?: true
+    description?: true
+  }
+
+  export type Apropos_generalMaxAggregateInputType = {
+    id_gen?: true
+    photo?: true
+    photo_alt?: true
+    credit_nom?: true
+    credit_url?: true
+    description?: true
+  }
+
+  export type Apropos_generalCountAggregateInputType = {
+    id_gen?: true
+    photo?: true
+    photo_alt?: true
+    credit_nom?: true
+    credit_url?: true
+    description?: true
+    _all?: true
+  }
+
+  export type Apropos_generalAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which apropos_general to aggregate.
+     */
+    where?: apropos_generalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of apropos_generals to fetch.
+     */
+    orderBy?: apropos_generalOrderByWithRelationInput | apropos_generalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: apropos_generalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` apropos_generals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` apropos_generals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned apropos_generals
+    **/
+    _count?: true | Apropos_generalCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Apropos_generalAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Apropos_generalSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Apropos_generalMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Apropos_generalMaxAggregateInputType
+  }
+
+  export type GetApropos_generalAggregateType<T extends Apropos_generalAggregateArgs> = {
+        [P in keyof T & keyof AggregateApropos_general]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateApropos_general[P]>
+      : GetScalarType<T[P], AggregateApropos_general[P]>
+  }
+
+
+
+
+  export type apropos_generalGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: apropos_generalWhereInput
+    orderBy?: apropos_generalOrderByWithAggregationInput | apropos_generalOrderByWithAggregationInput[]
+    by: Apropos_generalScalarFieldEnum[] | Apropos_generalScalarFieldEnum
+    having?: apropos_generalScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Apropos_generalCountAggregateInputType | true
+    _avg?: Apropos_generalAvgAggregateInputType
+    _sum?: Apropos_generalSumAggregateInputType
+    _min?: Apropos_generalMinAggregateInputType
+    _max?: Apropos_generalMaxAggregateInputType
+  }
+
+  export type Apropos_generalGroupByOutputType = {
+    id_gen: number
+    photo: string
+    photo_alt: string
+    credit_nom: string
+    credit_url: string
+    description: string
+    _count: Apropos_generalCountAggregateOutputType | null
+    _avg: Apropos_generalAvgAggregateOutputType | null
+    _sum: Apropos_generalSumAggregateOutputType | null
+    _min: Apropos_generalMinAggregateOutputType | null
+    _max: Apropos_generalMaxAggregateOutputType | null
+  }
+
+  type GetApropos_generalGroupByPayload<T extends apropos_generalGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Apropos_generalGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Apropos_generalGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Apropos_generalGroupByOutputType[P]>
+            : GetScalarType<T[P], Apropos_generalGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type apropos_generalSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id_gen?: boolean
+    photo?: boolean
+    photo_alt?: boolean
+    credit_nom?: boolean
+    credit_url?: boolean
+    description?: boolean
+  }, ExtArgs["result"]["apropos_general"]>
+
+
+
+  export type apropos_generalSelectScalar = {
+    id_gen?: boolean
+    photo?: boolean
+    photo_alt?: boolean
+    credit_nom?: boolean
+    credit_url?: boolean
+    description?: boolean
+  }
+
+  export type apropos_generalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_gen" | "photo" | "photo_alt" | "credit_nom" | "credit_url" | "description", ExtArgs["result"]["apropos_general"]>
+
+  export type $apropos_generalPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "apropos_general"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id_gen: number
+      photo: string
+      photo_alt: string
+      credit_nom: string
+      credit_url: string
+      description: string
+    }, ExtArgs["result"]["apropos_general"]>
+    composites: {}
+  }
+
+  type apropos_generalGetPayload<S extends boolean | null | undefined | apropos_generalDefaultArgs> = $Result.GetResult<Prisma.$apropos_generalPayload, S>
+
+  type apropos_generalCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<apropos_generalFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Apropos_generalCountAggregateInputType | true
+    }
+
+  export interface apropos_generalDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['apropos_general'], meta: { name: 'apropos_general' } }
+    /**
+     * Find zero or one Apropos_general that matches the filter.
+     * @param {apropos_generalFindUniqueArgs} args - Arguments to find a Apropos_general
+     * @example
+     * // Get one Apropos_general
+     * const apropos_general = await prisma.apropos_general.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends apropos_generalFindUniqueArgs>(args: SelectSubset<T, apropos_generalFindUniqueArgs<ExtArgs>>): Prisma__apropos_generalClient<$Result.GetResult<Prisma.$apropos_generalPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Apropos_general that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {apropos_generalFindUniqueOrThrowArgs} args - Arguments to find a Apropos_general
+     * @example
+     * // Get one Apropos_general
+     * const apropos_general = await prisma.apropos_general.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends apropos_generalFindUniqueOrThrowArgs>(args: SelectSubset<T, apropos_generalFindUniqueOrThrowArgs<ExtArgs>>): Prisma__apropos_generalClient<$Result.GetResult<Prisma.$apropos_generalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Apropos_general that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {apropos_generalFindFirstArgs} args - Arguments to find a Apropos_general
+     * @example
+     * // Get one Apropos_general
+     * const apropos_general = await prisma.apropos_general.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends apropos_generalFindFirstArgs>(args?: SelectSubset<T, apropos_generalFindFirstArgs<ExtArgs>>): Prisma__apropos_generalClient<$Result.GetResult<Prisma.$apropos_generalPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Apropos_general that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {apropos_generalFindFirstOrThrowArgs} args - Arguments to find a Apropos_general
+     * @example
+     * // Get one Apropos_general
+     * const apropos_general = await prisma.apropos_general.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends apropos_generalFindFirstOrThrowArgs>(args?: SelectSubset<T, apropos_generalFindFirstOrThrowArgs<ExtArgs>>): Prisma__apropos_generalClient<$Result.GetResult<Prisma.$apropos_generalPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Apropos_generals that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {apropos_generalFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Apropos_generals
+     * const apropos_generals = await prisma.apropos_general.findMany()
+     * 
+     * // Get first 10 Apropos_generals
+     * const apropos_generals = await prisma.apropos_general.findMany({ take: 10 })
+     * 
+     * // Only select the `id_gen`
+     * const apropos_generalWithId_genOnly = await prisma.apropos_general.findMany({ select: { id_gen: true } })
+     * 
+     */
+    findMany<T extends apropos_generalFindManyArgs>(args?: SelectSubset<T, apropos_generalFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$apropos_generalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Apropos_general.
+     * @param {apropos_generalCreateArgs} args - Arguments to create a Apropos_general.
+     * @example
+     * // Create one Apropos_general
+     * const Apropos_general = await prisma.apropos_general.create({
+     *   data: {
+     *     // ... data to create a Apropos_general
+     *   }
+     * })
+     * 
+     */
+    create<T extends apropos_generalCreateArgs>(args: SelectSubset<T, apropos_generalCreateArgs<ExtArgs>>): Prisma__apropos_generalClient<$Result.GetResult<Prisma.$apropos_generalPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Apropos_generals.
+     * @param {apropos_generalCreateManyArgs} args - Arguments to create many Apropos_generals.
+     * @example
+     * // Create many Apropos_generals
+     * const apropos_general = await prisma.apropos_general.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends apropos_generalCreateManyArgs>(args?: SelectSubset<T, apropos_generalCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Apropos_general.
+     * @param {apropos_generalDeleteArgs} args - Arguments to delete one Apropos_general.
+     * @example
+     * // Delete one Apropos_general
+     * const Apropos_general = await prisma.apropos_general.delete({
+     *   where: {
+     *     // ... filter to delete one Apropos_general
+     *   }
+     * })
+     * 
+     */
+    delete<T extends apropos_generalDeleteArgs>(args: SelectSubset<T, apropos_generalDeleteArgs<ExtArgs>>): Prisma__apropos_generalClient<$Result.GetResult<Prisma.$apropos_generalPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Apropos_general.
+     * @param {apropos_generalUpdateArgs} args - Arguments to update one Apropos_general.
+     * @example
+     * // Update one Apropos_general
+     * const apropos_general = await prisma.apropos_general.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends apropos_generalUpdateArgs>(args: SelectSubset<T, apropos_generalUpdateArgs<ExtArgs>>): Prisma__apropos_generalClient<$Result.GetResult<Prisma.$apropos_generalPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Apropos_generals.
+     * @param {apropos_generalDeleteManyArgs} args - Arguments to filter Apropos_generals to delete.
+     * @example
+     * // Delete a few Apropos_generals
+     * const { count } = await prisma.apropos_general.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends apropos_generalDeleteManyArgs>(args?: SelectSubset<T, apropos_generalDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Apropos_generals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {apropos_generalUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Apropos_generals
+     * const apropos_general = await prisma.apropos_general.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends apropos_generalUpdateManyArgs>(args: SelectSubset<T, apropos_generalUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Apropos_general.
+     * @param {apropos_generalUpsertArgs} args - Arguments to update or create a Apropos_general.
+     * @example
+     * // Update or create a Apropos_general
+     * const apropos_general = await prisma.apropos_general.upsert({
+     *   create: {
+     *     // ... data to create a Apropos_general
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Apropos_general we want to update
+     *   }
+     * })
+     */
+    upsert<T extends apropos_generalUpsertArgs>(args: SelectSubset<T, apropos_generalUpsertArgs<ExtArgs>>): Prisma__apropos_generalClient<$Result.GetResult<Prisma.$apropos_generalPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Apropos_generals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {apropos_generalCountArgs} args - Arguments to filter Apropos_generals to count.
+     * @example
+     * // Count the number of Apropos_generals
+     * const count = await prisma.apropos_general.count({
+     *   where: {
+     *     // ... the filter for the Apropos_generals we want to count
+     *   }
+     * })
+    **/
+    count<T extends apropos_generalCountArgs>(
+      args?: Subset<T, apropos_generalCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Apropos_generalCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Apropos_general.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Apropos_generalAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Apropos_generalAggregateArgs>(args: Subset<T, Apropos_generalAggregateArgs>): Prisma.PrismaPromise<GetApropos_generalAggregateType<T>>
+
+    /**
+     * Group by Apropos_general.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {apropos_generalGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends apropos_generalGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: apropos_generalGroupByArgs['orderBy'] }
+        : { orderBy?: apropos_generalGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, apropos_generalGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetApropos_generalGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the apropos_general model
+   */
+  readonly fields: apropos_generalFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for apropos_general.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__apropos_generalClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the apropos_general model
+   */
+  interface apropos_generalFieldRefs {
+    readonly id_gen: FieldRef<"apropos_general", 'Int'>
+    readonly photo: FieldRef<"apropos_general", 'String'>
+    readonly photo_alt: FieldRef<"apropos_general", 'String'>
+    readonly credit_nom: FieldRef<"apropos_general", 'String'>
+    readonly credit_url: FieldRef<"apropos_general", 'String'>
+    readonly description: FieldRef<"apropos_general", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * apropos_general findUnique
+   */
+  export type apropos_generalFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the apropos_general
+     */
+    select?: apropos_generalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the apropos_general
+     */
+    omit?: apropos_generalOmit<ExtArgs> | null
+    /**
+     * Filter, which apropos_general to fetch.
+     */
+    where: apropos_generalWhereUniqueInput
+  }
+
+  /**
+   * apropos_general findUniqueOrThrow
+   */
+  export type apropos_generalFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the apropos_general
+     */
+    select?: apropos_generalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the apropos_general
+     */
+    omit?: apropos_generalOmit<ExtArgs> | null
+    /**
+     * Filter, which apropos_general to fetch.
+     */
+    where: apropos_generalWhereUniqueInput
+  }
+
+  /**
+   * apropos_general findFirst
+   */
+  export type apropos_generalFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the apropos_general
+     */
+    select?: apropos_generalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the apropos_general
+     */
+    omit?: apropos_generalOmit<ExtArgs> | null
+    /**
+     * Filter, which apropos_general to fetch.
+     */
+    where?: apropos_generalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of apropos_generals to fetch.
+     */
+    orderBy?: apropos_generalOrderByWithRelationInput | apropos_generalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for apropos_generals.
+     */
+    cursor?: apropos_generalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` apropos_generals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` apropos_generals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of apropos_generals.
+     */
+    distinct?: Apropos_generalScalarFieldEnum | Apropos_generalScalarFieldEnum[]
+  }
+
+  /**
+   * apropos_general findFirstOrThrow
+   */
+  export type apropos_generalFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the apropos_general
+     */
+    select?: apropos_generalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the apropos_general
+     */
+    omit?: apropos_generalOmit<ExtArgs> | null
+    /**
+     * Filter, which apropos_general to fetch.
+     */
+    where?: apropos_generalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of apropos_generals to fetch.
+     */
+    orderBy?: apropos_generalOrderByWithRelationInput | apropos_generalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for apropos_generals.
+     */
+    cursor?: apropos_generalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` apropos_generals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` apropos_generals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of apropos_generals.
+     */
+    distinct?: Apropos_generalScalarFieldEnum | Apropos_generalScalarFieldEnum[]
+  }
+
+  /**
+   * apropos_general findMany
+   */
+  export type apropos_generalFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the apropos_general
+     */
+    select?: apropos_generalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the apropos_general
+     */
+    omit?: apropos_generalOmit<ExtArgs> | null
+    /**
+     * Filter, which apropos_generals to fetch.
+     */
+    where?: apropos_generalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of apropos_generals to fetch.
+     */
+    orderBy?: apropos_generalOrderByWithRelationInput | apropos_generalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing apropos_generals.
+     */
+    cursor?: apropos_generalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` apropos_generals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` apropos_generals.
+     */
+    skip?: number
+    distinct?: Apropos_generalScalarFieldEnum | Apropos_generalScalarFieldEnum[]
+  }
+
+  /**
+   * apropos_general create
+   */
+  export type apropos_generalCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the apropos_general
+     */
+    select?: apropos_generalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the apropos_general
+     */
+    omit?: apropos_generalOmit<ExtArgs> | null
+    /**
+     * The data needed to create a apropos_general.
+     */
+    data: XOR<apropos_generalCreateInput, apropos_generalUncheckedCreateInput>
+  }
+
+  /**
+   * apropos_general createMany
+   */
+  export type apropos_generalCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many apropos_generals.
+     */
+    data: apropos_generalCreateManyInput | apropos_generalCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * apropos_general update
+   */
+  export type apropos_generalUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the apropos_general
+     */
+    select?: apropos_generalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the apropos_general
+     */
+    omit?: apropos_generalOmit<ExtArgs> | null
+    /**
+     * The data needed to update a apropos_general.
+     */
+    data: XOR<apropos_generalUpdateInput, apropos_generalUncheckedUpdateInput>
+    /**
+     * Choose, which apropos_general to update.
+     */
+    where: apropos_generalWhereUniqueInput
+  }
+
+  /**
+   * apropos_general updateMany
+   */
+  export type apropos_generalUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update apropos_generals.
+     */
+    data: XOR<apropos_generalUpdateManyMutationInput, apropos_generalUncheckedUpdateManyInput>
+    /**
+     * Filter which apropos_generals to update
+     */
+    where?: apropos_generalWhereInput
+    /**
+     * Limit how many apropos_generals to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * apropos_general upsert
+   */
+  export type apropos_generalUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the apropos_general
+     */
+    select?: apropos_generalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the apropos_general
+     */
+    omit?: apropos_generalOmit<ExtArgs> | null
+    /**
+     * The filter to search for the apropos_general to update in case it exists.
+     */
+    where: apropos_generalWhereUniqueInput
+    /**
+     * In case the apropos_general found by the `where` argument doesn't exist, create a new apropos_general with this data.
+     */
+    create: XOR<apropos_generalCreateInput, apropos_generalUncheckedCreateInput>
+    /**
+     * In case the apropos_general was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<apropos_generalUpdateInput, apropos_generalUncheckedUpdateInput>
+  }
+
+  /**
+   * apropos_general delete
+   */
+  export type apropos_generalDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the apropos_general
+     */
+    select?: apropos_generalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the apropos_general
+     */
+    omit?: apropos_generalOmit<ExtArgs> | null
+    /**
+     * Filter which apropos_general to delete.
+     */
+    where: apropos_generalWhereUniqueInput
+  }
+
+  /**
+   * apropos_general deleteMany
+   */
+  export type apropos_generalDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which apropos_generals to delete
+     */
+    where?: apropos_generalWhereInput
+    /**
+     * Limit how many apropos_generals to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * apropos_general without action
+   */
+  export type apropos_generalDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the apropos_general
+     */
+    select?: apropos_generalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the apropos_general
+     */
+    omit?: apropos_generalOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model apropos_outils
+   */
+
+  export type AggregateApropos_outils = {
+    _count: Apropos_outilsCountAggregateOutputType | null
+    _avg: Apropos_outilsAvgAggregateOutputType | null
+    _sum: Apropos_outilsSumAggregateOutputType | null
+    _min: Apropos_outilsMinAggregateOutputType | null
+    _max: Apropos_outilsMaxAggregateOutputType | null
+  }
+
+  export type Apropos_outilsAvgAggregateOutputType = {
+    id_outil: number | null
+  }
+
+  export type Apropos_outilsSumAggregateOutputType = {
+    id_outil: number | null
+  }
+
+  export type Apropos_outilsMinAggregateOutputType = {
+    id_outil: number | null
+    titre: string | null
+    description: string | null
+    icone: string | null
+    icone_alt: string | null
+    icone_rounded: boolean | null
+    lien: string | null
+    couleur_fond: string | null
+    couleur_contour: string | null
+    couleur_texte: string | null
+    couleur_fond_dark: string | null
+    couleur_contour_dark: string | null
+    couleur_texte_dark: string | null
+    afficher: boolean | null
+  }
+
+  export type Apropos_outilsMaxAggregateOutputType = {
+    id_outil: number | null
+    titre: string | null
+    description: string | null
+    icone: string | null
+    icone_alt: string | null
+    icone_rounded: boolean | null
+    lien: string | null
+    couleur_fond: string | null
+    couleur_contour: string | null
+    couleur_texte: string | null
+    couleur_fond_dark: string | null
+    couleur_contour_dark: string | null
+    couleur_texte_dark: string | null
+    afficher: boolean | null
+  }
+
+  export type Apropos_outilsCountAggregateOutputType = {
+    id_outil: number
+    titre: number
+    description: number
+    icone: number
+    icone_alt: number
+    icone_rounded: number
+    lien: number
+    couleur_fond: number
+    couleur_contour: number
+    couleur_texte: number
+    couleur_fond_dark: number
+    couleur_contour_dark: number
+    couleur_texte_dark: number
+    afficher: number
+    _all: number
+  }
+
+
+  export type Apropos_outilsAvgAggregateInputType = {
+    id_outil?: true
+  }
+
+  export type Apropos_outilsSumAggregateInputType = {
+    id_outil?: true
+  }
+
+  export type Apropos_outilsMinAggregateInputType = {
+    id_outil?: true
+    titre?: true
+    description?: true
+    icone?: true
+    icone_alt?: true
+    icone_rounded?: true
+    lien?: true
+    couleur_fond?: true
+    couleur_contour?: true
+    couleur_texte?: true
+    couleur_fond_dark?: true
+    couleur_contour_dark?: true
+    couleur_texte_dark?: true
+    afficher?: true
+  }
+
+  export type Apropos_outilsMaxAggregateInputType = {
+    id_outil?: true
+    titre?: true
+    description?: true
+    icone?: true
+    icone_alt?: true
+    icone_rounded?: true
+    lien?: true
+    couleur_fond?: true
+    couleur_contour?: true
+    couleur_texte?: true
+    couleur_fond_dark?: true
+    couleur_contour_dark?: true
+    couleur_texte_dark?: true
+    afficher?: true
+  }
+
+  export type Apropos_outilsCountAggregateInputType = {
+    id_outil?: true
+    titre?: true
+    description?: true
+    icone?: true
+    icone_alt?: true
+    icone_rounded?: true
+    lien?: true
+    couleur_fond?: true
+    couleur_contour?: true
+    couleur_texte?: true
+    couleur_fond_dark?: true
+    couleur_contour_dark?: true
+    couleur_texte_dark?: true
+    afficher?: true
+    _all?: true
+  }
+
+  export type Apropos_outilsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which apropos_outils to aggregate.
+     */
+    where?: apropos_outilsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of apropos_outils to fetch.
+     */
+    orderBy?: apropos_outilsOrderByWithRelationInput | apropos_outilsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: apropos_outilsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` apropos_outils from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` apropos_outils.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned apropos_outils
+    **/
+    _count?: true | Apropos_outilsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Apropos_outilsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Apropos_outilsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Apropos_outilsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Apropos_outilsMaxAggregateInputType
+  }
+
+  export type GetApropos_outilsAggregateType<T extends Apropos_outilsAggregateArgs> = {
+        [P in keyof T & keyof AggregateApropos_outils]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateApropos_outils[P]>
+      : GetScalarType<T[P], AggregateApropos_outils[P]>
+  }
+
+
+
+
+  export type apropos_outilsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: apropos_outilsWhereInput
+    orderBy?: apropos_outilsOrderByWithAggregationInput | apropos_outilsOrderByWithAggregationInput[]
+    by: Apropos_outilsScalarFieldEnum[] | Apropos_outilsScalarFieldEnum
+    having?: apropos_outilsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Apropos_outilsCountAggregateInputType | true
+    _avg?: Apropos_outilsAvgAggregateInputType
+    _sum?: Apropos_outilsSumAggregateInputType
+    _min?: Apropos_outilsMinAggregateInputType
+    _max?: Apropos_outilsMaxAggregateInputType
+  }
+
+  export type Apropos_outilsGroupByOutputType = {
+    id_outil: number
+    titre: string
+    description: string
+    icone: string
+    icone_alt: string
+    icone_rounded: boolean
+    lien: string
+    couleur_fond: string
+    couleur_contour: string
+    couleur_texte: string
+    couleur_fond_dark: string
+    couleur_contour_dark: string
+    couleur_texte_dark: string
+    afficher: boolean
+    _count: Apropos_outilsCountAggregateOutputType | null
+    _avg: Apropos_outilsAvgAggregateOutputType | null
+    _sum: Apropos_outilsSumAggregateOutputType | null
+    _min: Apropos_outilsMinAggregateOutputType | null
+    _max: Apropos_outilsMaxAggregateOutputType | null
+  }
+
+  type GetApropos_outilsGroupByPayload<T extends apropos_outilsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Apropos_outilsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Apropos_outilsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Apropos_outilsGroupByOutputType[P]>
+            : GetScalarType<T[P], Apropos_outilsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type apropos_outilsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id_outil?: boolean
+    titre?: boolean
+    description?: boolean
+    icone?: boolean
+    icone_alt?: boolean
+    icone_rounded?: boolean
+    lien?: boolean
+    couleur_fond?: boolean
+    couleur_contour?: boolean
+    couleur_texte?: boolean
+    couleur_fond_dark?: boolean
+    couleur_contour_dark?: boolean
+    couleur_texte_dark?: boolean
+    afficher?: boolean
+  }, ExtArgs["result"]["apropos_outils"]>
+
+
+
+  export type apropos_outilsSelectScalar = {
+    id_outil?: boolean
+    titre?: boolean
+    description?: boolean
+    icone?: boolean
+    icone_alt?: boolean
+    icone_rounded?: boolean
+    lien?: boolean
+    couleur_fond?: boolean
+    couleur_contour?: boolean
+    couleur_texte?: boolean
+    couleur_fond_dark?: boolean
+    couleur_contour_dark?: boolean
+    couleur_texte_dark?: boolean
+    afficher?: boolean
+  }
+
+  export type apropos_outilsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_outil" | "titre" | "description" | "icone" | "icone_alt" | "icone_rounded" | "lien" | "couleur_fond" | "couleur_contour" | "couleur_texte" | "couleur_fond_dark" | "couleur_contour_dark" | "couleur_texte_dark" | "afficher", ExtArgs["result"]["apropos_outils"]>
+
+  export type $apropos_outilsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "apropos_outils"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id_outil: number
+      titre: string
+      description: string
+      icone: string
+      icone_alt: string
+      icone_rounded: boolean
+      lien: string
+      couleur_fond: string
+      couleur_contour: string
+      couleur_texte: string
+      couleur_fond_dark: string
+      couleur_contour_dark: string
+      couleur_texte_dark: string
+      afficher: boolean
+    }, ExtArgs["result"]["apropos_outils"]>
+    composites: {}
+  }
+
+  type apropos_outilsGetPayload<S extends boolean | null | undefined | apropos_outilsDefaultArgs> = $Result.GetResult<Prisma.$apropos_outilsPayload, S>
+
+  type apropos_outilsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<apropos_outilsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Apropos_outilsCountAggregateInputType | true
+    }
+
+  export interface apropos_outilsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['apropos_outils'], meta: { name: 'apropos_outils' } }
+    /**
+     * Find zero or one Apropos_outils that matches the filter.
+     * @param {apropos_outilsFindUniqueArgs} args - Arguments to find a Apropos_outils
+     * @example
+     * // Get one Apropos_outils
+     * const apropos_outils = await prisma.apropos_outils.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends apropos_outilsFindUniqueArgs>(args: SelectSubset<T, apropos_outilsFindUniqueArgs<ExtArgs>>): Prisma__apropos_outilsClient<$Result.GetResult<Prisma.$apropos_outilsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Apropos_outils that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {apropos_outilsFindUniqueOrThrowArgs} args - Arguments to find a Apropos_outils
+     * @example
+     * // Get one Apropos_outils
+     * const apropos_outils = await prisma.apropos_outils.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends apropos_outilsFindUniqueOrThrowArgs>(args: SelectSubset<T, apropos_outilsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__apropos_outilsClient<$Result.GetResult<Prisma.$apropos_outilsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Apropos_outils that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {apropos_outilsFindFirstArgs} args - Arguments to find a Apropos_outils
+     * @example
+     * // Get one Apropos_outils
+     * const apropos_outils = await prisma.apropos_outils.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends apropos_outilsFindFirstArgs>(args?: SelectSubset<T, apropos_outilsFindFirstArgs<ExtArgs>>): Prisma__apropos_outilsClient<$Result.GetResult<Prisma.$apropos_outilsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Apropos_outils that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {apropos_outilsFindFirstOrThrowArgs} args - Arguments to find a Apropos_outils
+     * @example
+     * // Get one Apropos_outils
+     * const apropos_outils = await prisma.apropos_outils.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends apropos_outilsFindFirstOrThrowArgs>(args?: SelectSubset<T, apropos_outilsFindFirstOrThrowArgs<ExtArgs>>): Prisma__apropos_outilsClient<$Result.GetResult<Prisma.$apropos_outilsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Apropos_outils that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {apropos_outilsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Apropos_outils
+     * const apropos_outils = await prisma.apropos_outils.findMany()
+     * 
+     * // Get first 10 Apropos_outils
+     * const apropos_outils = await prisma.apropos_outils.findMany({ take: 10 })
+     * 
+     * // Only select the `id_outil`
+     * const apropos_outilsWithId_outilOnly = await prisma.apropos_outils.findMany({ select: { id_outil: true } })
+     * 
+     */
+    findMany<T extends apropos_outilsFindManyArgs>(args?: SelectSubset<T, apropos_outilsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$apropos_outilsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Apropos_outils.
+     * @param {apropos_outilsCreateArgs} args - Arguments to create a Apropos_outils.
+     * @example
+     * // Create one Apropos_outils
+     * const Apropos_outils = await prisma.apropos_outils.create({
+     *   data: {
+     *     // ... data to create a Apropos_outils
+     *   }
+     * })
+     * 
+     */
+    create<T extends apropos_outilsCreateArgs>(args: SelectSubset<T, apropos_outilsCreateArgs<ExtArgs>>): Prisma__apropos_outilsClient<$Result.GetResult<Prisma.$apropos_outilsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Apropos_outils.
+     * @param {apropos_outilsCreateManyArgs} args - Arguments to create many Apropos_outils.
+     * @example
+     * // Create many Apropos_outils
+     * const apropos_outils = await prisma.apropos_outils.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends apropos_outilsCreateManyArgs>(args?: SelectSubset<T, apropos_outilsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Apropos_outils.
+     * @param {apropos_outilsDeleteArgs} args - Arguments to delete one Apropos_outils.
+     * @example
+     * // Delete one Apropos_outils
+     * const Apropos_outils = await prisma.apropos_outils.delete({
+     *   where: {
+     *     // ... filter to delete one Apropos_outils
+     *   }
+     * })
+     * 
+     */
+    delete<T extends apropos_outilsDeleteArgs>(args: SelectSubset<T, apropos_outilsDeleteArgs<ExtArgs>>): Prisma__apropos_outilsClient<$Result.GetResult<Prisma.$apropos_outilsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Apropos_outils.
+     * @param {apropos_outilsUpdateArgs} args - Arguments to update one Apropos_outils.
+     * @example
+     * // Update one Apropos_outils
+     * const apropos_outils = await prisma.apropos_outils.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends apropos_outilsUpdateArgs>(args: SelectSubset<T, apropos_outilsUpdateArgs<ExtArgs>>): Prisma__apropos_outilsClient<$Result.GetResult<Prisma.$apropos_outilsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Apropos_outils.
+     * @param {apropos_outilsDeleteManyArgs} args - Arguments to filter Apropos_outils to delete.
+     * @example
+     * // Delete a few Apropos_outils
+     * const { count } = await prisma.apropos_outils.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends apropos_outilsDeleteManyArgs>(args?: SelectSubset<T, apropos_outilsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Apropos_outils.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {apropos_outilsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Apropos_outils
+     * const apropos_outils = await prisma.apropos_outils.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends apropos_outilsUpdateManyArgs>(args: SelectSubset<T, apropos_outilsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Apropos_outils.
+     * @param {apropos_outilsUpsertArgs} args - Arguments to update or create a Apropos_outils.
+     * @example
+     * // Update or create a Apropos_outils
+     * const apropos_outils = await prisma.apropos_outils.upsert({
+     *   create: {
+     *     // ... data to create a Apropos_outils
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Apropos_outils we want to update
+     *   }
+     * })
+     */
+    upsert<T extends apropos_outilsUpsertArgs>(args: SelectSubset<T, apropos_outilsUpsertArgs<ExtArgs>>): Prisma__apropos_outilsClient<$Result.GetResult<Prisma.$apropos_outilsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Apropos_outils.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {apropos_outilsCountArgs} args - Arguments to filter Apropos_outils to count.
+     * @example
+     * // Count the number of Apropos_outils
+     * const count = await prisma.apropos_outils.count({
+     *   where: {
+     *     // ... the filter for the Apropos_outils we want to count
+     *   }
+     * })
+    **/
+    count<T extends apropos_outilsCountArgs>(
+      args?: Subset<T, apropos_outilsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Apropos_outilsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Apropos_outils.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Apropos_outilsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Apropos_outilsAggregateArgs>(args: Subset<T, Apropos_outilsAggregateArgs>): Prisma.PrismaPromise<GetApropos_outilsAggregateType<T>>
+
+    /**
+     * Group by Apropos_outils.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {apropos_outilsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends apropos_outilsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: apropos_outilsGroupByArgs['orderBy'] }
+        : { orderBy?: apropos_outilsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, apropos_outilsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetApropos_outilsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the apropos_outils model
+   */
+  readonly fields: apropos_outilsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for apropos_outils.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__apropos_outilsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the apropos_outils model
+   */
+  interface apropos_outilsFieldRefs {
+    readonly id_outil: FieldRef<"apropos_outils", 'Int'>
+    readonly titre: FieldRef<"apropos_outils", 'String'>
+    readonly description: FieldRef<"apropos_outils", 'String'>
+    readonly icone: FieldRef<"apropos_outils", 'String'>
+    readonly icone_alt: FieldRef<"apropos_outils", 'String'>
+    readonly icone_rounded: FieldRef<"apropos_outils", 'Boolean'>
+    readonly lien: FieldRef<"apropos_outils", 'String'>
+    readonly couleur_fond: FieldRef<"apropos_outils", 'String'>
+    readonly couleur_contour: FieldRef<"apropos_outils", 'String'>
+    readonly couleur_texte: FieldRef<"apropos_outils", 'String'>
+    readonly couleur_fond_dark: FieldRef<"apropos_outils", 'String'>
+    readonly couleur_contour_dark: FieldRef<"apropos_outils", 'String'>
+    readonly couleur_texte_dark: FieldRef<"apropos_outils", 'String'>
+    readonly afficher: FieldRef<"apropos_outils", 'Boolean'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * apropos_outils findUnique
+   */
+  export type apropos_outilsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the apropos_outils
+     */
+    select?: apropos_outilsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the apropos_outils
+     */
+    omit?: apropos_outilsOmit<ExtArgs> | null
+    /**
+     * Filter, which apropos_outils to fetch.
+     */
+    where: apropos_outilsWhereUniqueInput
+  }
+
+  /**
+   * apropos_outils findUniqueOrThrow
+   */
+  export type apropos_outilsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the apropos_outils
+     */
+    select?: apropos_outilsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the apropos_outils
+     */
+    omit?: apropos_outilsOmit<ExtArgs> | null
+    /**
+     * Filter, which apropos_outils to fetch.
+     */
+    where: apropos_outilsWhereUniqueInput
+  }
+
+  /**
+   * apropos_outils findFirst
+   */
+  export type apropos_outilsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the apropos_outils
+     */
+    select?: apropos_outilsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the apropos_outils
+     */
+    omit?: apropos_outilsOmit<ExtArgs> | null
+    /**
+     * Filter, which apropos_outils to fetch.
+     */
+    where?: apropos_outilsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of apropos_outils to fetch.
+     */
+    orderBy?: apropos_outilsOrderByWithRelationInput | apropos_outilsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for apropos_outils.
+     */
+    cursor?: apropos_outilsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` apropos_outils from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` apropos_outils.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of apropos_outils.
+     */
+    distinct?: Apropos_outilsScalarFieldEnum | Apropos_outilsScalarFieldEnum[]
+  }
+
+  /**
+   * apropos_outils findFirstOrThrow
+   */
+  export type apropos_outilsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the apropos_outils
+     */
+    select?: apropos_outilsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the apropos_outils
+     */
+    omit?: apropos_outilsOmit<ExtArgs> | null
+    /**
+     * Filter, which apropos_outils to fetch.
+     */
+    where?: apropos_outilsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of apropos_outils to fetch.
+     */
+    orderBy?: apropos_outilsOrderByWithRelationInput | apropos_outilsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for apropos_outils.
+     */
+    cursor?: apropos_outilsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` apropos_outils from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` apropos_outils.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of apropos_outils.
+     */
+    distinct?: Apropos_outilsScalarFieldEnum | Apropos_outilsScalarFieldEnum[]
+  }
+
+  /**
+   * apropos_outils findMany
+   */
+  export type apropos_outilsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the apropos_outils
+     */
+    select?: apropos_outilsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the apropos_outils
+     */
+    omit?: apropos_outilsOmit<ExtArgs> | null
+    /**
+     * Filter, which apropos_outils to fetch.
+     */
+    where?: apropos_outilsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of apropos_outils to fetch.
+     */
+    orderBy?: apropos_outilsOrderByWithRelationInput | apropos_outilsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing apropos_outils.
+     */
+    cursor?: apropos_outilsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` apropos_outils from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` apropos_outils.
+     */
+    skip?: number
+    distinct?: Apropos_outilsScalarFieldEnum | Apropos_outilsScalarFieldEnum[]
+  }
+
+  /**
+   * apropos_outils create
+   */
+  export type apropos_outilsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the apropos_outils
+     */
+    select?: apropos_outilsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the apropos_outils
+     */
+    omit?: apropos_outilsOmit<ExtArgs> | null
+    /**
+     * The data needed to create a apropos_outils.
+     */
+    data: XOR<apropos_outilsCreateInput, apropos_outilsUncheckedCreateInput>
+  }
+
+  /**
+   * apropos_outils createMany
+   */
+  export type apropos_outilsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many apropos_outils.
+     */
+    data: apropos_outilsCreateManyInput | apropos_outilsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * apropos_outils update
+   */
+  export type apropos_outilsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the apropos_outils
+     */
+    select?: apropos_outilsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the apropos_outils
+     */
+    omit?: apropos_outilsOmit<ExtArgs> | null
+    /**
+     * The data needed to update a apropos_outils.
+     */
+    data: XOR<apropos_outilsUpdateInput, apropos_outilsUncheckedUpdateInput>
+    /**
+     * Choose, which apropos_outils to update.
+     */
+    where: apropos_outilsWhereUniqueInput
+  }
+
+  /**
+   * apropos_outils updateMany
+   */
+  export type apropos_outilsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update apropos_outils.
+     */
+    data: XOR<apropos_outilsUpdateManyMutationInput, apropos_outilsUncheckedUpdateManyInput>
+    /**
+     * Filter which apropos_outils to update
+     */
+    where?: apropos_outilsWhereInput
+    /**
+     * Limit how many apropos_outils to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * apropos_outils upsert
+   */
+  export type apropos_outilsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the apropos_outils
+     */
+    select?: apropos_outilsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the apropos_outils
+     */
+    omit?: apropos_outilsOmit<ExtArgs> | null
+    /**
+     * The filter to search for the apropos_outils to update in case it exists.
+     */
+    where: apropos_outilsWhereUniqueInput
+    /**
+     * In case the apropos_outils found by the `where` argument doesn't exist, create a new apropos_outils with this data.
+     */
+    create: XOR<apropos_outilsCreateInput, apropos_outilsUncheckedCreateInput>
+    /**
+     * In case the apropos_outils was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<apropos_outilsUpdateInput, apropos_outilsUncheckedUpdateInput>
+  }
+
+  /**
+   * apropos_outils delete
+   */
+  export type apropos_outilsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the apropos_outils
+     */
+    select?: apropos_outilsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the apropos_outils
+     */
+    omit?: apropos_outilsOmit<ExtArgs> | null
+    /**
+     * Filter which apropos_outils to delete.
+     */
+    where: apropos_outilsWhereUniqueInput
+  }
+
+  /**
+   * apropos_outils deleteMany
+   */
+  export type apropos_outilsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which apropos_outils to delete
+     */
+    where?: apropos_outilsWhereInput
+    /**
+     * Limit how many apropos_outils to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * apropos_outils without action
+   */
+  export type apropos_outilsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the apropos_outils
+     */
+    select?: apropos_outilsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the apropos_outils
+     */
+    omit?: apropos_outilsOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -25363,6 +28514,53 @@ export namespace Prisma {
   export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
 
 
+  export const Accueil_generalScalarFieldEnum: {
+    id_gen: 'id_gen',
+    video_desktop: 'video_desktop',
+    video_mobile: 'video_mobile',
+    video_cover: 'video_cover',
+    photo: 'photo',
+    photo_alt: 'photo_alt',
+    credit_nom: 'credit_nom',
+    credit_url: 'credit_url',
+    description: 'description'
+  };
+
+  export type Accueil_generalScalarFieldEnum = (typeof Accueil_generalScalarFieldEnum)[keyof typeof Accueil_generalScalarFieldEnum]
+
+
+  export const Apropos_generalScalarFieldEnum: {
+    id_gen: 'id_gen',
+    photo: 'photo',
+    photo_alt: 'photo_alt',
+    credit_nom: 'credit_nom',
+    credit_url: 'credit_url',
+    description: 'description'
+  };
+
+  export type Apropos_generalScalarFieldEnum = (typeof Apropos_generalScalarFieldEnum)[keyof typeof Apropos_generalScalarFieldEnum]
+
+
+  export const Apropos_outilsScalarFieldEnum: {
+    id_outil: 'id_outil',
+    titre: 'titre',
+    description: 'description',
+    icone: 'icone',
+    icone_alt: 'icone_alt',
+    icone_rounded: 'icone_rounded',
+    lien: 'lien',
+    couleur_fond: 'couleur_fond',
+    couleur_contour: 'couleur_contour',
+    couleur_texte: 'couleur_texte',
+    couleur_fond_dark: 'couleur_fond_dark',
+    couleur_contour_dark: 'couleur_contour_dark',
+    couleur_texte_dark: 'couleur_texte_dark',
+    afficher: 'afficher'
+  };
+
+  export type Apropos_outilsScalarFieldEnum = (typeof Apropos_outilsScalarFieldEnum)[keyof typeof Apropos_outilsScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -25546,6 +28744,48 @@ export namespace Prisma {
   };
 
   export type VerificationOrderByRelevanceFieldEnum = (typeof VerificationOrderByRelevanceFieldEnum)[keyof typeof VerificationOrderByRelevanceFieldEnum]
+
+
+  export const accueil_generalOrderByRelevanceFieldEnum: {
+    video_desktop: 'video_desktop',
+    video_mobile: 'video_mobile',
+    video_cover: 'video_cover',
+    photo: 'photo',
+    photo_alt: 'photo_alt',
+    credit_nom: 'credit_nom',
+    credit_url: 'credit_url',
+    description: 'description'
+  };
+
+  export type accueil_generalOrderByRelevanceFieldEnum = (typeof accueil_generalOrderByRelevanceFieldEnum)[keyof typeof accueil_generalOrderByRelevanceFieldEnum]
+
+
+  export const apropos_generalOrderByRelevanceFieldEnum: {
+    photo: 'photo',
+    photo_alt: 'photo_alt',
+    credit_nom: 'credit_nom',
+    credit_url: 'credit_url',
+    description: 'description'
+  };
+
+  export type apropos_generalOrderByRelevanceFieldEnum = (typeof apropos_generalOrderByRelevanceFieldEnum)[keyof typeof apropos_generalOrderByRelevanceFieldEnum]
+
+
+  export const apropos_outilsOrderByRelevanceFieldEnum: {
+    titre: 'titre',
+    description: 'description',
+    icone: 'icone',
+    icone_alt: 'icone_alt',
+    lien: 'lien',
+    couleur_fond: 'couleur_fond',
+    couleur_contour: 'couleur_contour',
+    couleur_texte: 'couleur_texte',
+    couleur_fond_dark: 'couleur_fond_dark',
+    couleur_contour_dark: 'couleur_contour_dark',
+    couleur_texte_dark: 'couleur_texte_dark'
+  };
+
+  export type apropos_outilsOrderByRelevanceFieldEnum = (typeof apropos_outilsOrderByRelevanceFieldEnum)[keyof typeof apropos_outilsOrderByRelevanceFieldEnum]
 
 
   /**
@@ -26985,6 +30225,241 @@ export namespace Prisma {
     updatedAt?: DateTimeNullableWithAggregatesFilter<"Verification"> | Date | string | null
   }
 
+  export type accueil_generalWhereInput = {
+    AND?: accueil_generalWhereInput | accueil_generalWhereInput[]
+    OR?: accueil_generalWhereInput[]
+    NOT?: accueil_generalWhereInput | accueil_generalWhereInput[]
+    id_gen?: IntFilter<"accueil_general"> | number
+    video_desktop?: StringFilter<"accueil_general"> | string
+    video_mobile?: StringFilter<"accueil_general"> | string
+    video_cover?: StringFilter<"accueil_general"> | string
+    photo?: StringFilter<"accueil_general"> | string
+    photo_alt?: StringFilter<"accueil_general"> | string
+    credit_nom?: StringFilter<"accueil_general"> | string
+    credit_url?: StringFilter<"accueil_general"> | string
+    description?: StringFilter<"accueil_general"> | string
+  }
+
+  export type accueil_generalOrderByWithRelationInput = {
+    id_gen?: SortOrder
+    video_desktop?: SortOrder
+    video_mobile?: SortOrder
+    video_cover?: SortOrder
+    photo?: SortOrder
+    photo_alt?: SortOrder
+    credit_nom?: SortOrder
+    credit_url?: SortOrder
+    description?: SortOrder
+    _relevance?: accueil_generalOrderByRelevanceInput
+  }
+
+  export type accueil_generalWhereUniqueInput = Prisma.AtLeast<{
+    id_gen?: number
+    AND?: accueil_generalWhereInput | accueil_generalWhereInput[]
+    OR?: accueil_generalWhereInput[]
+    NOT?: accueil_generalWhereInput | accueil_generalWhereInput[]
+    video_desktop?: StringFilter<"accueil_general"> | string
+    video_mobile?: StringFilter<"accueil_general"> | string
+    video_cover?: StringFilter<"accueil_general"> | string
+    photo?: StringFilter<"accueil_general"> | string
+    photo_alt?: StringFilter<"accueil_general"> | string
+    credit_nom?: StringFilter<"accueil_general"> | string
+    credit_url?: StringFilter<"accueil_general"> | string
+    description?: StringFilter<"accueil_general"> | string
+  }, "id_gen">
+
+  export type accueil_generalOrderByWithAggregationInput = {
+    id_gen?: SortOrder
+    video_desktop?: SortOrder
+    video_mobile?: SortOrder
+    video_cover?: SortOrder
+    photo?: SortOrder
+    photo_alt?: SortOrder
+    credit_nom?: SortOrder
+    credit_url?: SortOrder
+    description?: SortOrder
+    _count?: accueil_generalCountOrderByAggregateInput
+    _avg?: accueil_generalAvgOrderByAggregateInput
+    _max?: accueil_generalMaxOrderByAggregateInput
+    _min?: accueil_generalMinOrderByAggregateInput
+    _sum?: accueil_generalSumOrderByAggregateInput
+  }
+
+  export type accueil_generalScalarWhereWithAggregatesInput = {
+    AND?: accueil_generalScalarWhereWithAggregatesInput | accueil_generalScalarWhereWithAggregatesInput[]
+    OR?: accueil_generalScalarWhereWithAggregatesInput[]
+    NOT?: accueil_generalScalarWhereWithAggregatesInput | accueil_generalScalarWhereWithAggregatesInput[]
+    id_gen?: IntWithAggregatesFilter<"accueil_general"> | number
+    video_desktop?: StringWithAggregatesFilter<"accueil_general"> | string
+    video_mobile?: StringWithAggregatesFilter<"accueil_general"> | string
+    video_cover?: StringWithAggregatesFilter<"accueil_general"> | string
+    photo?: StringWithAggregatesFilter<"accueil_general"> | string
+    photo_alt?: StringWithAggregatesFilter<"accueil_general"> | string
+    credit_nom?: StringWithAggregatesFilter<"accueil_general"> | string
+    credit_url?: StringWithAggregatesFilter<"accueil_general"> | string
+    description?: StringWithAggregatesFilter<"accueil_general"> | string
+  }
+
+  export type apropos_generalWhereInput = {
+    AND?: apropos_generalWhereInput | apropos_generalWhereInput[]
+    OR?: apropos_generalWhereInput[]
+    NOT?: apropos_generalWhereInput | apropos_generalWhereInput[]
+    id_gen?: IntFilter<"apropos_general"> | number
+    photo?: StringFilter<"apropos_general"> | string
+    photo_alt?: StringFilter<"apropos_general"> | string
+    credit_nom?: StringFilter<"apropos_general"> | string
+    credit_url?: StringFilter<"apropos_general"> | string
+    description?: StringFilter<"apropos_general"> | string
+  }
+
+  export type apropos_generalOrderByWithRelationInput = {
+    id_gen?: SortOrder
+    photo?: SortOrder
+    photo_alt?: SortOrder
+    credit_nom?: SortOrder
+    credit_url?: SortOrder
+    description?: SortOrder
+    _relevance?: apropos_generalOrderByRelevanceInput
+  }
+
+  export type apropos_generalWhereUniqueInput = Prisma.AtLeast<{
+    id_gen?: number
+    AND?: apropos_generalWhereInput | apropos_generalWhereInput[]
+    OR?: apropos_generalWhereInput[]
+    NOT?: apropos_generalWhereInput | apropos_generalWhereInput[]
+    photo?: StringFilter<"apropos_general"> | string
+    photo_alt?: StringFilter<"apropos_general"> | string
+    credit_nom?: StringFilter<"apropos_general"> | string
+    credit_url?: StringFilter<"apropos_general"> | string
+    description?: StringFilter<"apropos_general"> | string
+  }, "id_gen">
+
+  export type apropos_generalOrderByWithAggregationInput = {
+    id_gen?: SortOrder
+    photo?: SortOrder
+    photo_alt?: SortOrder
+    credit_nom?: SortOrder
+    credit_url?: SortOrder
+    description?: SortOrder
+    _count?: apropos_generalCountOrderByAggregateInput
+    _avg?: apropos_generalAvgOrderByAggregateInput
+    _max?: apropos_generalMaxOrderByAggregateInput
+    _min?: apropos_generalMinOrderByAggregateInput
+    _sum?: apropos_generalSumOrderByAggregateInput
+  }
+
+  export type apropos_generalScalarWhereWithAggregatesInput = {
+    AND?: apropos_generalScalarWhereWithAggregatesInput | apropos_generalScalarWhereWithAggregatesInput[]
+    OR?: apropos_generalScalarWhereWithAggregatesInput[]
+    NOT?: apropos_generalScalarWhereWithAggregatesInput | apropos_generalScalarWhereWithAggregatesInput[]
+    id_gen?: IntWithAggregatesFilter<"apropos_general"> | number
+    photo?: StringWithAggregatesFilter<"apropos_general"> | string
+    photo_alt?: StringWithAggregatesFilter<"apropos_general"> | string
+    credit_nom?: StringWithAggregatesFilter<"apropos_general"> | string
+    credit_url?: StringWithAggregatesFilter<"apropos_general"> | string
+    description?: StringWithAggregatesFilter<"apropos_general"> | string
+  }
+
+  export type apropos_outilsWhereInput = {
+    AND?: apropos_outilsWhereInput | apropos_outilsWhereInput[]
+    OR?: apropos_outilsWhereInput[]
+    NOT?: apropos_outilsWhereInput | apropos_outilsWhereInput[]
+    id_outil?: IntFilter<"apropos_outils"> | number
+    titre?: StringFilter<"apropos_outils"> | string
+    description?: StringFilter<"apropos_outils"> | string
+    icone?: StringFilter<"apropos_outils"> | string
+    icone_alt?: StringFilter<"apropos_outils"> | string
+    icone_rounded?: BoolFilter<"apropos_outils"> | boolean
+    lien?: StringFilter<"apropos_outils"> | string
+    couleur_fond?: StringFilter<"apropos_outils"> | string
+    couleur_contour?: StringFilter<"apropos_outils"> | string
+    couleur_texte?: StringFilter<"apropos_outils"> | string
+    couleur_fond_dark?: StringFilter<"apropos_outils"> | string
+    couleur_contour_dark?: StringFilter<"apropos_outils"> | string
+    couleur_texte_dark?: StringFilter<"apropos_outils"> | string
+    afficher?: BoolFilter<"apropos_outils"> | boolean
+  }
+
+  export type apropos_outilsOrderByWithRelationInput = {
+    id_outil?: SortOrder
+    titre?: SortOrder
+    description?: SortOrder
+    icone?: SortOrder
+    icone_alt?: SortOrder
+    icone_rounded?: SortOrder
+    lien?: SortOrder
+    couleur_fond?: SortOrder
+    couleur_contour?: SortOrder
+    couleur_texte?: SortOrder
+    couleur_fond_dark?: SortOrder
+    couleur_contour_dark?: SortOrder
+    couleur_texte_dark?: SortOrder
+    afficher?: SortOrder
+    _relevance?: apropos_outilsOrderByRelevanceInput
+  }
+
+  export type apropos_outilsWhereUniqueInput = Prisma.AtLeast<{
+    id_outil?: number
+    AND?: apropos_outilsWhereInput | apropos_outilsWhereInput[]
+    OR?: apropos_outilsWhereInput[]
+    NOT?: apropos_outilsWhereInput | apropos_outilsWhereInput[]
+    titre?: StringFilter<"apropos_outils"> | string
+    description?: StringFilter<"apropos_outils"> | string
+    icone?: StringFilter<"apropos_outils"> | string
+    icone_alt?: StringFilter<"apropos_outils"> | string
+    icone_rounded?: BoolFilter<"apropos_outils"> | boolean
+    lien?: StringFilter<"apropos_outils"> | string
+    couleur_fond?: StringFilter<"apropos_outils"> | string
+    couleur_contour?: StringFilter<"apropos_outils"> | string
+    couleur_texte?: StringFilter<"apropos_outils"> | string
+    couleur_fond_dark?: StringFilter<"apropos_outils"> | string
+    couleur_contour_dark?: StringFilter<"apropos_outils"> | string
+    couleur_texte_dark?: StringFilter<"apropos_outils"> | string
+    afficher?: BoolFilter<"apropos_outils"> | boolean
+  }, "id_outil">
+
+  export type apropos_outilsOrderByWithAggregationInput = {
+    id_outil?: SortOrder
+    titre?: SortOrder
+    description?: SortOrder
+    icone?: SortOrder
+    icone_alt?: SortOrder
+    icone_rounded?: SortOrder
+    lien?: SortOrder
+    couleur_fond?: SortOrder
+    couleur_contour?: SortOrder
+    couleur_texte?: SortOrder
+    couleur_fond_dark?: SortOrder
+    couleur_contour_dark?: SortOrder
+    couleur_texte_dark?: SortOrder
+    afficher?: SortOrder
+    _count?: apropos_outilsCountOrderByAggregateInput
+    _avg?: apropos_outilsAvgOrderByAggregateInput
+    _max?: apropos_outilsMaxOrderByAggregateInput
+    _min?: apropos_outilsMinOrderByAggregateInput
+    _sum?: apropos_outilsSumOrderByAggregateInput
+  }
+
+  export type apropos_outilsScalarWhereWithAggregatesInput = {
+    AND?: apropos_outilsScalarWhereWithAggregatesInput | apropos_outilsScalarWhereWithAggregatesInput[]
+    OR?: apropos_outilsScalarWhereWithAggregatesInput[]
+    NOT?: apropos_outilsScalarWhereWithAggregatesInput | apropos_outilsScalarWhereWithAggregatesInput[]
+    id_outil?: IntWithAggregatesFilter<"apropos_outils"> | number
+    titre?: StringWithAggregatesFilter<"apropos_outils"> | string
+    description?: StringWithAggregatesFilter<"apropos_outils"> | string
+    icone?: StringWithAggregatesFilter<"apropos_outils"> | string
+    icone_alt?: StringWithAggregatesFilter<"apropos_outils"> | string
+    icone_rounded?: BoolWithAggregatesFilter<"apropos_outils"> | boolean
+    lien?: StringWithAggregatesFilter<"apropos_outils"> | string
+    couleur_fond?: StringWithAggregatesFilter<"apropos_outils"> | string
+    couleur_contour?: StringWithAggregatesFilter<"apropos_outils"> | string
+    couleur_texte?: StringWithAggregatesFilter<"apropos_outils"> | string
+    couleur_fond_dark?: StringWithAggregatesFilter<"apropos_outils"> | string
+    couleur_contour_dark?: StringWithAggregatesFilter<"apropos_outils"> | string
+    couleur_texte_dark?: StringWithAggregatesFilter<"apropos_outils"> | string
+    afficher?: BoolWithAggregatesFilter<"apropos_outils"> | boolean
+  }
+
   export type autreCreateInput = {
     titre: string
     description: string
@@ -28366,6 +31841,263 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type accueil_generalCreateInput = {
+    video_desktop: string
+    video_mobile: string
+    video_cover: string
+    photo: string
+    photo_alt: string
+    credit_nom: string
+    credit_url: string
+    description: string
+  }
+
+  export type accueil_generalUncheckedCreateInput = {
+    id_gen?: number
+    video_desktop: string
+    video_mobile: string
+    video_cover: string
+    photo: string
+    photo_alt: string
+    credit_nom: string
+    credit_url: string
+    description: string
+  }
+
+  export type accueil_generalUpdateInput = {
+    video_desktop?: StringFieldUpdateOperationsInput | string
+    video_mobile?: StringFieldUpdateOperationsInput | string
+    video_cover?: StringFieldUpdateOperationsInput | string
+    photo?: StringFieldUpdateOperationsInput | string
+    photo_alt?: StringFieldUpdateOperationsInput | string
+    credit_nom?: StringFieldUpdateOperationsInput | string
+    credit_url?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type accueil_generalUncheckedUpdateInput = {
+    id_gen?: IntFieldUpdateOperationsInput | number
+    video_desktop?: StringFieldUpdateOperationsInput | string
+    video_mobile?: StringFieldUpdateOperationsInput | string
+    video_cover?: StringFieldUpdateOperationsInput | string
+    photo?: StringFieldUpdateOperationsInput | string
+    photo_alt?: StringFieldUpdateOperationsInput | string
+    credit_nom?: StringFieldUpdateOperationsInput | string
+    credit_url?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type accueil_generalCreateManyInput = {
+    id_gen?: number
+    video_desktop: string
+    video_mobile: string
+    video_cover: string
+    photo: string
+    photo_alt: string
+    credit_nom: string
+    credit_url: string
+    description: string
+  }
+
+  export type accueil_generalUpdateManyMutationInput = {
+    video_desktop?: StringFieldUpdateOperationsInput | string
+    video_mobile?: StringFieldUpdateOperationsInput | string
+    video_cover?: StringFieldUpdateOperationsInput | string
+    photo?: StringFieldUpdateOperationsInput | string
+    photo_alt?: StringFieldUpdateOperationsInput | string
+    credit_nom?: StringFieldUpdateOperationsInput | string
+    credit_url?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type accueil_generalUncheckedUpdateManyInput = {
+    id_gen?: IntFieldUpdateOperationsInput | number
+    video_desktop?: StringFieldUpdateOperationsInput | string
+    video_mobile?: StringFieldUpdateOperationsInput | string
+    video_cover?: StringFieldUpdateOperationsInput | string
+    photo?: StringFieldUpdateOperationsInput | string
+    photo_alt?: StringFieldUpdateOperationsInput | string
+    credit_nom?: StringFieldUpdateOperationsInput | string
+    credit_url?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type apropos_generalCreateInput = {
+    photo: string
+    photo_alt: string
+    credit_nom: string
+    credit_url: string
+    description: string
+  }
+
+  export type apropos_generalUncheckedCreateInput = {
+    id_gen?: number
+    photo: string
+    photo_alt: string
+    credit_nom: string
+    credit_url: string
+    description: string
+  }
+
+  export type apropos_generalUpdateInput = {
+    photo?: StringFieldUpdateOperationsInput | string
+    photo_alt?: StringFieldUpdateOperationsInput | string
+    credit_nom?: StringFieldUpdateOperationsInput | string
+    credit_url?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type apropos_generalUncheckedUpdateInput = {
+    id_gen?: IntFieldUpdateOperationsInput | number
+    photo?: StringFieldUpdateOperationsInput | string
+    photo_alt?: StringFieldUpdateOperationsInput | string
+    credit_nom?: StringFieldUpdateOperationsInput | string
+    credit_url?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type apropos_generalCreateManyInput = {
+    id_gen?: number
+    photo: string
+    photo_alt: string
+    credit_nom: string
+    credit_url: string
+    description: string
+  }
+
+  export type apropos_generalUpdateManyMutationInput = {
+    photo?: StringFieldUpdateOperationsInput | string
+    photo_alt?: StringFieldUpdateOperationsInput | string
+    credit_nom?: StringFieldUpdateOperationsInput | string
+    credit_url?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type apropos_generalUncheckedUpdateManyInput = {
+    id_gen?: IntFieldUpdateOperationsInput | number
+    photo?: StringFieldUpdateOperationsInput | string
+    photo_alt?: StringFieldUpdateOperationsInput | string
+    credit_nom?: StringFieldUpdateOperationsInput | string
+    credit_url?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type apropos_outilsCreateInput = {
+    titre: string
+    description: string
+    icone: string
+    icone_alt: string
+    icone_rounded: boolean
+    lien: string
+    couleur_fond: string
+    couleur_contour: string
+    couleur_texte: string
+    couleur_fond_dark: string
+    couleur_contour_dark: string
+    couleur_texte_dark: string
+    afficher: boolean
+  }
+
+  export type apropos_outilsUncheckedCreateInput = {
+    id_outil?: number
+    titre: string
+    description: string
+    icone: string
+    icone_alt: string
+    icone_rounded: boolean
+    lien: string
+    couleur_fond: string
+    couleur_contour: string
+    couleur_texte: string
+    couleur_fond_dark: string
+    couleur_contour_dark: string
+    couleur_texte_dark: string
+    afficher: boolean
+  }
+
+  export type apropos_outilsUpdateInput = {
+    titre?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    icone?: StringFieldUpdateOperationsInput | string
+    icone_alt?: StringFieldUpdateOperationsInput | string
+    icone_rounded?: BoolFieldUpdateOperationsInput | boolean
+    lien?: StringFieldUpdateOperationsInput | string
+    couleur_fond?: StringFieldUpdateOperationsInput | string
+    couleur_contour?: StringFieldUpdateOperationsInput | string
+    couleur_texte?: StringFieldUpdateOperationsInput | string
+    couleur_fond_dark?: StringFieldUpdateOperationsInput | string
+    couleur_contour_dark?: StringFieldUpdateOperationsInput | string
+    couleur_texte_dark?: StringFieldUpdateOperationsInput | string
+    afficher?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type apropos_outilsUncheckedUpdateInput = {
+    id_outil?: IntFieldUpdateOperationsInput | number
+    titre?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    icone?: StringFieldUpdateOperationsInput | string
+    icone_alt?: StringFieldUpdateOperationsInput | string
+    icone_rounded?: BoolFieldUpdateOperationsInput | boolean
+    lien?: StringFieldUpdateOperationsInput | string
+    couleur_fond?: StringFieldUpdateOperationsInput | string
+    couleur_contour?: StringFieldUpdateOperationsInput | string
+    couleur_texte?: StringFieldUpdateOperationsInput | string
+    couleur_fond_dark?: StringFieldUpdateOperationsInput | string
+    couleur_contour_dark?: StringFieldUpdateOperationsInput | string
+    couleur_texte_dark?: StringFieldUpdateOperationsInput | string
+    afficher?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type apropos_outilsCreateManyInput = {
+    id_outil?: number
+    titre: string
+    description: string
+    icone: string
+    icone_alt: string
+    icone_rounded: boolean
+    lien: string
+    couleur_fond: string
+    couleur_contour: string
+    couleur_texte: string
+    couleur_fond_dark: string
+    couleur_contour_dark: string
+    couleur_texte_dark: string
+    afficher: boolean
+  }
+
+  export type apropos_outilsUpdateManyMutationInput = {
+    titre?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    icone?: StringFieldUpdateOperationsInput | string
+    icone_alt?: StringFieldUpdateOperationsInput | string
+    icone_rounded?: BoolFieldUpdateOperationsInput | boolean
+    lien?: StringFieldUpdateOperationsInput | string
+    couleur_fond?: StringFieldUpdateOperationsInput | string
+    couleur_contour?: StringFieldUpdateOperationsInput | string
+    couleur_texte?: StringFieldUpdateOperationsInput | string
+    couleur_fond_dark?: StringFieldUpdateOperationsInput | string
+    couleur_contour_dark?: StringFieldUpdateOperationsInput | string
+    couleur_texte_dark?: StringFieldUpdateOperationsInput | string
+    afficher?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type apropos_outilsUncheckedUpdateManyInput = {
+    id_outil?: IntFieldUpdateOperationsInput | number
+    titre?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    icone?: StringFieldUpdateOperationsInput | string
+    icone_alt?: StringFieldUpdateOperationsInput | string
+    icone_rounded?: BoolFieldUpdateOperationsInput | boolean
+    lien?: StringFieldUpdateOperationsInput | string
+    couleur_fond?: StringFieldUpdateOperationsInput | string
+    couleur_contour?: StringFieldUpdateOperationsInput | string
+    couleur_texte?: StringFieldUpdateOperationsInput | string
+    couleur_fond_dark?: StringFieldUpdateOperationsInput | string
+    couleur_contour_dark?: StringFieldUpdateOperationsInput | string
+    couleur_texte_dark?: StringFieldUpdateOperationsInput | string
+    afficher?: BoolFieldUpdateOperationsInput | boolean
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -29545,6 +33277,162 @@ export namespace Prisma {
     expiresAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type accueil_generalOrderByRelevanceInput = {
+    fields: accueil_generalOrderByRelevanceFieldEnum | accueil_generalOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type accueil_generalCountOrderByAggregateInput = {
+    id_gen?: SortOrder
+    video_desktop?: SortOrder
+    video_mobile?: SortOrder
+    video_cover?: SortOrder
+    photo?: SortOrder
+    photo_alt?: SortOrder
+    credit_nom?: SortOrder
+    credit_url?: SortOrder
+    description?: SortOrder
+  }
+
+  export type accueil_generalAvgOrderByAggregateInput = {
+    id_gen?: SortOrder
+  }
+
+  export type accueil_generalMaxOrderByAggregateInput = {
+    id_gen?: SortOrder
+    video_desktop?: SortOrder
+    video_mobile?: SortOrder
+    video_cover?: SortOrder
+    photo?: SortOrder
+    photo_alt?: SortOrder
+    credit_nom?: SortOrder
+    credit_url?: SortOrder
+    description?: SortOrder
+  }
+
+  export type accueil_generalMinOrderByAggregateInput = {
+    id_gen?: SortOrder
+    video_desktop?: SortOrder
+    video_mobile?: SortOrder
+    video_cover?: SortOrder
+    photo?: SortOrder
+    photo_alt?: SortOrder
+    credit_nom?: SortOrder
+    credit_url?: SortOrder
+    description?: SortOrder
+  }
+
+  export type accueil_generalSumOrderByAggregateInput = {
+    id_gen?: SortOrder
+  }
+
+  export type apropos_generalOrderByRelevanceInput = {
+    fields: apropos_generalOrderByRelevanceFieldEnum | apropos_generalOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type apropos_generalCountOrderByAggregateInput = {
+    id_gen?: SortOrder
+    photo?: SortOrder
+    photo_alt?: SortOrder
+    credit_nom?: SortOrder
+    credit_url?: SortOrder
+    description?: SortOrder
+  }
+
+  export type apropos_generalAvgOrderByAggregateInput = {
+    id_gen?: SortOrder
+  }
+
+  export type apropos_generalMaxOrderByAggregateInput = {
+    id_gen?: SortOrder
+    photo?: SortOrder
+    photo_alt?: SortOrder
+    credit_nom?: SortOrder
+    credit_url?: SortOrder
+    description?: SortOrder
+  }
+
+  export type apropos_generalMinOrderByAggregateInput = {
+    id_gen?: SortOrder
+    photo?: SortOrder
+    photo_alt?: SortOrder
+    credit_nom?: SortOrder
+    credit_url?: SortOrder
+    description?: SortOrder
+  }
+
+  export type apropos_generalSumOrderByAggregateInput = {
+    id_gen?: SortOrder
+  }
+
+  export type apropos_outilsOrderByRelevanceInput = {
+    fields: apropos_outilsOrderByRelevanceFieldEnum | apropos_outilsOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type apropos_outilsCountOrderByAggregateInput = {
+    id_outil?: SortOrder
+    titre?: SortOrder
+    description?: SortOrder
+    icone?: SortOrder
+    icone_alt?: SortOrder
+    icone_rounded?: SortOrder
+    lien?: SortOrder
+    couleur_fond?: SortOrder
+    couleur_contour?: SortOrder
+    couleur_texte?: SortOrder
+    couleur_fond_dark?: SortOrder
+    couleur_contour_dark?: SortOrder
+    couleur_texte_dark?: SortOrder
+    afficher?: SortOrder
+  }
+
+  export type apropos_outilsAvgOrderByAggregateInput = {
+    id_outil?: SortOrder
+  }
+
+  export type apropos_outilsMaxOrderByAggregateInput = {
+    id_outil?: SortOrder
+    titre?: SortOrder
+    description?: SortOrder
+    icone?: SortOrder
+    icone_alt?: SortOrder
+    icone_rounded?: SortOrder
+    lien?: SortOrder
+    couleur_fond?: SortOrder
+    couleur_contour?: SortOrder
+    couleur_texte?: SortOrder
+    couleur_fond_dark?: SortOrder
+    couleur_contour_dark?: SortOrder
+    couleur_texte_dark?: SortOrder
+    afficher?: SortOrder
+  }
+
+  export type apropos_outilsMinOrderByAggregateInput = {
+    id_outil?: SortOrder
+    titre?: SortOrder
+    description?: SortOrder
+    icone?: SortOrder
+    icone_alt?: SortOrder
+    icone_rounded?: SortOrder
+    lien?: SortOrder
+    couleur_fond?: SortOrder
+    couleur_contour?: SortOrder
+    couleur_texte?: SortOrder
+    couleur_fond_dark?: SortOrder
+    couleur_contour_dark?: SortOrder
+    couleur_texte_dark?: SortOrder
+    afficher?: SortOrder
+  }
+
+  export type apropos_outilsSumOrderByAggregateInput = {
+    id_outil?: SortOrder
   }
 
   export type autre_tags_linkCreateNestedManyWithoutAutreInput = {

@@ -6,6 +6,7 @@ import {
   User as UserIcon,
   Newspaper,
   PenTool,
+  LayoutDashboard,
 } from "lucide-react"; // Exemple d'icônes
 import { usePathname } from "next/navigation"; // Import du hook pour récupérer l'URL actuelle
 
@@ -31,9 +32,17 @@ import {
   SidebarMenuSub,
   SidebarFooter,
 } from "@/components/ui/sidebar";
+import Link from "next/link";
+import Image from "next/image";
 
 const data = {
   navMain: [
+    {
+      title: "Dashboard",
+      url: "/",
+      icon: LayoutDashboard, // Icône pour cette page
+      items: [], // Pas de sous-items, lien direct
+    },
     {
       title: "Accueil",
       url: "#",
@@ -55,9 +64,18 @@ const data = {
     },
     {
       title: "À propos",
-      url: "/a-propos",
+      url: "#",
       icon: UserIcon, // Icône pour cette page
-      items: [], // Pas de sous-items, lien direct
+      items: [
+        {
+          title: "Général",
+          url: "/a-propos/general",
+        },
+        {
+          title: "Outils",
+          url: "/a-propos/outils",
+        },
+      ],
     },
     {
       title: "Journal personnel",
@@ -96,7 +114,14 @@ export function AppSidebar({
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        <div className="flex items-center justify-between px-4 py-2">
+        <div className="flex items-center justify-start px-4 py-2 gap-4">
+          <Image
+            src="/arnaud_graciet_pp.webp"
+            alt="Logo"
+            width={32}
+            height={32}
+            className="rounded-lg"
+          />
           <h1 className="text-lg font-bold">ArnaudGct</h1>
         </div>
       </SidebarHeader>
@@ -131,7 +156,7 @@ export function AppSidebar({
                               asChild
                               isActive={pathname === subItem.url} // Vérifie si l'URL actuelle correspond
                             >
-                              <a href={subItem.url}>{subItem.title}</a>
+                              <Link href={subItem.url}>{subItem.title}</Link>
                             </SidebarMenuButton>
                           </SidebarMenuItem>
                         ))}

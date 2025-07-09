@@ -317,6 +317,44 @@ exports.Prisma.VerificationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.Accueil_generalScalarFieldEnum = {
+  id_gen: 'id_gen',
+  video_desktop: 'video_desktop',
+  video_mobile: 'video_mobile',
+  video_cover: 'video_cover',
+  photo: 'photo',
+  photo_alt: 'photo_alt',
+  credit_nom: 'credit_nom',
+  credit_url: 'credit_url',
+  description: 'description'
+};
+
+exports.Prisma.Apropos_generalScalarFieldEnum = {
+  id_gen: 'id_gen',
+  photo: 'photo',
+  photo_alt: 'photo_alt',
+  credit_nom: 'credit_nom',
+  credit_url: 'credit_url',
+  description: 'description'
+};
+
+exports.Prisma.Apropos_outilsScalarFieldEnum = {
+  id_outil: 'id_outil',
+  titre: 'titre',
+  description: 'description',
+  icone: 'icone',
+  icone_alt: 'icone_alt',
+  icone_rounded: 'icone_rounded',
+  lien: 'lien',
+  couleur_fond: 'couleur_fond',
+  couleur_contour: 'couleur_contour',
+  couleur_texte: 'couleur_texte',
+  couleur_fond_dark: 'couleur_fond_dark',
+  couleur_contour_dark: 'couleur_contour_dark',
+  couleur_texte_dark: 'couleur_texte_dark',
+  afficher: 'afficher'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -445,6 +483,39 @@ exports.Prisma.VerificationOrderByRelevanceFieldEnum = {
   value: 'value'
 };
 
+exports.Prisma.accueil_generalOrderByRelevanceFieldEnum = {
+  video_desktop: 'video_desktop',
+  video_mobile: 'video_mobile',
+  video_cover: 'video_cover',
+  photo: 'photo',
+  photo_alt: 'photo_alt',
+  credit_nom: 'credit_nom',
+  credit_url: 'credit_url',
+  description: 'description'
+};
+
+exports.Prisma.apropos_generalOrderByRelevanceFieldEnum = {
+  photo: 'photo',
+  photo_alt: 'photo_alt',
+  credit_nom: 'credit_nom',
+  credit_url: 'credit_url',
+  description: 'description'
+};
+
+exports.Prisma.apropos_outilsOrderByRelevanceFieldEnum = {
+  titre: 'titre',
+  description: 'description',
+  icone: 'icone',
+  icone_alt: 'icone_alt',
+  lien: 'lien',
+  couleur_fond: 'couleur_fond',
+  couleur_contour: 'couleur_contour',
+  couleur_texte: 'couleur_texte',
+  couleur_fond_dark: 'couleur_fond_dark',
+  couleur_contour_dark: 'couleur_contour_dark',
+  couleur_texte_dark: 'couleur_texte_dark'
+};
+
 
 exports.Prisma.ModelName = {
   autre: 'autre',
@@ -469,7 +540,10 @@ exports.Prisma.ModelName = {
   User: 'User',
   Session: 'Session',
   Account: 'Account',
-  Verification: 'Verification'
+  Verification: 'Verification',
+  accueil_general: 'accueil_general',
+  apropos_general: 'apropos_general',
+  apropos_outils: 'apropos_outils'
 };
 
 /**

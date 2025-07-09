@@ -355,10 +355,69 @@ export async function uploadOriginalToCloudinary(
 // Helper pour supprimer une image de Cloudinary
 export async function deleteFromCloudinary(publicId: string): Promise<boolean> {
   try {
-    const result = await cloudinary.uploader.destroy(publicId);
-    return result.result === "ok";
+    console.log(
+      `Tentative de suppression Cloudinary pour publicId: ${publicId}`
+    );
+
+    // Tenter de supprimer comme vidéo d'abord
+    try {
+      const videoResult = await cloudinary.uploader.destroy(publicId, {
+        resource_type: "video",
+      });
+      console.log(`Résultat suppression vidéo:`, videoResult);
+
+      if (videoResult.result === "ok") {
+        console.log("✓ Vidéo supprimée avec succès");
+        return true;
+      }
+    } catch (videoError) {
+      console.log("Pas une vidéo, tentative comme image...");
+    }
+
+    // Si ce n'est pas une vidéo, tenter comme image
+    const imageResult = await cloudinary.uploader.destroy(publicId, {
+      resource_type: "image",
+    });
+    console.log(`Résultat suppression image:`, imageResult);
+
+    if (imageResult.result === "ok") {
+      console.log("✓ Image supprimée avec succès");
+      return true;
+    }
+
+    console.warn(`Échec de la suppression pour publicId: ${publicId}`);
+    return false;
   } catch (error) {
     console.error("Erreur lors de la suppression depuis Cloudinary:", error);
+    return false;
+  }
+}
+
+// Helper spécifique pour supprimer une vidéo
+export async function deleteVideoFromCloudinary(
+  publicId: string
+): Promise<boolean> {
+  try {
+    console.log(`Suppression vidéo Cloudinary pour publicId: ${publicId}`);
+
+    const result = await cloudinary.uploader.destroy(publicId, {
+      resource_type: "video",
+    });
+
+    console.log(`Résultat suppression vidéo:`, result);
+
+    if (result.result === "ok") {
+      console.log("✓ Vidéo supprimée avec succès");
+      return true;
+    }
+
+    console.warn(`Échec de la suppression vidéo pour publicId: ${publicId}`);
+    return false;
+  } catch (error) {
+    console.error(
+      "Erreur lors de la suppression vidéo depuis Cloudinary:",
+      error
+    );
     return false;
   }
 }
@@ -366,11 +425,200 @@ export async function deleteFromCloudinary(publicId: string): Promise<boolean> {
 // Helper pour extraire le public_id depuis une URL Cloudinary
 export function extractPublicIdFromUrl(url: string): string | null {
   try {
-    const match = url.match(/\/upload\/(?:v\d+\/)?([^\.]+)/);
-    return match ? match[1] : null;
+    console.log(`Extraction du publicId depuis l'URL: ${url}`);
+
+    // Nettoyer l'URL des paramètres de query
+    const cleanUrl = url.split("?")[0];
+
+    // Pattern pour extraire tout ce qui suit /upload/v{version}/ ou /upload/
+    const uploadMatch = cleanUrl.match(/\/upload\/(?:v\d+\/)?(.+)$/);
+
+    if (!uploadMatch || !uploadMatch[1]) {
+      console.warn(
+        `Impossible de trouver la partie upload dans l'URL: ${cleanUrl}`
+      );
+      return null;
+    }
+
+    let pathAfterUpload = uploadMatch[1];
+
+    // Si il y a des transformations (détectées par des paramètres comme c_scale, w_1280, etc.)
+    // On cherche le dernier segment qui ne contient pas de transformations
+    const segments = pathAfterUpload.split("/");
+    const cleanSegments = segments.filter((segment) => {
+      // Filtrer les segments qui ressemblent à des transformations
+      return (
+        !segment.match(/^[a-z]_[^\/]+$/) && // c_scale, w_1280, etc.
+        !segment.match(/^[0-9]+x[0-9]+$/) && // dimensions 1280x720
+        segment.length > 0
+      );
+    });
+
+    // Reconstituer le chemin sans les transformations
+    let publicIdWithPath = cleanSegments.join("/");
+
+    // Enlever l'extension du fichier final
+    publicIdWithPath = publicIdWithPath.replace(/\.[^.]+$/, "");
+
+    console.log(`PublicId extrait avec succès: ${publicIdWithPath}`);
+    return publicIdWithPath;
   } catch (error) {
     console.error("Erreur lors de l'extraction du public_id:", error);
     return null;
+  }
+}
+
+// Helper pour uploader une image à propos avec compression personnalisée
+export async function uploadAProposImageToCloudinary(
+  file: File,
+  folder: string = "portfolio/apropos/general",
+  customTransformation?: {
+    width?: number;
+    height?: number;
+    crop?: string;
+    quality?: string;
+    format?: string;
+  }
+): Promise<{ url: string; publicId: string }> {
+  try {
+    console.log(`Upload à propos vers Cloudinary - Taille: ${file.size} bytes`);
+
+    // Compresser l'image si nécessaire
+    const buffer = await compressImageIfNeeded(file);
+
+    const timestamp = Date.now();
+    const randomId = Math.random().toString(36).substr(2, 9);
+    const publicId = `apropos_${timestamp}_${randomId}`;
+
+    const uploadOptions: UploadApiOptions = {
+      folder,
+      resource_type: "image",
+      public_id: publicId,
+      use_filename: false,
+      unique_filename: false,
+      format: customTransformation?.format || "webp", // Format par défaut WebP
+    };
+
+    // Configuration des transformations personnalisées
+    if (customTransformation) {
+      uploadOptions.transformation = [
+        {
+          width: customTransformation.width || 400,
+          height: customTransformation.height,
+          crop: customTransformation.crop || "scale",
+          quality: customTransformation.quality || "auto:good",
+        },
+      ];
+    } else {
+      // Configuration par défaut pour les images à propos : 400px de largeur en WebP
+      uploadOptions.transformation = [
+        {
+          width: 400,
+          crop: "scale",
+          quality: "auto:good",
+        },
+      ];
+    }
+
+    const result = await new Promise<any>((resolve, reject) => {
+      cloudinary.uploader
+        .upload_stream(uploadOptions, (error, result) => {
+          if (error) {
+            console.error("Erreur Cloudinary à propos:", error);
+            reject(error);
+          } else {
+            console.log("Upload à propos réussi:", result?.secure_url);
+            resolve(result);
+          }
+        })
+        .end(buffer);
+    });
+
+    return {
+      url: result.secure_url,
+      publicId: result.public_id,
+    };
+  } catch (error) {
+    console.error("Erreur lors de l'upload à propos vers Cloudinary:", error);
+    throw new Error(
+      `Erreur d'upload à propos Cloudinary: ${error instanceof Error ? error.message : String(error)}`
+    );
+  }
+}
+
+// Helper pour uploader une vidéo vers Cloudinary
+export async function uploadVideoToCloudinary(
+  file: File,
+  folder: string = "portfolio/accueil/general/videos",
+  customTransformation?: {
+    quality?: string;
+    format?: string;
+    width?: number;
+    height?: number;
+  }
+): Promise<{ url: string; publicId: string }> {
+  try {
+    console.log(`Upload vidéo vers Cloudinary - Taille: ${file.size} bytes`);
+
+    // Convertir le fichier en buffer sans compression (pas de Sharp pour les vidéos)
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    const timestamp = Date.now();
+    const randomId = Math.random().toString(36).substr(2, 9);
+    const publicId = `video_${timestamp}_${randomId}`;
+
+    const uploadOptions: UploadApiOptions = {
+      folder,
+      resource_type: "video", // Important : spécifier que c'est une vidéo
+      public_id: publicId,
+      use_filename: false,
+      unique_filename: false,
+    };
+
+    // Configuration des transformations personnalisées pour vidéos
+    if (customTransformation) {
+      uploadOptions.transformation = [
+        {
+          quality: customTransformation.quality || "auto:good",
+          format: customTransformation.format || "mp4",
+          width: customTransformation.width,
+          height: customTransformation.height,
+        },
+      ];
+    } else {
+      // Configuration par défaut pour les vidéos
+      uploadOptions.transformation = [
+        {
+          quality: "auto:good",
+          format: "mp4",
+        },
+      ];
+    }
+
+    const result = await new Promise<any>((resolve, reject) => {
+      cloudinary.uploader
+        .upload_stream(uploadOptions, (error, result) => {
+          if (error) {
+            console.error("Erreur Cloudinary vidéo:", error);
+            reject(error);
+          } else {
+            console.log("Upload vidéo réussi:", result?.secure_url);
+            resolve(result);
+          }
+        })
+        .end(buffer);
+    });
+
+    return {
+      url: result.secure_url,
+      publicId: result.public_id,
+    };
+  } catch (error) {
+    console.error("Erreur lors de l'upload vidéo vers Cloudinary:", error);
+    throw new Error(
+      `Erreur d'upload vidéo Cloudinary: ${error instanceof Error ? error.message : String(error)}`
+    );
   }
 }
 
