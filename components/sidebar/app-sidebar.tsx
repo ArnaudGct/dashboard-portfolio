@@ -6,6 +6,7 @@ import {
   User as UserIcon,
   Newspaper,
   PenTool,
+  LayoutDashboard,
 } from "lucide-react"; // Exemple d'icônes
 import { usePathname } from "next/navigation"; // Import du hook pour récupérer l'URL actuelle
 
@@ -31,9 +32,16 @@ import {
   SidebarMenuSub,
   SidebarFooter,
 } from "@/components/ui/sidebar";
+import Link from "next/link";
 
 const data = {
   navMain: [
+    {
+      title: "Dashboard",
+      url: "/",
+      icon: LayoutDashboard, // Icône pour cette page
+      items: [], // Pas de sous-items, lien direct
+    },
     {
       title: "Accueil",
       url: "#",
@@ -140,7 +148,7 @@ export function AppSidebar({
                               asChild
                               isActive={pathname === subItem.url} // Vérifie si l'URL actuelle correspond
                             >
-                              <a href={subItem.url}>{subItem.title}</a>
+                              <Link href={subItem.url}>{subItem.title}</Link>
                             </SidebarMenuButton>
                           </SidebarMenuItem>
                         ))}

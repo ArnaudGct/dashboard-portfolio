@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:analytics": "node test-analytics.js",
+    "diagnose:env": "node diagnose-env.js"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -46,6 +48,7 @@
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
+    "googleapis": "^152.0.0",
     "lucide-react": "^0.503.0",
     "luxon": "^3.6.1",
     "mysql2": "^3.14.1",
