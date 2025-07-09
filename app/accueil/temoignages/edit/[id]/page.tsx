@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { getTemoignageByIdAction } from "@/actions/temoignages-actions";
 import { EditTemoignageItem } from "@/components/sections/accueil/temoignages/edit-temoignage-item";
+import prisma from "@/lib/prisma";
 
 interface EditTemoignagePageProps {
   params: {
@@ -11,19 +11,26 @@ interface EditTemoignagePageProps {
 export default async function EditTemoignagePage({
   params,
 }: EditTemoignagePageProps) {
-  const id = parseInt(params.id, 10);
-  if (isNaN(id)) {
+  const { id } = await params;
+  const temoignageId = parseInt(id);
+
+  if (isNaN(temoignageId)) {
     notFound();
   }
 
-  const temoignage = await getTemoignageByIdAction(id);
-  if (!temoignage) {
+  const temoignageEntry = await prisma.temoignages.findUnique({
+    where: {
+      id_tem: temoignageId,
+    },
+  });
+
+  if (!temoignageEntry) {
     notFound();
   }
 
   return (
     <section className="w-[90%] mx-auto mb-8">
-      <EditTemoignageItem initialData={temoignage} />
+      <EditTemoignageItem initialData={temoignageEntry} />
     </section>
   );
 }

@@ -3,28 +3,16 @@
 import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
 
-// Récupérer un témoignage par son ID
-export async function getTemoignageByIdAction(id: number) {
-  try {
-    const temoignage = await prisma.temoignages.findUnique({
-      where: { id_tem: id },
-    });
-    return temoignage;
-  } catch (error) {
-    console.error("Erreur lors de la récupération du témoignage:", error);
-    throw error;
-  }
-}
-
 // Ajouter un témoignage
 export async function addTemoignageAction(formData: FormData) {
   try {
     const client = formData.get("client")?.toString();
-    const plateforme = formData.get("plateforme")?.toString();
+    const plateforme = formData.get("plateforme")?.toString() || "";
     const contenu = formData.get("contenu")?.toString();
     const afficher = formData.get("afficher") === "on";
+    const date = formData.get("date")?.toString() || null;
 
-    if (!client || !contenu || !plateforme) {
+    if (!client || !contenu) {
       return { success: false, error: "Tous les champs sont requis." };
     }
 
@@ -34,6 +22,7 @@ export async function addTemoignageAction(formData: FormData) {
         plateforme,
         contenu,
         afficher,
+        date,
       },
     });
 
@@ -52,17 +41,18 @@ export async function updateTemoignageAction(formData: FormData) {
     if (!id) throw new Error("ID manquant");
 
     const client = formData.get("client")?.toString();
-    const plateforme = formData.get("plateforme")?.toString();
+    const plateforme = formData.get("plateforme")?.toString() || "";
     const contenu = formData.get("contenu")?.toString();
     const afficher = formData.get("afficher") === "on";
+    const date = formData.get("date")?.toString() || "";
 
-    if (!client || !contenu || !plateforme) {
+    if (!client || !contenu) {
       return { success: false, error: "Tous les champs sont requis." };
     }
 
     await prisma.temoignages.update({
       where: { id_tem: id },
-      data: { client, plateforme, contenu, afficher },
+      data: { client, plateforme, contenu, afficher, date },
     });
 
     revalidatePath("/accueil/temoignages");

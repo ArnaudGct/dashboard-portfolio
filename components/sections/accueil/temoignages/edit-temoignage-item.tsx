@@ -3,6 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
+import { Calendar as CalendarIcon, Trash2 } from "lucide-react";
 import {
   updateTemoignageAction,
   deleteTemoignageAction,
@@ -12,6 +15,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,7 +33,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Trash2 } from "lucide-react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -40,6 +49,7 @@ interface EditTemoignageFormProps {
     plateforme: string;
     contenu: string;
     afficher: boolean;
+    date?: string | null;
   };
 }
 
@@ -47,9 +57,19 @@ export function EditTemoignageItem({ initialData }: EditTemoignageFormProps) {
   const router = useRouter();
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+    initialData.date ? new Date(initialData.date) : undefined
+  );
 
   const handleUpdate = async (formData: FormData) => {
     setIsUpdating(true);
+
+    if (selectedDate) {
+      formData.set("date", format(selectedDate, "yyyy-MM-dd"));
+    } else {
+      formData.delete("date");
+    }
+
     const result = await updateTemoignageAction(formData);
     if (result.success) {
       toast.success("Témoignage mis à jour !");
@@ -92,7 +112,7 @@ export function EditTemoignageItem({ initialData }: EditTemoignageFormProps) {
         </Breadcrumb>
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button variant="destructive">
+            <Button variant="destructive" className="cursor-pointer">
               <Trash2 className="h-4 w-4 mr-2" /> Supprimer
             </Button>
           </AlertDialogTrigger>
@@ -104,8 +124,14 @@ export function EditTemoignageItem({ initialData }: EditTemoignageFormProps) {
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Annuler</AlertDialogCancel>
-              <AlertDialogAction onClick={handleDelete} disabled={isDeleting}>
+              <AlertDialogCancel className="cursor-pointer">
+                Annuler
+              </AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleDelete}
+                disabled={isDeleting}
+                className="cursor-pointer"
+              >
                 {isDeleting ? "Suppression..." : "Supprimer"}
               </AlertDialogAction>
             </AlertDialogFooter>
@@ -132,9 +158,39 @@ export function EditTemoignageItem({ initialData }: EditTemoignageFormProps) {
             id="plateforme"
             name="plateforme"
             defaultValue={initialData.plateforme}
-            required
           />
         </div>
+        <div className="grid w-full items-center gap-1.5">
+          <Label htmlFor="date">Date</Label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant={"outline"}
+                className={cn(
+                  "w-full justify-start text-left font-normal cursor-pointer",
+                  !selectedDate && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {selectedDate ? (
+                  format(selectedDate, "d MMMM yyyy", { locale: fr })
+                ) : (
+                  <span>Sélectionner une date</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={selectedDate}
+                onSelect={setSelectedDate}
+                initialFocus
+                locale={fr}
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
+
         <div className="grid w-full gap-1.5">
           <Label htmlFor="contenu">Contenu</Label>
           <Textarea
@@ -149,6 +205,7 @@ export function EditTemoignageItem({ initialData }: EditTemoignageFormProps) {
             id="afficher"
             name="afficher"
             defaultChecked={initialData.afficher}
+            className="cursor-pointer"
           />
           <Label htmlFor="afficher">Afficher le témoignage</Label>
         </div>
