@@ -3,13 +3,9 @@ import { EditOutilItem } from "@/components/sections/a-propos/outils/edit-outil-
 import { notFound } from "next/navigation";
 import prisma from "@/lib/prisma";
 
-interface EditOutilProps {
-  params: {
-    id: string;
-  };
-}
+type Params = Promise<{ id: string }>;
 
-export default async function EditOutil({ params }: EditOutilProps) {
+export default async function EditOutil({ params }: { params: Params }) {
   const { id } = await params;
   const outilId = parseInt(id);
 
