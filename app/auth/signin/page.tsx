@@ -65,7 +65,7 @@ export default function SignIn() {
   }
 
   return (
-    <Card className="flex w-full max-w-md">
+    <Card className="flex w-[90%] mx-auto max-w-md">
       <CardHeader>
         <CardTitle className="text-lg md:text-xl">Se connecter</CardTitle>
         <CardDescription className="text-xs md:text-sm">

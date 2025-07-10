@@ -26,7 +26,7 @@ export default function ForgetPassword() {
 
   if (!token) {
     return (
-      <div className="flex items-center justify-center w-full h-screen">
+      <div className="flex items-center justify-center w-[90%] mx-auto h-screen">
         <Card className="flex w-full max-w-md">
           <CardHeader>
             <CardTitle className="text-lg md:text-xl">

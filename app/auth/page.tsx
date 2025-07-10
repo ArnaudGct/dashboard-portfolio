@@ -18,7 +18,7 @@ export default async function Auth() {
   }
 
   return (
-    <Card className="max-w-md mx-auto mt-16 p-8">
+    <Card className="max-w-md mx-auto w-[90%]">
       <div className="flex flex-col items-center">
         {session.image && (
           <Image
