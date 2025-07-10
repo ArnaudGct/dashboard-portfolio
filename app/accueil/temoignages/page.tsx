@@ -31,7 +31,7 @@ export default function TemoignagesPage() {
   return (
     <section className="w-[90%] mx-auto mb-8">
       <div className="flex flex-col gap-8">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 items-start sm:flex-row sm:items-center justify-between">
           <h1 className="text-3xl font-bold">Témoignages</h1>
           <Link href="/accueil/temoignages/add">
             <Button className="cursor-pointer">

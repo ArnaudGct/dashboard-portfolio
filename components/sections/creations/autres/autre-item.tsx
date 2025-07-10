@@ -69,7 +69,7 @@ export function AutreItem({ autre }: AutreProps) {
       className="cursor-pointer hover:shadow-md transition-shadow"
       onClick={handleCardClick}
     >
-      <div className="flex flex-col justify-center lg:justify-start items-center lg:flex-row gap-6 p-6">
+      <div className="flex flex-col justify-center xl:justify-start items-center xl:flex-row gap-6 p-6">
         <div className="relative w-full min-w-[250px] lg:min-w-[350px] max-w-[500px] shrink-0 rounded-lg overflow-hidden aspect-video min-h-[180px]">
           <Image
             src={getImageUrl(autre.miniature)}

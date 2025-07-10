@@ -389,7 +389,7 @@ export function EditPhotoItem({
   return (
     <div className="w-[90%] mx-auto">
       <div className="flex flex-col gap-8">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col justify-center items-start gap-4 sm:flex-row sm:justify-between sm:items-center">
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -557,7 +557,7 @@ export function EditPhotoItem({
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
             <div className="grid w-full gap-1.5">
               <div className="grid w-full gap-1.5">
                 <Label htmlFor="tags">Tags</Label>

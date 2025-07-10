@@ -41,7 +41,7 @@ export default function Videos() {
   return (
     <section className="w-[90%] mx-auto mb-8">
       <div className="flex flex-col gap-8">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 items-start sm:flex-row sm:items-center justify-between">
           <p className="text-3xl font-bold">Vidéos</p>
           <div className="flex gap-2">
             <Link href="/creations/videos/tags">

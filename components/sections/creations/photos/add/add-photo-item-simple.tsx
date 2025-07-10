@@ -393,7 +393,7 @@ export function AddPhotoItemSimple({
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
             <div className="grid w-full gap-1.5">
               <div className="grid w-full gap-1.5">
                 <Label htmlFor="tags">Tags</Label>

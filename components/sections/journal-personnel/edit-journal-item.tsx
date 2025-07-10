@@ -279,7 +279,7 @@ export function EditJournalItem({ initialData }: EditJournalItemProps) {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col justify-center items-start gap-4 sm:flex-row sm:justify-between sm:items-center">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -439,7 +439,7 @@ export function EditJournalItem({ initialData }: EditJournalItemProps) {
                 </div>
 
                 {previewImage && (
-                  <div className="flex gap-6 items-center">
+                  <div className="flex flex-col items-start lg:flex-row gap-6 lg:items-center">
                     <div className="relative">
                       <Image
                         src={previewImage}

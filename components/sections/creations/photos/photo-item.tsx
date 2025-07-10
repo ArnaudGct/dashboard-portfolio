@@ -139,7 +139,7 @@ export function PhotoItem({ photos, albums }: PhotosContainerProps) {
         </div> */}
 
         {/* Combobox pour filtrer par album */}
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center justify-between">
           <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
             <PopoverTrigger asChild>
               <Button

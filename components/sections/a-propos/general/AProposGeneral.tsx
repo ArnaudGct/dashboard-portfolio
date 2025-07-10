@@ -37,16 +37,22 @@ export function AProposGeneralForm({
 }: AProposGeneralFormProps) {
   const [preview, setPreview] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [markdown, setMarkdown] = useState<string>("");
+  // Initialiser directement avec les données comme dans AccueilGeneralForm
+  const [markdown, setMarkdown] = useState<string>(
+    aproposData?.description || ""
+  );
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isMounted, setIsMounted] = useState(false);
   const editorRef = useRef<MDXEditorMethods | null>(null);
 
-  // Initialiser le markdown après le montage du composant
+  // Mettre à jour le useEffect pour éviter les conflits
   useEffect(() => {
     setIsMounted(true);
-    setMarkdown(aproposData?.description || "");
-  }, [aproposData?.description]);
+    // Mettre à jour seulement si les données changent et sont différentes
+    if (aproposData?.description && aproposData.description !== markdown) {
+      setMarkdown(aproposData.description);
+    }
+  }, [aproposData?.description, markdown]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -67,10 +73,7 @@ export function AProposGeneralForm({
   };
 
   const handleEditorChange = (newMarkdown: string) => {
-    // Ne mettre à jour l'état que si le composant est monté
-    if (isMounted) {
-      setMarkdown(newMarkdown);
-    }
+    setMarkdown(newMarkdown);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -114,7 +117,7 @@ export function AProposGeneralForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Upload d'image */}
         <div className="space-y-4">
           <div className="space-y-2">

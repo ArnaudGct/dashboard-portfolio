@@ -197,7 +197,7 @@ export function AddAutreItem({ availableTags }: AddAutreFormProps) {
             </div>
           </div>
 
-          <div className="flex w-full gap-6">
+          <div className="flex flex-col gap-4 lg:flex-row w-full">
             <div className="flex flex-col w-full items-start gap-1.5">
               <Label htmlFor="miniature">Image miniature</Label>
               <Input
@@ -310,7 +310,7 @@ export function AddAutreItem({ availableTags }: AddAutreFormProps) {
             ))}
           </div>
 
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div className="grid w-full items-center gap-1.5">
               <Label htmlFor="lien_github">Lien GitHub</Label>
               <Input

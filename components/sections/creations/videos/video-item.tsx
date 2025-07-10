@@ -37,7 +37,7 @@ export function VideoItem({ video }: VideoType) {
       className="cursor-pointer hover:shadow-md transition-shadow"
       onClick={handleCardClick}
     >
-      <div className="flex flex-col justify-center lg:justify-start items-center lg:flex-row gap-6 px-6">
+      <div className="flex flex-col justify-center xl:justify-start items-center xl:flex-row gap-6 px-6">
         {isClient && youtubeId ? (
           <div
             className="w-full aspect-video min-w-[250px] lg:min-w-[350px] max-w-[500px] rounded-lg overflow-hidden"
