@@ -38,13 +38,9 @@ function FaqEditLoading() {
   );
 }
 
-interface EditFaqPageProps {
-  params: {
-    id: string;
-  };
-}
+type Params = Promise<{ id: string }>;
 
-export default function EditFaqPage({ params }: EditFaqPageProps) {
+export default function EditFaqPage({ params }: { params: Params }) {
   return (
     <Suspense fallback={<FaqEditLoading />}>
       <EditFaqContent params={params} />
@@ -53,7 +49,7 @@ export default function EditFaqPage({ params }: EditFaqPageProps) {
 }
 
 // Composant asynchrone pour charger les données
-async function EditFaqContent({ params }: EditFaqPageProps) {
+async function EditFaqContent({ params }: { params: Params }) {
   try {
     const { id } = await params;
     const editId = parseInt(id);
