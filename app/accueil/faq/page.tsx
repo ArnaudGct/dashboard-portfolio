@@ -34,7 +34,7 @@ export default function FAQ() {
   return (
     <section className="w-[90%] mx-auto mb-8">
       <div className="flex flex-col gap-8">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 items-start sm:flex-row sm:items-center justify-between">
           <h1 className="text-3xl font-bold">Questions fréquemment posées</h1>
           <Link href="/accueil/faq/add">
             <Button className="cursor-pointer">
@@ -79,7 +79,7 @@ async function FAQList() {
     return (
       <div className="flex flex-col gap-8">
         {/* FAQ visibles */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
           {visibleFaqs.map((faq) => (
             <FaqItem key={faq.id_faq} faq={faq} />
           ))}
@@ -91,7 +91,7 @@ async function FAQList() {
             <h2 className="text-xl font-semibold mb-4 text-muted-foreground">
               Questions non visibles
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
               {hiddenFaqs.map((faq) => (
                 <div key={faq.id_faq} className="opacity-60">
                   <FaqItem faq={faq} />

@@ -58,7 +58,7 @@ export function JournalItem({ entry }: JournalItemProps) {
       className="w-full cursor-pointer hover:shadow-md transition-all"
       onClick={handleCardClick}
     >
-      <div className="flex flex-col justify-center lg:justify-start items-center lg:flex-row gap-6 p-6">
+      <div className="flex flex-col justify-center xl:justify-start items-center xl:flex-row gap-6 p-6">
         {youtubeId ? (
           <div className="relative w-full min-w-[250px] lg:min-w-[350px] max-w-[500px] shrink-0 rounded-lg overflow-hidden aspect-video min-h-[180px]">
             <LiteYoutubeEmbed id={youtubeId} />

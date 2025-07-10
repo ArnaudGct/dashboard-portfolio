@@ -235,7 +235,7 @@ export function EditAutreItem({
   return (
     <div className="w-[90%] mx-auto">
       <div className="flex flex-col gap-8">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col justify-center items-start gap-4 sm:flex-row sm:justify-between sm:items-center">
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -312,7 +312,7 @@ export function EditAutreItem({
             </div>
           </div>
 
-          <div className="flex w-full gap-6">
+          <div className="flex flex-col gap-4 lg:flex-row w-full">
             <div className="flex flex-col w-full items-start gap-1.5">
               <Label htmlFor="miniature">Image</Label>
               <Input
@@ -424,7 +424,7 @@ export function EditAutreItem({
             ))}
           </div>
 
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div className="grid w-full items-center gap-1.5">
               <Label htmlFor="lien_github">Lien GitHub</Label>
               <Input

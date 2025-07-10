@@ -42,7 +42,7 @@ export default function AProposOutils() {
   return (
     <section className="w-[90%] mx-auto mb-8">
       <div className="flex flex-col gap-8">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 items-start sm:flex-row sm:items-center justify-between">
           <h1 className="text-3xl font-bold">Outils</h1>
           <Link href="/a-propos/outils/add">
             <Button className="cursor-pointer">
@@ -83,7 +83,7 @@ async function OutilsList() {
     return (
       <div className="flex flex-col gap-8">
         {/* Outils visibles */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
           {visibleOutils.map((outil) => (
             <OutilItem key={outil.id_outil} outil={outil} />
           ))}
@@ -95,7 +95,7 @@ async function OutilsList() {
             <h2 className="text-xl font-semibold mb-4 text-muted-foreground">
               Outils non visibles
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
               {hiddenOutils.map((outil) => (
                 <div key={outil.id_outil} className="opacity-60">
                   <OutilItem outil={outil} />

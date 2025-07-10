@@ -30,7 +30,7 @@ export function AnalyticsOverview() {
     return (
       <div className="space-y-6">
         {/* Métriques principales - Skeleton */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-4">
           {[
             { title: "Pages vues", icon: <Eye className="h-4 w-4" /> },
             { title: "Sessions", icon: <MousePointer className="h-4 w-4" /> },
@@ -222,7 +222,7 @@ export function AnalyticsOverview() {
   return (
     <div className="space-y-6">
       {/* Métriques principales */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-4">
         <MetricTrend
           title="Pages vues"
           value={data.pageviews.thisMonth.toLocaleString()}
@@ -273,7 +273,7 @@ export function AnalyticsOverview() {
         </Card>
       )}
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
         {/* Pages populaires */}
         <Card>
           <CardHeader>

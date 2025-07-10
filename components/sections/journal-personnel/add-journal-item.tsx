@@ -318,7 +318,7 @@ export function AddJournalItem() {
                   </div>
 
                   {previewImage && (
-                    <div className="flex gap-6 items-center">
+                    <div className="flex flex-col items-start lg:flex-row gap-6 lg:items-center">
                       <div className="relative">
                         <Image
                           src={previewImage}

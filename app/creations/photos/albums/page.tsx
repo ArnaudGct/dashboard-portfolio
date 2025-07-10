@@ -53,7 +53,7 @@ export default function PhotoAlbums() {
   return (
     <section className="w-[90%] mx-auto mb-8">
       <div className="flex flex-col gap-8">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col gap-4 items-start lg:flex-row lg:items-center justify-between">
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -65,7 +65,7 @@ export default function PhotoAlbums() {
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <RegenerateCoversButton />
             <Link href="/creations/photos/tags?from=albums">
               <Button variant="outline" className="cursor-pointer">

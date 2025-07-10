@@ -188,7 +188,7 @@ export function AccueilGeneralForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Upload vidéo desktop */}
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="space-y-2">
           <Label htmlFor="video_desktop">Vidéo Desktop</Label>
           <div className="flex items-center space-x-2">
@@ -218,7 +218,7 @@ export function AccueilGeneralForm({
           )}
 
           {/* Aperçu de la cover générée */}
-          {accueilData?.video_cover && (
+          {accueilData?.video_cover && !videoDesktopPreview && (
             <div className="mt-4">
               <p className="text-sm text-gray-500 mb-2">
                 Cover générée automatiquement :
@@ -305,7 +305,7 @@ export function AccueilGeneralForm({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Upload de photo */}
         <div className="space-y-4">
           <div className="space-y-2">

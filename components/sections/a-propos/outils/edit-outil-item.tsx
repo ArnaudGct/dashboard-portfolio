@@ -348,7 +348,7 @@ export function EditOutilItem({ initialData }: EditOutilItemProps) {
         {/* Couleurs pour le mode clair */}
         <div className="space-y-4">
           <h3 className="text-lg font-semibold">Couleurs (Mode clair)</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             <div className="space-y-2">
               <Label>Couleur de fond</Label>
               <div className="flex items-center space-x-2">
@@ -361,14 +361,14 @@ export function EditOutilItem({ initialData }: EditOutilItemProps) {
                   value={couleurFond}
                   onChange={(e) => setCouleurFond(e.target.value)}
                   placeholder="#ffffff"
-                  className="flex-1"
+                  className="flex-1 min-w-0"
                 />
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
                   onClick={() => toggleColorPicker("fond")}
-                  className="flex-shrink-0 cursor-pointer"
+                  className="flex-shrink-0 cursor-pointer p-2"
                 >
                   {showColorPickers.fond ? (
                     <ChevronUp className="h-4 w-4" />
@@ -378,12 +378,14 @@ export function EditOutilItem({ initialData }: EditOutilItemProps) {
                 </Button>
               </div>
               {showColorPickers.fond && (
-                <div className="mt-2 p-2 border rounded-md bg-white shadow-lg">
-                  <Sketch
-                    color={couleurFond}
-                    onChange={(color) => setCouleurFond(color.hex)}
-                    style={{ width: "100%" }}
-                  />
+                <div className="mt-2 p-2 border rounded-md bg-white shadow-lg relative z-10">
+                  <div className="w-full max-w-xs mx-auto">
+                    <Sketch
+                      color={couleurFond}
+                      onChange={(color) => setCouleurFond(color.hex)}
+                      style={{ width: "100%" }}
+                    />
+                  </div>
                 </div>
               )}
             </div>
@@ -400,14 +402,14 @@ export function EditOutilItem({ initialData }: EditOutilItemProps) {
                   value={couleurContour}
                   onChange={(e) => setCouleurContour(e.target.value)}
                   placeholder="#e5e7eb"
-                  className="flex-1"
+                  className="flex-1 min-w-0"
                 />
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
                   onClick={() => toggleColorPicker("contour")}
-                  className="flex-shrink-0 cursor-pointer"
+                  className="flex-shrink-0 cursor-pointer p-2"
                 >
                   {showColorPickers.contour ? (
                     <ChevronUp className="h-4 w-4" />
@@ -417,12 +419,14 @@ export function EditOutilItem({ initialData }: EditOutilItemProps) {
                 </Button>
               </div>
               {showColorPickers.contour && (
-                <div className="mt-2 p-2 border rounded-md bg-white shadow-lg">
-                  <Sketch
-                    color={couleurContour}
-                    onChange={(color) => setCouleurContour(color.hex)}
-                    style={{ width: "100%" }}
-                  />
+                <div className="mt-2 p-2 border rounded-md bg-white shadow-lg relative z-10">
+                  <div className="w-full max-w-xs mx-auto">
+                    <Sketch
+                      color={couleurContour}
+                      onChange={(color) => setCouleurContour(color.hex)}
+                      style={{ width: "100%" }}
+                    />
+                  </div>
                 </div>
               )}
             </div>
@@ -439,14 +443,14 @@ export function EditOutilItem({ initialData }: EditOutilItemProps) {
                   value={couleurTexte}
                   onChange={(e) => setCouleurTexte(e.target.value)}
                   placeholder="#000000"
-                  className="flex-1"
+                  className="flex-1 min-w-0"
                 />
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
                   onClick={() => toggleColorPicker("texte")}
-                  className="flex-shrink-0 cursor-pointer"
+                  className="flex-shrink-0 cursor-pointer p-2"
                 >
                   {showColorPickers.texte ? (
                     <ChevronUp className="h-4 w-4" />
@@ -456,12 +460,14 @@ export function EditOutilItem({ initialData }: EditOutilItemProps) {
                 </Button>
               </div>
               {showColorPickers.texte && (
-                <div className="mt-2 p-2 border rounded-md bg-white shadow-lg">
-                  <Sketch
-                    color={couleurTexte}
-                    onChange={(color) => setCouleurTexte(color.hex)}
-                    style={{ width: "100%" }}
-                  />
+                <div className="mt-2 p-2 border rounded-md bg-white shadow-lg relative z-10">
+                  <div className="w-full max-w-xs mx-auto">
+                    <Sketch
+                      color={couleurTexte}
+                      onChange={(color) => setCouleurTexte(color.hex)}
+                      style={{ width: "100%" }}
+                    />
+                  </div>
                 </div>
               )}
             </div>
@@ -471,7 +477,7 @@ export function EditOutilItem({ initialData }: EditOutilItemProps) {
         {/* Couleurs pour le mode sombre */}
         <div className="space-y-4">
           <h3 className="text-lg font-semibold">Couleurs (Mode sombre)</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             <div className="space-y-2">
               <Label>Couleur de fond (dark)</Label>
               <div className="flex items-center space-x-2">
@@ -484,14 +490,14 @@ export function EditOutilItem({ initialData }: EditOutilItemProps) {
                   value={couleurFondDark}
                   onChange={(e) => setCouleurFondDark(e.target.value)}
                   placeholder="#1f2937"
-                  className="flex-1"
+                  className="flex-1 min-w-0"
                 />
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
                   onClick={() => toggleColorPicker("fondDark")}
-                  className="flex-shrink-0 cursor-pointer"
+                  className="flex-shrink-0 cursor-pointer p-2"
                 >
                   {showColorPickers.fondDark ? (
                     <ChevronUp className="h-4 w-4" />
@@ -501,12 +507,14 @@ export function EditOutilItem({ initialData }: EditOutilItemProps) {
                 </Button>
               </div>
               {showColorPickers.fondDark && (
-                <div className="mt-2 p-2 border rounded-md bg-white shadow-lg">
-                  <Sketch
-                    color={couleurFondDark}
-                    onChange={(color) => setCouleurFondDark(color.hex)}
-                    style={{ width: "100%" }}
-                  />
+                <div className="mt-2 p-2 border rounded-md bg-white shadow-lg relative z-10">
+                  <div className="w-full max-w-xs mx-auto">
+                    <Sketch
+                      color={couleurFondDark}
+                      onChange={(color) => setCouleurFondDark(color.hex)}
+                      style={{ width: "100%" }}
+                    />
+                  </div>
                 </div>
               )}
             </div>
@@ -523,14 +531,14 @@ export function EditOutilItem({ initialData }: EditOutilItemProps) {
                   value={couleurContourDark}
                   onChange={(e) => setCouleurContourDark(e.target.value)}
                   placeholder="#374151"
-                  className="flex-1"
+                  className="flex-1 min-w-0"
                 />
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
                   onClick={() => toggleColorPicker("contourDark")}
-                  className="flex-shrink-0 cursor-pointer"
+                  className="flex-shrink-0 cursor-pointer p-2"
                 >
                   {showColorPickers.contourDark ? (
                     <ChevronUp className="h-4 w-4" />
@@ -540,12 +548,14 @@ export function EditOutilItem({ initialData }: EditOutilItemProps) {
                 </Button>
               </div>
               {showColorPickers.contourDark && (
-                <div className="mt-2 p-2 border rounded-md bg-white shadow-lg">
-                  <Sketch
-                    color={couleurContourDark}
-                    onChange={(color) => setCouleurContourDark(color.hex)}
-                    style={{ width: "100%" }}
-                  />
+                <div className="mt-2 p-2 border rounded-md bg-white shadow-lg relative z-10">
+                  <div className="w-full max-w-xs mx-auto">
+                    <Sketch
+                      color={couleurContourDark}
+                      onChange={(color) => setCouleurContourDark(color.hex)}
+                      style={{ width: "100%" }}
+                    />
+                  </div>
                 </div>
               )}
             </div>
@@ -562,14 +572,14 @@ export function EditOutilItem({ initialData }: EditOutilItemProps) {
                   value={couleurTexteDark}
                   onChange={(e) => setCouleurTexteDark(e.target.value)}
                   placeholder="#ffffff"
-                  className="flex-1"
+                  className="flex-1 min-w-0"
                 />
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
                   onClick={() => toggleColorPicker("texteDark")}
-                  className="flex-shrink-0 cursor-pointer"
+                  className="flex-shrink-0 cursor-pointer p-2"
                 >
                   {showColorPickers.texteDark ? (
                     <ChevronUp className="h-4 w-4" />
@@ -579,12 +589,14 @@ export function EditOutilItem({ initialData }: EditOutilItemProps) {
                 </Button>
               </div>
               {showColorPickers.texteDark && (
-                <div className="mt-2 p-2 border rounded-md bg-white shadow-lg">
-                  <Sketch
-                    color={couleurTexteDark}
-                    onChange={(color) => setCouleurTexteDark(color.hex)}
-                    style={{ width: "100%" }}
-                  />
+                <div className="mt-2 p-2 border rounded-md bg-white shadow-lg relative z-10">
+                  <div className="w-full max-w-xs mx-auto">
+                    <Sketch
+                      color={couleurTexteDark}
+                      onChange={(color) => setCouleurTexteDark(color.hex)}
+                      style={{ width: "100%" }}
+                    />
+                  </div>
                 </div>
               )}
             </div>

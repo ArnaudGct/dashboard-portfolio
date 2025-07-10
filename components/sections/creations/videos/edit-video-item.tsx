@@ -189,7 +189,7 @@ export function EditVideoItem({
   return (
     <div className="w-[90%] mx-auto">
       <div className="flex flex-col gap-8">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col justify-center items-start gap-4 sm:flex-row sm:justify-between sm:items-center">
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
