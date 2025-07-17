@@ -83,9 +83,9 @@ export function AddPhotoItemSimple({
         return;
       }
 
-      if (file.size > 20 * 1024 * 1024) {
+      if (file.size > 50 * 1024 * 1024) {
         // 20MB
-        toast.error("L'image est trop volumineuse (max 20MB)");
+        toast.error("L'image est trop volumineuse (max 50MB)");
         return;
       }
 
