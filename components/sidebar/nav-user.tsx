@@ -1,8 +1,7 @@
 "use client";
 
-import { authClient } from "@/lib/auth-client";
-import { useState } from "react";
 import { User as UserType } from "@/types/user";
+import { useRouter } from "next/navigation";
 
 import { ChevronsUpDown, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -20,28 +19,13 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { toast } from "sonner";
 
 export function NavUser({ user }: { user: UserType }) {
   const { isMobile } = useSidebar();
-  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-  const handleSignOut = async () => {
-    try {
-      setLoading(true);
-      await authClient.signOut({
-        fetchOptions: {
-          onSuccess: () => {
-            toast.success("Déconnexion réussie !");
-            window.location.href = "/auth/signin";
-          },
-        },
-      });
-    } catch (error) {
-      console.error("Error signing out:", error);
-    } finally {
-      setLoading(false);
-    }
+  const handleSignOut = () => {
+    router.push("/auth/signout");
   };
 
   return (
@@ -93,9 +77,8 @@ export function NavUser({ user }: { user: UserType }) {
 
             <DropdownMenuItem>
               <button
-                type="submit"
-                className="flex items-center gap-2 cursor-pointer"
-                disabled={loading}
+                type="button"
+                className="flex items-center gap-2 cursor-pointer w-full"
                 onClick={handleSignOut}
               >
                 <LogOut />

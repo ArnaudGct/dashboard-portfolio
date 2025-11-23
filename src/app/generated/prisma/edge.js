@@ -528,7 +528,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\wamp64\\www\\dashboard-portfolio\\src\\app\\generated\\prisma",
+      "value": "/Applications/MAMP/htdocs/dashboard-portfolio/src/app/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -537,12 +537,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "darwin-arm64",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\wamp64\\www\\dashboard-portfolio\\prisma\\schema.prisma",
+    "sourceFilePath": "/Applications/MAMP/htdocs/dashboard-portfolio/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
