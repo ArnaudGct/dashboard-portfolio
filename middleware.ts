@@ -10,15 +10,23 @@ export async function middleware(request: NextRequest) {
 
   // Vérifier si l'utilisateur accède à une route d'authentification
   const isAuthRoute = path.startsWith("/auth/");
+  const isApiRoute = path.startsWith("/api/");
+
+  // Ne pas appliquer le middleware aux routes API (sauf si nécessaire)
+  if (isApiRoute) {
+    return NextResponse.next();
+  }
 
   // Si l'utilisateur n'est pas authentifié et n'accède pas à une route d'authentification
   if (!sessionCookie && !isAuthRoute) {
+    console.log(`[Middleware] No session for ${path}, redirecting to signin`);
     // Rediriger vers la page de connexion
     return NextResponse.redirect(new URL("/auth/signin", request.url));
   }
 
   // Cas spécial: si l'utilisateur est déjà authentifié et essaie d'accéder à la page de connexion
   if (sessionCookie && path === "/auth/signin") {
+    console.log("[Middleware] User already logged in, redirecting to home");
     // Rediriger vers la page d'accueil
     return NextResponse.redirect(new URL("/", request.url));
   }

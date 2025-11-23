@@ -3,23 +3,26 @@
 import { usePathname } from "next/navigation";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
-import { useEffect } from "react"; // Ajoutez cette importation
+import { useEffect } from "react";
+import type { User as UserType } from "@/types/user";
 
 interface RouteDetectorProps {
-  user: unknown;
+  user: UserType | undefined;
   children: React.ReactNode;
 }
 
 export function RouteDetector({ user, children }: RouteDetectorProps) {
   const pathname = usePathname();
-  // Ajoutez une vérification plus large pour inclure toutes les pages d'authentification
-  const isAuthPage = pathname?.includes("/auth");
+  const isAuthPage = pathname?.startsWith("/auth");
 
   // Debug pour voir les valeurs
   useEffect(() => {
-    console.log("Current path:", pathname);
-    console.log("Is auth page:", isAuthPage);
-    console.log("User:", user);
+    console.log("[RouteDetector] Current path:", pathname);
+    console.log("[RouteDetector] Is auth page:", isAuthPage);
+    console.log("[RouteDetector] User:", user ? "Logged in" : "Not logged in");
+    if (!user && !isAuthPage) {
+      console.warn("[RouteDetector] User is undefined on protected page!");
+    }
   }, [pathname, isAuthPage, user]);
 
   if (isAuthPage) {
@@ -30,11 +33,25 @@ export function RouteDetector({ user, children }: RouteDetectorProps) {
     );
   }
 
+  // Si pas de user sur une page protégée, afficher quand même la structure mais sans sidebar
+  if (!user) {
+    return (
+      <SidebarProvider>
+        <main className="w-full h-full">
+          <div className="p-4 text-yellow-600">
+            Session expirée. Veuillez vous reconnecter.
+          </div>
+          {children}
+        </main>
+      </SidebarProvider>
+    );
+  }
+
   return (
     <SidebarProvider>
-      {user ? <AppSidebar user={user} /> : null}
+      <AppSidebar user={user} />
       <main className="w-full h-full">
-        {!isAuthPage && <SidebarTrigger />}
+        <SidebarTrigger />
         {children}
       </main>
     </SidebarProvider>

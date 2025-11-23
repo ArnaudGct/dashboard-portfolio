@@ -34,9 +34,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Toaster />
-        <SidebarProvider>
-          <RouteDetector user={user}>{children}</RouteDetector>
-        </SidebarProvider>
+        <RouteDetector user={user}>{children}</RouteDetector>
       </body>
     </html>
   );
