@@ -40,7 +40,7 @@ function ForgetPasswordContent() {
             <form
               action={async (formData) => {
                 const email = formData.get("email") as string;
-                await authClient.forgetPassword(
+                await authClient.requestPasswordReset(
                   {
                     email: email as string,
                     redirectTo: "/auth/forget-password",
@@ -55,7 +55,7 @@ function ForgetPasswordContent() {
                       );
                       setLoading(false);
                     },
-                    onError: (ctx) => {
+                    onError: (ctx: { error: { message: string } }) => {
                       toast.error(ctx.error.message);
                     },
                   }
