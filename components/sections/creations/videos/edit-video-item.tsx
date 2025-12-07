@@ -64,14 +64,17 @@ type EditVideoFormProps = {
     duree: string;
     date?: Date;
     afficher: boolean;
+    afficher_accueil: boolean;
     tags: string[];
   };
   availableTags: TagOption[];
+  pinnedCount: number;
 };
 
 export function EditVideoItem({
   initialData,
   availableTags,
+  pinnedCount,
 }: EditVideoFormProps) {
   const router = useRouter();
   const [date, setDate] = useState<Date | undefined>(
@@ -86,7 +89,12 @@ export function EditVideoItem({
   const [selectedTags, setSelectedTags] = useState<string[]>(initialData.tags);
   const [markdown, setMarkdown] = useState<string>(initialData.description);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isPinned, setIsPinned] = useState(initialData.afficher_accueil);
   const editorRef = useRef<MDXEditorMethods | null>(null);
+
+  // Calculer le compteur prévisualisé (ajuster selon le changement par rapport à l'état initial)
+  const previewPinnedCount =
+    pinnedCount + (isPinned ? 1 : 0) - (initialData.afficher_accueil ? 1 : 0);
 
   const handleTagsChange = (newSelectedTags: string[]) => {
     setSelectedTags(newSelectedTags);
@@ -370,6 +378,25 @@ export function EditVideoItem({
               defaultChecked={initialData.afficher}
               className="cursor-pointer"
             />
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <Label htmlFor="afficherAccueil">
+              Épingler à l&apos;accueil ({previewPinnedCount}/4)
+            </Label>
+            <Switch
+              id="afficherAccueil"
+              name="afficherAccueil"
+              className="cursor-pointer"
+              disabled={pinnedCount >= 4 && !initialData.afficher_accueil}
+              checked={isPinned}
+              onCheckedChange={setIsPinned}
+            />
+            {pinnedCount >= 4 && !initialData.afficher_accueil && (
+              <span className="text-xs text-muted-foreground">
+                Limite atteinte
+              </span>
+            )}
           </div>
 
           <div className="flex gap-2">

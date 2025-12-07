@@ -46,14 +46,22 @@ type TagOption = {
 
 type AddVideoFormProps = {
   availableTags: TagOption[];
+  pinnedCount: number;
 };
 
-export function AddVideoItem({ availableTags }: AddVideoFormProps) {
+export function AddVideoItem({
+  availableTags,
+  pinnedCount,
+}: AddVideoFormProps) {
   const router = useRouter();
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [markdown, setMarkdown] = useState<string>("Description de la vidéo");
+  const [isPinned, setIsPinned] = useState(false);
   const editorRef = useRef<MDXEditorMethods | null>(null);
+
+  // Calculer le compteur prévisualisé
+  const previewPinnedCount = pinnedCount + (isPinned ? 1 : 0);
 
   const handleTagsChange = (newSelectedTags: string[]) => {
     setSelectedTags(newSelectedTags);
@@ -266,6 +274,25 @@ export function AddVideoItem({ availableTags }: AddVideoFormProps) {
               name="isPublished"
               className="cursor-pointer"
             />
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <Label htmlFor="afficherAccueil">
+              Épingler à l&apos;accueil ({previewPinnedCount}/4)
+            </Label>
+            <Switch
+              id="afficherAccueil"
+              name="afficherAccueil"
+              className="cursor-pointer"
+              disabled={pinnedCount >= 4}
+              checked={isPinned}
+              onCheckedChange={setIsPinned}
+            />
+            {pinnedCount >= 4 && (
+              <span className="text-xs text-muted-foreground">
+                Limite atteinte
+              </span>
+            )}
           </div>
 
           <div className="flex gap-2">

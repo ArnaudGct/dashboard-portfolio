@@ -49,7 +49,7 @@ async function EditVideoContent({ params }: { params: Params }) {
     }
 
     // Exécuter les requêtes en parallèle avec Promise.all et utiliser select au lieu de include
-    const [video, tags] = await Promise.all([
+    const [video, tags, pinnedCount] = await Promise.all([
       // Optimiser la requête de vidéo
       prisma.videos.findUnique({
         where: {
@@ -63,6 +63,7 @@ async function EditVideoContent({ params }: { params: Params }) {
           duree: true,
           date: true,
           afficher: true,
+          afficher_accueil: true,
           videos_tags_link: {
             select: {
               videos_tags: {
@@ -85,6 +86,11 @@ async function EditVideoContent({ params }: { params: Params }) {
         orderBy: {
           titre: "asc",
         },
+      }),
+
+      // Compter les vidéos épinglées
+      prisma.videos.count({
+        where: { afficher_accueil: true },
       }),
     ]);
 
@@ -116,6 +122,7 @@ async function EditVideoContent({ params }: { params: Params }) {
       duree: video.duree,
       date: videoDate,
       afficher: video.afficher,
+      afficher_accueil: video.afficher_accueil,
       tags: videoTags,
     };
 
@@ -124,6 +131,7 @@ async function EditVideoContent({ params }: { params: Params }) {
         <EditVideoItem
           initialData={initialData}
           availableTags={formattedTags}
+          pinnedCount={pinnedCount}
         />
       </div>
     );

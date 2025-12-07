@@ -172,13 +172,10 @@ model videos {
   id_vid                Int                @id @default(autoincrement())
   titre                 String             @db.VarChar(100)
   description           String             @db.VarChar(3500)
-  tags                  String             @db.VarChar(50)
   lien                  String             @db.VarChar(500)
   date                  DateTime           @db.Date
-  media_webm            String             @db.VarChar(100)
-  media_mp4             String             @db.VarChar(100)
   duree                 String             @db.VarChar(25)
-  afficher_competences  String             @db.VarChar(50)
+  afficher_accueil      Boolean
   afficher              Boolean
   derniere_modification DateTime           @db.DateTime(0)
   videos_tags_link      videos_tags_link[]

@@ -37,17 +37,22 @@ export default function AddVideoPage() {
 // Composant asynchrone qui récupère les données
 async function AddVideoContent() {
   try {
-    // Optimisation: utiliser select pour récupérer uniquement les champs nécessaires
-    const tags = await prisma.videos_tags.findMany({
-      select: {
-        id_tags: true,
-        titre: true,
-        important: true,
-      },
-      orderBy: {
-        titre: "asc",
-      },
-    });
+    // Récupérer les tags et le compteur de vidéos épinglées en parallèle
+    const [tags, pinnedCount] = await Promise.all([
+      prisma.videos_tags.findMany({
+        select: {
+          id_tags: true,
+          titre: true,
+          important: true,
+        },
+        orderBy: {
+          titre: "asc",
+        },
+      }),
+      prisma.videos.count({
+        where: { afficher_accueil: true },
+      }),
+    ]);
 
     // Transformer les données pour le composant client
     const availableTags = tags.map((tag) => ({
@@ -58,7 +63,7 @@ async function AddVideoContent() {
 
     return (
       <div className="w-[90%] mx-auto">
-        <AddVideoItem availableTags={availableTags} />
+        <AddVideoItem availableTags={availableTags} pinnedCount={pinnedCount} />
       </div>
     );
   } catch (error) {

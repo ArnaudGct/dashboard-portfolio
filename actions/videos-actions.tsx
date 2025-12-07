@@ -19,6 +19,18 @@ export async function addVideoAction(formData: FormData) {
       }
     }
 
+    // Vérifier si on veut afficher sur l'accueil et si la limite de 4 n'est pas atteinte
+    let afficherAccueil = formData.get("afficherAccueil") === "on";
+
+    if (afficherAccueil) {
+      const videosAccueil = await prisma.videos.count({
+        where: { afficher_accueil: true },
+      });
+      if (videosAccueil >= 4) {
+        afficherAccueil = false; // Ne pas dépasser la limite de 4
+      }
+    }
+
     const video = await prisma.videos.create({
       data: {
         titre: formData.get("title")?.toString() || "",
@@ -26,12 +38,9 @@ export async function addVideoAction(formData: FormData) {
         lien: formData.get("url")?.toString() || "",
         duree: formData.get("duree")?.toString() || "",
         date: dateValue || new Date(), // Utiliser la date actuelle si aucune date n'est fournie
-        media_webm: "", // Valeur par défaut ou à récupérer du formulaire
-        media_mp4: "", // Valeur par défaut ou à récupérer du formulaire
-        afficher_competences: "", // Valeur par défaut ou à récupérer du formulaire
+        afficher_accueil: afficherAccueil,
         afficher: formData.get("isPublished") === "on", // MySQL utilise 0/1 pour les booléens
         derniere_modification: new Date(),
-        tags: "", // Champ texte de tags, à utiliser si nécessaire
       },
     });
 
@@ -105,6 +114,25 @@ export async function updateVideoAction(formData: FormData) {
       }
     }
 
+    // Vérifier si on veut afficher sur l'accueil
+    let afficherAccueil = formData.get("afficherAccueil") === "on";
+
+    // Récupérer l'état actuel de la vidéo
+    const currentVideo = await prisma.videos.findUnique({
+      where: { id_vid: videoId },
+      select: { afficher_accueil: true },
+    });
+
+    // Si on active l'affichage accueil et ce n'était pas déjà activé, vérifier la limite
+    if (afficherAccueil && !currentVideo?.afficher_accueil) {
+      const videosAccueil = await prisma.videos.count({
+        where: { afficher_accueil: true },
+      });
+      if (videosAccueil >= 4) {
+        afficherAccueil = false; // Ne pas dépasser la limite de 4
+      }
+    }
+
     // 1. Mettre à jour la vidéo
     const video = await prisma.videos.update({
       where: {
@@ -116,6 +144,7 @@ export async function updateVideoAction(formData: FormData) {
         lien: formData.get("url")?.toString() || "",
         duree: formData.get("duree")?.toString() || "",
         date: dateValue || new Date(), // Utiliser la date actuelle si aucune date n'est fournie
+        afficher_accueil: afficherAccueil,
         afficher: formData.get("isPublished") === "on",
         derniere_modification: new Date(),
       },
@@ -293,6 +322,99 @@ export async function createVideoTagAction(
     };
   } catch (error) {
     console.error("Erreur lors de la création du tag:", error);
+    throw error;
+  }
+}
+
+// Action pour épingler une vidéo à l'accueil
+export async function pinVideoToHomeAction(videoId: number) {
+  try {
+    // Vérifier si la limite de 4 vidéos n'est pas atteinte
+    const videosAccueil = await prisma.videos.count({
+      where: { afficher_accueil: true },
+    });
+
+    if (videosAccueil >= 4) {
+      return {
+        success: false,
+        error: "La limite de 4 vidéos épinglées est atteinte",
+      };
+    }
+
+    // Épingler la vidéo
+    await prisma.videos.update({
+      where: { id_vid: videoId },
+      data: {
+        afficher_accueil: true,
+        derniere_modification: new Date(),
+      },
+    });
+
+    revalidatePath("/creations/videos");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Erreur lors de l'épinglage de la vidéo:", error);
+    throw error;
+  }
+}
+
+// Action pour désépingler une vidéo de l'accueil
+export async function unpinVideoFromHomeAction(videoId: number) {
+  try {
+    await prisma.videos.update({
+      where: { id_vid: videoId },
+      data: {
+        afficher_accueil: false,
+        derniere_modification: new Date(),
+      },
+    });
+
+    revalidatePath("/creations/videos");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Erreur lors du désépinglage de la vidéo:", error);
+    throw error;
+  }
+}
+
+// Action pour récupérer les vidéos épinglées à l'accueil
+export async function getPinnedVideosAction() {
+  try {
+    const videos = await prisma.videos.findMany({
+      where: { afficher_accueil: true },
+      select: {
+        id_vid: true,
+        titre: true,
+        lien: true,
+        duree: true,
+      },
+      orderBy: {
+        derniere_modification: "desc",
+      },
+    });
+
+    return { success: true, videos };
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des vidéos épinglées:",
+      error
+    );
+    throw error;
+  }
+}
+
+// Action pour récupérer le nombre de vidéos épinglées
+export async function getPinnedVideosCountAction() {
+  try {
+    const count = await prisma.videos.count({
+      where: { afficher_accueil: true },
+    });
+
+    return { success: true, count };
+  } catch (error) {
+    console.error("Erreur lors du comptage des vidéos épinglées:", error);
     throw error;
   }
 }

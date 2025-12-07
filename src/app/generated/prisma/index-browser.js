@@ -249,13 +249,10 @@ exports.Prisma.VideosScalarFieldEnum = {
   id_vid: 'id_vid',
   titre: 'titre',
   description: 'description',
-  tags: 'tags',
   lien: 'lien',
   date: 'date',
-  media_webm: 'media_webm',
-  media_mp4: 'media_mp4',
   duree: 'duree',
-  afficher_competences: 'afficher_competences',
+  afficher_accueil: 'afficher_accueil',
   afficher: 'afficher',
   derniere_modification: 'derniere_modification'
 };
@@ -438,12 +435,8 @@ exports.Prisma.utilisateursOrderByRelevanceFieldEnum = {
 exports.Prisma.videosOrderByRelevanceFieldEnum = {
   titre: 'titre',
   description: 'description',
-  tags: 'tags',
   lien: 'lien',
-  media_webm: 'media_webm',
-  media_mp4: 'media_mp4',
-  duree: 'duree',
-  afficher_competences: 'afficher_competences'
+  duree: 'duree'
 };
 
 exports.Prisma.videos_tagsOrderByRelevanceFieldEnum = {
