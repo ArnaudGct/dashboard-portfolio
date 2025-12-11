@@ -121,6 +121,8 @@ export function AppSidebar({
             width={32}
             height={32}
             className="rounded-lg"
+            unoptimized
+            priority
           />
           <h1 className="text-lg font-bold">ArnaudGct</h1>
         </div>
