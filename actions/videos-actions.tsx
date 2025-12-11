@@ -170,7 +170,10 @@ export async function updateVideoAction(formData: FormData) {
       updateData.ordre_accueil = 0;
 
       // Mettre à jour la vidéo d'abord
-      await prisma.videos.update({ where: { id_vid: videoId }, data: updateData });
+      await prisma.videos.update({
+        where: { id_vid: videoId },
+        data: updateData,
+      });
 
       // Décrémenter les ordres des vidéos qui étaient après la vidéo désépinglée
       await prisma.videos.updateMany({
@@ -189,7 +192,10 @@ export async function updateVideoAction(formData: FormData) {
     }
 
     // 1. Mettre à jour la vidéo (cas standard ou activation épinglage)
-    const video = await prisma.videos.update({ where: { id_vid: videoId }, data: updateData });
+    const video = await prisma.videos.update({
+      where: { id_vid: videoId },
+      data: updateData,
+    });
 
     // 2. Gérer les tags
     // 2.1. Supprimer tous les liens existants
