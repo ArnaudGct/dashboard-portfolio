@@ -57,6 +57,7 @@ model faq {
   id_faq   Int     @id @default(autoincrement())
   titre    String  @db.VarChar(250)
   contenu  String  @db.VarChar(1000)
+  ordre    Int
   afficher Boolean
 }
 
@@ -156,6 +157,7 @@ model temoignages {
   client     String  @db.VarChar(50)
   plateforme String  @db.VarChar(50)
   date       String? @db.VarChar(50)
+  ordre      Int
   afficher   Boolean
 }
 
@@ -175,6 +177,7 @@ model videos {
   lien                  String             @db.VarChar(500)
   date                  DateTime           @db.Date
   duree                 String             @db.VarChar(25)
+  ordre_accueil         Int
   afficher_accueil      Boolean
   afficher              Boolean
   derniere_modification DateTime           @db.DateTime(0)
@@ -289,5 +292,6 @@ model apropos_outils {
   couleur_fond_dark    String  @db.VarChar(7)
   couleur_contour_dark String  @db.VarChar(7)
   couleur_texte_dark   String  @db.VarChar(7)
+  ordre                Int
   afficher             Boolean
 }

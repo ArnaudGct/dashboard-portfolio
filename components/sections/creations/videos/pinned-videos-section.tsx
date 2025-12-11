@@ -3,10 +3,19 @@
 import { useState, useMemo } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Pin, Plus, X, Search, ArrowUpDown } from "lucide-react";
+import {
+  Pin,
+  Plus,
+  X,
+  Search,
+  ArrowUpDown,
+  ChevronUp,
+  ChevronDown,
+} from "lucide-react";
 import {
   pinVideoToHomeAction,
   unpinVideoFromHomeAction,
+  reorderPinnedVideosAction,
 } from "@/actions/videos-actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -33,6 +42,7 @@ type PinnedVideo = {
   titre: string;
   lien: string;
   duree: string;
+  ordre_accueil: number;
 };
 
 type UnpinnedVideo = {
@@ -105,6 +115,23 @@ export function PinnedVideosSection({
     } catch (error) {
       console.error("Erreur lors de l'épinglage:", error);
       toast.error("Erreur lors de l'épinglage de la vidéo");
+    } finally {
+      setIsLoading(null);
+    }
+  };
+
+  const handleReorder = async (videoId: number, direction: "up" | "down") => {
+    try {
+      setIsLoading(videoId);
+      const result = await reorderPinnedVideosAction(videoId, direction);
+      if (result.success) {
+        router.refresh();
+      } else if (result.error) {
+        toast.error(result.error);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la réorganisation:", error);
+      toast.error("Erreur lors de la réorganisation des vidéos");
     } finally {
       setIsLoading(null);
     }
@@ -210,20 +237,45 @@ export function PinnedVideosSection({
           </p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            {pinnedVideos.map((video) => (
+            {pinnedVideos.map((video, index) => (
               <div
                 key={video.id_vid}
                 className="flex items-center justify-between gap-2 p-3 bg-secondary/50 rounded-lg"
               >
-                <div className="flex flex-col min-w-0">
-                  <span className="text-sm font-medium truncate">
-                    {video.titre}
-                  </span>
-                  {video.duree && (
-                    <span className="text-xs text-muted-foreground">
-                      {video.duree}
+                <div className="flex items-center gap-2">
+                  <div className="flex flex-col">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-5 w-5 cursor-pointer hover:bg-primary/10"
+                      onClick={() => handleReorder(video.id_vid, "up")}
+                      disabled={isLoading === video.id_vid || index === 0}
+                    >
+                      <ChevronUp className="h-3 w-3" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-5 w-5 cursor-pointer hover:bg-primary/10"
+                      onClick={() => handleReorder(video.id_vid, "down")}
+                      disabled={
+                        isLoading === video.id_vid ||
+                        index === pinnedVideos.length - 1
+                      }
+                    >
+                      <ChevronDown className="h-3 w-3" />
+                    </Button>
+                  </div>
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-sm font-medium truncate">
+                      {video.titre}
                     </span>
-                  )}
+                    {video.duree && (
+                      <span className="text-xs text-muted-foreground">
+                        {video.duree}
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <Button
                   variant="ghost"

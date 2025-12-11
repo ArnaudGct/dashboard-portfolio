@@ -4,7 +4,8 @@ import { Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Suspense } from "react";
 import prisma from "@/lib/prisma";
-import { TemoignageItem } from "@/components/sections/accueil/temoignages/temoignage-item";
+import { TemoignagesOrderedList } from "@/components/sections/accueil/temoignages/temoignages-ordered-list";
+import { initializeTemoignagesOrder } from "@/actions/temoignages-actions";
 
 // Composant de chargement pour Suspense
 function TemoignagesLoading() {
@@ -51,10 +52,13 @@ export default function TemoignagesPage() {
 
 async function TemoignagesList() {
   try {
-    // Récupérer tous les témoignages
+    // Initialiser les ordres si nécessaire
+    await initializeTemoignagesOrder();
+
+    // Récupérer tous les témoignages (triés par ordre)
     const temoignages = await prisma.temoignages.findMany({
       orderBy: {
-        id_tem: "desc", // Trier par le plus récent
+        ordre: "asc",
       },
     });
 
@@ -69,13 +73,7 @@ async function TemoignagesList() {
       );
     }
 
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
-        {temoignages.map((temoignage) => (
-          <TemoignageItem key={temoignage.id_tem} temoignage={temoignage} />
-        ))}
-      </div>
-    );
+    return <TemoignagesOrderedList temoignages={temoignages} />;
   } catch (error) {
     console.error("Erreur lors du chargement des témoignages:", error);
     return (

@@ -146,23 +146,24 @@ async function VideosList() {
 
 async function PinnedVideosList() {
   try {
-    // Récupérer les vidéos épinglées à l'accueil
+    // Récupérer les vidéos épinglées à l'accueil (seulement celles visibles sur le site)
     const pinnedVideos = await prisma.videos.findMany({
-      where: { afficher_accueil: true },
+      where: { afficher_accueil: true, afficher: true },
       select: {
         id_vid: true,
         titre: true,
         lien: true,
         duree: true,
+        ordre_accueil: true,
       },
       orderBy: {
-        derniere_modification: "desc",
+        ordre_accueil: "asc",
       },
     });
 
-    // Récupérer les vidéos non épinglées pour le sélecteur
+    // Récupérer les vidéos non épinglées pour le sélecteur (seulement celles visibles sur le site)
     const unpinnedVideos = await prisma.videos.findMany({
-      where: { afficher_accueil: false },
+      where: { afficher_accueil: false, afficher: true },
       select: {
         id_vid: true,
         titre: true,

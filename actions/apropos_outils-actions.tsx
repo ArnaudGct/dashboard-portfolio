@@ -50,6 +50,13 @@ export async function createOutilAction(formData: FormData) {
       console.log("Icône outil uploadée:", iconeUrl);
     }
 
+    // Trouver l'ordre maximum pour placer le nouvel outil à la fin
+    const maxOrder = await prisma.apropos_outils.aggregate({
+      where: { afficher },
+      _max: { ordre: true },
+    });
+    const newOrder = (maxOrder._max.ordre ?? 0) + 1;
+
     // Créer l'outil
     const nouvelOutil = await prisma.apropos_outils.create({
       data: {
@@ -65,6 +72,7 @@ export async function createOutilAction(formData: FormData) {
         couleur_fond_dark: couleurFondDark,
         couleur_contour_dark: couleurContourDark,
         couleur_texte_dark: couleurTexteDark,
+        ordre: newOrder,
         afficher,
       },
     });
@@ -261,11 +269,115 @@ export async function toggleOutilVisibilityAction(
 export async function getOutils() {
   try {
     const outils = await prisma.apropos_outils.findMany({
-      orderBy: { titre: "asc" },
+      orderBy: { ordre: "asc" },
     });
     return outils;
   } catch (error) {
     console.error("Erreur lors de la récupération des outils:", error);
     return [];
+  }
+}
+
+// Action pour réorganiser l'ordre des outils
+export async function reorderOutilAction(
+  outilId: number,
+  direction: "up" | "down"
+) {
+  try {
+    // Récupérer l'outil actuel
+    const currentOutil = await prisma.apropos_outils.findUnique({
+      where: { id_outil: outilId },
+      select: { ordre: true, afficher: true },
+    });
+
+    if (!currentOutil) {
+      return { success: false, error: "Outil non trouvé" };
+    }
+
+    const currentOrder = currentOutil.ordre;
+
+    // Trouver l'outil voisin le plus proche (dans le même groupe visible/non visible)
+    const targetOutil = await prisma.apropos_outils.findFirst({
+      where: {
+        afficher: currentOutil.afficher,
+        ordre: direction === "up" ? { lt: currentOrder } : { gt: currentOrder },
+      },
+      orderBy: {
+        ordre: direction === "up" ? "desc" : "asc",
+      },
+      select: { id_outil: true, ordre: true },
+    });
+
+    if (!targetOutil) {
+      return {
+        success: false,
+        error: "Impossible de déplacer l'outil dans cette direction",
+      };
+    }
+
+    // Échanger les ordres
+    await prisma.$transaction([
+      prisma.apropos_outils.update({
+        where: { id_outil: outilId },
+        data: { ordre: targetOutil.ordre },
+      }),
+      prisma.apropos_outils.update({
+        where: { id_outil: targetOutil.id_outil },
+        data: { ordre: currentOrder },
+      }),
+    ]);
+
+    revalidatePath("/a-propos/outils");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Erreur lors de la réorganisation des outils:", error);
+    return { success: false, error: "Erreur lors de la réorganisation" };
+  }
+}
+
+// Initialiser les ordres des outils si nécessaire
+export async function initializeOutilsOrder() {
+  try {
+    // Vérifier si les ordres sont déjà initialisés (pas tous à 0)
+    const allZero = await prisma.apropos_outils.findFirst({
+      where: { ordre: { not: 0 } },
+    });
+
+    if (allZero) {
+      // Les ordres sont déjà initialisés
+      return;
+    }
+
+    // Initialiser les ordres séparément pour les visibles et non visibles
+    const visibles = await prisma.apropos_outils.findMany({
+      where: { afficher: true },
+      orderBy: { id_outil: "asc" },
+    });
+
+    const nonVisibles = await prisma.apropos_outils.findMany({
+      where: { afficher: false },
+      orderBy: { id_outil: "asc" },
+    });
+
+    // Mettre à jour les ordres
+    const updates = [
+      ...visibles.map((o, index) =>
+        prisma.apropos_outils.update({
+          where: { id_outil: o.id_outil },
+          data: { ordre: index + 1 },
+        })
+      ),
+      ...nonVisibles.map((o, index) =>
+        prisma.apropos_outils.update({
+          where: { id_outil: o.id_outil },
+          data: { ordre: index + 1 },
+        })
+      ),
+    ];
+
+    await prisma.$transaction(updates);
+  } catch (error) {
+    console.error("Erreur lors de l'initialisation des ordres:", error);
   }
 }

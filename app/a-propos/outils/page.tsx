@@ -1,8 +1,11 @@
 import { Card } from "@/components/ui/card";
 import { Suspense } from "react";
-import { getOutils } from "@/actions/apropos_outils-actions";
+import {
+  getOutils,
+  initializeOutilsOrder,
+} from "@/actions/apropos_outils-actions";
 import { Skeleton } from "@/components/ui/skeleton";
-import { OutilItem } from "@/components/sections/a-propos/outils/outil-item";
+import { OutilsOrderedList } from "@/components/sections/a-propos/outils/outils-ordered-list";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -62,7 +65,10 @@ export default function AProposOutils() {
 
 async function OutilsList() {
   try {
-    // Récupérer tous les outils
+    // Initialiser les ordres si nécessaire
+    await initializeOutilsOrder();
+
+    // Récupérer tous les outils (triés par ordre)
     const outils = await getOutils();
 
     // Si aucun outil, afficher un message
@@ -76,36 +82,7 @@ async function OutilsList() {
       );
     }
 
-    // Séparer les outils visibles et non visibles
-    const visibleOutils = outils.filter((outil) => outil.afficher);
-    const hiddenOutils = outils.filter((outil) => !outil.afficher);
-
-    return (
-      <div className="flex flex-col gap-8">
-        {/* Outils visibles */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
-          {visibleOutils.map((outil) => (
-            <OutilItem key={outil.id_outil} outil={outil} />
-          ))}
-        </div>
-
-        {/* Outils non visibles (si on veut les afficher pour l'admin) */}
-        {hiddenOutils.length > 0 && (
-          <div className="mt-8">
-            <h2 className="text-xl font-semibold mb-4 text-muted-foreground">
-              Outils non visibles
-            </h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
-              {hiddenOutils.map((outil) => (
-                <div key={outil.id_outil} className="opacity-60">
-                  <OutilItem outil={outil} />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    );
+    return <OutilsOrderedList outils={outils} />;
   } catch (error) {
     console.error("Erreur lors du chargement des outils:", error);
     return (

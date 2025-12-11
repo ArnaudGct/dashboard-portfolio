@@ -329,9 +329,9 @@ export async function createVideoTagAction(
 // Action pour épingler une vidéo à l'accueil
 export async function pinVideoToHomeAction(videoId: number) {
   try {
-    // Vérifier si la limite de 4 vidéos n'est pas atteinte
+    // Vérifier si la limite de 4 vidéos n'est pas atteinte (seulement les vidéos visibles)
     const videosAccueil = await prisma.videos.count({
-      where: { afficher_accueil: true },
+      where: { afficher_accueil: true, afficher: true },
     });
 
     if (videosAccueil >= 4) {
@@ -341,11 +341,19 @@ export async function pinVideoToHomeAction(videoId: number) {
       };
     }
 
+    // Trouver l'ordre maximum actuel pour placer la nouvelle vidéo à la fin
+    const maxOrder = await prisma.videos.aggregate({
+      where: { afficher_accueil: true, afficher: true },
+      _max: { ordre_accueil: true },
+    });
+    const newOrder = (maxOrder._max.ordre_accueil ?? 0) + 1;
+
     // Épingler la vidéo
     await prisma.videos.update({
       where: { id_vid: videoId },
       data: {
         afficher_accueil: true,
+        ordre_accueil: newOrder,
         derniere_modification: new Date(),
       },
     });
@@ -362,13 +370,34 @@ export async function pinVideoToHomeAction(videoId: number) {
 // Action pour désépingler une vidéo de l'accueil
 export async function unpinVideoFromHomeAction(videoId: number) {
   try {
+    // Récupérer l'ordre actuel de la vidéo
+    const video = await prisma.videos.findUnique({
+      where: { id_vid: videoId },
+      select: { ordre_accueil: true },
+    });
+
     await prisma.videos.update({
       where: { id_vid: videoId },
       data: {
         afficher_accueil: false,
+        ordre_accueil: 0,
         derniere_modification: new Date(),
       },
     });
+
+    // Réorganiser les ordres des vidéos restantes
+    if (video?.ordre_accueil) {
+      await prisma.videos.updateMany({
+        where: {
+          afficher_accueil: true,
+          afficher: true,
+          ordre_accueil: { gt: video.ordre_accueil },
+        },
+        data: {
+          ordre_accueil: { decrement: 1 },
+        },
+      });
+    }
 
     revalidatePath("/creations/videos");
 
@@ -383,15 +412,16 @@ export async function unpinVideoFromHomeAction(videoId: number) {
 export async function getPinnedVideosAction() {
   try {
     const videos = await prisma.videos.findMany({
-      where: { afficher_accueil: true },
+      where: { afficher_accueil: true, afficher: true },
       select: {
         id_vid: true,
         titre: true,
         lien: true,
         duree: true,
+        ordre_accueil: true,
       },
       orderBy: {
-        derniere_modification: "desc",
+        ordre_accueil: "asc",
       },
     });
 
@@ -409,12 +439,68 @@ export async function getPinnedVideosAction() {
 export async function getPinnedVideosCountAction() {
   try {
     const count = await prisma.videos.count({
-      where: { afficher_accueil: true },
+      where: { afficher_accueil: true, afficher: true },
     });
 
     return { success: true, count };
   } catch (error) {
     console.error("Erreur lors du comptage des vidéos épinglées:", error);
+    throw error;
+  }
+}
+
+// Action pour réorganiser l'ordre des vidéos épinglées
+export async function reorderPinnedVideosAction(
+  videoId: number,
+  direction: "up" | "down"
+) {
+  try {
+    // Récupérer la vidéo actuelle
+    const currentVideo = await prisma.videos.findUnique({
+      where: { id_vid: videoId },
+      select: { ordre_accueil: true },
+    });
+
+    if (!currentVideo) {
+      return { success: false, error: "Vidéo non trouvée" };
+    }
+
+    const currentOrder = currentVideo.ordre_accueil;
+
+    // Trouver la vidéo à échanger
+    const targetVideo = await prisma.videos.findFirst({
+      where: {
+        afficher_accueil: true,
+        afficher: true,
+        ordre_accueil: direction === "up" ? currentOrder - 1 : currentOrder + 1,
+      },
+      select: { id_vid: true, ordre_accueil: true },
+    });
+
+    if (!targetVideo) {
+      return {
+        success: false,
+        error: "Impossible de déplacer la vidéo dans cette direction",
+      };
+    }
+
+    // Échanger les ordres
+    await prisma.$transaction([
+      prisma.videos.update({
+        where: { id_vid: videoId },
+        data: { ordre_accueil: targetVideo.ordre_accueil },
+      }),
+      prisma.videos.update({
+        where: { id_vid: targetVideo.id_vid },
+        data: { ordre_accueil: currentOrder },
+      }),
+    ]);
+
+    revalidatePath("/creations/videos");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Erreur lors de la réorganisation des vidéos:", error);
     throw error;
   }
 }

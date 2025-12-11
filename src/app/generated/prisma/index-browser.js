@@ -162,6 +162,7 @@ exports.Prisma.FaqScalarFieldEnum = {
   id_faq: 'id_faq',
   titre: 'titre',
   contenu: 'contenu',
+  ordre: 'ordre',
   afficher: 'afficher'
 };
 
@@ -233,6 +234,7 @@ exports.Prisma.TemoignagesScalarFieldEnum = {
   client: 'client',
   plateforme: 'plateforme',
   date: 'date',
+  ordre: 'ordre',
   afficher: 'afficher'
 };
 
@@ -252,6 +254,7 @@ exports.Prisma.VideosScalarFieldEnum = {
   lien: 'lien',
   date: 'date',
   duree: 'duree',
+  ordre_accueil: 'ordre_accueil',
   afficher_accueil: 'afficher_accueil',
   afficher: 'afficher',
   derniere_modification: 'derniere_modification'
@@ -349,6 +352,7 @@ exports.Prisma.Apropos_outilsScalarFieldEnum = {
   couleur_fond_dark: 'couleur_fond_dark',
   couleur_contour_dark: 'couleur_contour_dark',
   couleur_texte_dark: 'couleur_texte_dark',
+  ordre: 'ordre',
   afficher: 'afficher'
 };
 

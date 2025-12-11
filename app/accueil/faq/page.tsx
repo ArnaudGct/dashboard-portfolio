@@ -1,7 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Suspense } from "react";
 import prisma from "@/lib/prisma";
-import { FaqItem } from "@/components/sections/accueil/faq/faq-item";
+import { FaqOrderedList } from "@/components/sections/accueil/faq/faq-ordered-list";
+import { initializeFaqOrder } from "@/actions/faq-actions";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -54,10 +55,13 @@ export default function FAQ() {
 
 async function FAQList() {
   try {
-    // Récupérer toutes les FAQ
+    // Initialiser les ordres si nécessaire
+    await initializeFaqOrder();
+
+    // Récupérer toutes les FAQ (triées par ordre)
     const faqs = await prisma.faq.findMany({
       orderBy: {
-        id_faq: "asc",
+        ordre: "asc",
       },
     });
 
@@ -72,36 +76,7 @@ async function FAQList() {
       );
     }
 
-    // Séparer les FAQ visibles et non visibles
-    const visibleFaqs = faqs.filter((faq) => faq.afficher);
-    const hiddenFaqs = faqs.filter((faq) => !faq.afficher);
-
-    return (
-      <div className="flex flex-col gap-8">
-        {/* FAQ visibles */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
-          {visibleFaqs.map((faq) => (
-            <FaqItem key={faq.id_faq} faq={faq} />
-          ))}
-        </div>
-
-        {/* FAQ non visibles (si on veut les afficher pour l'admin) */}
-        {hiddenFaqs.length > 0 && (
-          <div className="mt-8">
-            <h2 className="text-xl font-semibold mb-4 text-muted-foreground">
-              Questions non visibles
-            </h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
-              {hiddenFaqs.map((faq) => (
-                <div key={faq.id_faq} className="opacity-60">
-                  <FaqItem faq={faq} />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    );
+    return <FaqOrderedList faqs={faqs} />;
   } catch (error) {
     console.error("Erreur lors du chargement des FAQ:", error);
     return (
