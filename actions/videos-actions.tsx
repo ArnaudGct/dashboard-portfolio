@@ -31,6 +31,16 @@ export async function addVideoAction(formData: FormData) {
       }
     }
 
+    // Déterminer l'ordre d'accueil : si la vidéo est épinglée, placer à la fin
+    let ordreAccueilValue = 0;
+    if (afficherAccueil) {
+      const maxOrder = await prisma.videos.aggregate({
+        where: { afficher_accueil: true, afficher: true },
+        _max: { ordre_accueil: true },
+      });
+      ordreAccueilValue = (maxOrder._max.ordre_accueil ?? 0) + 1;
+    }
+
     const video = await prisma.videos.create({
       data: {
         titre: formData.get("title")?.toString() || "",
@@ -38,6 +48,7 @@ export async function addVideoAction(formData: FormData) {
         lien: formData.get("url")?.toString() || "",
         duree: formData.get("duree")?.toString() || "",
         date: dateValue || new Date(), // Utiliser la date actuelle si aucune date n'est fournie
+        ordre_accueil: ordreAccueilValue,
         afficher_accueil: afficherAccueil,
         afficher: formData.get("isPublished") === "on", // MySQL utilise 0/1 pour les booléens
         derniere_modification: new Date(),
@@ -117,10 +128,10 @@ export async function updateVideoAction(formData: FormData) {
     // Vérifier si on veut afficher sur l'accueil
     let afficherAccueil = formData.get("afficherAccueil") === "on";
 
-    // Récupérer l'état actuel de la vidéo
+    // Récupérer l'état actuel de la vidéo (incluant ordre)
     const currentVideo = await prisma.videos.findUnique({
       where: { id_vid: videoId },
-      select: { afficher_accueil: true },
+      select: { afficher_accueil: true, ordre_accueil: true },
     });
 
     // Si on active l'affichage accueil et ce n'était pas déjà activé, vérifier la limite
@@ -133,22 +144,52 @@ export async function updateVideoAction(formData: FormData) {
       }
     }
 
-    // 1. Mettre à jour la vidéo
-    const video = await prisma.videos.update({
-      where: {
-        id_vid: videoId,
-      },
-      data: {
-        titre: formData.get("title")?.toString() || "",
-        description: formData.get("description")?.toString() || "",
-        lien: formData.get("url")?.toString() || "",
-        duree: formData.get("duree")?.toString() || "",
-        date: dateValue || new Date(), // Utiliser la date actuelle si aucune date n'est fournie
-        afficher_accueil: afficherAccueil,
-        afficher: formData.get("isPublished") === "on",
-        derniere_modification: new Date(),
-      },
-    });
+    // Préparer les données de mise à jour
+    const updateData: any = {
+      titre: formData.get("title")?.toString() || "",
+      description: formData.get("description")?.toString() || "",
+      lien: formData.get("url")?.toString() || "",
+      duree: formData.get("duree")?.toString() || "",
+      date: dateValue || new Date(), // Utiliser la date actuelle si aucune date n'est fournie
+      afficher_accueil: afficherAccueil,
+      afficher: formData.get("isPublished") === "on",
+      derniere_modification: new Date(),
+    };
+
+    // Gérer l'ordre d'accueil si on active/désactive l'affichage_accueil
+    if (afficherAccueil && !currentVideo?.afficher_accueil) {
+      // On active l'épinglage : placer à la fin
+      const maxOrder = await prisma.videos.aggregate({
+        where: { afficher_accueil: true, afficher: true },
+        _max: { ordre_accueil: true },
+      });
+      updateData.ordre_accueil = (maxOrder._max.ordre_accueil ?? 0) + 1;
+    } else if (!afficherAccueil && currentVideo?.afficher_accueil) {
+      // On désactive l'épinglage : mettre à 0 et réajuster les autres
+      const prevOrder = currentVideo.ordre_accueil ?? 0;
+      updateData.ordre_accueil = 0;
+
+      // Mettre à jour la vidéo d'abord
+      await prisma.videos.update({ where: { id_vid: videoId }, data: updateData });
+
+      // Décrémenter les ordres des vidéos qui étaient après la vidéo désépinglée
+      await prisma.videos.updateMany({
+        where: {
+          afficher_accueil: true,
+          afficher: true,
+          ordre_accueil: { gt: prevOrder },
+        },
+        data: {
+          ordre_accueil: { decrement: 1 },
+        },
+      });
+
+      revalidatePath("/creations/videos");
+      return { success: true };
+    }
+
+    // 1. Mettre à jour la vidéo (cas standard ou activation épinglage)
+    const video = await prisma.videos.update({ where: { id_vid: videoId }, data: updateData });
 
     // 2. Gérer les tags
     // 2.1. Supprimer tous les liens existants
