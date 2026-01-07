@@ -165,9 +165,13 @@ async function generateAlbumCover(albumId: number): Promise<string> {
     }
 
     // Créer un objet File-like pour l'upload
-    const coverFile = new File([coverBuffer], `album_${albumId}_cover.jpg`, {
-      type: "image/jpeg",
-    });
+    const coverFile = new File(
+      [new Uint8Array(coverBuffer)],
+      `album_${albumId}_cover.jpg`,
+      {
+        type: "image/jpeg",
+      }
+    );
 
     // Uploader vers Cloudinary dans le dossier albums
     const result = await uploadToCloudinary(
