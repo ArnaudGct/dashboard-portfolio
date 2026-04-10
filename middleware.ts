@@ -1,6 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSessionCookie } from "better-auth/cookies";
 
+function isLocalHost(host: string): boolean {
+  return host.includes("localhost") || host.startsWith("127.0.0.1");
+}
+
+function getCanonicalBaseUrl(request: NextRequest): string {
+  const forwardedHost = request.headers.get("x-forwarded-host");
+  const host =
+    forwardedHost || request.headers.get("host") || request.nextUrl.host;
+
+  const rawProtoHeader = request.headers.get("x-forwarded-proto") || "";
+  const rawProto =
+    rawProtoHeader.split(",")[0]?.trim().toLowerCase() ||
+    request.nextUrl.protocol.replace(":", "") ||
+    "https";
+
+  // Derriere un reverse proxy TLS, on force HTTPS pour les hosts publics.
+  const proto = !isLocalHost(host) && rawProto === "http" ? "https" : rawProto;
+
+  return `${proto}://${host}`;
+}
+
 function hasSessionCookieFallback(request: NextRequest): boolean {
   const cookies = request.cookies.getAll();
   const rawCookieHeader = request.headers.get("cookie") || "";
@@ -62,7 +83,7 @@ export async function middleware(request: NextRequest) {
       );
     }
 
-    const signInUrl = new URL("/auth/signin", request.url);
+    const signInUrl = new URL("/auth/signin", getCanonicalBaseUrl(request));
     signInUrl.searchParams.set(
       "next",
       `${path}${request.nextUrl.search || ""}`,
@@ -75,7 +96,7 @@ export async function middleware(request: NextRequest) {
   if (isAuthenticated && path === "/auth/signin") {
     console.log("[Middleware] User already logged in, redirecting to home");
     // Rediriger vers la page d'accueil
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/", getCanonicalBaseUrl(request)));
   }
 
   // Dans tous les autres cas, permettre l'accès

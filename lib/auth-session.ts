@@ -1,6 +1,10 @@
 import { auth } from "./auth";
 import { cookies, headers } from "next/headers";
 
+function isLocalHost(host: string): boolean {
+  return host.includes("localhost") || host.startsWith("127.0.0.1");
+}
+
 async function buildAuthHeaders(): Promise<Headers> {
   const incomingHeaders = await headers();
   const cookieStore = await cookies();
@@ -18,6 +22,28 @@ async function buildAuthHeaders(): Promise<Headers> {
     if (cookieHeaderFromStore) {
       authHeaders.set("cookie", cookieHeaderFromStore);
     }
+  }
+
+  const forwardedHost = authHeaders.get("x-forwarded-host");
+  const host = forwardedHost || authHeaders.get("host") || "";
+
+  if (host) {
+    authHeaders.set("host", host);
+    authHeaders.set("x-forwarded-host", host);
+  }
+
+  const rawProtoHeader = authHeaders.get("x-forwarded-proto") || "";
+  const rawProto = rawProtoHeader.split(",")[0]?.trim().toLowerCase();
+  const fallbackProto = host && isLocalHost(host) ? "http" : "https";
+  const normalizedProto =
+    rawProto && !isLocalHost(host) && rawProto === "http"
+      ? "https"
+      : rawProto || fallbackProto;
+
+  authHeaders.set("x-forwarded-proto", normalizedProto);
+
+  if (host && !authHeaders.get("origin")) {
+    authHeaders.set("origin", `${normalizedProto}://${host}`);
   }
 
   return authHeaders;
