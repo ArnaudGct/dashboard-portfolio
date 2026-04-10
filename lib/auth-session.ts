@@ -40,8 +40,12 @@ export const getUser = async () => {
 
     if (!session) {
       const hasCookieHeader = Boolean(authHeaders.get("cookie"));
+      const host = authHeaders.get("host") || "unknown";
+      const forwardedHost = authHeaders.get("x-forwarded-host") || "none";
+      const forwardedProto = authHeaders.get("x-forwarded-proto") || "none";
+      const origin = authHeaders.get("origin") || "none";
       console.warn(
-        `[getUser] No session found (cookie header present: ${hasCookieHeader})`,
+        `[getUser] No session found (cookie header present: ${hasCookieHeader}, host: ${host}, x-forwarded-host: ${forwardedHost}, x-forwarded-proto: ${forwardedProto}, origin: ${origin})`,
       );
       return undefined;
     }
