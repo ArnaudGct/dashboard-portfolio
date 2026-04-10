@@ -3,21 +3,30 @@ import { cookies, headers } from "next/headers";
 
 async function buildAuthHeaders(): Promise<Headers> {
   const incomingHeaders = await headers();
-  const authHeaders = new Headers(incomingHeaders);
+  const cookieStore = await cookies();
 
-  // Sur certains flux RSC/proxy, le header cookie peut ne pas etre present ici.
-  // On le reconstruit depuis le store cookies() de Next.
-  if (!authHeaders.get("cookie")) {
-    const cookieStore = await cookies();
-    const cookieHeader = cookieStore
-      .getAll()
-      .map((cookie) => `${cookie.name}=${cookie.value}`)
-      .join("; ");
+  // Construction minimale et deterministe: cookie + host/proto utiles.
+  const authHeaders = new Headers();
 
-    if (cookieHeader) {
-      authHeaders.set("cookie", cookieHeader);
-    }
+  const cookieHeaderFromStore = cookieStore
+    .getAll()
+    .map((cookie) => `${cookie.name}=${cookie.value}`)
+    .join("; ");
+
+  const cookieHeader = cookieHeaderFromStore || incomingHeaders.get("cookie");
+
+  if (cookieHeader) {
+    authHeaders.set("cookie", cookieHeader);
   }
+
+  const host =
+    incomingHeaders.get("x-forwarded-host") || incomingHeaders.get("host");
+  if (host) {
+    authHeaders.set("host", host);
+  }
+
+  const proto = incomingHeaders.get("x-forwarded-proto") || "https";
+  authHeaders.set("x-forwarded-proto", proto);
 
   return authHeaders;
 }
