@@ -1,14 +1,40 @@
 import { auth } from "./auth";
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
+
+async function buildAuthHeaders(): Promise<Headers> {
+  const incomingHeaders = await headers();
+  const authHeaders = new Headers(incomingHeaders);
+
+  // Sur certains flux RSC/proxy, le header cookie peut ne pas etre present ici.
+  // On le reconstruit depuis le store cookies() de Next.
+  if (!authHeaders.get("cookie")) {
+    const cookieStore = await cookies();
+    const cookieHeader = cookieStore
+      .getAll()
+      .map((cookie) => `${cookie.name}=${cookie.value}`)
+      .join("; ");
+
+    if (cookieHeader) {
+      authHeaders.set("cookie", cookieHeader);
+    }
+  }
+
+  return authHeaders;
+}
 
 export const getUser = async () => {
   try {
+    const authHeaders = await buildAuthHeaders();
+
     const session = await auth.api.getSession({
-      headers: await headers(),
+      headers: authHeaders,
     });
 
     if (!session) {
-      console.warn("[getUser] No session found");
+      const hasCookieHeader = Boolean(authHeaders.get("cookie"));
+      console.warn(
+        `[getUser] No session found (cookie header present: ${hasCookieHeader})`,
+      );
       return undefined;
     }
 
