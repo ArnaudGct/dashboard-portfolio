@@ -7,4 +7,4 @@ export const authClient = createAuthClient({
   baseURL: portfolioUrl,
 });
 
-export const { signIn, signUp, signOut, useSession } = createAuthClient();
+export const { signIn, signUp, signOut, useSession } = authClient;

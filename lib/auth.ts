@@ -5,6 +5,8 @@ import { resend } from "./resend";
 import { nextCookies } from "better-auth/next-js";
 
 export const auth = betterAuth({
+  // Important en production derriere un reverse proxy: URL canonique pour les cookies/session.
+  baseURL: process.env.BETTER_AUTH_URL,
   database: prismaAdapter(prisma, {
     provider: "mysql", // or "mysql", "postgresql", ...etc
   }),

@@ -9,7 +9,7 @@ export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
   // Vérifier si l'utilisateur accède à une route d'authentification
-  const isAuthRoute = path.startsWith("/auth/");
+  const isAuthRoute = path === "/auth" || path.startsWith("/auth/");
   const isApiRoute = path.startsWith("/api/");
 
   // Ne pas appliquer le middleware aux routes API (sauf si nécessaire)
