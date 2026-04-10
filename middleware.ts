@@ -5,12 +5,13 @@ function hasSessionCookieFallback(request: NextRequest): boolean {
   const cookies = request.cookies.getAll();
 
   // Certains environnements/proxy peuvent modifier le nom exact du cookie.
-  // On garde un fallback permissif sur les patterns connus de Better Auth.
+  // On garde un fallback permissif sur les patterns de session/auth.
   return cookies.some((cookie) => {
     const name = cookie.name.toLowerCase();
     return (
-      name.includes("better-auth") &&
-      (name.includes("session") || name.includes("token"))
+      name.includes("session") ||
+      name.includes("auth") ||
+      name.includes("token")
     );
   });
 }
@@ -35,6 +36,13 @@ export async function middleware(request: NextRequest) {
 
   // Si l'utilisateur n'est pas authentifié et n'accède pas à une route d'authentification
   if (!isAuthenticated && !isAuthRoute) {
+    const cookieNames = request.cookies
+      .getAll()
+      .map((c) => c.name)
+      .join(", ");
+    console.log(
+      `[Middleware] No session for ${path}, cookies seen: ${cookieNames || "none"}`,
+    );
     console.log(`[Middleware] No session for ${path}, redirecting to signin`);
     // Rediriger vers la page de connexion
     return NextResponse.redirect(new URL("/auth/signin", request.url));
