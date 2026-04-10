@@ -104,17 +104,17 @@ export function EditPhotoItem({
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [previewHighRes, setPreviewHighRes] = useState<string | null>(
-    getImageUrl(initialData.lien_high)
+    getImageUrl(initialData.lien_high),
   );
   const [previewLowRes, setPreviewLowRes] = useState<string | null>(
-    getImageUrl(initialData.lien_low)
+    getImageUrl(initialData.lien_low),
   );
   const [dimensions, setDimensions] = useState({
     width: initialData.largeur,
     height: initialData.hauteur,
   });
   const [date, setDate] = useState<Date | undefined>(
-    initialData.date ? new Date(initialData.date) : undefined
+    initialData.date ? new Date(initialData.date) : undefined,
   );
 
   function getImageUrl(path: string) {
@@ -186,7 +186,7 @@ export function EditPhotoItem({
       if (file.size > 5 * 1024 * 1024) {
         // 5MB
         toast.error(
-          "L'image est trop volumineuse pour une version basse résolution (max 5MB)"
+          "L'image est trop volumineuse pour une version basse résolution (max 5MB)",
         );
         return;
       }
@@ -291,6 +291,14 @@ export function EditPhotoItem({
       }
     } catch (error) {
       console.error("Erreur lors de la mise à jour:", error);
+      const message = error instanceof Error ? error.message : "";
+
+      if (message.includes("Session expirée")) {
+        toast.error("Votre session a expiré. Merci de vous reconnecter.");
+        router.push("/auth/signin?next=%2Fcreations%2Fphotos");
+        return;
+      }
+
       toast.error("Erreur lors de la mise à jour de la photo.");
     } finally {
       setIsUpdating(false);
@@ -309,6 +317,14 @@ export function EditPhotoItem({
       router.refresh();
     } catch (error) {
       console.error("Erreur lors de la suppression:", error);
+      const message = error instanceof Error ? error.message : "";
+
+      if (message.includes("Session expirée")) {
+        toast.error("Votre session a expiré. Merci de vous reconnecter.");
+        router.push("/auth/signin?next=%2Fcreations%2Fphotos");
+        return;
+      }
+
       toast.error("Erreur lors de la suppression de la photo.");
       setIsDeleting(false);
     }
@@ -316,7 +332,7 @@ export function EditPhotoItem({
 
   const handleAddTag = async (
     tagName: string,
-    important: boolean = false
+    important: boolean = false,
   ): Promise<TagOption | null> => {
     try {
       const result = await createPhotoTagAction(tagName, important);
@@ -340,7 +356,7 @@ export function EditPhotoItem({
   // Corriger la fonction handleAddSearchTag pour transmettre le paramètre important
   const handleAddSearchTag = async (
     tagName: string,
-    important: boolean = false
+    important: boolean = false,
   ): Promise<TagOption | null> => {
     try {
       const result = await createPhotoSearchTagAction(tagName, important);
@@ -623,7 +639,7 @@ export function EditPhotoItem({
                         important={tag?.important}
                         onRemove={(id) => {
                           setSelectedSearchTags(
-                            selectedSearchTags.filter((t) => t !== id)
+                            selectedSearchTags.filter((t) => t !== id),
                           );
                         }}
                         tagType="searchTag"
@@ -663,7 +679,7 @@ export function EditPhotoItem({
                         important={false}
                         onRemove={(id) => {
                           setSelectedAlbums(
-                            selectedAlbums.filter((a) => a !== id)
+                            selectedAlbums.filter((a) => a !== id),
                           );
                         }}
                         tagType="album"

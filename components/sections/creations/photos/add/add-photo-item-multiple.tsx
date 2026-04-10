@@ -274,6 +274,14 @@ export function AddPhotoItemMultiple({
       router.refresh();
     } catch (error) {
       console.error("Erreur lors de l'upload des images:", error);
+      const message = error instanceof Error ? error.message : "";
+
+      if (message.includes("Session expirée")) {
+        toast.error("Votre session a expiré. Merci de vous reconnecter.");
+        router.push("/auth/signin?next=%2Fcreations%2Fphotos%2Fadd");
+        return;
+      }
+
       toast.error("Une erreur est survenue lors de l'upload des images.");
     } finally {
       setIsUploading(false);

@@ -74,7 +74,7 @@ export function AddPhotoItemSimple({
   };
 
   const handleHighResImageChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -110,7 +110,7 @@ export function AddPhotoItemSimple({
           const analyzedAlt = await analyzeImageClient(base64);
           setAltText(analyzedAlt);
           toast.success(
-            "Texte alternatif généré automatiquement par Google Vision"
+            "Texte alternatif généré automatiquement par Google Vision",
           );
         } catch (error) {
           console.error("Erreur lors de l'analyse Google Vision:", error);
@@ -119,7 +119,7 @@ export function AddPhotoItemSimple({
           const fileName = file.name;
           const nameWithoutExtension = fileName.substring(
             0,
-            fileName.lastIndexOf(".")
+            fileName.lastIndexOf("."),
           );
           const formattedName = nameWithoutExtension
             .replace(/[_-]/g, " ")
@@ -127,7 +127,7 @@ export function AddPhotoItemSimple({
 
           setAltText(formattedName);
           toast.warning(
-            "Impossible d'analyser l'image, utilisation du nom de fichier"
+            "Impossible d'analyser l'image, utilisation du nom de fichier",
           );
         } finally {
           setIsAnalyzing(false);
@@ -148,7 +148,7 @@ export function AddPhotoItemSimple({
       if (file.size > 5 * 1024 * 1024) {
         // 5MB
         toast.error(
-          "L'image est trop volumineuse pour une version basse résolution (max 5MB)"
+          "L'image est trop volumineuse pour une version basse résolution (max 5MB)",
         );
         return;
       }
@@ -228,6 +228,14 @@ export function AddPhotoItemSimple({
       }
     } catch (error) {
       console.error("Erreur lors de l'ajout:", error);
+      const message = error instanceof Error ? error.message : "";
+
+      if (message.includes("Session expirée")) {
+        toast.error("Votre session a expiré. Merci de vous reconnecter.");
+        router.push("/auth/signin?next=%2Fcreations%2Fphotos%2Fadd");
+        return;
+      }
+
       toast.error("Erreur lors de l'ajout de la photo.");
     } finally {
       setIsUploading(false);
@@ -236,7 +244,7 @@ export function AddPhotoItemSimple({
 
   const handleAddTag = async (
     tagName: string,
-    important: boolean = false
+    important: boolean = false,
   ): Promise<TagOption | null> => {
     const result = await createPhotoTagAction(tagName, important);
     if (result.success && result.id) {
@@ -247,7 +255,7 @@ export function AddPhotoItemSimple({
 
   const handleAddSearchTag = async (
     tagName: string,
-    important: boolean = false
+    important: boolean = false,
   ): Promise<TagOption | null> => {
     const result = await createPhotoSearchTagAction(tagName, important);
     if (result.success && result.id) {
@@ -459,7 +467,7 @@ export function AddPhotoItemSimple({
                         important={tag?.important}
                         onRemove={(id) => {
                           setSelectedSearchTags(
-                            selectedSearchTags.filter((t) => t !== id)
+                            selectedSearchTags.filter((t) => t !== id),
                           );
                         }}
                         tagType="searchTag"
@@ -498,7 +506,7 @@ export function AddPhotoItemSimple({
                         important={false}
                         onRemove={(id) => {
                           setSelectedAlbums(
-                            selectedAlbums.filter((a) => a !== id)
+                            selectedAlbums.filter((a) => a !== id),
                           );
                         }}
                         tagType="album"

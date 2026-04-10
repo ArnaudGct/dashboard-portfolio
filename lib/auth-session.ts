@@ -5,30 +5,29 @@ async function buildAuthHeaders(): Promise<Headers> {
   const incomingHeaders = await headers();
   const cookieStore = await cookies();
 
-  // Construction minimale et deterministe: cookie + host/proto utiles.
-  const authHeaders = new Headers();
+  // Conserver les headers d'origine pour garder le contexte proxy/origin.
+  const authHeaders = new Headers(incomingHeaders);
 
-  const cookieHeaderFromStore = cookieStore
-    .getAll()
-    .map((cookie) => `${cookie.name}=${cookie.value}`)
-    .join("; ");
+  // Si le header cookie est absent, le reconstruire depuis next/headers().cookies().
+  if (!authHeaders.get("cookie")) {
+    const cookieHeaderFromStore = cookieStore
+      .getAll()
+      .map((cookie) => `${cookie.name}=${cookie.value}`)
+      .join("; ");
 
-  const cookieHeader = cookieHeaderFromStore || incomingHeaders.get("cookie");
-
-  if (cookieHeader) {
-    authHeaders.set("cookie", cookieHeader);
+    if (cookieHeaderFromStore) {
+      authHeaders.set("cookie", cookieHeaderFromStore);
+    }
   }
-
-  const host =
-    incomingHeaders.get("x-forwarded-host") || incomingHeaders.get("host");
-  if (host) {
-    authHeaders.set("host", host);
-  }
-
-  const proto = incomingHeaders.get("x-forwarded-proto") || "https";
-  authHeaders.set("x-forwarded-proto", proto);
 
   return authHeaders;
+}
+
+export class AuthRequiredError extends Error {
+  constructor(message = "Session expirée. Merci de vous reconnecter.") {
+    super(message);
+    this.name = "AuthRequiredError";
+  }
 }
 
 export const getUser = async () => {
@@ -57,4 +56,14 @@ export const getUser = async () => {
     console.error("[getUser] Error fetching user session:", error);
     return undefined;
   }
+};
+
+export const requireUser = async () => {
+  const user = await getUser();
+
+  if (!user) {
+    throw new AuthRequiredError();
+  }
+
+  return user;
 };

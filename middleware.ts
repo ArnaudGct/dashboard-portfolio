@@ -4,16 +4,17 @@ import { getSessionCookie } from "better-auth/cookies";
 function hasSessionCookieFallback(request: NextRequest): boolean {
   const cookies = request.cookies.getAll();
   const rawCookieHeader = request.headers.get("cookie") || "";
+  const sessionCookiePatterns = [
+    "better-auth",
+    "session_token",
+    "__secure-better-auth",
+  ];
 
   // Certains environnements/proxy peuvent modifier le nom exact du cookie.
-  // On garde un fallback permissif sur les patterns de session/auth.
+  // On garde un fallback cible sur les patterns better-auth/session.
   const hasNamedCookie = cookies.some((cookie) => {
     const name = cookie.name.toLowerCase();
-    return (
-      name.includes("session") ||
-      name.includes("auth") ||
-      name.includes("token")
-    );
+    return sessionCookiePatterns.some((pattern) => name.includes(pattern));
   });
 
   if (hasNamedCookie) {
@@ -21,10 +22,9 @@ function hasSessionCookieFallback(request: NextRequest): boolean {
   }
 
   // Fallback sur le header brut si request.cookies ne remonte rien.
-  return (
-    rawCookieHeader.includes("session") ||
-    rawCookieHeader.includes("auth") ||
-    rawCookieHeader.includes("token")
+  const normalizedCookieHeader = rawCookieHeader.toLowerCase();
+  return sessionCookiePatterns.some((pattern) =>
+    normalizedCookieHeader.includes(pattern),
   );
 }
 
@@ -46,22 +46,29 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Si l'utilisateur n'est pas authentifié et n'accède pas à une route d'authentification
+  // Redirection des routes protegees vers la connexion.
   if (!isAuthenticated && !isAuthRoute) {
-    const cookieNames = request.cookies
-      .getAll()
-      .map((c) => c.name)
-      .join(", ");
-    const rawCookieHeader = request.headers.get("cookie") || "";
-    console.log(
-      `[Middleware] No session for ${path}, cookies seen: ${cookieNames || "none"}`,
+    if (process.env.NODE_ENV !== "production") {
+      const cookieNames = request.cookies
+        .getAll()
+        .map((c) => c.name)
+        .join(", ");
+      const rawCookieHeader = request.headers.get("cookie") || "";
+      console.log(
+        `[Middleware] No session for ${path}, cookies seen: ${cookieNames || "none"}`,
+      );
+      console.log(
+        `[Middleware] Raw cookie header present: ${rawCookieHeader.length > 0}`,
+      );
+    }
+
+    const signInUrl = new URL("/auth/signin", request.url);
+    signInUrl.searchParams.set(
+      "next",
+      `${path}${request.nextUrl.search || ""}`,
     );
-    console.log(
-      `[Middleware] Raw cookie header present: ${rawCookieHeader.length > 0}`,
-    );
-    // Ne pas forcer de redirection ici: la validation serveur se fait deja dans l'app.
-    // Evite les boucles/erreurs globales quand le proxy ne transmet pas encore le cookie.
-    return NextResponse.next();
+
+    return NextResponse.redirect(signInUrl);
   }
 
   // Cas spécial: si l'utilisateur est déjà authentifié et essaie d'accéder à la page de connexion

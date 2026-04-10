@@ -16,8 +16,21 @@ import { Loader2 } from "lucide-react";
 import { signIn } from "@/lib/auth-client";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+
+function resolveNextPath(nextParam: string | null): string {
+  if (!nextParam) {
+    return "/";
+  }
+
+  // Evite les redirections ouvertes vers des domaines externes.
+  if (!nextParam.startsWith("/") || nextParam.startsWith("//")) {
+    return "/";
+  }
+
+  return nextParam;
+}
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -26,6 +39,8 @@ export default function SignIn() {
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const nextPath = resolveNextPath(searchParams.get("next"));
 
   useEffect(() => {
     async function checkAuth() {
@@ -37,14 +52,14 @@ export default function SignIn() {
 
           // Utiliser un petit délai pour montrer le chargement, puis rediriger
           setTimeout(() => {
-            router.push("/");
+            router.push(nextPath);
           }, 300);
           return;
         }
       } catch (error) {
         console.error(
           "Erreur lors de la vérification de l'authentification:",
-          error
+          error,
         );
       }
 
@@ -54,7 +69,7 @@ export default function SignIn() {
     }
 
     checkAuth();
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, nextPath, router]);
 
   if (checkingAuth || isAuthenticated) {
     return (
@@ -132,10 +147,11 @@ export default function SignIn() {
                     });
 
                     setTimeout(() => {
-                      window.location.href = "/";
+                      router.push(nextPath);
+                      router.refresh();
                     }, 1500);
                   },
-                }
+                },
               );
               if (error) {
                 toast.error(error.message);
