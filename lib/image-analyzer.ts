@@ -13,8 +13,15 @@ const client = new ImageAnnotatorClient({
   },
 });
 
+const TRANSLATION_REQUEST_TIMEOUT_MS = 1500;
+const ENABLE_EXTERNAL_TRANSLATORS =
+  process.env.IMAGE_TRANSLATION_EXTERNAL === "true";
+
+let libreTranslateAvailable = true;
+let myMemoryAvailable = true;
+
 export async function analyzeImageWithGoogleVision(
-  imageBase64: string
+  imageBase64: string,
 ): Promise<string> {
   try {
     // Analyse des labels/étiquettes de l'image
@@ -67,7 +74,7 @@ export async function analyzeImageWithGoogleVision(
 
 // Fonction simplifiée pour une analyse rapide
 export async function analyzeImageForAltText(
-  imageBase64: string
+  imageBase64: string,
 ): Promise<string> {
   try {
     const [result] = await client.labelDetection({
@@ -99,9 +106,16 @@ export async function analyzeImageForAltText(
 
 // Fonction pour traduire avec LibreTranslate (avec gestion d'erreur améliorée)
 async function translateWithLibreTranslate(text: string): Promise<string> {
+  const fallback = translateLabel(text);
+
+  if (!ENABLE_EXTERNAL_TRANSLATORS || !libreTranslateAvailable) {
+    return fallback;
+  }
+
   try {
     const response = await fetch("https://libretranslate.de/translate", {
       method: "POST",
+      signal: AbortSignal.timeout(TRANSLATION_REQUEST_TIMEOUT_MS),
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -114,16 +128,20 @@ async function translateWithLibreTranslate(text: string): Promise<string> {
     });
 
     if (!response.ok) {
-      console.error(
-        `Erreur HTTP LibreTranslate: ${response.status} ${response.statusText}`
+      console.warn(
+        `LibreTranslate indisponible (${response.status} ${response.statusText}), fallback local.`,
       );
-      return translateLabel(text); // Fallback immédiat
+      libreTranslateAvailable = false;
+      return fallback;
     }
 
     const contentType = response.headers.get("content-type");
     if (!contentType || !contentType.includes("application/json")) {
-      console.error("LibreTranslate n'a pas retourné du JSON:", contentType);
-      return translateLabel(text); // Fallback immédiat
+      console.warn(
+        `LibreTranslate n'a pas retourne du JSON (${contentType ?? "inconnu"}), fallback local.`,
+      );
+      libreTranslateAvailable = false;
+      return fallback;
     }
 
     const data = await response.json();
@@ -131,33 +149,54 @@ async function translateWithLibreTranslate(text: string): Promise<string> {
     if (data.translatedText) {
       return data.translatedText;
     } else if (data.error) {
-      console.error("Erreur LibreTranslate:", data.error);
-      return translateLabel(text);
+      console.warn("Erreur LibreTranslate:", data.error);
+      return fallback;
     } else {
-      console.error("Réponse LibreTranslate inattendue:", data);
-      return translateLabel(text);
+      console.warn("Reponse LibreTranslate inattendue, fallback local.");
+      return fallback;
     }
   } catch (error) {
-    console.error("Erreur lors de la traduction LibreTranslate:", error);
-    return translateLabel(text); // Fallback sur dictionnaire local
+    console.warn("Erreur reseau LibreTranslate, fallback local.");
+    libreTranslateAvailable = false;
+    return fallback;
   }
 }
 
 // Alternative : Fonction pour traduire avec MyMemory (API gratuite alternative)
 async function translateWithMyMemory(text: string): Promise<string> {
+  const fallback = translateLabel(text);
+
+  if (!ENABLE_EXTERNAL_TRANSLATORS || !myMemoryAvailable) {
+    return fallback;
+  }
+
   try {
     const response = await fetch(
       `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|fr`,
       {
         method: "GET",
+        signal: AbortSignal.timeout(TRANSLATION_REQUEST_TIMEOUT_MS),
         headers: {
           Accept: "application/json",
         },
-      }
+      },
     );
 
     if (!response.ok) {
-      return translateLabel(text);
+      console.warn(
+        `MyMemory indisponible (${response.status}), fallback local.`,
+      );
+      myMemoryAvailable = false;
+      return fallback;
+    }
+
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      console.warn(
+        `MyMemory n'a pas retourne du JSON (${contentType ?? "inconnu"}), fallback local.`,
+      );
+      myMemoryAvailable = false;
+      return fallback;
     }
 
     const data = await response.json();
@@ -165,11 +204,12 @@ async function translateWithMyMemory(text: string): Promise<string> {
     if (data.responseData && data.responseData.translatedText) {
       return data.responseData.translatedText;
     } else {
-      return translateLabel(text);
+      return fallback;
     }
   } catch (error) {
-    console.error("Erreur lors de la traduction MyMemory:", error);
-    return translateLabel(text);
+    console.warn("Erreur reseau MyMemory, fallback local.");
+    myMemoryAvailable = false;
+    return fallback;
   }
 }
 
@@ -177,19 +217,23 @@ async function translateWithMyMemory(text: string): Promise<string> {
 async function translateMultipleWords(words: string[]): Promise<string[]> {
   const translations = await Promise.all(
     words.map(async (word) => {
+      const localTranslation = translateLabel(word);
+
+      // Si le dictionnaire local connait deja le terme, aucun appel externe.
+      if (localTranslation !== word.toLowerCase()) {
+        return localTranslation;
+      }
+
       // Essayer d'abord LibreTranslate
       let translated = await translateWithLibreTranslate(word);
 
       // Si LibreTranslate a échoué (retourne le mot original), essayer MyMemory
-      if (
-        translated === translateLabel(word) &&
-        translated === word.toLowerCase()
-      ) {
+      if (translated === localTranslation) {
         translated = await translateWithMyMemory(word);
       }
 
       return translated;
-    })
+    }),
   );
 
   // Retourner les traductions en supprimant les doublons
@@ -391,7 +435,7 @@ function getColorName(red: number, green: number, blue: number): string {
     const distance = Math.sqrt(
       Math.pow(red - color.r, 2) +
         Math.pow(green - color.g, 2) +
-        Math.pow(blue - color.b, 2)
+        Math.pow(blue - color.b, 2),
     );
     if (distance < minDistance) {
       minDistance = distance;
