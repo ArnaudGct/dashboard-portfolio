@@ -77,8 +77,8 @@ export function PhotoItem({ photos, albums }: PhotosContainerProps) {
       ? photos.filter((photo) => photo.photos_albums_link.length === 0)
       : photos.filter((photo) =>
           photo.photos_albums_link.some(
-            (link) => link.photos_albums.id_alb === parseInt(selectedAlbumId)
-          )
+            (link) => link.photos_albums.id_alb === parseInt(selectedAlbumId),
+          ),
         );
 
   // Trouver l'album sélectionné pour l'affichage du titre
@@ -170,7 +170,7 @@ export function PhotoItem({ photos, albums }: PhotosContainerProps) {
                             setSelectedAlbumId(
                               selectedAlbumId === album.id_alb.toString()
                                 ? null // Si on sélectionne le même album, on désélectionne et affiche toutes les photos
-                                : album.id_alb.toString()
+                                : album.id_alb.toString(),
                             );
                             setIsPopoverOpen(false);
                           }}
@@ -181,7 +181,7 @@ export function PhotoItem({ photos, albums }: PhotosContainerProps) {
                               "mr-2 h-4 w-4",
                               selectedAlbumId === album.id_alb.toString()
                                 ? "opacity-100"
-                                : "opacity-0"
+                                : "opacity-0",
                             )}
                           />
                           {album.titre}
@@ -231,7 +231,6 @@ export function PhotoItem({ photos, albums }: PhotosContainerProps) {
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="object-cover object-center"
-                      priority
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.src = "/placeholder-photo.jpg";

@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
   },
   serverExternalPackages: ["sharp"],
   images: {
+    // Les images Cloudinary sont deja optimisees en amont.
+    // Evite les timeouts "upstream image response timed out" du proxy Next/Image.
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "http",
@@ -19,7 +22,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "portfolio.srv892985.hstgr.cloud",
+        hostname: "arnaudgct.fr",
         port: "3000",
         pathname: "/uploads/**",
       },

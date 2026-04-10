@@ -52,7 +52,7 @@ export function AddPhotoItemMultiple({
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [analyzingImages, setAnalyzingImages] = useState<Set<number>>(
-    new Set()
+    new Set(),
   );
 
   // Album sélectionné
@@ -69,12 +69,12 @@ export function AddPhotoItemMultiple({
 
       // Filtrer les fichiers qui ne sont pas des images
       const imageFiles = newFiles.filter((file) =>
-        file.type.startsWith("image/")
+        file.type.startsWith("image/"),
       );
 
       if (imageFiles.length !== newFiles.length) {
         toast.warning(
-          `${newFiles.length - imageFiles.length} fichiers ont été ignorés car ils ne sont pas des images.`
+          `${newFiles.length - imageFiles.length} fichiers ont été ignorés car ils ne sont pas des images.`,
         );
       }
 
@@ -83,7 +83,7 @@ export function AddPhotoItemMultiple({
         if (file.size > 50 * 1024 * 1024) {
           // 20MB
           toast.warning(
-            `L'image "${file.name}" est trop volumineuse (max 50MB).`
+            `L'image "${file.name}" est trop volumineuse (max 50MB).`,
           );
           return false;
         }
@@ -119,7 +119,7 @@ export function AddPhotoItemMultiple({
             // Fallback sur le nom de fichier formaté
             const fileName = file.name.split(".")[0].replace(/[-_]/g, " ");
             const formattedName = fileName.replace(/\b\w/g, (char) =>
-              char.toUpperCase()
+              char.toUpperCase(),
             );
 
             newImages.push({
@@ -205,59 +205,70 @@ export function AddPhotoItemMultiple({
     }
 
     setIsUploading(true);
+    setProgress(0);
 
     try {
-      const formData = new FormData();
+      // En production, un unique FormData massif peut etre bloque par le proxy.
+      // On envoie donc une requete par image pour fiabiliser les uploads multiples.
+      let uploadedCount = 0;
+      const failedImages: string[] = [];
 
-      // Ajouter uniquement les albums sélectionnés
-      selectedAlbums.forEach((album) => {
-        formData.append("albums", album);
-      });
+      for (let index = 0; index < images.length; index++) {
+        const img = images[index];
+        const singleImageFormData = new FormData();
 
-      // État de publication
-      formData.append("isPublished", isPublished ? "on" : "off");
-
-      // Ajouter chaque image et ses métadonnées
-      images.forEach((img, index) => {
-        formData.append(`photo_${index}`, img.file);
-        formData.append(`alt_${index}`, img.alt);
-        // Toujours générer la version basse résolution
-        formData.append(`generateLowRes_${index}`, "true");
-      });
-
-      // Ajouter le nombre total d'images
-      formData.append("imageCount", images.length.toString());
-
-      // Simuler la progression localement (car on ne peut pas la recevoir du serveur)
-      const progressInterval = setInterval(() => {
-        setProgress((prev) => {
-          if (prev >= 95) {
-            clearInterval(progressInterval);
-            return prev;
-          }
-          return prev + 5;
+        selectedAlbums.forEach((album) => {
+          singleImageFormData.append("albums", album);
         });
-      }, 1000);
 
-      // Upload des images sans callback de progression
-      const result = await batchUploadPhotosWithMetadataAction(formData);
+        singleImageFormData.append("isPublished", isPublished ? "on" : "off");
+        singleImageFormData.append("photo_0", img.file);
+        singleImageFormData.append("alt_0", img.alt);
+        singleImageFormData.append("generateLowRes_0", "true");
+        singleImageFormData.append("imageCount", "1");
 
-      // Arrêter l'intervalle de simulation et mettre la progression à 100%
-      clearInterval(progressInterval);
-      setProgress(100);
+        try {
+          const result =
+            await batchUploadPhotosWithMetadataAction(singleImageFormData);
+
+          if (result?.success) {
+            uploadedCount++;
+          } else {
+            failedImages.push(img.file.name);
+          }
+        } catch (uploadError) {
+          console.error(`Erreur upload image ${img.file.name}:`, uploadError);
+          failedImages.push(img.file.name);
+        }
+
+        const currentProgress = Math.round(((index + 1) / images.length) * 100);
+        setProgress(currentProgress);
+      }
 
       const albumNames = selectedAlbums.map(
         (albumId) =>
-          availableAlbums.find((a) => a.id === albumId)?.label || albumId
+          availableAlbums.find((a) => a.id === albumId)?.label || albumId,
       );
 
-      toast.success(
-        `${result} photos ajoutées avec succès dans ${
-          albumNames.length > 1
-            ? `les albums ${albumNames.slice(0, -1).join(", ")} et ${albumNames.slice(-1)}`
-            : `l'album ${albumNames[0]}`
-        }!`
-      );
+      if (uploadedCount > 0) {
+        toast.success(
+          `${uploadedCount} photo(s) ajoutée(s) avec succès dans ${
+            albumNames.length > 1
+              ? `les albums ${albumNames.slice(0, -1).join(", ")} et ${albumNames.slice(-1)}`
+              : `l'album ${albumNames[0]}`
+          }.`,
+        );
+      }
+
+      if (failedImages.length > 0) {
+        toast.error(
+          `${failedImages.length} image(s) en échec: ${failedImages.slice(0, 3).join(", ")}${failedImages.length > 3 ? "..." : ""}`,
+        );
+      }
+
+      if (uploadedCount === 0) {
+        throw new Error("Aucune image n'a pu être uploadée");
+      }
 
       router.push("/creations/photos");
       router.refresh();
@@ -271,7 +282,7 @@ export function AddPhotoItemMultiple({
 
   const handleAddAlbum = async (
     tagName: string,
-    important: boolean = false
+    important: boolean = false,
   ): Promise<TagOption | null> => {
     try {
       const formData = new FormData();
@@ -371,10 +382,10 @@ export function AddPhotoItemMultiple({
                     variant="secondary"
                     onClick={() => {
                       setSelectedAlbums(
-                        selectedAlbums.filter((id) => id !== albumId)
+                        selectedAlbums.filter((id) => id !== albumId),
                       );
                       toast.success(
-                        `Album "${album?.label || albumId}" retiré`
+                        `Album "${album?.label || albumId}" retiré`,
                       );
                     }}
                   >
