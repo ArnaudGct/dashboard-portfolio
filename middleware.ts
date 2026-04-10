@@ -1,9 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSessionCookie } from "better-auth/cookies";
 
+function hasSessionCookieFallback(request: NextRequest): boolean {
+  const cookies = request.cookies.getAll();
+
+  // Certains environnements/proxy peuvent modifier le nom exact du cookie.
+  // On garde un fallback permissif sur les patterns connus de Better Auth.
+  return cookies.some((cookie) => {
+    const name = cookie.name.toLowerCase();
+    return (
+      name.includes("better-auth") &&
+      (name.includes("session") || name.includes("token"))
+    );
+  });
+}
+
 export async function middleware(request: NextRequest) {
   // Récupérer le cookie de session
   const sessionCookie = getSessionCookie(request);
+  const hasFallbackSessionCookie = hasSessionCookieFallback(request);
+  const isAuthenticated = Boolean(sessionCookie || hasFallbackSessionCookie);
 
   // Récupérer le chemin de l'URL
   const path = request.nextUrl.pathname;
@@ -18,14 +34,14 @@ export async function middleware(request: NextRequest) {
   }
 
   // Si l'utilisateur n'est pas authentifié et n'accède pas à une route d'authentification
-  if (!sessionCookie && !isAuthRoute) {
+  if (!isAuthenticated && !isAuthRoute) {
     console.log(`[Middleware] No session for ${path}, redirecting to signin`);
     // Rediriger vers la page de connexion
     return NextResponse.redirect(new URL("/auth/signin", request.url));
   }
 
   // Cas spécial: si l'utilisateur est déjà authentifié et essaie d'accéder à la page de connexion
-  if (sessionCookie && path === "/auth/signin") {
+  if (isAuthenticated && path === "/auth/signin") {
     console.log("[Middleware] User already logged in, redirecting to home");
     // Rediriger vers la page d'accueil
     return NextResponse.redirect(new URL("/", request.url));
