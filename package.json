@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "node .next/standalone/server.js",
+    "start": "next start",
     "lint": "next lint",
     "test:analytics": "node test-analytics.js",
     "diagnose:env": "node diagnose-env.js"

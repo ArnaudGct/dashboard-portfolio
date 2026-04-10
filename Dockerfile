@@ -28,20 +28,20 @@ COPY . .
 RUN npx prisma generate
 RUN npm run build
 
-# Étape 2 : Image de prod (standalone)
-FROM node:22-alpine AS runner
+# Étape 2 : Image de prod
+FROM node:22-alpine
 
 WORKDIR /app
 
 ENV NODE_ENV=production
 ENV PORT=3001
-ENV HOSTNAME=0.0.0.0
+# Installer uniquement les deps prod
+COPY package*.json ./
+RUN npm install --omit=dev
 
-# Structure recommandee par Next.js pour output: "standalone"
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
+# Copier le build et Prisma
+COPY --from=builder /app ./
 
 EXPOSE 3001
 
-CMD ["node", "server.js"]
+CMD ["npm", "start"]
