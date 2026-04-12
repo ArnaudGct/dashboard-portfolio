@@ -204,8 +204,19 @@ export function AddPhotoItemMultiple({
         singleImageFormData.append("imageCount", "1");
 
         try {
-          const result =
-            await batchUploadPhotosWithMetadataAction(singleImageFormData);
+          const response = await fetch("/api/photos/batch", {
+            method: "POST",
+            body: singleImageFormData,
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(
+              errorData.error || `Erreur HTTP ${response.status}`,
+            );
+          }
+
+          const result = await response.json();
 
           if (result?.success) {
             uploadedCount++;
