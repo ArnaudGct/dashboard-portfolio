@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
     proxyClientMaxBodySize: "500mb",
     serverActions: {
       bodySizeLimit: "500mb",
+      allowedOrigins: ["dashboard.arnaudgct.fr", "localhost:3000"],
     },
   },
   serverExternalPackages: ["sharp"],
