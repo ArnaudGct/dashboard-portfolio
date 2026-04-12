@@ -13,7 +13,6 @@ import {
   createAlbumAction,
   batchUploadPhotosWithMetadataAction,
 } from "@/actions/photos-actions";
-import { analyzeImageClient } from "@/lib/image-analyzer-client";
 
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
@@ -59,7 +58,17 @@ export function AddPhotoItemSimple({
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [altText, setAltText] = useState<string>("");
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
+
+  const buildAltFromFileName = (fileName: string) => {
+    const nameWithoutExtension = fileName.substring(
+      0,
+      fileName.lastIndexOf("."),
+    );
+
+    return nameWithoutExtension
+      .replace(/[_-]/g, " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  };
 
   const handleTagsChange = (newSelectedTags: string[]) => {
     setSelectedTags(newSelectedTags);
@@ -90,7 +99,7 @@ export function AddPhotoItemSimple({
       }
 
       const reader = new FileReader();
-      reader.onloadend = async () => {
+      reader.onloadend = () => {
         setPreviewHighRes(reader.result as string);
 
         // Charger l'image pour obtenir les dimensions
@@ -103,35 +112,7 @@ export function AddPhotoItemSimple({
         };
         img.src = reader.result as string;
 
-        // Analyse automatique de l'image avec Google Vision
-        setIsAnalyzing(true);
-        try {
-          const base64 = (reader.result as string).split(",")[1];
-          const analyzedAlt = await analyzeImageClient(base64);
-          setAltText(analyzedAlt);
-          toast.success(
-            "Texte alternatif généré automatiquement par Google Vision",
-          );
-        } catch (error) {
-          console.error("Erreur lors de l'analyse Google Vision:", error);
-
-          // Fallback sur le nom de fichier formaté
-          const fileName = file.name;
-          const nameWithoutExtension = fileName.substring(
-            0,
-            fileName.lastIndexOf("."),
-          );
-          const formattedName = nameWithoutExtension
-            .replace(/[_-]/g, " ")
-            .replace(/\b\w/g, (char) => char.toUpperCase());
-
-          setAltText(formattedName);
-          toast.warning(
-            "Impossible d'analyser l'image, utilisation du nom de fichier",
-          );
-        } finally {
-          setIsAnalyzing(false);
-        }
+        setAltText(buildAltFromFileName(file.name));
       };
       reader.readAsDataURL(file);
     }
@@ -354,19 +335,8 @@ export function AddPhotoItemSimple({
                   value={altText}
                   onChange={(e) => setAltText(e.target.value)}
                   required
-                  disabled={isAnalyzing}
                 />
-                {isAnalyzing && (
-                  <Button type="button" disabled size="sm">
-                    Analyse...
-                  </Button>
-                )}
               </div>
-              {isAnalyzing && (
-                <p className="text-xs text-muted-foreground">
-                  Analyse de l'image en cours avec Google Vision...
-                </p>
-              )}
             </div>
           </div>
 

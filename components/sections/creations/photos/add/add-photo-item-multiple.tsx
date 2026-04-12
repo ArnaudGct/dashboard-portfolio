@@ -18,7 +18,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { X, UploadCloud, Trash2 } from "lucide-react";
 import Image from "next/image";
-import { analyzeImageClient } from "@/lib/image-analyzer-client";
 
 type TagOption = {
   id: string;
@@ -51,9 +50,17 @@ export function AddPhotoItemMultiple({
   const [images, setImages] = useState<PreviewImage[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [analyzingImages, setAnalyzingImages] = useState<Set<number>>(
-    new Set(),
-  );
+
+  const buildAltFromFileName = (fileName: string) => {
+    const nameWithoutExtension = fileName.substring(
+      0,
+      fileName.lastIndexOf("."),
+    );
+
+    return nameWithoutExtension
+      .replace(/[_-]/g, " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  };
 
   // Album sélectionné
   const [selectedAlbums, setSelectedAlbums] = useState<string[]>([]);
@@ -90,56 +97,25 @@ export function AddPhotoItemMultiple({
         return true;
       });
 
-      // Créer les prévisualisations avec analyse automatique
+      // Créer les prévisualisations avec ALT basé sur le nom de fichier
       const newImages: PreviewImage[] = [];
       let processedCount = 0;
 
       for (let i = 0; i < validImageFiles.length; i++) {
         const file = validImageFiles[i];
-        const currentIndex = images.length + i;
-
-        // Marquer cette image comme en cours d'analyse
-        setAnalyzingImages((prev) => new Set(prev).add(currentIndex));
 
         const reader = new FileReader();
-        reader.onloadend = async () => {
-          try {
-            // Analyser l'image avec Google Vision
-            const base64 = (reader.result as string).split(",")[1];
-            const analyzedAlt = await analyzeImageClient(base64);
-
-            newImages.push({
-              file,
-              preview: reader.result as string,
-              alt: analyzedAlt,
-            });
-          } catch (error) {
-            console.error("Erreur lors de l'analyse Google Vision:", error);
-
-            // Fallback sur le nom de fichier formaté
-            const fileName = file.name.split(".")[0].replace(/[-_]/g, " ");
-            const formattedName = fileName.replace(/\b\w/g, (char) =>
-              char.toUpperCase(),
-            );
-
-            newImages.push({
-              file,
-              preview: reader.result as string,
-              alt: formattedName,
-            });
-          } finally {
-            // Retirer cette image de la liste des analyses en cours
-            setAnalyzingImages((prev) => {
-              const newSet = new Set(prev);
-              newSet.delete(currentIndex);
-              return newSet;
-            });
-          }
+        reader.onloadend = () => {
+          newImages.push({
+            file,
+            preview: reader.result as string,
+            alt: buildAltFromFileName(file.name),
+          });
 
           processedCount++;
           if (processedCount === validImageFiles.length) {
             setImages((prev) => [...prev, ...newImages]);
-            toast.success(`${newImages.length} images analysées et ajoutées`);
+            toast.success(`${newImages.length} images ajoutées`);
           }
         };
         reader.readAsDataURL(file);
