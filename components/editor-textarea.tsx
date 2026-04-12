@@ -39,13 +39,21 @@ interface EditorProps {
 const Editor: FC<EditorProps> = ({ markdown, onChange, editorRef }) => {
   return (
     <MDXEditor
-      onChange={(markdown) => onChange && onChange(markdown)}
+      onChange={(value) => {
+        if (onChange) {
+          // Évite l'erreur "Cannot update a component while rendering a different component"
+          // Mettez l'appel dans la file d'attente asynchrone (macro-task)
+          setTimeout(() => {
+            onChange(value);
+          }, 0);
+        }
+      }}
       ref={editorRef}
       markdown={markdown}
       contentEditableClassName={cn(
         "prose prose-sm max-w-full focus:outline-none min-h-[150px] p-3",
         "text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none",
-        "text-foreground"
+        "text-foreground",
       )}
       plugins={[
         headingsPlugin(),
