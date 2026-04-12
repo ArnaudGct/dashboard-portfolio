@@ -203,6 +203,11 @@ export function AddPhotoItemMultiple({
         singleImageFormData.append("generateLowRes_0", "true");
         singleImageFormData.append("imageCount", "1");
 
+        // Optimisation : On ne déclenche revalidatePath que sur la dernière image
+        if (index < images.length - 1) {
+          singleImageFormData.append("skipRevalidate", "true");
+        }
+
         try {
           const response = await fetch("/api/photos/batch", {
             method: "POST",
