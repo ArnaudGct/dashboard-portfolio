@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -7,37 +9,60 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
-import { useAnalytics } from "@/hooks/use-analytics";
-import { MetricTrend, SimpleChart } from "./analytics-charts";
 import {
-  Eye,
-  Users,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useAnalytics } from "@/hooks/use-analytics";
+import { useAnalyticsTrend } from "@/hooks/use-analytics-trend";
+import { AnalyticsTrendPeriod } from "@/types/analytics";
+import {
   Clock,
-  MousePointer,
+  Eye,
   Globe,
-  Smartphone,
   Monitor,
+  MousePointer,
+  Smartphone,
   Tablet,
+  Users,
 } from "lucide-react";
+import { MetricTrend, SimpleChart, VerticalBarChart } from "./analytics-charts";
+
+const TREND_PERIOD_OPTIONS: Array<{
+  value: AnalyticsTrendPeriod;
+  label: string;
+}> = [
+  { value: "7d", label: "7 derniers jours" },
+  { value: "30d", label: "30 derniers jours" },
+  { value: "12mo", label: "12 derniers mois" },
+];
 
 export function AnalyticsOverview() {
   const { data, loading, error } = useAnalytics();
+  const [trendPeriod, setTrendPeriod] = useState<AnalyticsTrendPeriod>("30d");
+  const {
+    data: trendData,
+    loading: trendLoading,
+    error: trendError,
+  } = useAnalyticsTrend(trendPeriod);
 
   if (loading) {
     return (
       <div className="space-y-6">
-        {/* Métriques principales - Skeleton */}
         <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-4">
           {[
             { title: "Pages vues", icon: <Eye className="h-4 w-4" /> },
             { title: "Sessions", icon: <MousePointer className="h-4 w-4" /> },
             { title: "Utilisateurs", icon: <Users className="h-4 w-4" /> },
             { title: "Durée moyenne", icon: <Clock className="h-4 w-4" /> },
-          ].map((metric, i) => (
-            <Card key={i}>
+          ].map((metric, index) => (
+            <Card key={index}>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
                   {metric.title}
@@ -47,7 +72,7 @@ export function AnalyticsOverview() {
                 </div>
               </CardHeader>
               <CardContent>
-                <Skeleton className="h-8 w-20 mb-2" />
+                <Skeleton className="mb-2 h-8 w-20" />
                 <div className="flex items-center gap-1 text-xs text-muted-foreground">
                   <Skeleton className="h-3 w-3" />
                   <Skeleton className="h-3 w-12" />
@@ -59,7 +84,6 @@ export function AnalyticsOverview() {
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
-          {/* Pages populaires - Skeleton avec structure */}
           <Card>
             <CardHeader>
               <CardTitle>Pages les plus visitées</CardTitle>
@@ -67,17 +91,20 @@ export function AnalyticsOverview() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {[...Array(5)].map((_, i) => (
-                  <div key={i} className="flex items-center justify-between">
+                {[...Array(5)].map((_, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between"
+                  >
                     <div className="flex items-center gap-3">
-                      <Badge variant="secondary">{i + 1}</Badge>
+                      <Badge variant="secondary">{index + 1}</Badge>
                       <div>
-                        <Skeleton className="h-4 w-24 mb-1" />
+                        <Skeleton className="mb-1 h-4 w-24" />
                         <Skeleton className="h-3 w-16" />
                       </div>
                     </div>
                     <div className="text-right">
-                      <Skeleton className="h-4 w-12 mb-1" />
+                      <Skeleton className="mb-1 h-4 w-12" />
                       <p className="text-xs text-muted-foreground">vues</p>
                     </div>
                   </div>
@@ -86,7 +113,6 @@ export function AnalyticsOverview() {
             </CardContent>
           </Card>
 
-          {/* Pays - Skeleton avec structure */}
           <Card>
             <CardHeader>
               <CardTitle>Pays des visiteurs</CardTitle>
@@ -94,21 +120,19 @@ export function AnalyticsOverview() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {[...Array(5)].map((_, i) => (
-                  <div key={i} className="space-y-2">
+                {[...Array(5)].map((_, index) => (
+                  <div key={index} className="space-y-2">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <Globe className="h-4 w-4 text-muted-foreground" />
                         <Skeleton className="h-4 w-16" />
                       </div>
-                      <div className="text-right">
-                        <Skeleton className="h-4 w-12" />
-                      </div>
+                      <Skeleton className="h-4 w-12" />
                     </div>
-                    <div className="w-full bg-muted rounded-full h-2">
+                    <div className="w-full rounded-full bg-muted h-2">
                       <Skeleton
                         className="h-2 rounded-full"
-                        style={{ width: `${[75, 60, 45, 80, 35][i % 5]}%` }}
+                        style={{ width: `${[75, 60, 45, 80, 35][index % 5]}%` }}
                       />
                     </div>
                   </div>
@@ -119,7 +143,6 @@ export function AnalyticsOverview() {
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
-          {/* Types d'appareils - Skeleton avec structure */}
           <Card>
             <CardHeader>
               <CardTitle>Types d'appareils</CardTitle>
@@ -142,21 +165,19 @@ export function AnalyticsOverview() {
                     type: "Tablet",
                     icon: <Tablet className="h-4 w-4 text-muted-foreground" />,
                   },
-                ].map((device, i) => (
-                  <div key={i} className="space-y-2">
+                ].map((device, index) => (
+                  <div key={index} className="space-y-2">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         {device.icon}
                         <span className="font-medium">{device.type}</span>
                       </div>
-                      <div className="text-right">
-                        <Skeleton className="h-4 w-12" />
-                      </div>
+                      <Skeleton className="h-4 w-12" />
                     </div>
-                    <div className="w-full bg-muted rounded-full h-2">
+                    <div className="w-full rounded-full bg-muted h-2">
                       <Skeleton
                         className="h-2 rounded-full"
-                        style={{ width: `${[65, 45, 55][i % 3]}%` }}
+                        style={{ width: `${[65, 45, 55][index % 3]}%` }}
                       />
                     </div>
                   </div>
@@ -174,41 +195,41 @@ export function AnalyticsOverview() {
       <Card>
         <CardHeader>
           <CardTitle className="text-destructive">
-            Configuration Analytics requise
+            Configuration Plausible requise
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <p className="text-muted-foreground">
-              Pour afficher vos vraies données Analytics, veuillez configurer
+              Pour afficher vos vraies données Plausible, veuillez configurer
               les variables d'environnement suivantes :
             </p>
-            <ul className="list-disc list-inside space-y-2 text-sm">
+            <ul className="list-inside list-disc space-y-2 text-sm">
               <li>
-                <code className="bg-muted px-2 py-1 rounded">
-                  GOOGLE_ANALYTICS_PROPERTY_ID
+                <code className="rounded bg-muted px-2 py-1">
+                  PLAUSIBLE_SITE_ID
                 </code>
               </li>
               <li>
-                <code className="bg-muted px-2 py-1 rounded">
-                  GOOGLE_SERVICE_ACCOUNT_EMAIL
+                <code className="rounded bg-muted px-2 py-1">
+                  PLAUSIBLE_API_KEY
                 </code>
               </li>
               <li>
-                <code className="bg-muted px-2 py-1 rounded">
-                  GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY
+                <code className="rounded bg-muted px-2 py-1">
+                  PLAUSIBLE_API_BASE_URL
                 </code>
               </li>
             </ul>
-            <p className="text-sm text-muted-foreground mt-4">
+            <p className="mt-4 text-sm text-muted-foreground">
               Ces variables doivent être configurées dans votre fichier{" "}
-              <code className="bg-muted px-2 py-1 rounded">.env.local</code>{" "}
-              pour récupérer les données depuis Google Analytics.
+              <code className="rounded bg-muted px-2 py-1">.env.local</code>{" "}
+              pour récupérer les données depuis Plausible.
             </p>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
+            <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-4">
               <p className="text-sm text-blue-800">
                 <strong>Note :</strong> Aucune donnée mockée ne sera affichée.
-                Seules les vraies données Google Analytics seront utilisées.
+                Seules les vraies données Plausible seront utilisées.
               </p>
             </div>
           </div>
@@ -221,8 +242,7 @@ export function AnalyticsOverview() {
 
   return (
     <div className="space-y-6">
-      {/* Métriques principales */}
-      <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-5">
         <MetricTrend
           title="Pages vues"
           value={data.pageviews.thisMonth.toLocaleString()}
@@ -251,30 +271,46 @@ export function AnalyticsOverview() {
           description="depuis le mois dernier"
           icon={<Clock className="h-4 w-4" />}
         />
+        <MetricTrend
+          title="Taux de rebond"
+          value={data.bounceRate.current}
+          change={data.bounceRate.change}
+          description="depuis le mois dernier"
+          icon={<MousePointer className="h-4 w-4" />}
+        />
       </div>
 
-      {/* Visiteurs en temps réel - Masqué si pas de données réelles */}
-      {data.realTimeVisitors > 0 && (
+      <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-              Visiteurs en temps réel
-            </CardTitle>
+            <CardTitle>Visiteurs en direct</CardTitle>
+            <CardDescription>Visiteurs actifs maintenant</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-green-600">
-              {data.realTimeVisitors}
-            </div>
-            <p className="text-sm text-muted-foreground mt-2">
-              visiteurs actuellement sur le site
+            <div className="text-3xl font-bold">{data.realTimeVisitors}</div>
+            <p className="mt-2 text-sm text-muted-foreground">
+              visiteurs sur les 5 dernières minutes
             </p>
           </CardContent>
         </Card>
-      )}
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Temps moyen</CardTitle>
+            <CardDescription>Durée moyenne d'une visite</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">
+              {data.averageSessionDuration.current}
+            </div>
+            <p className="mt-2 text-sm text-muted-foreground">
+              moyenne par visite
+            </p>
+          </CardContent>
+        </Card>
+      </div>
 
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
-        {/* Pages populaires */}
         <Card>
           <CardHeader>
             <CardTitle>Pages les plus visitées</CardTitle>
@@ -308,7 +344,6 @@ export function AnalyticsOverview() {
           </CardContent>
         </Card>
 
-        {/* Pays */}
         <Card>
           <CardHeader>
             <CardTitle>Pays des visiteurs</CardTitle>
@@ -330,7 +365,7 @@ export function AnalyticsOverview() {
                       <span className="font-medium">
                         {country.sessions.toLocaleString()}
                       </span>
-                      <span className="text-sm text-muted-foreground ml-2">
+                      <span className="ml-2 text-sm text-muted-foreground">
                         ({country.percentage}%)
                       </span>
                     </div>
@@ -344,7 +379,6 @@ export function AnalyticsOverview() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        {/* Types d'appareils */}
         <Card>
           <CardHeader>
             <CardTitle>Types d'appareils</CardTitle>
@@ -359,6 +393,7 @@ export function AnalyticsOverview() {
                     : device.type === "Mobile"
                       ? Smartphone
                       : Tablet;
+
                 return (
                   <div
                     key={`device-${index}-${device.type}`}
@@ -373,7 +408,7 @@ export function AnalyticsOverview() {
                         <span className="font-medium">
                           {device.sessions.toLocaleString()}
                         </span>
-                        <span className="text-sm text-muted-foreground ml-2">
+                        <span className="ml-2 text-sm text-muted-foreground">
                           ({device.percentage}%)
                         </span>
                       </div>
@@ -386,7 +421,6 @@ export function AnalyticsOverview() {
           </CardContent>
         </Card>
 
-        {/* Sources de trafic - Masqué si pas de données réelles */}
         {data.trafficSources && data.trafficSources.length > 0 && (
           <Card>
             <CardHeader>
@@ -406,7 +440,7 @@ export function AnalyticsOverview() {
                         <span className="font-medium">
                           {source.sessions.toLocaleString()}
                         </span>
-                        <span className="text-sm text-muted-foreground ml-2">
+                        <span className="ml-2 text-sm text-muted-foreground">
                           ({source.percentage}%)
                         </span>
                       </div>
@@ -420,7 +454,73 @@ export function AnalyticsOverview() {
         )}
       </div>
 
-      {/* Activité récente */}
+      <Card className="min-w-0 overflow-hidden">
+        <CardHeader className="space-y-4">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <CardTitle>Évolution du trafic</CardTitle>
+              <CardDescription>
+                Barres verticales basées sur les données Plausible
+              </CardDescription>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="trend-period">Période</Label>
+              <Select
+                value={trendPeriod}
+                onValueChange={(value) =>
+                  setTrendPeriod(value as AnalyticsTrendPeriod)
+                }
+              >
+                <SelectTrigger id="trend-period" className="w-[180px]">
+                  <SelectValue placeholder="Choisir une période" />
+                </SelectTrigger>
+                <SelectContent>
+                  {TREND_PERIOD_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="min-w-0 overflow-hidden">
+          {trendLoading ? (
+            <div className="space-y-4">
+              <Skeleton className="h-64 w-full" />
+            </div>
+          ) : trendError ? (
+            <p className="text-sm text-destructive">{trendError}</p>
+          ) : (
+            <VerticalBarChart
+              title="Trafic"
+              description={`Période sélectionnée: ${TREND_PERIOD_OPTIONS.find((option) => option.value === trendPeriod)?.label ?? "Mois"}`}
+              data={trendData}
+            />
+          )}
+        </CardContent>
+      </Card>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        {data.browsers && data.browsers.length > 0 && (
+          <SimpleChart
+            title="Navigateurs"
+            description="Répartition des navigateurs"
+            data={data.browsers}
+          />
+        )}
+
+        {data.operatingSystems && data.operatingSystems.length > 0 && (
+          <SimpleChart
+            title="Systèmes d'exploitation"
+            description="Répartition des systèmes d'exploitation"
+            data={data.operatingSystems}
+          />
+        )}
+      </div>
+
       {data.recentActivity && data.recentActivity.length > 0 && (
         <Card>
           <CardHeader>
@@ -432,10 +532,10 @@ export function AnalyticsOverview() {
               {data.recentActivity.map((activity, index) => (
                 <div
                   key={`activity-${index}-${activity.timestamp.getTime()}`}
-                  className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"
+                  className="flex items-center justify-between rounded-lg bg-muted/50 p-3"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full" />
+                    <div className="h-2 w-2 rounded-full bg-blue-500" />
                     <div>
                       <p className="font-medium">{activity.page}</p>
                       <p className="text-sm text-muted-foreground">
@@ -451,10 +551,7 @@ export function AnalyticsOverview() {
                         })
                       : new Date(activity.timestamp).toLocaleTimeString(
                           "fr-FR",
-                          {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          }
+                          { hour: "2-digit", minute: "2-digit" },
                         )}
                   </div>
                 </div>

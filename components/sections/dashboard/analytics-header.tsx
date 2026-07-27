@@ -30,7 +30,7 @@ export function AnalyticsHeader({
         <h1 className="text-3xl font-bold mb-2">Statistiques du site</h1>
         <div className="flex items-center gap-4 text-muted-foreground">
           <p>
-            Aperçu des données d'Analytics pour{" "}
+            Aperçu des données Plausible pour{" "}
             <a
               href="https://arnaudgct.fr"
               target="_blank"
@@ -60,7 +60,7 @@ export function AnalyticsHeader({
         {hasData ? (
           <Badge variant="secondary" className="bg-green-100 text-green-800">
             <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse" />
-            Données en temps réel
+            Données Plausible
           </Badge>
         ) : (
           <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">

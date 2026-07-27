@@ -4,6 +4,29 @@ import { AnalyticsData } from "@/types/analytics";
 // Fonction pour convertir les timestamps string en objets Date
 function parseAnalyticsData(data: any): AnalyticsData {
   try {
+    if (!data) {
+      return {
+        pageviews: { total: 0, thisMonth: 0, lastMonth: 0, change: "+0%" },
+        sessions: { total: 0, thisMonth: 0, lastMonth: 0, change: "+0%" },
+        users: { total: 0, thisMonth: 0, lastMonth: 0, change: "+0%" },
+        averageSessionDuration: {
+          current: "0m 0s",
+          previous: "0m 0s",
+          change: "+0%",
+        },
+        bounceRate: { current: "0.0%", previous: "0.0%", change: "+0%" },
+        topPages: [],
+        topCountries: [],
+        deviceTypes: [],
+        trafficSources: [],
+        trafficTrend: [],
+        browsers: [],
+        operatingSystems: [],
+        realTimeVisitors: 0,
+        recentActivity: [],
+      };
+    }
+
     return {
       ...data,
       recentActivity:
@@ -30,12 +53,12 @@ function cleanAnalyticsData(data: AnalyticsData): AnalyticsData {
     ...data,
     topPages: data.topPages.filter(
       (page, index, self) =>
-        index === self.findIndex((p) => p.path === page.path)
+        index === self.findIndex((p) => p.path === page.path),
     ),
     topCountries: data.topCountries
       .filter(
         (country, index, self) =>
-          index === self.findIndex((c) => c.country === country.country)
+          index === self.findIndex((c) => c.country === country.country),
       )
       .map((country) => ({
         ...country,
@@ -44,7 +67,7 @@ function cleanAnalyticsData(data: AnalyticsData): AnalyticsData {
     deviceTypes: data.deviceTypes
       .filter(
         (device, index, self) =>
-          index === self.findIndex((d) => d.type === device.type)
+          index === self.findIndex((d) => d.type === device.type),
       )
       .map((device) => ({
         ...device,
@@ -53,11 +76,33 @@ function cleanAnalyticsData(data: AnalyticsData): AnalyticsData {
     trafficSources: data.trafficSources
       .filter(
         (source, index, self) =>
-          index === self.findIndex((s) => s.source === source.source)
+          index === self.findIndex((s) => s.source === source.source),
       )
       .map((source) => ({
         ...source,
         percentage: Math.round(source.percentage * 10) / 10, // Arrondi à 1 décimale
+      })),
+    trafficTrend: data.trafficTrend.map((point) => ({
+      ...point,
+      percentage: Math.round(point.percentage * 10) / 10,
+    })),
+    browsers: data.browsers
+      .filter(
+        (browser, index, self) =>
+          index === self.findIndex((b) => b.label === browser.label),
+      )
+      .map((browser) => ({
+        ...browser,
+        percentage: Math.round(browser.percentage * 10) / 10,
+      })),
+    operatingSystems: data.operatingSystems
+      .filter(
+        (os, index, self) =>
+          index === self.findIndex((item) => item.label === os.label),
+      )
+      .map((os) => ({
+        ...os,
+        percentage: Math.round(os.percentage * 10) / 10,
       })),
     recentActivity: data.recentActivity.filter(
       (activity, index, self) =>
@@ -65,8 +110,8 @@ function cleanAnalyticsData(data: AnalyticsData): AnalyticsData {
         self.findIndex(
           (a) =>
             a.timestamp.getTime() === activity.timestamp.getTime() &&
-            a.page === activity.page
-        )
+            a.page === activity.page,
+        ),
     ),
   };
 }
@@ -80,13 +125,17 @@ export function useAnalytics() {
     async function fetchAnalytics() {
       try {
         setLoading(true);
+        setError(null);
         const response = await fetch("/api/analytics");
+        const analyticsData = await response.json().catch(() => null);
 
         if (!response.ok) {
-          throw new Error("Erreur lors de la récupération des données");
+          throw new Error(
+            analyticsData?.message ||
+              analyticsData?.error ||
+              "Erreur lors de la récupération des données",
+          );
         }
-
-        const analyticsData = await response.json();
 
         // Convertir les strings de date en objets Date
         const parsedData = parseAnalyticsData(analyticsData);
@@ -96,7 +145,7 @@ export function useAnalytics() {
         setData(cleanedData);
       } catch (err) {
         setError(
-          err instanceof Error ? err.message : "Une erreur est survenue"
+          err instanceof Error ? err.message : "Une erreur est survenue",
         );
       } finally {
         setLoading(false);

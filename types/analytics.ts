@@ -29,6 +29,20 @@ export interface AnalyticsTrafficSource {
   percentage: number;
 }
 
+export type AnalyticsTrendPeriod = "7d" | "30d" | "12mo";
+
+export interface AnalyticsSeriesPoint {
+  label: string;
+  value: number;
+  percentage: number;
+}
+
+export interface AnalyticsBreakdownItem {
+  label: string;
+  sessions: number;
+  percentage: number;
+}
+
 export interface AnalyticsActivity {
   timestamp: Date;
   page: string;
@@ -53,6 +67,9 @@ export interface AnalyticsData {
   topCountries: AnalyticsCountry[];
   deviceTypes: AnalyticsDevice[];
   trafficSources: AnalyticsTrafficSource[];
+  trafficTrend: AnalyticsSeriesPoint[];
+  browsers: AnalyticsBreakdownItem[];
+  operatingSystems: AnalyticsBreakdownItem[];
   realTimeVisitors: number;
   recentActivity: AnalyticsActivity[];
 }

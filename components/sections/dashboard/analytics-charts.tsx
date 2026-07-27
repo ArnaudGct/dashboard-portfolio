@@ -54,13 +54,21 @@ export function MetricTrend({
 }
 
 interface SimpleChartProps {
-  data: Array<{ label: string; value: number; percentage: number }>;
+  data: Array<{
+    label: string;
+    value?: number;
+    sessions?: number;
+    percentage: number;
+  }>;
   title: string;
   description?: string;
 }
 
 export function SimpleChart({ data, title, description }: SimpleChartProps) {
-  const maxValue = Math.max(...data.map((item) => item.value));
+  const maxValue = Math.max(
+    ...data.map((item) => item.value ?? item.sessions ?? 0),
+    1,
+  );
 
   return (
     <Card>
@@ -75,17 +83,79 @@ export function SimpleChart({ data, title, description }: SimpleChartProps) {
               <div className="flex items-center justify-between text-sm">
                 <span className="font-medium">{item.label}</span>
                 <span className="text-muted-foreground">
-                  {item.value.toLocaleString()} ({item.percentage.toFixed(1)}%)
+                  {(item.value ?? item.sessions ?? 0).toLocaleString()} (
+                  {item.percentage.toFixed(1)}%)
                 </span>
               </div>
               <div className="w-full bg-muted rounded-full h-2">
                 <div
                   className="bg-primary h-2 rounded-full transition-all duration-300"
-                  style={{ width: `${(item.value / maxValue) * 100}%` }}
+                  style={{
+                    width: `${(((item.value ?? item.sessions ?? 0) / maxValue) * 100).toFixed(1)}%`,
+                  }}
                 />
               </div>
             </div>
           ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+interface VerticalBarChartProps {
+  data: Array<{
+    label: string;
+    value?: number;
+    sessions?: number;
+    percentage: number;
+  }>;
+  title: string;
+  description?: string;
+}
+
+export function VerticalBarChart({
+  data,
+  title,
+  description,
+}: VerticalBarChartProps) {
+  const maxValue = Math.max(
+    ...data.map((item) => item.value ?? item.sessions ?? 0),
+    1,
+  );
+
+  return (
+    <Card className="w-full min-w-0 overflow-hidden">
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+        {description && <CardDescription>{description}</CardDescription>}
+      </CardHeader>
+      <CardContent className="overflow-x-auto">
+        <div className="flex h-64 items-end gap-2 min-w-max pb-2">
+          {data.map((item, index) => {
+            const value = item.value ?? item.sessions ?? 0;
+            const height = Math.max((value / maxValue) * 100, 4);
+
+            return (
+              <div
+                key={`${item.label}-${index}`}
+                className="flex min-w-[2.5rem] flex-1 flex-col items-center justify-end gap-2"
+              >
+                <div className="text-xs font-medium text-muted-foreground">
+                  {value.toLocaleString()}
+                </div>
+                <div className="flex h-44 w-full items-end justify-center">
+                  <div
+                    className="w-full rounded-t-md bg-primary/90 transition-all duration-300 hover:bg-primary"
+                    style={{ height: `${height}%` }}
+                  />
+                </div>
+                <div className="max-w-full truncate text-center text-[10px] text-muted-foreground">
+                  {item.label}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </CardContent>
     </Card>
