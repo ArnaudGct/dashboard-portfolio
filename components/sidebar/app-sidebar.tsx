@@ -7,6 +7,7 @@ import {
   Newspaper,
   PenTool,
   LayoutDashboard,
+  Wrench,
 } from "lucide-react"; // Exemple d'icônes
 import { usePathname } from "next/navigation"; // Import du hook pour récupérer l'URL actuelle
 
@@ -102,6 +103,11 @@ const data = {
         },
       ],
     },
+    {
+      title: "Outils",
+      url: "/outils",
+      icon: Wrench, // Icône pour cette section
+    },
   ],
 };
 
@@ -185,7 +191,7 @@ export function AppSidebar({
                 </a>
               </SidebarGroupLabel>
             </SidebarGroup>
-          )
+          ),
         )}
       </SidebarContent>
       <SidebarFooter>

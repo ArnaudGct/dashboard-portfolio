@@ -295,3 +295,27 @@ model apropos_outils {
   ordre                Int
   afficher             Boolean
 }
+
+model outils {
+  id_outil              Int      @id @default(autoincrement())
+  titre                 String   @db.VarChar(100)
+  description           String   @db.VarChar(3500)
+  logo                  String   @db.VarChar(500)
+  miniature             String   @db.VarChar(500)
+  lien_github           String   @db.VarChar(500)
+  derniere_modification DateTime @db.DateTime(0)
+}
+
+model outils_tags {
+  id_tags   Int    @id @default(autoincrement())
+  titre     String @db.VarChar(50)
+  important Int    @db.TinyInt
+}
+
+model outils_tags_link {
+  id_outils Int
+  id_tags   Int
+
+  @@id([id_outils, id_tags])
+  @@index([id_tags], map: "fk_outils_tags")
+}

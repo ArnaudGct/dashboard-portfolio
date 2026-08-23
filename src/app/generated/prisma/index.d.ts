@@ -143,6 +143,21 @@ export type apropos_general = $Result.DefaultSelection<Prisma.$apropos_generalPa
  * 
  */
 export type apropos_outils = $Result.DefaultSelection<Prisma.$apropos_outilsPayload>
+/**
+ * Model outils
+ * 
+ */
+export type outils = $Result.DefaultSelection<Prisma.$outilsPayload>
+/**
+ * Model outils_tags
+ * 
+ */
+export type outils_tags = $Result.DefaultSelection<Prisma.$outils_tagsPayload>
+/**
+ * Model outils_tags_link
+ * 
+ */
+export type outils_tags_link = $Result.DefaultSelection<Prisma.$outils_tags_linkPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -528,6 +543,36 @@ export class PrismaClient<
     * ```
     */
   get apropos_outils(): Prisma.apropos_outilsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.outils`: Exposes CRUD operations for the **outils** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Outils
+    * const outils = await prisma.outils.findMany()
+    * ```
+    */
+  get outils(): Prisma.outilsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.outils_tags`: Exposes CRUD operations for the **outils_tags** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Outils_tags
+    * const outils_tags = await prisma.outils_tags.findMany()
+    * ```
+    */
+  get outils_tags(): Prisma.outils_tagsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.outils_tags_link`: Exposes CRUD operations for the **outils_tags_link** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Outils_tags_links
+    * const outils_tags_links = await prisma.outils_tags_link.findMany()
+    * ```
+    */
+  get outils_tags_link(): Prisma.outils_tags_linkDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -993,7 +1038,10 @@ export namespace Prisma {
     Verification: 'Verification',
     accueil_general: 'accueil_general',
     apropos_general: 'apropos_general',
-    apropos_outils: 'apropos_outils'
+    apropos_outils: 'apropos_outils',
+    outils: 'outils',
+    outils_tags: 'outils_tags',
+    outils_tags_link: 'outils_tags_link'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1012,7 +1060,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "autre" | "autre_tags" | "autre_tags_link" | "experiences" | "faq" | "photos" | "photos_albums" | "photos_albums_link" | "photos_albums_tags_link" | "photos_experiences" | "photos_tags" | "photos_tags_link" | "photos_tags_recherche" | "photos_tags_recherche_link" | "temoignages" | "utilisateurs" | "videos" | "videos_tags" | "videos_tags_link" | "user" | "session" | "account" | "verification" | "accueil_general" | "apropos_general" | "apropos_outils"
+      modelProps: "autre" | "autre_tags" | "autre_tags_link" | "experiences" | "faq" | "photos" | "photos_albums" | "photos_albums_link" | "photos_albums_tags_link" | "photos_experiences" | "photos_tags" | "photos_tags_link" | "photos_tags_recherche" | "photos_tags_recherche_link" | "temoignages" | "utilisateurs" | "videos" | "videos_tags" | "videos_tags_link" | "user" | "session" | "account" | "verification" | "accueil_general" | "apropos_general" | "apropos_outils" | "outils" | "outils_tags" | "outils_tags_link"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2732,6 +2780,204 @@ export namespace Prisma {
           }
         }
       }
+      outils: {
+        payload: Prisma.$outilsPayload<ExtArgs>
+        fields: Prisma.outilsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.outilsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outilsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.outilsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outilsPayload>
+          }
+          findFirst: {
+            args: Prisma.outilsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outilsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.outilsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outilsPayload>
+          }
+          findMany: {
+            args: Prisma.outilsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outilsPayload>[]
+          }
+          create: {
+            args: Prisma.outilsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outilsPayload>
+          }
+          createMany: {
+            args: Prisma.outilsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.outilsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outilsPayload>
+          }
+          update: {
+            args: Prisma.outilsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outilsPayload>
+          }
+          deleteMany: {
+            args: Prisma.outilsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.outilsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.outilsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outilsPayload>
+          }
+          aggregate: {
+            args: Prisma.OutilsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateOutils>
+          }
+          groupBy: {
+            args: Prisma.outilsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<OutilsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.outilsCountArgs<ExtArgs>
+            result: $Utils.Optional<OutilsCountAggregateOutputType> | number
+          }
+        }
+      }
+      outils_tags: {
+        payload: Prisma.$outils_tagsPayload<ExtArgs>
+        fields: Prisma.outils_tagsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.outils_tagsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outils_tagsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.outils_tagsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outils_tagsPayload>
+          }
+          findFirst: {
+            args: Prisma.outils_tagsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outils_tagsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.outils_tagsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outils_tagsPayload>
+          }
+          findMany: {
+            args: Prisma.outils_tagsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outils_tagsPayload>[]
+          }
+          create: {
+            args: Prisma.outils_tagsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outils_tagsPayload>
+          }
+          createMany: {
+            args: Prisma.outils_tagsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.outils_tagsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outils_tagsPayload>
+          }
+          update: {
+            args: Prisma.outils_tagsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outils_tagsPayload>
+          }
+          deleteMany: {
+            args: Prisma.outils_tagsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.outils_tagsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.outils_tagsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outils_tagsPayload>
+          }
+          aggregate: {
+            args: Prisma.Outils_tagsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateOutils_tags>
+          }
+          groupBy: {
+            args: Prisma.outils_tagsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Outils_tagsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.outils_tagsCountArgs<ExtArgs>
+            result: $Utils.Optional<Outils_tagsCountAggregateOutputType> | number
+          }
+        }
+      }
+      outils_tags_link: {
+        payload: Prisma.$outils_tags_linkPayload<ExtArgs>
+        fields: Prisma.outils_tags_linkFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.outils_tags_linkFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outils_tags_linkPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.outils_tags_linkFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outils_tags_linkPayload>
+          }
+          findFirst: {
+            args: Prisma.outils_tags_linkFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outils_tags_linkPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.outils_tags_linkFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outils_tags_linkPayload>
+          }
+          findMany: {
+            args: Prisma.outils_tags_linkFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outils_tags_linkPayload>[]
+          }
+          create: {
+            args: Prisma.outils_tags_linkCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outils_tags_linkPayload>
+          }
+          createMany: {
+            args: Prisma.outils_tags_linkCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.outils_tags_linkDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outils_tags_linkPayload>
+          }
+          update: {
+            args: Prisma.outils_tags_linkUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outils_tags_linkPayload>
+          }
+          deleteMany: {
+            args: Prisma.outils_tags_linkDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.outils_tags_linkUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.outils_tags_linkUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$outils_tags_linkPayload>
+          }
+          aggregate: {
+            args: Prisma.Outils_tags_linkAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateOutils_tags_link>
+          }
+          groupBy: {
+            args: Prisma.outils_tags_linkGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Outils_tags_linkGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.outils_tags_linkCountArgs<ExtArgs>
+            result: $Utils.Optional<Outils_tags_linkCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2842,6 +3088,9 @@ export namespace Prisma {
     accueil_general?: accueil_generalOmit
     apropos_general?: apropos_generalOmit
     apropos_outils?: apropos_outilsOmit
+    outils?: outilsOmit
+    outils_tags?: outils_tagsOmit
+    outils_tags_link?: outils_tags_linkOmit
   }
 
   /* Types for Logging */
@@ -28262,6 +28511,2729 @@ export namespace Prisma {
 
 
   /**
+   * Model outils
+   */
+
+  export type AggregateOutils = {
+    _count: OutilsCountAggregateOutputType | null
+    _avg: OutilsAvgAggregateOutputType | null
+    _sum: OutilsSumAggregateOutputType | null
+    _min: OutilsMinAggregateOutputType | null
+    _max: OutilsMaxAggregateOutputType | null
+  }
+
+  export type OutilsAvgAggregateOutputType = {
+    id_outil: number | null
+  }
+
+  export type OutilsSumAggregateOutputType = {
+    id_outil: number | null
+  }
+
+  export type OutilsMinAggregateOutputType = {
+    id_outil: number | null
+    titre: string | null
+    description: string | null
+    logo: string | null
+    miniature: string | null
+    lien_github: string | null
+    derniere_modification: Date | null
+  }
+
+  export type OutilsMaxAggregateOutputType = {
+    id_outil: number | null
+    titre: string | null
+    description: string | null
+    logo: string | null
+    miniature: string | null
+    lien_github: string | null
+    derniere_modification: Date | null
+  }
+
+  export type OutilsCountAggregateOutputType = {
+    id_outil: number
+    titre: number
+    description: number
+    logo: number
+    miniature: number
+    lien_github: number
+    derniere_modification: number
+    _all: number
+  }
+
+
+  export type OutilsAvgAggregateInputType = {
+    id_outil?: true
+  }
+
+  export type OutilsSumAggregateInputType = {
+    id_outil?: true
+  }
+
+  export type OutilsMinAggregateInputType = {
+    id_outil?: true
+    titre?: true
+    description?: true
+    logo?: true
+    miniature?: true
+    lien_github?: true
+    derniere_modification?: true
+  }
+
+  export type OutilsMaxAggregateInputType = {
+    id_outil?: true
+    titre?: true
+    description?: true
+    logo?: true
+    miniature?: true
+    lien_github?: true
+    derniere_modification?: true
+  }
+
+  export type OutilsCountAggregateInputType = {
+    id_outil?: true
+    titre?: true
+    description?: true
+    logo?: true
+    miniature?: true
+    lien_github?: true
+    derniere_modification?: true
+    _all?: true
+  }
+
+  export type OutilsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which outils to aggregate.
+     */
+    where?: outilsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of outils to fetch.
+     */
+    orderBy?: outilsOrderByWithRelationInput | outilsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: outilsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` outils from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` outils.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned outils
+    **/
+    _count?: true | OutilsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: OutilsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: OutilsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: OutilsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: OutilsMaxAggregateInputType
+  }
+
+  export type GetOutilsAggregateType<T extends OutilsAggregateArgs> = {
+        [P in keyof T & keyof AggregateOutils]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateOutils[P]>
+      : GetScalarType<T[P], AggregateOutils[P]>
+  }
+
+
+
+
+  export type outilsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: outilsWhereInput
+    orderBy?: outilsOrderByWithAggregationInput | outilsOrderByWithAggregationInput[]
+    by: OutilsScalarFieldEnum[] | OutilsScalarFieldEnum
+    having?: outilsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: OutilsCountAggregateInputType | true
+    _avg?: OutilsAvgAggregateInputType
+    _sum?: OutilsSumAggregateInputType
+    _min?: OutilsMinAggregateInputType
+    _max?: OutilsMaxAggregateInputType
+  }
+
+  export type OutilsGroupByOutputType = {
+    id_outil: number
+    titre: string
+    description: string
+    logo: string
+    miniature: string
+    lien_github: string
+    derniere_modification: Date
+    _count: OutilsCountAggregateOutputType | null
+    _avg: OutilsAvgAggregateOutputType | null
+    _sum: OutilsSumAggregateOutputType | null
+    _min: OutilsMinAggregateOutputType | null
+    _max: OutilsMaxAggregateOutputType | null
+  }
+
+  type GetOutilsGroupByPayload<T extends outilsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<OutilsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof OutilsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], OutilsGroupByOutputType[P]>
+            : GetScalarType<T[P], OutilsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type outilsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id_outil?: boolean
+    titre?: boolean
+    description?: boolean
+    logo?: boolean
+    miniature?: boolean
+    lien_github?: boolean
+    derniere_modification?: boolean
+  }, ExtArgs["result"]["outils"]>
+
+
+
+  export type outilsSelectScalar = {
+    id_outil?: boolean
+    titre?: boolean
+    description?: boolean
+    logo?: boolean
+    miniature?: boolean
+    lien_github?: boolean
+    derniere_modification?: boolean
+  }
+
+  export type outilsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_outil" | "titre" | "description" | "logo" | "miniature" | "lien_github" | "derniere_modification", ExtArgs["result"]["outils"]>
+
+  export type $outilsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "outils"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id_outil: number
+      titre: string
+      description: string
+      logo: string
+      miniature: string
+      lien_github: string
+      derniere_modification: Date
+    }, ExtArgs["result"]["outils"]>
+    composites: {}
+  }
+
+  type outilsGetPayload<S extends boolean | null | undefined | outilsDefaultArgs> = $Result.GetResult<Prisma.$outilsPayload, S>
+
+  type outilsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<outilsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: OutilsCountAggregateInputType | true
+    }
+
+  export interface outilsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['outils'], meta: { name: 'outils' } }
+    /**
+     * Find zero or one Outils that matches the filter.
+     * @param {outilsFindUniqueArgs} args - Arguments to find a Outils
+     * @example
+     * // Get one Outils
+     * const outils = await prisma.outils.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends outilsFindUniqueArgs>(args: SelectSubset<T, outilsFindUniqueArgs<ExtArgs>>): Prisma__outilsClient<$Result.GetResult<Prisma.$outilsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Outils that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {outilsFindUniqueOrThrowArgs} args - Arguments to find a Outils
+     * @example
+     * // Get one Outils
+     * const outils = await prisma.outils.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends outilsFindUniqueOrThrowArgs>(args: SelectSubset<T, outilsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__outilsClient<$Result.GetResult<Prisma.$outilsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Outils that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {outilsFindFirstArgs} args - Arguments to find a Outils
+     * @example
+     * // Get one Outils
+     * const outils = await prisma.outils.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends outilsFindFirstArgs>(args?: SelectSubset<T, outilsFindFirstArgs<ExtArgs>>): Prisma__outilsClient<$Result.GetResult<Prisma.$outilsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Outils that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {outilsFindFirstOrThrowArgs} args - Arguments to find a Outils
+     * @example
+     * // Get one Outils
+     * const outils = await prisma.outils.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends outilsFindFirstOrThrowArgs>(args?: SelectSubset<T, outilsFindFirstOrThrowArgs<ExtArgs>>): Prisma__outilsClient<$Result.GetResult<Prisma.$outilsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Outils that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {outilsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Outils
+     * const outils = await prisma.outils.findMany()
+     * 
+     * // Get first 10 Outils
+     * const outils = await prisma.outils.findMany({ take: 10 })
+     * 
+     * // Only select the `id_outil`
+     * const outilsWithId_outilOnly = await prisma.outils.findMany({ select: { id_outil: true } })
+     * 
+     */
+    findMany<T extends outilsFindManyArgs>(args?: SelectSubset<T, outilsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$outilsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Outils.
+     * @param {outilsCreateArgs} args - Arguments to create a Outils.
+     * @example
+     * // Create one Outils
+     * const Outils = await prisma.outils.create({
+     *   data: {
+     *     // ... data to create a Outils
+     *   }
+     * })
+     * 
+     */
+    create<T extends outilsCreateArgs>(args: SelectSubset<T, outilsCreateArgs<ExtArgs>>): Prisma__outilsClient<$Result.GetResult<Prisma.$outilsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Outils.
+     * @param {outilsCreateManyArgs} args - Arguments to create many Outils.
+     * @example
+     * // Create many Outils
+     * const outils = await prisma.outils.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends outilsCreateManyArgs>(args?: SelectSubset<T, outilsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Outils.
+     * @param {outilsDeleteArgs} args - Arguments to delete one Outils.
+     * @example
+     * // Delete one Outils
+     * const Outils = await prisma.outils.delete({
+     *   where: {
+     *     // ... filter to delete one Outils
+     *   }
+     * })
+     * 
+     */
+    delete<T extends outilsDeleteArgs>(args: SelectSubset<T, outilsDeleteArgs<ExtArgs>>): Prisma__outilsClient<$Result.GetResult<Prisma.$outilsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Outils.
+     * @param {outilsUpdateArgs} args - Arguments to update one Outils.
+     * @example
+     * // Update one Outils
+     * const outils = await prisma.outils.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends outilsUpdateArgs>(args: SelectSubset<T, outilsUpdateArgs<ExtArgs>>): Prisma__outilsClient<$Result.GetResult<Prisma.$outilsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Outils.
+     * @param {outilsDeleteManyArgs} args - Arguments to filter Outils to delete.
+     * @example
+     * // Delete a few Outils
+     * const { count } = await prisma.outils.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends outilsDeleteManyArgs>(args?: SelectSubset<T, outilsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Outils.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {outilsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Outils
+     * const outils = await prisma.outils.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends outilsUpdateManyArgs>(args: SelectSubset<T, outilsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Outils.
+     * @param {outilsUpsertArgs} args - Arguments to update or create a Outils.
+     * @example
+     * // Update or create a Outils
+     * const outils = await prisma.outils.upsert({
+     *   create: {
+     *     // ... data to create a Outils
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Outils we want to update
+     *   }
+     * })
+     */
+    upsert<T extends outilsUpsertArgs>(args: SelectSubset<T, outilsUpsertArgs<ExtArgs>>): Prisma__outilsClient<$Result.GetResult<Prisma.$outilsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Outils.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {outilsCountArgs} args - Arguments to filter Outils to count.
+     * @example
+     * // Count the number of Outils
+     * const count = await prisma.outils.count({
+     *   where: {
+     *     // ... the filter for the Outils we want to count
+     *   }
+     * })
+    **/
+    count<T extends outilsCountArgs>(
+      args?: Subset<T, outilsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], OutilsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Outils.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OutilsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends OutilsAggregateArgs>(args: Subset<T, OutilsAggregateArgs>): Prisma.PrismaPromise<GetOutilsAggregateType<T>>
+
+    /**
+     * Group by Outils.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {outilsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends outilsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: outilsGroupByArgs['orderBy'] }
+        : { orderBy?: outilsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, outilsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetOutilsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the outils model
+   */
+  readonly fields: outilsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for outils.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__outilsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the outils model
+   */
+  interface outilsFieldRefs {
+    readonly id_outil: FieldRef<"outils", 'Int'>
+    readonly titre: FieldRef<"outils", 'String'>
+    readonly description: FieldRef<"outils", 'String'>
+    readonly logo: FieldRef<"outils", 'String'>
+    readonly miniature: FieldRef<"outils", 'String'>
+    readonly lien_github: FieldRef<"outils", 'String'>
+    readonly derniere_modification: FieldRef<"outils", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * outils findUnique
+   */
+  export type outilsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils
+     */
+    select?: outilsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils
+     */
+    omit?: outilsOmit<ExtArgs> | null
+    /**
+     * Filter, which outils to fetch.
+     */
+    where: outilsWhereUniqueInput
+  }
+
+  /**
+   * outils findUniqueOrThrow
+   */
+  export type outilsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils
+     */
+    select?: outilsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils
+     */
+    omit?: outilsOmit<ExtArgs> | null
+    /**
+     * Filter, which outils to fetch.
+     */
+    where: outilsWhereUniqueInput
+  }
+
+  /**
+   * outils findFirst
+   */
+  export type outilsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils
+     */
+    select?: outilsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils
+     */
+    omit?: outilsOmit<ExtArgs> | null
+    /**
+     * Filter, which outils to fetch.
+     */
+    where?: outilsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of outils to fetch.
+     */
+    orderBy?: outilsOrderByWithRelationInput | outilsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for outils.
+     */
+    cursor?: outilsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` outils from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` outils.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of outils.
+     */
+    distinct?: OutilsScalarFieldEnum | OutilsScalarFieldEnum[]
+  }
+
+  /**
+   * outils findFirstOrThrow
+   */
+  export type outilsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils
+     */
+    select?: outilsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils
+     */
+    omit?: outilsOmit<ExtArgs> | null
+    /**
+     * Filter, which outils to fetch.
+     */
+    where?: outilsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of outils to fetch.
+     */
+    orderBy?: outilsOrderByWithRelationInput | outilsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for outils.
+     */
+    cursor?: outilsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` outils from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` outils.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of outils.
+     */
+    distinct?: OutilsScalarFieldEnum | OutilsScalarFieldEnum[]
+  }
+
+  /**
+   * outils findMany
+   */
+  export type outilsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils
+     */
+    select?: outilsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils
+     */
+    omit?: outilsOmit<ExtArgs> | null
+    /**
+     * Filter, which outils to fetch.
+     */
+    where?: outilsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of outils to fetch.
+     */
+    orderBy?: outilsOrderByWithRelationInput | outilsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing outils.
+     */
+    cursor?: outilsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` outils from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` outils.
+     */
+    skip?: number
+    distinct?: OutilsScalarFieldEnum | OutilsScalarFieldEnum[]
+  }
+
+  /**
+   * outils create
+   */
+  export type outilsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils
+     */
+    select?: outilsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils
+     */
+    omit?: outilsOmit<ExtArgs> | null
+    /**
+     * The data needed to create a outils.
+     */
+    data: XOR<outilsCreateInput, outilsUncheckedCreateInput>
+  }
+
+  /**
+   * outils createMany
+   */
+  export type outilsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many outils.
+     */
+    data: outilsCreateManyInput | outilsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * outils update
+   */
+  export type outilsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils
+     */
+    select?: outilsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils
+     */
+    omit?: outilsOmit<ExtArgs> | null
+    /**
+     * The data needed to update a outils.
+     */
+    data: XOR<outilsUpdateInput, outilsUncheckedUpdateInput>
+    /**
+     * Choose, which outils to update.
+     */
+    where: outilsWhereUniqueInput
+  }
+
+  /**
+   * outils updateMany
+   */
+  export type outilsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update outils.
+     */
+    data: XOR<outilsUpdateManyMutationInput, outilsUncheckedUpdateManyInput>
+    /**
+     * Filter which outils to update
+     */
+    where?: outilsWhereInput
+    /**
+     * Limit how many outils to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * outils upsert
+   */
+  export type outilsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils
+     */
+    select?: outilsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils
+     */
+    omit?: outilsOmit<ExtArgs> | null
+    /**
+     * The filter to search for the outils to update in case it exists.
+     */
+    where: outilsWhereUniqueInput
+    /**
+     * In case the outils found by the `where` argument doesn't exist, create a new outils with this data.
+     */
+    create: XOR<outilsCreateInput, outilsUncheckedCreateInput>
+    /**
+     * In case the outils was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<outilsUpdateInput, outilsUncheckedUpdateInput>
+  }
+
+  /**
+   * outils delete
+   */
+  export type outilsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils
+     */
+    select?: outilsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils
+     */
+    omit?: outilsOmit<ExtArgs> | null
+    /**
+     * Filter which outils to delete.
+     */
+    where: outilsWhereUniqueInput
+  }
+
+  /**
+   * outils deleteMany
+   */
+  export type outilsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which outils to delete
+     */
+    where?: outilsWhereInput
+    /**
+     * Limit how many outils to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * outils without action
+   */
+  export type outilsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils
+     */
+    select?: outilsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils
+     */
+    omit?: outilsOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model outils_tags
+   */
+
+  export type AggregateOutils_tags = {
+    _count: Outils_tagsCountAggregateOutputType | null
+    _avg: Outils_tagsAvgAggregateOutputType | null
+    _sum: Outils_tagsSumAggregateOutputType | null
+    _min: Outils_tagsMinAggregateOutputType | null
+    _max: Outils_tagsMaxAggregateOutputType | null
+  }
+
+  export type Outils_tagsAvgAggregateOutputType = {
+    id_tags: number | null
+    important: number | null
+  }
+
+  export type Outils_tagsSumAggregateOutputType = {
+    id_tags: number | null
+    important: number | null
+  }
+
+  export type Outils_tagsMinAggregateOutputType = {
+    id_tags: number | null
+    titre: string | null
+    important: number | null
+  }
+
+  export type Outils_tagsMaxAggregateOutputType = {
+    id_tags: number | null
+    titre: string | null
+    important: number | null
+  }
+
+  export type Outils_tagsCountAggregateOutputType = {
+    id_tags: number
+    titre: number
+    important: number
+    _all: number
+  }
+
+
+  export type Outils_tagsAvgAggregateInputType = {
+    id_tags?: true
+    important?: true
+  }
+
+  export type Outils_tagsSumAggregateInputType = {
+    id_tags?: true
+    important?: true
+  }
+
+  export type Outils_tagsMinAggregateInputType = {
+    id_tags?: true
+    titre?: true
+    important?: true
+  }
+
+  export type Outils_tagsMaxAggregateInputType = {
+    id_tags?: true
+    titre?: true
+    important?: true
+  }
+
+  export type Outils_tagsCountAggregateInputType = {
+    id_tags?: true
+    titre?: true
+    important?: true
+    _all?: true
+  }
+
+  export type Outils_tagsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which outils_tags to aggregate.
+     */
+    where?: outils_tagsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of outils_tags to fetch.
+     */
+    orderBy?: outils_tagsOrderByWithRelationInput | outils_tagsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: outils_tagsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` outils_tags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` outils_tags.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned outils_tags
+    **/
+    _count?: true | Outils_tagsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Outils_tagsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Outils_tagsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Outils_tagsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Outils_tagsMaxAggregateInputType
+  }
+
+  export type GetOutils_tagsAggregateType<T extends Outils_tagsAggregateArgs> = {
+        [P in keyof T & keyof AggregateOutils_tags]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateOutils_tags[P]>
+      : GetScalarType<T[P], AggregateOutils_tags[P]>
+  }
+
+
+
+
+  export type outils_tagsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: outils_tagsWhereInput
+    orderBy?: outils_tagsOrderByWithAggregationInput | outils_tagsOrderByWithAggregationInput[]
+    by: Outils_tagsScalarFieldEnum[] | Outils_tagsScalarFieldEnum
+    having?: outils_tagsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Outils_tagsCountAggregateInputType | true
+    _avg?: Outils_tagsAvgAggregateInputType
+    _sum?: Outils_tagsSumAggregateInputType
+    _min?: Outils_tagsMinAggregateInputType
+    _max?: Outils_tagsMaxAggregateInputType
+  }
+
+  export type Outils_tagsGroupByOutputType = {
+    id_tags: number
+    titre: string
+    important: number
+    _count: Outils_tagsCountAggregateOutputType | null
+    _avg: Outils_tagsAvgAggregateOutputType | null
+    _sum: Outils_tagsSumAggregateOutputType | null
+    _min: Outils_tagsMinAggregateOutputType | null
+    _max: Outils_tagsMaxAggregateOutputType | null
+  }
+
+  type GetOutils_tagsGroupByPayload<T extends outils_tagsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Outils_tagsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Outils_tagsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Outils_tagsGroupByOutputType[P]>
+            : GetScalarType<T[P], Outils_tagsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type outils_tagsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id_tags?: boolean
+    titre?: boolean
+    important?: boolean
+  }, ExtArgs["result"]["outils_tags"]>
+
+
+
+  export type outils_tagsSelectScalar = {
+    id_tags?: boolean
+    titre?: boolean
+    important?: boolean
+  }
+
+  export type outils_tagsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_tags" | "titre" | "important", ExtArgs["result"]["outils_tags"]>
+
+  export type $outils_tagsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "outils_tags"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id_tags: number
+      titre: string
+      important: number
+    }, ExtArgs["result"]["outils_tags"]>
+    composites: {}
+  }
+
+  type outils_tagsGetPayload<S extends boolean | null | undefined | outils_tagsDefaultArgs> = $Result.GetResult<Prisma.$outils_tagsPayload, S>
+
+  type outils_tagsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<outils_tagsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Outils_tagsCountAggregateInputType | true
+    }
+
+  export interface outils_tagsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['outils_tags'], meta: { name: 'outils_tags' } }
+    /**
+     * Find zero or one Outils_tags that matches the filter.
+     * @param {outils_tagsFindUniqueArgs} args - Arguments to find a Outils_tags
+     * @example
+     * // Get one Outils_tags
+     * const outils_tags = await prisma.outils_tags.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends outils_tagsFindUniqueArgs>(args: SelectSubset<T, outils_tagsFindUniqueArgs<ExtArgs>>): Prisma__outils_tagsClient<$Result.GetResult<Prisma.$outils_tagsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Outils_tags that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {outils_tagsFindUniqueOrThrowArgs} args - Arguments to find a Outils_tags
+     * @example
+     * // Get one Outils_tags
+     * const outils_tags = await prisma.outils_tags.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends outils_tagsFindUniqueOrThrowArgs>(args: SelectSubset<T, outils_tagsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__outils_tagsClient<$Result.GetResult<Prisma.$outils_tagsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Outils_tags that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {outils_tagsFindFirstArgs} args - Arguments to find a Outils_tags
+     * @example
+     * // Get one Outils_tags
+     * const outils_tags = await prisma.outils_tags.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends outils_tagsFindFirstArgs>(args?: SelectSubset<T, outils_tagsFindFirstArgs<ExtArgs>>): Prisma__outils_tagsClient<$Result.GetResult<Prisma.$outils_tagsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Outils_tags that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {outils_tagsFindFirstOrThrowArgs} args - Arguments to find a Outils_tags
+     * @example
+     * // Get one Outils_tags
+     * const outils_tags = await prisma.outils_tags.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends outils_tagsFindFirstOrThrowArgs>(args?: SelectSubset<T, outils_tagsFindFirstOrThrowArgs<ExtArgs>>): Prisma__outils_tagsClient<$Result.GetResult<Prisma.$outils_tagsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Outils_tags that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {outils_tagsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Outils_tags
+     * const outils_tags = await prisma.outils_tags.findMany()
+     * 
+     * // Get first 10 Outils_tags
+     * const outils_tags = await prisma.outils_tags.findMany({ take: 10 })
+     * 
+     * // Only select the `id_tags`
+     * const outils_tagsWithId_tagsOnly = await prisma.outils_tags.findMany({ select: { id_tags: true } })
+     * 
+     */
+    findMany<T extends outils_tagsFindManyArgs>(args?: SelectSubset<T, outils_tagsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$outils_tagsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Outils_tags.
+     * @param {outils_tagsCreateArgs} args - Arguments to create a Outils_tags.
+     * @example
+     * // Create one Outils_tags
+     * const Outils_tags = await prisma.outils_tags.create({
+     *   data: {
+     *     // ... data to create a Outils_tags
+     *   }
+     * })
+     * 
+     */
+    create<T extends outils_tagsCreateArgs>(args: SelectSubset<T, outils_tagsCreateArgs<ExtArgs>>): Prisma__outils_tagsClient<$Result.GetResult<Prisma.$outils_tagsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Outils_tags.
+     * @param {outils_tagsCreateManyArgs} args - Arguments to create many Outils_tags.
+     * @example
+     * // Create many Outils_tags
+     * const outils_tags = await prisma.outils_tags.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends outils_tagsCreateManyArgs>(args?: SelectSubset<T, outils_tagsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Outils_tags.
+     * @param {outils_tagsDeleteArgs} args - Arguments to delete one Outils_tags.
+     * @example
+     * // Delete one Outils_tags
+     * const Outils_tags = await prisma.outils_tags.delete({
+     *   where: {
+     *     // ... filter to delete one Outils_tags
+     *   }
+     * })
+     * 
+     */
+    delete<T extends outils_tagsDeleteArgs>(args: SelectSubset<T, outils_tagsDeleteArgs<ExtArgs>>): Prisma__outils_tagsClient<$Result.GetResult<Prisma.$outils_tagsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Outils_tags.
+     * @param {outils_tagsUpdateArgs} args - Arguments to update one Outils_tags.
+     * @example
+     * // Update one Outils_tags
+     * const outils_tags = await prisma.outils_tags.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends outils_tagsUpdateArgs>(args: SelectSubset<T, outils_tagsUpdateArgs<ExtArgs>>): Prisma__outils_tagsClient<$Result.GetResult<Prisma.$outils_tagsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Outils_tags.
+     * @param {outils_tagsDeleteManyArgs} args - Arguments to filter Outils_tags to delete.
+     * @example
+     * // Delete a few Outils_tags
+     * const { count } = await prisma.outils_tags.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends outils_tagsDeleteManyArgs>(args?: SelectSubset<T, outils_tagsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Outils_tags.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {outils_tagsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Outils_tags
+     * const outils_tags = await prisma.outils_tags.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends outils_tagsUpdateManyArgs>(args: SelectSubset<T, outils_tagsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Outils_tags.
+     * @param {outils_tagsUpsertArgs} args - Arguments to update or create a Outils_tags.
+     * @example
+     * // Update or create a Outils_tags
+     * const outils_tags = await prisma.outils_tags.upsert({
+     *   create: {
+     *     // ... data to create a Outils_tags
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Outils_tags we want to update
+     *   }
+     * })
+     */
+    upsert<T extends outils_tagsUpsertArgs>(args: SelectSubset<T, outils_tagsUpsertArgs<ExtArgs>>): Prisma__outils_tagsClient<$Result.GetResult<Prisma.$outils_tagsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Outils_tags.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {outils_tagsCountArgs} args - Arguments to filter Outils_tags to count.
+     * @example
+     * // Count the number of Outils_tags
+     * const count = await prisma.outils_tags.count({
+     *   where: {
+     *     // ... the filter for the Outils_tags we want to count
+     *   }
+     * })
+    **/
+    count<T extends outils_tagsCountArgs>(
+      args?: Subset<T, outils_tagsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Outils_tagsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Outils_tags.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Outils_tagsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Outils_tagsAggregateArgs>(args: Subset<T, Outils_tagsAggregateArgs>): Prisma.PrismaPromise<GetOutils_tagsAggregateType<T>>
+
+    /**
+     * Group by Outils_tags.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {outils_tagsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends outils_tagsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: outils_tagsGroupByArgs['orderBy'] }
+        : { orderBy?: outils_tagsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, outils_tagsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetOutils_tagsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the outils_tags model
+   */
+  readonly fields: outils_tagsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for outils_tags.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__outils_tagsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the outils_tags model
+   */
+  interface outils_tagsFieldRefs {
+    readonly id_tags: FieldRef<"outils_tags", 'Int'>
+    readonly titre: FieldRef<"outils_tags", 'String'>
+    readonly important: FieldRef<"outils_tags", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * outils_tags findUnique
+   */
+  export type outils_tagsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils_tags
+     */
+    select?: outils_tagsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils_tags
+     */
+    omit?: outils_tagsOmit<ExtArgs> | null
+    /**
+     * Filter, which outils_tags to fetch.
+     */
+    where: outils_tagsWhereUniqueInput
+  }
+
+  /**
+   * outils_tags findUniqueOrThrow
+   */
+  export type outils_tagsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils_tags
+     */
+    select?: outils_tagsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils_tags
+     */
+    omit?: outils_tagsOmit<ExtArgs> | null
+    /**
+     * Filter, which outils_tags to fetch.
+     */
+    where: outils_tagsWhereUniqueInput
+  }
+
+  /**
+   * outils_tags findFirst
+   */
+  export type outils_tagsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils_tags
+     */
+    select?: outils_tagsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils_tags
+     */
+    omit?: outils_tagsOmit<ExtArgs> | null
+    /**
+     * Filter, which outils_tags to fetch.
+     */
+    where?: outils_tagsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of outils_tags to fetch.
+     */
+    orderBy?: outils_tagsOrderByWithRelationInput | outils_tagsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for outils_tags.
+     */
+    cursor?: outils_tagsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` outils_tags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` outils_tags.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of outils_tags.
+     */
+    distinct?: Outils_tagsScalarFieldEnum | Outils_tagsScalarFieldEnum[]
+  }
+
+  /**
+   * outils_tags findFirstOrThrow
+   */
+  export type outils_tagsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils_tags
+     */
+    select?: outils_tagsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils_tags
+     */
+    omit?: outils_tagsOmit<ExtArgs> | null
+    /**
+     * Filter, which outils_tags to fetch.
+     */
+    where?: outils_tagsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of outils_tags to fetch.
+     */
+    orderBy?: outils_tagsOrderByWithRelationInput | outils_tagsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for outils_tags.
+     */
+    cursor?: outils_tagsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` outils_tags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` outils_tags.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of outils_tags.
+     */
+    distinct?: Outils_tagsScalarFieldEnum | Outils_tagsScalarFieldEnum[]
+  }
+
+  /**
+   * outils_tags findMany
+   */
+  export type outils_tagsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils_tags
+     */
+    select?: outils_tagsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils_tags
+     */
+    omit?: outils_tagsOmit<ExtArgs> | null
+    /**
+     * Filter, which outils_tags to fetch.
+     */
+    where?: outils_tagsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of outils_tags to fetch.
+     */
+    orderBy?: outils_tagsOrderByWithRelationInput | outils_tagsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing outils_tags.
+     */
+    cursor?: outils_tagsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` outils_tags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` outils_tags.
+     */
+    skip?: number
+    distinct?: Outils_tagsScalarFieldEnum | Outils_tagsScalarFieldEnum[]
+  }
+
+  /**
+   * outils_tags create
+   */
+  export type outils_tagsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils_tags
+     */
+    select?: outils_tagsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils_tags
+     */
+    omit?: outils_tagsOmit<ExtArgs> | null
+    /**
+     * The data needed to create a outils_tags.
+     */
+    data: XOR<outils_tagsCreateInput, outils_tagsUncheckedCreateInput>
+  }
+
+  /**
+   * outils_tags createMany
+   */
+  export type outils_tagsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many outils_tags.
+     */
+    data: outils_tagsCreateManyInput | outils_tagsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * outils_tags update
+   */
+  export type outils_tagsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils_tags
+     */
+    select?: outils_tagsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils_tags
+     */
+    omit?: outils_tagsOmit<ExtArgs> | null
+    /**
+     * The data needed to update a outils_tags.
+     */
+    data: XOR<outils_tagsUpdateInput, outils_tagsUncheckedUpdateInput>
+    /**
+     * Choose, which outils_tags to update.
+     */
+    where: outils_tagsWhereUniqueInput
+  }
+
+  /**
+   * outils_tags updateMany
+   */
+  export type outils_tagsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update outils_tags.
+     */
+    data: XOR<outils_tagsUpdateManyMutationInput, outils_tagsUncheckedUpdateManyInput>
+    /**
+     * Filter which outils_tags to update
+     */
+    where?: outils_tagsWhereInput
+    /**
+     * Limit how many outils_tags to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * outils_tags upsert
+   */
+  export type outils_tagsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils_tags
+     */
+    select?: outils_tagsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils_tags
+     */
+    omit?: outils_tagsOmit<ExtArgs> | null
+    /**
+     * The filter to search for the outils_tags to update in case it exists.
+     */
+    where: outils_tagsWhereUniqueInput
+    /**
+     * In case the outils_tags found by the `where` argument doesn't exist, create a new outils_tags with this data.
+     */
+    create: XOR<outils_tagsCreateInput, outils_tagsUncheckedCreateInput>
+    /**
+     * In case the outils_tags was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<outils_tagsUpdateInput, outils_tagsUncheckedUpdateInput>
+  }
+
+  /**
+   * outils_tags delete
+   */
+  export type outils_tagsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils_tags
+     */
+    select?: outils_tagsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils_tags
+     */
+    omit?: outils_tagsOmit<ExtArgs> | null
+    /**
+     * Filter which outils_tags to delete.
+     */
+    where: outils_tagsWhereUniqueInput
+  }
+
+  /**
+   * outils_tags deleteMany
+   */
+  export type outils_tagsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which outils_tags to delete
+     */
+    where?: outils_tagsWhereInput
+    /**
+     * Limit how many outils_tags to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * outils_tags without action
+   */
+  export type outils_tagsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils_tags
+     */
+    select?: outils_tagsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils_tags
+     */
+    omit?: outils_tagsOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model outils_tags_link
+   */
+
+  export type AggregateOutils_tags_link = {
+    _count: Outils_tags_linkCountAggregateOutputType | null
+    _avg: Outils_tags_linkAvgAggregateOutputType | null
+    _sum: Outils_tags_linkSumAggregateOutputType | null
+    _min: Outils_tags_linkMinAggregateOutputType | null
+    _max: Outils_tags_linkMaxAggregateOutputType | null
+  }
+
+  export type Outils_tags_linkAvgAggregateOutputType = {
+    id_outils: number | null
+    id_tags: number | null
+  }
+
+  export type Outils_tags_linkSumAggregateOutputType = {
+    id_outils: number | null
+    id_tags: number | null
+  }
+
+  export type Outils_tags_linkMinAggregateOutputType = {
+    id_outils: number | null
+    id_tags: number | null
+  }
+
+  export type Outils_tags_linkMaxAggregateOutputType = {
+    id_outils: number | null
+    id_tags: number | null
+  }
+
+  export type Outils_tags_linkCountAggregateOutputType = {
+    id_outils: number
+    id_tags: number
+    _all: number
+  }
+
+
+  export type Outils_tags_linkAvgAggregateInputType = {
+    id_outils?: true
+    id_tags?: true
+  }
+
+  export type Outils_tags_linkSumAggregateInputType = {
+    id_outils?: true
+    id_tags?: true
+  }
+
+  export type Outils_tags_linkMinAggregateInputType = {
+    id_outils?: true
+    id_tags?: true
+  }
+
+  export type Outils_tags_linkMaxAggregateInputType = {
+    id_outils?: true
+    id_tags?: true
+  }
+
+  export type Outils_tags_linkCountAggregateInputType = {
+    id_outils?: true
+    id_tags?: true
+    _all?: true
+  }
+
+  export type Outils_tags_linkAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which outils_tags_link to aggregate.
+     */
+    where?: outils_tags_linkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of outils_tags_links to fetch.
+     */
+    orderBy?: outils_tags_linkOrderByWithRelationInput | outils_tags_linkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: outils_tags_linkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` outils_tags_links from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` outils_tags_links.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned outils_tags_links
+    **/
+    _count?: true | Outils_tags_linkCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Outils_tags_linkAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Outils_tags_linkSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Outils_tags_linkMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Outils_tags_linkMaxAggregateInputType
+  }
+
+  export type GetOutils_tags_linkAggregateType<T extends Outils_tags_linkAggregateArgs> = {
+        [P in keyof T & keyof AggregateOutils_tags_link]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateOutils_tags_link[P]>
+      : GetScalarType<T[P], AggregateOutils_tags_link[P]>
+  }
+
+
+
+
+  export type outils_tags_linkGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: outils_tags_linkWhereInput
+    orderBy?: outils_tags_linkOrderByWithAggregationInput | outils_tags_linkOrderByWithAggregationInput[]
+    by: Outils_tags_linkScalarFieldEnum[] | Outils_tags_linkScalarFieldEnum
+    having?: outils_tags_linkScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Outils_tags_linkCountAggregateInputType | true
+    _avg?: Outils_tags_linkAvgAggregateInputType
+    _sum?: Outils_tags_linkSumAggregateInputType
+    _min?: Outils_tags_linkMinAggregateInputType
+    _max?: Outils_tags_linkMaxAggregateInputType
+  }
+
+  export type Outils_tags_linkGroupByOutputType = {
+    id_outils: number
+    id_tags: number
+    _count: Outils_tags_linkCountAggregateOutputType | null
+    _avg: Outils_tags_linkAvgAggregateOutputType | null
+    _sum: Outils_tags_linkSumAggregateOutputType | null
+    _min: Outils_tags_linkMinAggregateOutputType | null
+    _max: Outils_tags_linkMaxAggregateOutputType | null
+  }
+
+  type GetOutils_tags_linkGroupByPayload<T extends outils_tags_linkGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Outils_tags_linkGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Outils_tags_linkGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Outils_tags_linkGroupByOutputType[P]>
+            : GetScalarType<T[P], Outils_tags_linkGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type outils_tags_linkSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id_outils?: boolean
+    id_tags?: boolean
+  }, ExtArgs["result"]["outils_tags_link"]>
+
+
+
+  export type outils_tags_linkSelectScalar = {
+    id_outils?: boolean
+    id_tags?: boolean
+  }
+
+  export type outils_tags_linkOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_outils" | "id_tags", ExtArgs["result"]["outils_tags_link"]>
+
+  export type $outils_tags_linkPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "outils_tags_link"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id_outils: number
+      id_tags: number
+    }, ExtArgs["result"]["outils_tags_link"]>
+    composites: {}
+  }
+
+  type outils_tags_linkGetPayload<S extends boolean | null | undefined | outils_tags_linkDefaultArgs> = $Result.GetResult<Prisma.$outils_tags_linkPayload, S>
+
+  type outils_tags_linkCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<outils_tags_linkFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Outils_tags_linkCountAggregateInputType | true
+    }
+
+  export interface outils_tags_linkDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['outils_tags_link'], meta: { name: 'outils_tags_link' } }
+    /**
+     * Find zero or one Outils_tags_link that matches the filter.
+     * @param {outils_tags_linkFindUniqueArgs} args - Arguments to find a Outils_tags_link
+     * @example
+     * // Get one Outils_tags_link
+     * const outils_tags_link = await prisma.outils_tags_link.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends outils_tags_linkFindUniqueArgs>(args: SelectSubset<T, outils_tags_linkFindUniqueArgs<ExtArgs>>): Prisma__outils_tags_linkClient<$Result.GetResult<Prisma.$outils_tags_linkPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Outils_tags_link that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {outils_tags_linkFindUniqueOrThrowArgs} args - Arguments to find a Outils_tags_link
+     * @example
+     * // Get one Outils_tags_link
+     * const outils_tags_link = await prisma.outils_tags_link.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends outils_tags_linkFindUniqueOrThrowArgs>(args: SelectSubset<T, outils_tags_linkFindUniqueOrThrowArgs<ExtArgs>>): Prisma__outils_tags_linkClient<$Result.GetResult<Prisma.$outils_tags_linkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Outils_tags_link that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {outils_tags_linkFindFirstArgs} args - Arguments to find a Outils_tags_link
+     * @example
+     * // Get one Outils_tags_link
+     * const outils_tags_link = await prisma.outils_tags_link.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends outils_tags_linkFindFirstArgs>(args?: SelectSubset<T, outils_tags_linkFindFirstArgs<ExtArgs>>): Prisma__outils_tags_linkClient<$Result.GetResult<Prisma.$outils_tags_linkPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Outils_tags_link that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {outils_tags_linkFindFirstOrThrowArgs} args - Arguments to find a Outils_tags_link
+     * @example
+     * // Get one Outils_tags_link
+     * const outils_tags_link = await prisma.outils_tags_link.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends outils_tags_linkFindFirstOrThrowArgs>(args?: SelectSubset<T, outils_tags_linkFindFirstOrThrowArgs<ExtArgs>>): Prisma__outils_tags_linkClient<$Result.GetResult<Prisma.$outils_tags_linkPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Outils_tags_links that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {outils_tags_linkFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Outils_tags_links
+     * const outils_tags_links = await prisma.outils_tags_link.findMany()
+     * 
+     * // Get first 10 Outils_tags_links
+     * const outils_tags_links = await prisma.outils_tags_link.findMany({ take: 10 })
+     * 
+     * // Only select the `id_outils`
+     * const outils_tags_linkWithId_outilsOnly = await prisma.outils_tags_link.findMany({ select: { id_outils: true } })
+     * 
+     */
+    findMany<T extends outils_tags_linkFindManyArgs>(args?: SelectSubset<T, outils_tags_linkFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$outils_tags_linkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Outils_tags_link.
+     * @param {outils_tags_linkCreateArgs} args - Arguments to create a Outils_tags_link.
+     * @example
+     * // Create one Outils_tags_link
+     * const Outils_tags_link = await prisma.outils_tags_link.create({
+     *   data: {
+     *     // ... data to create a Outils_tags_link
+     *   }
+     * })
+     * 
+     */
+    create<T extends outils_tags_linkCreateArgs>(args: SelectSubset<T, outils_tags_linkCreateArgs<ExtArgs>>): Prisma__outils_tags_linkClient<$Result.GetResult<Prisma.$outils_tags_linkPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Outils_tags_links.
+     * @param {outils_tags_linkCreateManyArgs} args - Arguments to create many Outils_tags_links.
+     * @example
+     * // Create many Outils_tags_links
+     * const outils_tags_link = await prisma.outils_tags_link.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends outils_tags_linkCreateManyArgs>(args?: SelectSubset<T, outils_tags_linkCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Outils_tags_link.
+     * @param {outils_tags_linkDeleteArgs} args - Arguments to delete one Outils_tags_link.
+     * @example
+     * // Delete one Outils_tags_link
+     * const Outils_tags_link = await prisma.outils_tags_link.delete({
+     *   where: {
+     *     // ... filter to delete one Outils_tags_link
+     *   }
+     * })
+     * 
+     */
+    delete<T extends outils_tags_linkDeleteArgs>(args: SelectSubset<T, outils_tags_linkDeleteArgs<ExtArgs>>): Prisma__outils_tags_linkClient<$Result.GetResult<Prisma.$outils_tags_linkPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Outils_tags_link.
+     * @param {outils_tags_linkUpdateArgs} args - Arguments to update one Outils_tags_link.
+     * @example
+     * // Update one Outils_tags_link
+     * const outils_tags_link = await prisma.outils_tags_link.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends outils_tags_linkUpdateArgs>(args: SelectSubset<T, outils_tags_linkUpdateArgs<ExtArgs>>): Prisma__outils_tags_linkClient<$Result.GetResult<Prisma.$outils_tags_linkPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Outils_tags_links.
+     * @param {outils_tags_linkDeleteManyArgs} args - Arguments to filter Outils_tags_links to delete.
+     * @example
+     * // Delete a few Outils_tags_links
+     * const { count } = await prisma.outils_tags_link.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends outils_tags_linkDeleteManyArgs>(args?: SelectSubset<T, outils_tags_linkDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Outils_tags_links.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {outils_tags_linkUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Outils_tags_links
+     * const outils_tags_link = await prisma.outils_tags_link.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends outils_tags_linkUpdateManyArgs>(args: SelectSubset<T, outils_tags_linkUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Outils_tags_link.
+     * @param {outils_tags_linkUpsertArgs} args - Arguments to update or create a Outils_tags_link.
+     * @example
+     * // Update or create a Outils_tags_link
+     * const outils_tags_link = await prisma.outils_tags_link.upsert({
+     *   create: {
+     *     // ... data to create a Outils_tags_link
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Outils_tags_link we want to update
+     *   }
+     * })
+     */
+    upsert<T extends outils_tags_linkUpsertArgs>(args: SelectSubset<T, outils_tags_linkUpsertArgs<ExtArgs>>): Prisma__outils_tags_linkClient<$Result.GetResult<Prisma.$outils_tags_linkPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Outils_tags_links.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {outils_tags_linkCountArgs} args - Arguments to filter Outils_tags_links to count.
+     * @example
+     * // Count the number of Outils_tags_links
+     * const count = await prisma.outils_tags_link.count({
+     *   where: {
+     *     // ... the filter for the Outils_tags_links we want to count
+     *   }
+     * })
+    **/
+    count<T extends outils_tags_linkCountArgs>(
+      args?: Subset<T, outils_tags_linkCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Outils_tags_linkCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Outils_tags_link.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Outils_tags_linkAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Outils_tags_linkAggregateArgs>(args: Subset<T, Outils_tags_linkAggregateArgs>): Prisma.PrismaPromise<GetOutils_tags_linkAggregateType<T>>
+
+    /**
+     * Group by Outils_tags_link.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {outils_tags_linkGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends outils_tags_linkGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: outils_tags_linkGroupByArgs['orderBy'] }
+        : { orderBy?: outils_tags_linkGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, outils_tags_linkGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetOutils_tags_linkGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the outils_tags_link model
+   */
+  readonly fields: outils_tags_linkFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for outils_tags_link.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__outils_tags_linkClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the outils_tags_link model
+   */
+  interface outils_tags_linkFieldRefs {
+    readonly id_outils: FieldRef<"outils_tags_link", 'Int'>
+    readonly id_tags: FieldRef<"outils_tags_link", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * outils_tags_link findUnique
+   */
+  export type outils_tags_linkFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils_tags_link
+     */
+    select?: outils_tags_linkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils_tags_link
+     */
+    omit?: outils_tags_linkOmit<ExtArgs> | null
+    /**
+     * Filter, which outils_tags_link to fetch.
+     */
+    where: outils_tags_linkWhereUniqueInput
+  }
+
+  /**
+   * outils_tags_link findUniqueOrThrow
+   */
+  export type outils_tags_linkFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils_tags_link
+     */
+    select?: outils_tags_linkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils_tags_link
+     */
+    omit?: outils_tags_linkOmit<ExtArgs> | null
+    /**
+     * Filter, which outils_tags_link to fetch.
+     */
+    where: outils_tags_linkWhereUniqueInput
+  }
+
+  /**
+   * outils_tags_link findFirst
+   */
+  export type outils_tags_linkFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils_tags_link
+     */
+    select?: outils_tags_linkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils_tags_link
+     */
+    omit?: outils_tags_linkOmit<ExtArgs> | null
+    /**
+     * Filter, which outils_tags_link to fetch.
+     */
+    where?: outils_tags_linkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of outils_tags_links to fetch.
+     */
+    orderBy?: outils_tags_linkOrderByWithRelationInput | outils_tags_linkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for outils_tags_links.
+     */
+    cursor?: outils_tags_linkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` outils_tags_links from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` outils_tags_links.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of outils_tags_links.
+     */
+    distinct?: Outils_tags_linkScalarFieldEnum | Outils_tags_linkScalarFieldEnum[]
+  }
+
+  /**
+   * outils_tags_link findFirstOrThrow
+   */
+  export type outils_tags_linkFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils_tags_link
+     */
+    select?: outils_tags_linkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils_tags_link
+     */
+    omit?: outils_tags_linkOmit<ExtArgs> | null
+    /**
+     * Filter, which outils_tags_link to fetch.
+     */
+    where?: outils_tags_linkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of outils_tags_links to fetch.
+     */
+    orderBy?: outils_tags_linkOrderByWithRelationInput | outils_tags_linkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for outils_tags_links.
+     */
+    cursor?: outils_tags_linkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` outils_tags_links from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` outils_tags_links.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of outils_tags_links.
+     */
+    distinct?: Outils_tags_linkScalarFieldEnum | Outils_tags_linkScalarFieldEnum[]
+  }
+
+  /**
+   * outils_tags_link findMany
+   */
+  export type outils_tags_linkFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils_tags_link
+     */
+    select?: outils_tags_linkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils_tags_link
+     */
+    omit?: outils_tags_linkOmit<ExtArgs> | null
+    /**
+     * Filter, which outils_tags_links to fetch.
+     */
+    where?: outils_tags_linkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of outils_tags_links to fetch.
+     */
+    orderBy?: outils_tags_linkOrderByWithRelationInput | outils_tags_linkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing outils_tags_links.
+     */
+    cursor?: outils_tags_linkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` outils_tags_links from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` outils_tags_links.
+     */
+    skip?: number
+    distinct?: Outils_tags_linkScalarFieldEnum | Outils_tags_linkScalarFieldEnum[]
+  }
+
+  /**
+   * outils_tags_link create
+   */
+  export type outils_tags_linkCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils_tags_link
+     */
+    select?: outils_tags_linkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils_tags_link
+     */
+    omit?: outils_tags_linkOmit<ExtArgs> | null
+    /**
+     * The data needed to create a outils_tags_link.
+     */
+    data: XOR<outils_tags_linkCreateInput, outils_tags_linkUncheckedCreateInput>
+  }
+
+  /**
+   * outils_tags_link createMany
+   */
+  export type outils_tags_linkCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many outils_tags_links.
+     */
+    data: outils_tags_linkCreateManyInput | outils_tags_linkCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * outils_tags_link update
+   */
+  export type outils_tags_linkUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils_tags_link
+     */
+    select?: outils_tags_linkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils_tags_link
+     */
+    omit?: outils_tags_linkOmit<ExtArgs> | null
+    /**
+     * The data needed to update a outils_tags_link.
+     */
+    data: XOR<outils_tags_linkUpdateInput, outils_tags_linkUncheckedUpdateInput>
+    /**
+     * Choose, which outils_tags_link to update.
+     */
+    where: outils_tags_linkWhereUniqueInput
+  }
+
+  /**
+   * outils_tags_link updateMany
+   */
+  export type outils_tags_linkUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update outils_tags_links.
+     */
+    data: XOR<outils_tags_linkUpdateManyMutationInput, outils_tags_linkUncheckedUpdateManyInput>
+    /**
+     * Filter which outils_tags_links to update
+     */
+    where?: outils_tags_linkWhereInput
+    /**
+     * Limit how many outils_tags_links to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * outils_tags_link upsert
+   */
+  export type outils_tags_linkUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils_tags_link
+     */
+    select?: outils_tags_linkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils_tags_link
+     */
+    omit?: outils_tags_linkOmit<ExtArgs> | null
+    /**
+     * The filter to search for the outils_tags_link to update in case it exists.
+     */
+    where: outils_tags_linkWhereUniqueInput
+    /**
+     * In case the outils_tags_link found by the `where` argument doesn't exist, create a new outils_tags_link with this data.
+     */
+    create: XOR<outils_tags_linkCreateInput, outils_tags_linkUncheckedCreateInput>
+    /**
+     * In case the outils_tags_link was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<outils_tags_linkUpdateInput, outils_tags_linkUncheckedUpdateInput>
+  }
+
+  /**
+   * outils_tags_link delete
+   */
+  export type outils_tags_linkDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils_tags_link
+     */
+    select?: outils_tags_linkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils_tags_link
+     */
+    omit?: outils_tags_linkOmit<ExtArgs> | null
+    /**
+     * Filter which outils_tags_link to delete.
+     */
+    where: outils_tags_linkWhereUniqueInput
+  }
+
+  /**
+   * outils_tags_link deleteMany
+   */
+  export type outils_tags_linkDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which outils_tags_links to delete
+     */
+    where?: outils_tags_linkWhereInput
+    /**
+     * Limit how many outils_tags_links to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * outils_tags_link without action
+   */
+  export type outils_tags_linkDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the outils_tags_link
+     */
+    select?: outils_tags_linkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the outils_tags_link
+     */
+    omit?: outils_tags_linkOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -28589,6 +31561,36 @@ export namespace Prisma {
   export type Apropos_outilsScalarFieldEnum = (typeof Apropos_outilsScalarFieldEnum)[keyof typeof Apropos_outilsScalarFieldEnum]
 
 
+  export const OutilsScalarFieldEnum: {
+    id_outil: 'id_outil',
+    titre: 'titre',
+    description: 'description',
+    logo: 'logo',
+    miniature: 'miniature',
+    lien_github: 'lien_github',
+    derniere_modification: 'derniere_modification'
+  };
+
+  export type OutilsScalarFieldEnum = (typeof OutilsScalarFieldEnum)[keyof typeof OutilsScalarFieldEnum]
+
+
+  export const Outils_tagsScalarFieldEnum: {
+    id_tags: 'id_tags',
+    titre: 'titre',
+    important: 'important'
+  };
+
+  export type Outils_tagsScalarFieldEnum = (typeof Outils_tagsScalarFieldEnum)[keyof typeof Outils_tagsScalarFieldEnum]
+
+
+  export const Outils_tags_linkScalarFieldEnum: {
+    id_outils: 'id_outils',
+    id_tags: 'id_tags'
+  };
+
+  export type Outils_tags_linkScalarFieldEnum = (typeof Outils_tags_linkScalarFieldEnum)[keyof typeof Outils_tags_linkScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -28810,6 +31812,24 @@ export namespace Prisma {
   };
 
   export type apropos_outilsOrderByRelevanceFieldEnum = (typeof apropos_outilsOrderByRelevanceFieldEnum)[keyof typeof apropos_outilsOrderByRelevanceFieldEnum]
+
+
+  export const outilsOrderByRelevanceFieldEnum: {
+    titre: 'titre',
+    description: 'description',
+    logo: 'logo',
+    miniature: 'miniature',
+    lien_github: 'lien_github'
+  };
+
+  export type outilsOrderByRelevanceFieldEnum = (typeof outilsOrderByRelevanceFieldEnum)[keyof typeof outilsOrderByRelevanceFieldEnum]
+
+
+  export const outils_tagsOrderByRelevanceFieldEnum: {
+    titre: 'titre'
+  };
+
+  export type outils_tagsOrderByRelevanceFieldEnum = (typeof outils_tagsOrderByRelevanceFieldEnum)[keyof typeof outils_tagsOrderByRelevanceFieldEnum]
 
 
   /**
@@ -30489,6 +33509,156 @@ export namespace Prisma {
     afficher?: BoolWithAggregatesFilter<"apropos_outils"> | boolean
   }
 
+  export type outilsWhereInput = {
+    AND?: outilsWhereInput | outilsWhereInput[]
+    OR?: outilsWhereInput[]
+    NOT?: outilsWhereInput | outilsWhereInput[]
+    id_outil?: IntFilter<"outils"> | number
+    titre?: StringFilter<"outils"> | string
+    description?: StringFilter<"outils"> | string
+    logo?: StringFilter<"outils"> | string
+    miniature?: StringFilter<"outils"> | string
+    lien_github?: StringFilter<"outils"> | string
+    derniere_modification?: DateTimeFilter<"outils"> | Date | string
+  }
+
+  export type outilsOrderByWithRelationInput = {
+    id_outil?: SortOrder
+    titre?: SortOrder
+    description?: SortOrder
+    logo?: SortOrder
+    miniature?: SortOrder
+    lien_github?: SortOrder
+    derniere_modification?: SortOrder
+    _relevance?: outilsOrderByRelevanceInput
+  }
+
+  export type outilsWhereUniqueInput = Prisma.AtLeast<{
+    id_outil?: number
+    AND?: outilsWhereInput | outilsWhereInput[]
+    OR?: outilsWhereInput[]
+    NOT?: outilsWhereInput | outilsWhereInput[]
+    titre?: StringFilter<"outils"> | string
+    description?: StringFilter<"outils"> | string
+    logo?: StringFilter<"outils"> | string
+    miniature?: StringFilter<"outils"> | string
+    lien_github?: StringFilter<"outils"> | string
+    derniere_modification?: DateTimeFilter<"outils"> | Date | string
+  }, "id_outil">
+
+  export type outilsOrderByWithAggregationInput = {
+    id_outil?: SortOrder
+    titre?: SortOrder
+    description?: SortOrder
+    logo?: SortOrder
+    miniature?: SortOrder
+    lien_github?: SortOrder
+    derniere_modification?: SortOrder
+    _count?: outilsCountOrderByAggregateInput
+    _avg?: outilsAvgOrderByAggregateInput
+    _max?: outilsMaxOrderByAggregateInput
+    _min?: outilsMinOrderByAggregateInput
+    _sum?: outilsSumOrderByAggregateInput
+  }
+
+  export type outilsScalarWhereWithAggregatesInput = {
+    AND?: outilsScalarWhereWithAggregatesInput | outilsScalarWhereWithAggregatesInput[]
+    OR?: outilsScalarWhereWithAggregatesInput[]
+    NOT?: outilsScalarWhereWithAggregatesInput | outilsScalarWhereWithAggregatesInput[]
+    id_outil?: IntWithAggregatesFilter<"outils"> | number
+    titre?: StringWithAggregatesFilter<"outils"> | string
+    description?: StringWithAggregatesFilter<"outils"> | string
+    logo?: StringWithAggregatesFilter<"outils"> | string
+    miniature?: StringWithAggregatesFilter<"outils"> | string
+    lien_github?: StringWithAggregatesFilter<"outils"> | string
+    derniere_modification?: DateTimeWithAggregatesFilter<"outils"> | Date | string
+  }
+
+  export type outils_tagsWhereInput = {
+    AND?: outils_tagsWhereInput | outils_tagsWhereInput[]
+    OR?: outils_tagsWhereInput[]
+    NOT?: outils_tagsWhereInput | outils_tagsWhereInput[]
+    id_tags?: IntFilter<"outils_tags"> | number
+    titre?: StringFilter<"outils_tags"> | string
+    important?: IntFilter<"outils_tags"> | number
+  }
+
+  export type outils_tagsOrderByWithRelationInput = {
+    id_tags?: SortOrder
+    titre?: SortOrder
+    important?: SortOrder
+    _relevance?: outils_tagsOrderByRelevanceInput
+  }
+
+  export type outils_tagsWhereUniqueInput = Prisma.AtLeast<{
+    id_tags?: number
+    AND?: outils_tagsWhereInput | outils_tagsWhereInput[]
+    OR?: outils_tagsWhereInput[]
+    NOT?: outils_tagsWhereInput | outils_tagsWhereInput[]
+    titre?: StringFilter<"outils_tags"> | string
+    important?: IntFilter<"outils_tags"> | number
+  }, "id_tags">
+
+  export type outils_tagsOrderByWithAggregationInput = {
+    id_tags?: SortOrder
+    titre?: SortOrder
+    important?: SortOrder
+    _count?: outils_tagsCountOrderByAggregateInput
+    _avg?: outils_tagsAvgOrderByAggregateInput
+    _max?: outils_tagsMaxOrderByAggregateInput
+    _min?: outils_tagsMinOrderByAggregateInput
+    _sum?: outils_tagsSumOrderByAggregateInput
+  }
+
+  export type outils_tagsScalarWhereWithAggregatesInput = {
+    AND?: outils_tagsScalarWhereWithAggregatesInput | outils_tagsScalarWhereWithAggregatesInput[]
+    OR?: outils_tagsScalarWhereWithAggregatesInput[]
+    NOT?: outils_tagsScalarWhereWithAggregatesInput | outils_tagsScalarWhereWithAggregatesInput[]
+    id_tags?: IntWithAggregatesFilter<"outils_tags"> | number
+    titre?: StringWithAggregatesFilter<"outils_tags"> | string
+    important?: IntWithAggregatesFilter<"outils_tags"> | number
+  }
+
+  export type outils_tags_linkWhereInput = {
+    AND?: outils_tags_linkWhereInput | outils_tags_linkWhereInput[]
+    OR?: outils_tags_linkWhereInput[]
+    NOT?: outils_tags_linkWhereInput | outils_tags_linkWhereInput[]
+    id_outils?: IntFilter<"outils_tags_link"> | number
+    id_tags?: IntFilter<"outils_tags_link"> | number
+  }
+
+  export type outils_tags_linkOrderByWithRelationInput = {
+    id_outils?: SortOrder
+    id_tags?: SortOrder
+  }
+
+  export type outils_tags_linkWhereUniqueInput = Prisma.AtLeast<{
+    id_outils_id_tags?: outils_tags_linkId_outilsId_tagsCompoundUniqueInput
+    AND?: outils_tags_linkWhereInput | outils_tags_linkWhereInput[]
+    OR?: outils_tags_linkWhereInput[]
+    NOT?: outils_tags_linkWhereInput | outils_tags_linkWhereInput[]
+    id_outils?: IntFilter<"outils_tags_link"> | number
+    id_tags?: IntFilter<"outils_tags_link"> | number
+  }, "id_outils_id_tags">
+
+  export type outils_tags_linkOrderByWithAggregationInput = {
+    id_outils?: SortOrder
+    id_tags?: SortOrder
+    _count?: outils_tags_linkCountOrderByAggregateInput
+    _avg?: outils_tags_linkAvgOrderByAggregateInput
+    _max?: outils_tags_linkMaxOrderByAggregateInput
+    _min?: outils_tags_linkMinOrderByAggregateInput
+    _sum?: outils_tags_linkSumOrderByAggregateInput
+  }
+
+  export type outils_tags_linkScalarWhereWithAggregatesInput = {
+    AND?: outils_tags_linkScalarWhereWithAggregatesInput | outils_tags_linkScalarWhereWithAggregatesInput[]
+    OR?: outils_tags_linkScalarWhereWithAggregatesInput[]
+    NOT?: outils_tags_linkScalarWhereWithAggregatesInput | outils_tags_linkScalarWhereWithAggregatesInput[]
+    id_outils?: IntWithAggregatesFilter<"outils_tags_link"> | number
+    id_tags?: IntWithAggregatesFilter<"outils_tags_link"> | number
+  }
+
   export type autreCreateInput = {
     titre: string
     description: string
@@ -32134,6 +35304,147 @@ export namespace Prisma {
     afficher?: BoolFieldUpdateOperationsInput | boolean
   }
 
+  export type outilsCreateInput = {
+    titre: string
+    description: string
+    logo: string
+    miniature: string
+    lien_github: string
+    derniere_modification: Date | string
+  }
+
+  export type outilsUncheckedCreateInput = {
+    id_outil?: number
+    titre: string
+    description: string
+    logo: string
+    miniature: string
+    lien_github: string
+    derniere_modification: Date | string
+  }
+
+  export type outilsUpdateInput = {
+    titre?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    logo?: StringFieldUpdateOperationsInput | string
+    miniature?: StringFieldUpdateOperationsInput | string
+    lien_github?: StringFieldUpdateOperationsInput | string
+    derniere_modification?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type outilsUncheckedUpdateInput = {
+    id_outil?: IntFieldUpdateOperationsInput | number
+    titre?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    logo?: StringFieldUpdateOperationsInput | string
+    miniature?: StringFieldUpdateOperationsInput | string
+    lien_github?: StringFieldUpdateOperationsInput | string
+    derniere_modification?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type outilsCreateManyInput = {
+    id_outil?: number
+    titre: string
+    description: string
+    logo: string
+    miniature: string
+    lien_github: string
+    derniere_modification: Date | string
+  }
+
+  export type outilsUpdateManyMutationInput = {
+    titre?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    logo?: StringFieldUpdateOperationsInput | string
+    miniature?: StringFieldUpdateOperationsInput | string
+    lien_github?: StringFieldUpdateOperationsInput | string
+    derniere_modification?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type outilsUncheckedUpdateManyInput = {
+    id_outil?: IntFieldUpdateOperationsInput | number
+    titre?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    logo?: StringFieldUpdateOperationsInput | string
+    miniature?: StringFieldUpdateOperationsInput | string
+    lien_github?: StringFieldUpdateOperationsInput | string
+    derniere_modification?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type outils_tagsCreateInput = {
+    titre: string
+    important: number
+  }
+
+  export type outils_tagsUncheckedCreateInput = {
+    id_tags?: number
+    titre: string
+    important: number
+  }
+
+  export type outils_tagsUpdateInput = {
+    titre?: StringFieldUpdateOperationsInput | string
+    important?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type outils_tagsUncheckedUpdateInput = {
+    id_tags?: IntFieldUpdateOperationsInput | number
+    titre?: StringFieldUpdateOperationsInput | string
+    important?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type outils_tagsCreateManyInput = {
+    id_tags?: number
+    titre: string
+    important: number
+  }
+
+  export type outils_tagsUpdateManyMutationInput = {
+    titre?: StringFieldUpdateOperationsInput | string
+    important?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type outils_tagsUncheckedUpdateManyInput = {
+    id_tags?: IntFieldUpdateOperationsInput | number
+    titre?: StringFieldUpdateOperationsInput | string
+    important?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type outils_tags_linkCreateInput = {
+    id_outils: number
+    id_tags: number
+  }
+
+  export type outils_tags_linkUncheckedCreateInput = {
+    id_outils: number
+    id_tags: number
+  }
+
+  export type outils_tags_linkUpdateInput = {
+    id_outils?: IntFieldUpdateOperationsInput | number
+    id_tags?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type outils_tags_linkUncheckedUpdateInput = {
+    id_outils?: IntFieldUpdateOperationsInput | number
+    id_tags?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type outils_tags_linkCreateManyInput = {
+    id_outils: number
+    id_tags: number
+  }
+
+  export type outils_tags_linkUpdateManyMutationInput = {
+    id_outils?: IntFieldUpdateOperationsInput | number
+    id_tags?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type outils_tags_linkUncheckedUpdateManyInput = {
+    id_outils?: IntFieldUpdateOperationsInput | number
+    id_tags?: IntFieldUpdateOperationsInput | number
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -33480,6 +36791,114 @@ export namespace Prisma {
   export type apropos_outilsSumOrderByAggregateInput = {
     id_outil?: SortOrder
     ordre?: SortOrder
+  }
+
+  export type outilsOrderByRelevanceInput = {
+    fields: outilsOrderByRelevanceFieldEnum | outilsOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type outilsCountOrderByAggregateInput = {
+    id_outil?: SortOrder
+    titre?: SortOrder
+    description?: SortOrder
+    logo?: SortOrder
+    miniature?: SortOrder
+    lien_github?: SortOrder
+    derniere_modification?: SortOrder
+  }
+
+  export type outilsAvgOrderByAggregateInput = {
+    id_outil?: SortOrder
+  }
+
+  export type outilsMaxOrderByAggregateInput = {
+    id_outil?: SortOrder
+    titre?: SortOrder
+    description?: SortOrder
+    logo?: SortOrder
+    miniature?: SortOrder
+    lien_github?: SortOrder
+    derniere_modification?: SortOrder
+  }
+
+  export type outilsMinOrderByAggregateInput = {
+    id_outil?: SortOrder
+    titre?: SortOrder
+    description?: SortOrder
+    logo?: SortOrder
+    miniature?: SortOrder
+    lien_github?: SortOrder
+    derniere_modification?: SortOrder
+  }
+
+  export type outilsSumOrderByAggregateInput = {
+    id_outil?: SortOrder
+  }
+
+  export type outils_tagsOrderByRelevanceInput = {
+    fields: outils_tagsOrderByRelevanceFieldEnum | outils_tagsOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type outils_tagsCountOrderByAggregateInput = {
+    id_tags?: SortOrder
+    titre?: SortOrder
+    important?: SortOrder
+  }
+
+  export type outils_tagsAvgOrderByAggregateInput = {
+    id_tags?: SortOrder
+    important?: SortOrder
+  }
+
+  export type outils_tagsMaxOrderByAggregateInput = {
+    id_tags?: SortOrder
+    titre?: SortOrder
+    important?: SortOrder
+  }
+
+  export type outils_tagsMinOrderByAggregateInput = {
+    id_tags?: SortOrder
+    titre?: SortOrder
+    important?: SortOrder
+  }
+
+  export type outils_tagsSumOrderByAggregateInput = {
+    id_tags?: SortOrder
+    important?: SortOrder
+  }
+
+  export type outils_tags_linkId_outilsId_tagsCompoundUniqueInput = {
+    id_outils: number
+    id_tags: number
+  }
+
+  export type outils_tags_linkCountOrderByAggregateInput = {
+    id_outils?: SortOrder
+    id_tags?: SortOrder
+  }
+
+  export type outils_tags_linkAvgOrderByAggregateInput = {
+    id_outils?: SortOrder
+    id_tags?: SortOrder
+  }
+
+  export type outils_tags_linkMaxOrderByAggregateInput = {
+    id_outils?: SortOrder
+    id_tags?: SortOrder
+  }
+
+  export type outils_tags_linkMinOrderByAggregateInput = {
+    id_outils?: SortOrder
+    id_tags?: SortOrder
+  }
+
+  export type outils_tags_linkSumOrderByAggregateInput = {
+    id_outils?: SortOrder
+    id_tags?: SortOrder
   }
 
   export type autre_tags_linkCreateNestedManyWithoutAutreInput = {

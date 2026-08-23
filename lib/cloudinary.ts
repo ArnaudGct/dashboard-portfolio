@@ -302,6 +302,68 @@ export async function uploadAutreImageToCloudinary(
   }
 }
 
+// Helper pour uploader une image d'outil vers Cloudinary
+export async function uploadOutilImageToCloudinary(
+  file: File,
+  folder: string = "portfolio/outils"
+): Promise<{ url: string; publicId: string }> {
+  try {
+    console.log(
+      `Upload outil vers Cloudinary - Taille: ${file.size} bytes`
+    );
+
+    // Compresser l'image si nécessaire
+    const buffer = await compressImageIfNeeded(file);
+
+    const timestamp = Date.now();
+    const randomId = Math.random().toString(36).substr(2, 9);
+    const publicId = `outil_${timestamp}_${randomId}`;
+
+    const uploadOptions: UploadApiOptions = {
+      folder,
+      resource_type: "image",
+      public_id: publicId,
+      use_filename: false,
+      unique_filename: false,
+      format: "webp", // Force la conversion en WebP lors de l'upload
+      transformation: [
+        {
+          width: 1200,
+          crop: "limit",
+          quality: "auto:good",
+        },
+      ],
+    };
+
+    const result = await new Promise<any>((resolve, reject) => {
+      cloudinary.uploader
+        .upload_stream(uploadOptions, (error, result) => {
+          if (error) {
+            console.error("Erreur Cloudinary outil:", error);
+            reject(error);
+          } else {
+            console.log("Upload outil réussi:", result?.secure_url);
+            resolve(result);
+          }
+        })
+        .end(buffer);
+    });
+
+    return {
+      url: result.secure_url,
+      publicId: result.public_id,
+    };
+  } catch (error) {
+    console.error(
+      "Erreur lors de l'upload outil vers Cloudinary:",
+      error
+    );
+    throw new Error(
+      `Erreur d'upload outil Cloudinary: ${error instanceof Error ? error.message : String(error)}`
+    );
+  }
+}
+
 // Nouvelle fonction pour sauvegarder l'image originale sans retouche
 export async function uploadOriginalToCloudinary(
   file: File,

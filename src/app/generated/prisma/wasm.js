@@ -356,6 +356,27 @@ exports.Prisma.Apropos_outilsScalarFieldEnum = {
   afficher: 'afficher'
 };
 
+exports.Prisma.OutilsScalarFieldEnum = {
+  id_outil: 'id_outil',
+  titre: 'titre',
+  description: 'description',
+  logo: 'logo',
+  miniature: 'miniature',
+  lien_github: 'lien_github',
+  derniere_modification: 'derniere_modification'
+};
+
+exports.Prisma.Outils_tagsScalarFieldEnum = {
+  id_tags: 'id_tags',
+  titre: 'titre',
+  important: 'important'
+};
+
+exports.Prisma.Outils_tags_linkScalarFieldEnum = {
+  id_outils: 'id_outils',
+  id_tags: 'id_tags'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -513,6 +534,18 @@ exports.Prisma.apropos_outilsOrderByRelevanceFieldEnum = {
   couleur_texte_dark: 'couleur_texte_dark'
 };
 
+exports.Prisma.outilsOrderByRelevanceFieldEnum = {
+  titre: 'titre',
+  description: 'description',
+  logo: 'logo',
+  miniature: 'miniature',
+  lien_github: 'lien_github'
+};
+
+exports.Prisma.outils_tagsOrderByRelevanceFieldEnum = {
+  titre: 'titre'
+};
+
 
 exports.Prisma.ModelName = {
   autre: 'autre',
@@ -540,7 +573,10 @@ exports.Prisma.ModelName = {
   Verification: 'Verification',
   accueil_general: 'accueil_general',
   apropos_general: 'apropos_general',
-  apropos_outils: 'apropos_outils'
+  apropos_outils: 'apropos_outils',
+  outils: 'outils',
+  outils_tags: 'outils_tags',
+  outils_tags_link: 'outils_tags_link'
 };
 
 /**
