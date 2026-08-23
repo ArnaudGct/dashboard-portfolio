@@ -79,6 +79,7 @@ async function OutilsList() {
       logo: true,
       miniature: true,
       lien_github: true,
+      lien_telechargement: true,
       derniere_modification: true,
     },
     orderBy: {

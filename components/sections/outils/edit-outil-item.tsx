@@ -58,6 +58,7 @@ type EditOutilFormProps = {
     miniature: string;
     logo: string;
     lien_github: string;
+    lien_telechargement: string;
     tags: string[];
   };
   availableTags: TagOption[];
@@ -391,7 +392,7 @@ export function EditOutilItem({
             ))}
           </div>
 
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div className="grid w-full items-center gap-1.5">
               <Label htmlFor="lien_github">Lien GitHub</Label>
               <Input
@@ -400,6 +401,16 @@ export function EditOutilItem({
                 name="lien_github"
                 defaultValue={initialData.lien_github}
                 placeholder="https://github.com/username/repo"
+              />
+            </div>
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="lien_telechargement">Lien de téléchargement</Label>
+              <Input
+                type="url"
+                id="lien_telechargement"
+                name="lien_telechargement"
+                defaultValue={initialData.lien_telechargement}
+                placeholder="https://exemple.com/download"
               />
             </div>
           </div>

@@ -28537,6 +28537,7 @@ export namespace Prisma {
     logo: string | null
     miniature: string | null
     lien_github: string | null
+    lien_telechargement: string | null
     derniere_modification: Date | null
   }
 
@@ -28547,6 +28548,7 @@ export namespace Prisma {
     logo: string | null
     miniature: string | null
     lien_github: string | null
+    lien_telechargement: string | null
     derniere_modification: Date | null
   }
 
@@ -28557,6 +28559,7 @@ export namespace Prisma {
     logo: number
     miniature: number
     lien_github: number
+    lien_telechargement: number
     derniere_modification: number
     _all: number
   }
@@ -28577,6 +28580,7 @@ export namespace Prisma {
     logo?: true
     miniature?: true
     lien_github?: true
+    lien_telechargement?: true
     derniere_modification?: true
   }
 
@@ -28587,6 +28591,7 @@ export namespace Prisma {
     logo?: true
     miniature?: true
     lien_github?: true
+    lien_telechargement?: true
     derniere_modification?: true
   }
 
@@ -28597,6 +28602,7 @@ export namespace Prisma {
     logo?: true
     miniature?: true
     lien_github?: true
+    lien_telechargement?: true
     derniere_modification?: true
     _all?: true
   }
@@ -28694,6 +28700,7 @@ export namespace Prisma {
     logo: string
     miniature: string
     lien_github: string
+    lien_telechargement: string
     derniere_modification: Date
     _count: OutilsCountAggregateOutputType | null
     _avg: OutilsAvgAggregateOutputType | null
@@ -28723,6 +28730,7 @@ export namespace Prisma {
     logo?: boolean
     miniature?: boolean
     lien_github?: boolean
+    lien_telechargement?: boolean
     derniere_modification?: boolean
   }, ExtArgs["result"]["outils"]>
 
@@ -28735,10 +28743,11 @@ export namespace Prisma {
     logo?: boolean
     miniature?: boolean
     lien_github?: boolean
+    lien_telechargement?: boolean
     derniere_modification?: boolean
   }
 
-  export type outilsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_outil" | "titre" | "description" | "logo" | "miniature" | "lien_github" | "derniere_modification", ExtArgs["result"]["outils"]>
+  export type outilsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_outil" | "titre" | "description" | "logo" | "miniature" | "lien_github" | "lien_telechargement" | "derniere_modification", ExtArgs["result"]["outils"]>
 
   export type $outilsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "outils"
@@ -28750,6 +28759,7 @@ export namespace Prisma {
       logo: string
       miniature: string
       lien_github: string
+      lien_telechargement: string
       derniere_modification: Date
     }, ExtArgs["result"]["outils"]>
     composites: {}
@@ -29126,6 +29136,7 @@ export namespace Prisma {
     readonly logo: FieldRef<"outils", 'String'>
     readonly miniature: FieldRef<"outils", 'String'>
     readonly lien_github: FieldRef<"outils", 'String'>
+    readonly lien_telechargement: FieldRef<"outils", 'String'>
     readonly derniere_modification: FieldRef<"outils", 'DateTime'>
   }
     
@@ -31568,6 +31579,7 @@ export namespace Prisma {
     logo: 'logo',
     miniature: 'miniature',
     lien_github: 'lien_github',
+    lien_telechargement: 'lien_telechargement',
     derniere_modification: 'derniere_modification'
   };
 
@@ -31819,7 +31831,8 @@ export namespace Prisma {
     description: 'description',
     logo: 'logo',
     miniature: 'miniature',
-    lien_github: 'lien_github'
+    lien_github: 'lien_github',
+    lien_telechargement: 'lien_telechargement'
   };
 
   export type outilsOrderByRelevanceFieldEnum = (typeof outilsOrderByRelevanceFieldEnum)[keyof typeof outilsOrderByRelevanceFieldEnum]
@@ -33519,6 +33532,7 @@ export namespace Prisma {
     logo?: StringFilter<"outils"> | string
     miniature?: StringFilter<"outils"> | string
     lien_github?: StringFilter<"outils"> | string
+    lien_telechargement?: StringFilter<"outils"> | string
     derniere_modification?: DateTimeFilter<"outils"> | Date | string
   }
 
@@ -33529,6 +33543,7 @@ export namespace Prisma {
     logo?: SortOrder
     miniature?: SortOrder
     lien_github?: SortOrder
+    lien_telechargement?: SortOrder
     derniere_modification?: SortOrder
     _relevance?: outilsOrderByRelevanceInput
   }
@@ -33543,6 +33558,7 @@ export namespace Prisma {
     logo?: StringFilter<"outils"> | string
     miniature?: StringFilter<"outils"> | string
     lien_github?: StringFilter<"outils"> | string
+    lien_telechargement?: StringFilter<"outils"> | string
     derniere_modification?: DateTimeFilter<"outils"> | Date | string
   }, "id_outil">
 
@@ -33553,6 +33569,7 @@ export namespace Prisma {
     logo?: SortOrder
     miniature?: SortOrder
     lien_github?: SortOrder
+    lien_telechargement?: SortOrder
     derniere_modification?: SortOrder
     _count?: outilsCountOrderByAggregateInput
     _avg?: outilsAvgOrderByAggregateInput
@@ -33571,6 +33588,7 @@ export namespace Prisma {
     logo?: StringWithAggregatesFilter<"outils"> | string
     miniature?: StringWithAggregatesFilter<"outils"> | string
     lien_github?: StringWithAggregatesFilter<"outils"> | string
+    lien_telechargement?: StringWithAggregatesFilter<"outils"> | string
     derniere_modification?: DateTimeWithAggregatesFilter<"outils"> | Date | string
   }
 
@@ -35310,6 +35328,7 @@ export namespace Prisma {
     logo: string
     miniature: string
     lien_github: string
+    lien_telechargement: string
     derniere_modification: Date | string
   }
 
@@ -35320,6 +35339,7 @@ export namespace Prisma {
     logo: string
     miniature: string
     lien_github: string
+    lien_telechargement: string
     derniere_modification: Date | string
   }
 
@@ -35329,6 +35349,7 @@ export namespace Prisma {
     logo?: StringFieldUpdateOperationsInput | string
     miniature?: StringFieldUpdateOperationsInput | string
     lien_github?: StringFieldUpdateOperationsInput | string
+    lien_telechargement?: StringFieldUpdateOperationsInput | string
     derniere_modification?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -35339,6 +35360,7 @@ export namespace Prisma {
     logo?: StringFieldUpdateOperationsInput | string
     miniature?: StringFieldUpdateOperationsInput | string
     lien_github?: StringFieldUpdateOperationsInput | string
+    lien_telechargement?: StringFieldUpdateOperationsInput | string
     derniere_modification?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -35349,6 +35371,7 @@ export namespace Prisma {
     logo: string
     miniature: string
     lien_github: string
+    lien_telechargement: string
     derniere_modification: Date | string
   }
 
@@ -35358,6 +35381,7 @@ export namespace Prisma {
     logo?: StringFieldUpdateOperationsInput | string
     miniature?: StringFieldUpdateOperationsInput | string
     lien_github?: StringFieldUpdateOperationsInput | string
+    lien_telechargement?: StringFieldUpdateOperationsInput | string
     derniere_modification?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -35368,6 +35392,7 @@ export namespace Prisma {
     logo?: StringFieldUpdateOperationsInput | string
     miniature?: StringFieldUpdateOperationsInput | string
     lien_github?: StringFieldUpdateOperationsInput | string
+    lien_telechargement?: StringFieldUpdateOperationsInput | string
     derniere_modification?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -36806,6 +36831,7 @@ export namespace Prisma {
     logo?: SortOrder
     miniature?: SortOrder
     lien_github?: SortOrder
+    lien_telechargement?: SortOrder
     derniere_modification?: SortOrder
   }
 
@@ -36820,6 +36846,7 @@ export namespace Prisma {
     logo?: SortOrder
     miniature?: SortOrder
     lien_github?: SortOrder
+    lien_telechargement?: SortOrder
     derniere_modification?: SortOrder
   }
 
@@ -36830,6 +36857,7 @@ export namespace Prisma {
     logo?: SortOrder
     miniature?: SortOrder
     lien_github?: SortOrder
+    lien_telechargement?: SortOrder
     derniere_modification?: SortOrder
   }
 

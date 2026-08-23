@@ -57,6 +57,7 @@ async function EditOutilContent({ params }: { params: Params }) {
       miniature: true,
       logo: true,
       lien_github: true,
+      lien_telechargement: true,
     },
   });
 
@@ -96,6 +97,7 @@ async function EditOutilContent({ params }: { params: Params }) {
     miniature: outil.miniature,
     logo: outil.logo,
     lien_github: outil.lien_github,
+    lien_telechargement: outil.lien_telechargement,
     tags: outilTags,
   };
 

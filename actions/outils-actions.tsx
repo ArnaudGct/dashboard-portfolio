@@ -44,6 +44,7 @@ export async function addOutilAction(formData: FormData) {
         miniature: miniaturePath,
         logo: logoPath,
         lien_github: formData.get("lien_github")?.toString() || "",
+        lien_telechargement: formData.get("lien_telechargement")?.toString() || "",
         derniere_modification: new Date(),
       },
     });
@@ -158,6 +159,7 @@ export async function updateOutilAction(formData: FormData) {
         miniature: miniaturePath,
         logo: logoPath,
         lien_github: formData.get("lien_github")?.toString() || "",
+        lien_telechargement: formData.get("lien_telechargement")?.toString() || "",
         derniere_modification: new Date(),
       },
     });

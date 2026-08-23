@@ -1,6 +1,6 @@
 "use client";
 
-import { Github } from "lucide-react";
+import { Github, Download } from "lucide-react";
 import { SiGithub } from "@icons-pack/react-simple-icons";
 import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
@@ -18,6 +18,7 @@ type OutilProps = {
     logo: string;
     miniature: string;
     lien_github: string;
+    lien_telechargement: string | null;
     derniere_modification: Date;
   };
 };
@@ -87,6 +88,16 @@ export function OutilItem({ outil }: OutilProps) {
                   className="p-1 cursor-pointer"
                 >
                   <SiGithub size={18} />
+                </Button>
+              )}
+              {outil.lien_telechargement && (
+                <Button
+                  variant="ghost"
+                  onClick={(e) => handleLinkClick(e, outil.lien_telechargement!)}
+                  className="p-1 cursor-pointer"
+                  title="Lien de téléchargement"
+                >
+                  <Download size={18} />
                 </Button>
               )}
             </div>

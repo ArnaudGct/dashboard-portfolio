@@ -278,7 +278,7 @@ export function AddOutilItem({ availableTags }: AddOutilFormProps) {
             ))}
           </div>
 
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div className="grid w-full items-center gap-1.5">
               <Label htmlFor="lien_github">Lien GitHub</Label>
               <Input
@@ -286,6 +286,15 @@ export function AddOutilItem({ availableTags }: AddOutilFormProps) {
                 id="lien_github"
                 name="lien_github"
                 placeholder="https://github.com/username/repo"
+              />
+            </div>
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="lien_telechargement">Lien de téléchargement</Label>
+              <Input
+                type="url"
+                id="lien_telechargement"
+                name="lien_telechargement"
+                placeholder="https://exemple.com/download"
               />
             </div>
           </div>

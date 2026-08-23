@@ -303,6 +303,7 @@ model outils {
   logo                  String   @db.VarChar(500)
   miniature             String   @db.VarChar(500)
   lien_github           String   @db.VarChar(500)
+  lien_telechargement   String   @db.VarChar(500)
   derniere_modification DateTime @db.DateTime(0)
 }
 

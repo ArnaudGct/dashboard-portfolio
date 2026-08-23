@@ -363,6 +363,7 @@ exports.Prisma.OutilsScalarFieldEnum = {
   logo: 'logo',
   miniature: 'miniature',
   lien_github: 'lien_github',
+  lien_telechargement: 'lien_telechargement',
   derniere_modification: 'derniere_modification'
 };
 
@@ -539,7 +540,8 @@ exports.Prisma.outilsOrderByRelevanceFieldEnum = {
   description: 'description',
   logo: 'logo',
   miniature: 'miniature',
-  lien_github: 'lien_github'
+  lien_github: 'lien_github',
+  lien_telechargement: 'lien_telechargement'
 };
 
 exports.Prisma.outils_tagsOrderByRelevanceFieldEnum = {
