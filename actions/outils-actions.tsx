@@ -20,13 +20,19 @@ export async function addOutilAction(formData: FormData) {
 
     if (imageMiniature && imageMiniature.size > 0) {
       console.log("Upload d'une nouvelle miniature d'outil...");
-      const result = await uploadOutilImageToCloudinary(imageMiniature, "portfolio/outils/screens");
+      const result = await uploadOutilImageToCloudinary(
+        imageMiniature,
+        "portfolio/outils/screens"
+      );
       miniaturePath = result.url;
     }
 
     if (imageLogo && imageLogo.size > 0) {
       console.log("Upload d'un nouveau logo d'outil...");
-      const result = await uploadOutilImageToCloudinary(imageLogo, "portfolio/outils/logos");
+      const result = await uploadOutilImageToCloudinary(
+        imageLogo,
+        "portfolio/outils/logos"
+      );
       logoPath = result.url;
     }
 
@@ -117,7 +123,10 @@ export async function updateOutilAction(formData: FormData) {
 
     if (imageMiniature && imageMiniature.size > 0) {
       console.log("Upload d'une nouvelle miniature d'outil...");
-      const result = await uploadOutilImageToCloudinary(imageMiniature, "portfolio/outils/screens");
+      const result = await uploadOutilImageToCloudinary(
+        imageMiniature,
+        "portfolio/outils/screens"
+      );
       miniaturePath = result.url;
 
       if (oldMiniaturePublicId) {
@@ -127,7 +136,10 @@ export async function updateOutilAction(formData: FormData) {
 
     if (imageLogo && imageLogo.size > 0) {
       console.log("Upload d'un nouveau logo d'outil...");
-      const result = await uploadOutilImageToCloudinary(imageLogo, "portfolio/outils/logos");
+      const result = await uploadOutilImageToCloudinary(
+        imageLogo,
+        "portfolio/outils/logos"
+      );
       logoPath = result.url;
 
       if (oldLogoPublicId) {
